@@ -2,7 +2,7 @@ import React from "react";
 import GlobalStyles from "styles/globalStyles";
 import { ThemeProvider } from "styled-components";
 import theme from "styles/theme";
-import Router from "pages/Router";
+import Router from "components/Router";
 import { RecoilRoot } from "recoil";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "apollo/apollo";
