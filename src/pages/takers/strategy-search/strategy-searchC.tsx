@@ -1,7 +1,7 @@
 import React from "react";
 
 const StrategySearchC = () => {
-  return <div></div>;
+  return <div>StrategySearch</div>;
 };
 
 export default StrategySearchC;
