@@ -1,0 +1,15 @@
+{
+  "name": "test_py",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start":"npm run start:flask && npm run start:celery ",
+    "start:flask":"python app.py",
+    "start:celery":"celery -A processor.process worker --loglevel=info --autoscale=3,3",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
