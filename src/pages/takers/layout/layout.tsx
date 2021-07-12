@@ -37,7 +37,7 @@ const NavBarComponent = () => {
   return (
     <NavBar
       mode="dark"
-      icon={<Icon type="left" />}
+      icon={<div>알고리당🥞 - hello님</div>}
       onLeftClick={() => {
         console.log("onLeftClick");
       }}
@@ -58,9 +58,7 @@ const NavBarComponent = () => {
           }}
         />,
       ]}
-    >
-      NavBar
-    </NavBar>
+    ></NavBar>
   );
 };
 
