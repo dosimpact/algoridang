@@ -76,7 +76,23 @@ class psql(object):
         else:
             return "Not connected to DB"
 
+    def insertIntoDataToTable(self, table="", values=""):
+        query = "insert into "+str(table)+"values"+str(values)+";"
+        print(query)
+        self.__cursor.execute(query)
+        self.__connection.commit()
 
+
+    def selectData(self, select ="*", table = "", where = None, ):
+        #print(select,table)
+        if where == None:
+            query = "select " + str(select)+" from " + str(table) +";"
+        else:
+            query = "select " + str(select)+" from " + str(table) +" where "+str(where)+";"
+
+        self.__cursor.execute(query)
+        rows = self.__cursor.fetchall() 
+        return rows
 
 
 if __name__ == "__main__":

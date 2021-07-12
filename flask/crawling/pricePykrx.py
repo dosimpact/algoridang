@@ -1,72 +1,54 @@
 from pykrx import stock
-from DB.DB import psql
+from .DB.DB import psql
 
-class pricePykrx(object):
+class CPricePykrx(object):
+    
+    __db = psql()
+    __test = 0
+
+    def __init__(self,test=0):
+        self.__test = test
+
+    #모든 종목 리스트 가져오기
+    def __getKRStockCodeAll(self):
+        stockList = stock.get_market_ticker_list(None,"ALL")
+        return stockList
     
 
-    def getKrStockCodeAll(self):
-        #"KOSPI" , "KOSDAQ"
-        cnt = 0
-        print(type(stock.get_market_ticker_list(None,"ALL")))
-        print((stock.get_market_ticker_list(None,"ALL")))
-        """
-        for ticker in stock.get_market_ticker_list(None,"ALL"):
-            data = stock.get_market_ticker_name(ticker)
-            print(data, ticker, sep = " = " ,end= "\n")
-            cnt= cnt +1
-        """
-        print(cnt)
+    #모든 종목리스트 전송
+    def __sendKRStockCodeAll(self,codelist):
+        count = 0
+        nameList = []
+        for ticker in codelist:
+            #데이터 유무 확인
+            name = stock.get_market_ticker_name(ticker)
+            queryWhere = "\"STOCK_CODE\" = \'"+ticker+"\';"
+
+            #없는경우 데이터 입력
+            if len(self.__db.selectData("*","stock",queryWhere)) == 0:
+                queryTable = "STOCK( \"STOCK_CODE\", \"STOCK_NAME\")"
+                queryValue = "(\'"+ticker+"\',\'"+name+"\')"
+                self.__db.insertIntoDataToTable(queryTable,queryValue)
+                count = count + 1
+
+                nameList.append(name)
+            
+        print(count,"data input to database")
+        if self.__test == 1:
+            print("__Test : Added Stock Name\n",nameList)
+        return "__Test : Added Stock Name\n"+str(nameList)
 
 
-    def getDataTest(self,nuberofstock = 10):
-        cnt = nuberofstock
-        tickers = stock.get_market_ticker_list("20210706")
-
-        for ticker in stock.get_market_ticker_list():
-            if cnt <=0:
-                break
-            cnt = cnt - 1
-
-            data = stock.get_market_ticker_name(ticker)
-            print(data)
-
-            """
-            if SQL_Is_Data_In_STOCK(cursor,ticker) == 0 :
-                cursor.execute(Make_Insert_Into_STOCK(ticker, data))
-                connection.commit()
-            """
-
-
-            #cursor.execute(Maker_Insert_Into_STOCK(ticker,data))
-            #rows = cursor.fetchall() 
-            #conn.commit()
-        
-            df = stock.get_market_ohlcv_by_date("20210706", "20210707", ticker)
-
-            for idx, row in df.iterrows():
-                stockdate = str(idx.date())
-                print(stockdate)
-                openprice = str(row[0])
-                highprice = str(row[1])
-                lowprice = str(row[2])
-                endprice = str(row[3])
-                tradingvolume = str(row[4])
-
-                print(openprice,highprice,lowprice,endprice,tradingvolume, sep= "  ")
-                """
-                if SQL_Is_Data_In_DAILY_STOCK(cursor,ticker,stockdate) == 0:
-                    cursor.execute(Make_Insert_Into_DAILY_STOCK(stockdate,ticker,openprice,highprice,lowprice,endprice,tradingvolume))
-                    connection.commit()
-                """
-
-                print("------"*5)
-            #sleep(1000)
+    def setDBAllStock(self):
+        test = self.__getKRStockCodeAll()
+        info = self.__sendKRStockCodeAll(test)
+        return info
 
 
 if __name__ == "__main__":
-    data = pricePykrx()
-    data.getKrStockCodeAll()
-    db = psql()
+    data = CPricePykrx()
+    test = data.setDBAllStock()
+    print(test)
     
 
 
