@@ -1,7 +1,10 @@
 // import { css } from "styled-components";
 
 const Theme = {
-  mainColor: "gray",
+  ColorMain: "gray",
+  ColorGray: "#646464",
+  ColorRed: "#FF5151",
+  ColorBlue: "#5193FF",
   /*breakpoints */
   breakpoints: {
     xs: "0px",

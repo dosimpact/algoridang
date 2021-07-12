@@ -13,7 +13,7 @@ const TabNavigation = () => (
   <nav>
     <Tabs
       tabs={tabs}
-      initialPage={1}
+      initialPage={0}
       onChange={(tab, index) => {
         console.log("onChange", index, tab);
       }}
