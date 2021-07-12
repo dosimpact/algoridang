@@ -1,7 +1,12 @@
 import React from "react";
+import MockInvestP from "./mock-investP";
 
 const MockInvestC = () => {
-  return <div>MockInvestC</div>;
+  return (
+    <div>
+      <MockInvestP />
+    </div>
+  );
 };
 
 export default MockInvestC;

@@ -1,6 +1,6 @@
 import "styled-components";
-import { TypeTheme } from "./theme";
+import { TypeTheme, TypeCSSTheme } from "./theme";
 
 declare module "styled-components" {
-  export interface DefaultTheme extends TypeTheme {}
+  export interface DefaultTheme extends TypeTheme, TypeCSSTheme {}
 }

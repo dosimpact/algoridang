@@ -21,39 +21,13 @@ const TabNavigation = () => (
         console.log("onTabClick", index, tab);
       }}
     >
-      <section
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          minHeight: "80vh",
-          backgroundColor: "#fff",
-        }}
-      >
+      <section>
         <MockInvest />
       </section>
-      <section
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          minHeight: "80vh",
-          backgroundColor: "#fff",
-        }}
-      >
+      <section>
         <StrategySearch />
       </section>
-      <section
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          minHeight: "80vh",
-          backgroundColor: "#fff",
-        }}
-      >
-        Content of third tab
-      </section>
+      <section>Content of third tab</section>
     </Tabs>
     <WhiteSpace />
   </nav>

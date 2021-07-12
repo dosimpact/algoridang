@@ -4,6 +4,7 @@ import reset from "styled-reset";
 
 // return Class Components
 export default createGlobalStyle`
+  
     ${reset};
     a{
         text-decoration:none;

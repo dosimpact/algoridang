@@ -26,5 +26,5 @@ const Test = () => {
 export default Test;
 
 const STest = styled.div`
-  color: ${(props) => props.theme.mainColor};
+  color: ${(props) => props.theme.ColorMain};
 `;
