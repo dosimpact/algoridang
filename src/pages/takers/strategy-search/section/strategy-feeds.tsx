@@ -1,6 +1,7 @@
 import { WingBlank, WhiteSpace } from "antd-mobile";
 import StrategyCard from "components/strategy/strategy-card";
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { toTagsString } from "utils/parse";
 
 const Title: React.FC<{ title: string }> = ({ title }) => {
@@ -38,7 +39,9 @@ const dummyDatas3 = [
     CAGR: 22.22,
   },
 ];
-const MockInvestP = () => {
+const StrategyFeeds = () => {
+  const history = useHistory();
+
   return (
     <WingBlank style={{ margin: "15x" }} size="lg">
       <WhiteSpace size="xl" />
@@ -47,6 +50,7 @@ const MockInvestP = () => {
         subTitle="나만의 성향에 맞는 전략 찾아봅니다."
         onClick={(e) => {
           console.log("click", e.currentTarget);
+          history.push("/takers/strategy-search/types");
         }}
       />
       <WhiteSpace size="xl" />
@@ -75,4 +79,4 @@ const MockInvestP = () => {
   );
 };
 
-export default MockInvestP;
+export default StrategyFeeds;

@@ -38,6 +38,7 @@ const FTheme = {
 export default FTheme;
 
 // export type CSS = keyof typeof CSSTheme;
-// export type TypeCSSTheme = Record<keyof typeof CSSTheme, string>;
 
 export type TypeTheme = typeof Theme;
+
+// export type TypeCSSTheme = TypeTheme & Record<CSS, string>;

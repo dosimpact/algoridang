@@ -22,10 +22,10 @@ const TabNavigation = () => (
       }}
     >
       <section>
-        <MockInvest />
+        <StrategySearch />
       </section>
       <section>
-        <StrategySearch />
+        <MockInvest />
       </section>
       <section>Content of third tab</section>
     </Tabs>

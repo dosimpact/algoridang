@@ -12,8 +12,8 @@ const Router = () => {
       <ErrorHandler>
         <Switch>
           <Route path="/" exact component={LandingPage} />
-          <Route path="/takers" exact component={TakersHome} />
-          <Route path="/makers" exact component={MakersHome} />
+          <Route path="/takers" component={TakersHome} />
+          <Route path="/makers" component={MakersHome} />
           <Route path="/test" component={Test} />
           <Route component={Page404} />
           <Redirect from="*" to="/" />

@@ -9,7 +9,7 @@ interface IStrategyCard {
   title: string;
   subTitle?: string;
   CAGR?: number;
-  onClick?: Function;
+  onClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
 }
 
 const StrategyCard: React.FC<IStrategyCard> = ({
@@ -22,8 +22,8 @@ const StrategyCard: React.FC<IStrategyCard> = ({
   return (
     <>
       <Card
-        onClick={() => {
-          if (onClick) onClick();
+        onClick={(e) => {
+          if (onClick) onClick(e);
         }}
       >
         <article className="left">
