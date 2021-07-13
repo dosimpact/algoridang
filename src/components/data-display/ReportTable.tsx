@@ -5,15 +5,15 @@ interface Indexable {
   [idx: string]: string;
 }
 
-const HistoryTable: React.FC<{
+const ReportTable: React.FC<{
   header: string[];
   body: Indexable[];
   style?: React.CSSProperties;
   props?: any;
 }> = ({ header, body, style, ...props }) => {
   return (
-    <HistoryTableS style={{ ...style }} {...props}>
-      <div className="historyTable">
+    <ReportTableS style={{ ...style }} {...props}>
+      <div className="ReportTable">
         {header.map((el, key) => (
           <div key={key + el} className="header">
             {el}
@@ -27,16 +27,16 @@ const HistoryTable: React.FC<{
           ))
         )}
       </div>
-    </HistoryTableS>
+    </ReportTableS>
   );
 };
 
-export default HistoryTable;
+export default ReportTable;
 
-const HistoryTableS = styled.div`
-  .historyTable {
+const ReportTableS = styled.div`
+  .ReportTable {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     /* grid-template-rows: repeat(auto-fit, 1fr); */
     grid-auto-rows: 30px;
     border-top: 1px solid gray;

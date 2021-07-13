@@ -3,7 +3,7 @@ import { WingBlank, WhiteSpace, Icon, Button } from "antd-mobile";
 import { Title, SubTitle } from "components/data-display/Typo";
 import StrategyCard from "components/strategy/strategy-card";
 import useBackButton from "hooks/useBackButton";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { toTagsString } from "utils/parse";
 import styled from "styled-components";
 import HistoryTable from "components/data-display/HistoryTable";
@@ -54,9 +54,9 @@ const dummyDatasHistory = {
 
 const StrategyDetails = () => {
   const Back = useBackButton();
-  const params = useParams();
+  const history = useHistory();
+  const params = useParams() as { id: string };
   console.log(params);
-
   return (
     <StrategyDetailP>
       <WingBlank style={{ margin: "15x" }} size="lg">
@@ -71,18 +71,36 @@ const StrategyDetails = () => {
           subTitle={toTagsString(dummyDatas.subTitle)}
           CAGR={dummyDatas.CAGR}
         />
-        <div className="flexRow">
-          <SubTitle title="모의투자" style={{ marginTop: "20px" }}></SubTitle>
-          <Button type="warning" size="small">
+        <div className="flexRowSBt">
+          <SubTitle
+            title="모의 투자"
+            style={{ marginRight: "15px" }}
+          ></SubTitle>
+          <Button type="warning" size="small" style={{ width: "100px" }}>
             시작하기
           </Button>
         </div>
-        <div className="flexRow" style={{ marginTop: "20px" }}>
-          <SubTitle title="상세전략" style={{ marginTop: "20px" }}></SubTitle>
-          <Button type="ghost" size="small">
+        <div className="flexRowSBt" style={{ marginTop: "15px" }}>
+          <SubTitle
+            title="상세 전략 보기"
+            style={{ marginRight: "20px" }}
+          ></SubTitle>
+          <Button
+            type="ghost"
+            size="small"
+            style={{ width: "100px" }}
+            onClick={(e) => {
+              console.log("deatil");
+              history.push(
+                process.env.PUBLIC_URL +
+                  `/takers/strategy-search/report/${params.id}`
+              );
+            }}
+          >
             리포트
           </Button>
         </div>
+
         <article className="articleDescription">
           <div className="flexRow" style={{ marginTop: "50px" }}>
             <SubTitle title="전략 메이커 설명" style={{ marginTop: "20px" }} />
