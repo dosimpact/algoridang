@@ -78,9 +78,15 @@ class psql(object):
 
     def insertIntoDataToTable(self, table="", values=""):
         query = "insert into "+str(table)+"values"+str(values)+";"
-        print(query)
+        #print(query)
         self.__cursor.execute(query)
         self.__connection.commit()
+
+    #test code
+    def insertIntoDataToTable_print(self, table="", values=""):
+        query = "insert into "+str(table)+"values"+str(values)+";"
+        print(query)
+
 
 
     def selectData(self, select ="*", table = "", where = None, ):
@@ -95,6 +101,15 @@ class psql(object):
         return rows
 
 
+    def selectData_print(self, select ="*", table = "", where = None, ):
+        #print(select,table)
+        if where == None:
+            query = "select " + str(select)+" from " + str(table) +";"
+        else:
+            query = "select " + str(select)+" from " + str(table) +" where "+str(where)+";"
+
+        print(query)
+        
 if __name__ == "__main__":
     db = psql()
     db2 = psql()
