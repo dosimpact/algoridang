@@ -27,6 +27,7 @@ const MockInvestP = () => {
           title={data.title}
           subTitle={toTagsString(data.subTitle)}
           CAGR={data.CAGR}
+          StrategyState="운용중"
         />
       ))}
     </WingBlank>

@@ -27,7 +27,7 @@ const TabNavigation = () => (
       <section>
         <MockInvest />
       </section>
-      <section>Content of third tab</section>
+      <section>⚠ 나의 정보...</section>
     </Tabs>
     <WhiteSpace />
   </nav>

@@ -16,6 +16,7 @@ const Theme = {
   ColorGray: "#646464",
   ColorRed: "#FF5151",
   ColorBlue: "#5193FF",
+  ColorYellow: "#F39C12",
   // fontSize*
   FontSizeSm: "13px",
   FontSizeMd: "14px",

@@ -10,6 +10,7 @@ interface IStrategyCard {
   subTitle?: string;
   CAGR?: number;
   onClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+  StrategyState?: string;
 }
 
 const StrategyCard: React.FC<IStrategyCard> = ({
@@ -18,6 +19,7 @@ const StrategyCard: React.FC<IStrategyCard> = ({
   thumnail = "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
   title = "Error",
   onClick,
+  StrategyState,
 }) => {
   return (
     <>
@@ -29,13 +31,18 @@ const StrategyCard: React.FC<IStrategyCard> = ({
         <article className="left">
           <img className="thumnail" src={thumnail} alt="thumnail"></img>
         </article>
-        <article className="right">
+        <article className="mid">
           <div className="title">{title}</div>
           {subTitle && <div className="subTitle">{subTitle}</div>}
           {CAGR && (
             <div className="CAGR">
               연수익 <FNumber val={CAGR} hasPercentage={true} />
             </div>
+          )}
+        </article>
+        <article className="right">
+          {StrategyState && (
+            <div className="strategyState">{StrategyState}</div>
           )}
         </article>
       </Card>
@@ -52,12 +59,12 @@ const Card = styled.section`
   }
 
   min-height: 75px;
-  height: 75px;
+  height: 85px;
   min-width: 300px;
   width: 100%;
 
   display: grid;
-  grid-template-columns: 70px 1fr;
+  grid-template-columns: 70px 1fr 70px;
   padding: 10px;
   margin-bottom: 20px;
 
@@ -73,7 +80,7 @@ const Card = styled.section`
     justify-content: center;
     align-items: center;
   }
-  .right {
+  .mid {
     width: auto;
     display: flex;
     flex-direction: column;
@@ -88,6 +95,16 @@ const Card = styled.section`
     .CAGR {
       font-size: ${(props) => props.theme.FontSizeSm};
       color: ${(props) => props.theme.ColorGray};
+    }
+  }
+  .right {
+    width: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .strategyState {
+      font-size: ${(props) => props.theme.FontSizeLg};
+      color: ${(props) => props.theme.ColorYellow};
     }
   }
 `;
