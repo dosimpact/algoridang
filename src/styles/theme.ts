@@ -21,6 +21,8 @@ const Theme = {
   FontSizeSm: "13px",
   FontSizeMd: "14px",
   FontSizeLg: "16px",
+  FontSizeXlg: "19px",
+  FontSizeXXlg: "23px",
   /*breakpoints */
   breakpoints: {
     xs: "0px",

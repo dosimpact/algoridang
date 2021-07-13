@@ -62,6 +62,10 @@ const StrategyFeeds = () => {
           title={data.title}
           subTitle={toTagsString(data.subTitle)}
           CAGR={data.CAGR}
+          onClick={(e) => {
+            console.log("click", e.currentTarget);
+            history.push("/takers/strategy-search/details/1");
+          }}
         />
       ))}
       <WhiteSpace size="xl" />
