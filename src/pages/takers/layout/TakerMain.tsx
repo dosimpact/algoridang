@@ -2,6 +2,7 @@ import React from "react";
 import { NavBar, Icon, Tabs, WhiteSpace, Badge } from "antd-mobile";
 import MockInvest from "../mock-invest/mock-investC";
 import StrategySearch from "../strategy-search/strategy-searchC";
+import { useHistory } from "react-router-dom";
 
 const tabs = [
   { title: <Badge dot>전략 탐색</Badge> },
@@ -34,14 +35,26 @@ const TabNavigation = () => (
 );
 
 const NavBarComponent = () => {
+  const history = useHistory();
+
   return (
     <NavBar
       mode="dark"
-      icon={<div>알고리당🥞 - hello님</div>}
+      icon={
+        <div
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            history.push("/takers/");
+          }}
+        >
+          알고리당 🥞
+        </div>
+      }
       onLeftClick={() => {
         console.log("onLeftClick");
       }}
       rightContent={[
+        <div>hello님 환영합니다.</div>,
         <Icon
           key="0"
           type="search"
