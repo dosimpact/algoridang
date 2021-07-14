@@ -77,7 +77,14 @@ const StrategyDetails = () => {
             title="모의 투자"
             style={{ marginRight: "15px" }}
           ></SubTitle>
-          <Button type="warning" size="small" style={{ width: "100px" }}>
+          <Button
+            type="warning"
+            size="small"
+            style={{ width: "100px" }}
+            onClick={() => {
+              history.push("/takers/mock-invest/create/1");
+            }}
+          >
             시작하기
           </Button>
         </div>

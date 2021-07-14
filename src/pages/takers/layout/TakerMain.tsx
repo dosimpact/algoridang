@@ -2,7 +2,7 @@ import React from "react";
 import { NavBar, Icon, Tabs, WhiteSpace, Badge } from "antd-mobile";
 import MockInvest from "../mock-invest/mock-investC";
 import StrategySearch from "../strategy-search/strategy-searchC";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 const tabs = [
   { title: <Badge dot>전략 탐색</Badge> },
@@ -12,7 +12,22 @@ const tabs = [
 
 const TabNavigation = () => {
   const history = useHistory();
+  const location = useLocation();
   const [page, setPage] = React.useState(0);
+
+  React.useEffect(() => {
+    const checkInitLocation = () => {
+      console.log("checkInitLocation", location);
+
+      if (location.pathname.startsWith("/takers/strategy-search")) setPage(0);
+      // /takers/mock-invest 경로라면 tab=1 으로
+      if (location.pathname.startsWith("/takers/mock-invest")) setPage(1);
+    };
+    console.log("checkInitLocation", location);
+    checkInitLocation();
+    return () => {};
+  }, [location]);
+
   React.useEffect(() => {
     const unlisten = history.listen((e) => {
       console.log("changed history", e);

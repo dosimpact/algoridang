@@ -7,6 +7,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { toTagsString } from "utils/parse";
 import styled from "styled-components";
 import HistoryTable from "components/data-display/HistoryTable";
+import ChartCumulativeReturn from "components/data-display/ChartCumulativeReturn";
 
 // const Title: React.FC<{ title: string }> = ({ title }) => {
 //   return <h1 style={{ fontSize: "20px", fontWeight: 700 }}>{title}</h1>;
@@ -124,6 +125,7 @@ const MockInvestDetail = () => {
           <div className="flexRow" style={{ marginTop: "50px" }}>
             <SubTitle title="매매 시점" style={{ marginTop: "20px" }} />
           </div>
+          <ChartCumulativeReturn />
         </article>
 
         <article className="articleHistory" style={{ marginBottom: "100px" }}>
