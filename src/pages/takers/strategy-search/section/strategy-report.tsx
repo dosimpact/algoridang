@@ -7,6 +7,9 @@ import { useHistory, useParams } from "react-router-dom";
 import { toTagsString } from "utils/parse";
 import styled from "styled-components";
 import ReportTable from "components/data-display/ReportTable";
+import ChartCumulativeReturn from "components/data-display/ChartCumulativeReturn";
+import ChartMonthlyReturn from "components/data-display/ChartMonthlyReturn";
+import ChartWinRatio from "components/data-display/ChartWinRatio";
 
 const dummyDatas = {
   title: "삼성전자 황금 신호",
@@ -107,26 +110,29 @@ const StrategyReport = () => {
             header={dummyDatasReport.header}
           />
         </article>
-        <article className="articleTrading">
+        <article className="articleCumulativeReturn">
           <div className="flexRow" style={{ marginTop: "50px" }}>
             <SubTitle
               title="백테스팅 누적 수익률"
               style={{ marginTop: "20px" }}
             />
           </div>
+          <ChartCumulativeReturn />
         </article>
-        <article className="articleTrading">
+        <article className="articleMonthlyReturn">
           <div className="flexRow" style={{ marginTop: "50px" }}>
             <SubTitle
               title="백테스팅 월간 수익률"
               style={{ marginTop: "20px" }}
             />
           </div>
+          <ChartMonthlyReturn />
         </article>
-        <article className="articleTrading">
+        <article className="articleWinRatio">
           <div className="flexRow" style={{ marginTop: "50px" }}>
             <SubTitle title="백테스팅 승률" style={{ marginTop: "20px" }} />
           </div>
+          <ChartWinRatio />
         </article>
       </WingBlank>
     </StrategyDetailP>
@@ -136,14 +142,14 @@ const StrategyReport = () => {
 export default StrategyReport;
 
 const StrategyDetailP = styled.section`
-  .articleDescription {
-    .description {
-      line-height: 20px;
-    }
-  }
-
-  .articleTrading {
-  }
+  margin-bottom: 120px;
+  overflow: hidden;
   .articleHistory {
+  }
+  .articleCumulativeReturn {
+  }
+  .articleMonthlyReturn {
+  }
+  .articleWinRatio {
   }
 `;
