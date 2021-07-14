@@ -7,6 +7,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { toTagsString } from "utils/parse";
 import styled from "styled-components";
 import HistoryTable from "components/data-display/HistoryTable";
+import ChartCumulativeReturn from "components/data-display/ChartCumulativeReturn";
 
 // const Title: React.FC<{ title: string }> = ({ title }) => {
 //   return <h1 style={{ fontSize: "20px", fontWeight: 700 }}>{title}</h1>;
@@ -118,7 +119,7 @@ const StrategyDetails = () => {
               <div className="name">예상 연수익률</div>
             </div>
             <div className="flexRowSBt" style={{ marginBottom: "15px" }}>
-              <div className="value returnsValue">10,20,000원</div>
+              <div className="value returnsValue">22.21%</div>
             </div>
             <div className="flexRowSBt" style={{ margin: "15px 0px" }}>
               <div className="name">투자 원금</div>
@@ -139,6 +140,7 @@ const StrategyDetails = () => {
           <div className="flexRow" style={{ marginTop: "50px" }}>
             <SubTitle title="매매 시점" style={{ marginTop: "20px" }} />
           </div>
+          <ChartCumulativeReturn />
         </article>
 
         <article className="articleHistory" style={{ marginBottom: "100px" }}>

@@ -20,7 +20,6 @@ const MockInvestC = () => {
 
   return (
     <div>
-      <MockInvestP />
       <Switch>
         {/* default mock-invest page section */}
         <Route

@@ -1,6 +1,7 @@
 import { WingBlank, WhiteSpace } from "antd-mobile";
 import StrategyCard from "components/strategy/strategy-card";
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { toTagsString } from "utils/parse";
 
 const Title: React.FC<{ title: string }> = ({ title }) => {
@@ -16,6 +17,8 @@ const dummyDatas2 = [
 ];
 
 const MockInvestList = () => {
+  const history = useHistory();
+
   return (
     <WingBlank style={{ margin: "15x" }} size="lg">
       <WhiteSpace size="xl" />
@@ -28,6 +31,11 @@ const MockInvestList = () => {
           subTitle={toTagsString(data.subTitle)}
           CAGR={data.CAGR}
           StrategyState="운용중"
+          onClick={(e) => {
+            history.push(
+              process.env.PUBLIC_URL + "/takers/mock-invest/details/1"
+            );
+          }}
         />
       ))}
     </WingBlank>

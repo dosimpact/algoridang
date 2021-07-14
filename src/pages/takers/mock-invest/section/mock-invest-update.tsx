@@ -18,6 +18,7 @@ const dummyDatas2 = [
 const MockInvestUpdate = () => {
   return (
     <WingBlank style={{ margin: "15x" }} size="lg">
+      MockInvestUpdate
       <WhiteSpace size="xl" />
       <Title title={"나의 모의 투자 전략"} />
       <WhiteSpace size="xl" />

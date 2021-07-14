@@ -10,29 +10,51 @@ const tabs = [
   { title: "나의 정보" },
 ];
 
-const TabNavigation = () => (
-  <nav>
-    <Tabs
-      tabs={tabs}
-      initialPage={0}
-      onChange={(tab, index) => {
-        console.log("onChange", index, tab);
-      }}
-      onTabClick={(tab, index) => {
-        console.log("onTabClick", index, tab);
-      }}
-    >
-      <section>
-        <StrategySearch />
-      </section>
-      <section>
-        <MockInvest />
-      </section>
-      <section>⚠ 나의 정보...</section>
-    </Tabs>
-    <WhiteSpace />
-  </nav>
-);
+const TabNavigation = () => {
+  const history = useHistory();
+  const [page, setPage] = React.useState(0);
+  React.useEffect(() => {
+    const unlisten = history.listen((e) => {
+      console.log("changed history", e);
+      // 뒤로가기를 눌렀을때, 각 탭에 맞는 page가 아니라면 변경해준다.
+      // /takers 경로라면 유지
+      // /takers/strategy-search 경로라면 tab=0 으로
+      if (e.pathname.startsWith("/takers/strategy-search")) setPage(0);
+      // /takers/mock-invest 경로라면 tab=1 으로
+      if (e.pathname.startsWith("/takers/mock-invest")) setPage(1);
+    });
+    return unlisten;
+  }, [history]);
+  return (
+    <nav>
+      <Tabs
+        // animated={false}
+        tabs={tabs}
+        initialPage={0}
+        onChange={(tab, index) => {
+          // 탭이 바뀌면 현재의 history는 takers(mainpage)로 변경한다.
+          // console.log("onChange", index, tab);
+          history.push("/takers/");
+        }}
+        page={page}
+        onTabClick={(tab, index) => {
+          // 탭이 클릭되면, tabPage를 변경한다.
+          // console.log("onTabClick", index, tab);
+          setPage(index);
+        }}
+      >
+        <section>
+          <StrategySearch />
+        </section>
+        <section>
+          <MockInvest />
+        </section>
+        <section>⚠ 나의 정보...</section>
+      </Tabs>
+      <WhiteSpace />
+    </nav>
+  );
+};
 
 const NavBarComponent = () => {
   const history = useHistory();
@@ -54,7 +76,7 @@ const NavBarComponent = () => {
         console.log("onLeftClick");
       }}
       rightContent={[
-        <div>hello님 환영합니다.</div>,
+        <div>hello님</div>,
         <Icon
           key="0"
           type="search"
