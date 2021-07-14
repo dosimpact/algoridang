@@ -62,7 +62,7 @@ const NavBarComponent = () => {
   );
 };
 
-const Layout = () => {
+const TakerMain = () => {
   return (
     <section>
       <NavBarComponent />
@@ -71,5 +71,5 @@ const Layout = () => {
   );
 };
 
-export default Layout;
-export { Layout as TakersHome };
+export default TakerMain;
+export { TakerMain as TakersHome };

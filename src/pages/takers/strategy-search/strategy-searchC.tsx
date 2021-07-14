@@ -8,6 +8,7 @@ import StrategyReport from "./section/strategy-report";
 const StrategySearchC = () => {
   return (
     <Switch>
+      {/* default strategy-search page section */}
       <Route
         exact
         path={process.env.PUBLIC_URL + "/takers/"}

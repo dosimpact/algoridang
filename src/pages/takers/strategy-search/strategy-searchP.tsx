@@ -4,6 +4,7 @@ import React from "react";
 import { toTagsString } from "utils/parse";
 import StrategyFeeds from "./section/strategy-feeds";
 
+// deprecated
 const StrategySearchP = () => {
   return (
     <WingBlank style={{ margin: "15x" }} size="lg">

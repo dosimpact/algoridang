@@ -2,8 +2,8 @@ import React from "react";
 import Test from "components/Test";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import LandingPage from "../pages/common/landing-page";
-import { TakersHome } from "../pages/takers/layout/layout";
-import { MakersHome } from "../pages/makers/layout/layout";
+import { TakersHome } from "../pages/takers/layout/TakerMain";
+import { MakersHome } from "../pages/makers/layout/MakerMain";
 import { ErrorHandler } from "recoil/error-state";
 import Page404 from "./error-page/Page404";
 const Router = () => {
