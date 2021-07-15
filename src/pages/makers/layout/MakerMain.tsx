@@ -15,7 +15,7 @@ const MakerMain = () => {
         <SHeader>
           <WingBlank className="hwrapper">
             {/* <div className="icon">🥞</div> */}
-            <Link to="/makers/strategy-create">
+            <Link to="/makers">
               <div className="headerName">알고리당</div>
               <div className="headerSubName">Makers</div>
             </Link>
@@ -23,7 +23,7 @@ const MakerMain = () => {
         </SHeader>
         <WhiteSpace size="xl" />
         <SNav>
-          <Link to="/makers/strategy-create">
+          <Link to="/makers">
             <div className="navItem flexCenter">퀀트 전략 생성</div>
           </Link>
           <Link to="/makers/strategy-my">
@@ -35,11 +35,7 @@ const MakerMain = () => {
         </SNav>
       </section>
       <section className="content">
-        <Route
-          exact
-          path="/makers/strategy-create"
-          component={StrategyCreateC}
-        />
+        <Route exact path="/makers/" component={StrategyCreateC} />
         <Route exact path="/makers/strategy-my" component={StrategyMyC} />
         <Route
           exact
