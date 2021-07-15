@@ -49,7 +49,7 @@ const TabNavigation = () => {
         onChange={(tab, index) => {
           // 탭이 바뀌면 현재의 history는 takers(mainpage)로 변경한다.
           // console.log("onChange", index, tab);
-          history.push("/takers/");
+          history.push("/takers");
         }}
         page={page}
         onTabClick={(tab, index) => {
@@ -81,7 +81,7 @@ const NavBarComponent = () => {
         <div
           style={{ cursor: "pointer" }}
           onClick={() => {
-            history.push("/takers/");
+            history.push("/takers");
           }}
         >
           알고리당 🥞

@@ -13,16 +13,17 @@ const CSSTheme = { hoverBox };
 const Theme = {
   // Color*
   ColorMain: "gray",
+  ColorWhite: "#ffffff",
   ColorGray: "#646464",
   ColorRed: "#FF5151",
   ColorBlue: "#5193FF",
   ColorYellow: "#F39C12",
   // fontSize*
-  FontSizeSm: "13px",
-  FontSizeMd: "14px",
-  FontSizeLg: "16px",
-  FontSizeXlg: "19px",
-  FontSizeXXlg: "23px",
+  FontSizeSm: "1.3rem",
+  FontSizeMd: "1.4rem",
+  FontSizeLg: "1.6rem",
+  FontSizeXlg: "1.9rem",
+  FontSizeXXlg: "2.3rem",
   /*breakpoints */
   breakpoints: {
     xs: "0px",

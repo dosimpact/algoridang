@@ -4,8 +4,10 @@ import reset from "styled-reset";
 
 // return Class Components
 export default createGlobalStyle`
-  
     ${reset};
+    html{
+        font-size:62.5%;
+    }
     a{
         text-decoration:none;
         color:inherit;
@@ -15,7 +17,7 @@ export default createGlobalStyle`
     }
     body{
         font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        font-size:14px;
+        font-size:1.6rem;
     }
     .flexRow{
         display: flex;
@@ -27,5 +29,10 @@ export default createGlobalStyle`
         flex-flow:row nowarp;
         align-items:center;
         justify-content:space-between;
+    }
+    .flexCenter{
+        display: flex;
+        align-items:center;
+        justify-content:center;
     }
 `;
