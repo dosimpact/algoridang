@@ -1,6 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { WingBlank, WhiteSpace } from "antd-mobile";
+import { Link, Route } from "react-router-dom";
+import StrategyCreateC from "../strategy-create/strategy-createC";
+import StrategyMyC from "../strategy-my/strategy-myC";
+import StrategyPublicC from "../strategy-public/strategy-publicC";
 
 const MakerMain = () => {
   return (
@@ -11,21 +15,37 @@ const MakerMain = () => {
         <SHeader>
           <WingBlank className="hwrapper">
             {/* <div className="icon">🥞</div> */}
-            <div>
+            <Link to="/makers/strategy-create">
               <div className="headerName">알고리당</div>
               <div className="headerSubName">Makers</div>
-            </div>
+            </Link>
           </WingBlank>
         </SHeader>
         <WhiteSpace size="xl" />
         <SNav>
-          <div className="navItem flexCenter">퀀트 전략 생성</div>
-          <div className="navItem flexCenter">나의 전략</div>
-          <div className="navItem flexCenter">공개 전략</div>
+          <Link to="/makers/strategy-create">
+            <div className="navItem flexCenter">퀀트 전략 생성</div>
+          </Link>
+          <Link to="/makers/strategy-my">
+            <div className="navItem flexCenter">나의 전략</div>
+          </Link>
+          <Link to="/makers/strategy-public">
+            <div className="navItem flexCenter">공개 전략</div>
+          </Link>
         </SNav>
       </section>
       <section className="content">
-        <div className="000">000</div>
+        <Route
+          exact
+          path="/makers/strategy-create"
+          component={StrategyCreateC}
+        />
+        <Route exact path="/makers/strategy-my" component={StrategyMyC} />
+        <Route
+          exact
+          path="/makers/strategy-public"
+          component={StrategyPublicC}
+        />
       </section>
     </SMakerMain>
   );
@@ -61,6 +81,12 @@ const SNav = styled.nav`
     font-weight: 700;
     background-color: ${(props) => props.theme.ColorWhite};
     cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    border-radius: 1rem;
+    margin-bottom: 0.2rem;
+  }
+  .navItem:hover {
+    background-color: ${(props) => props.theme.ColorGrayL1};
   }
 `;
 

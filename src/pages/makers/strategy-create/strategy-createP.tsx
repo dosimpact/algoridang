@@ -1,7 +1,7 @@
 import React from "react";
 
-const StrategySearchP = () => {
+const StrategyCreateP = () => {
   return <div></div>;
 };
 
-export default StrategySearchP;
+export default StrategyCreateP;
