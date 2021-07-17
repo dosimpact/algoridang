@@ -20,9 +20,9 @@ process = celery.Celery('tasks')
 process.config_from_object('celeryconfig')
 
 # celery 실행 명령어
-# celery -A processor worker --loglevel=info
+# celery -A processor.process worker --loglevel=info
 # 최소 3개 ~ 10개의 워커가 작동
-# celery -A processor worker --loglevel=info --autoscale=3,3
+# celery -A processor.process worker --loglevel=info --autoscale=3,3
 
 
 # celery 이벤트 실행시 기본 함수
