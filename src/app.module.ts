@@ -17,6 +17,7 @@ import { User } from './test-user/entities/user.entity';
 import { Note } from './test-user/entities/note.entity';
 import { UserModule } from './test-user/user.module';
 import { FinanceModule } from './finance/finance.module';
+import { getConnectionOptions } from 'typeorm';
 
 @Module({
   imports: [
@@ -46,7 +47,7 @@ import { FinanceModule } from './finance/finance.module';
         },
       }),
       synchronize: true,
-      logging: false,
+      logging: true,
       entities: [
         Counter,
         Todo,

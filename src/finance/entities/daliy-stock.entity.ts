@@ -4,7 +4,7 @@ import { STOCK } from './stock.entity';
 
 @Entity()
 export class DAILY_STOCK {
-  @PrimaryColumn()
+  @PrimaryColumn({ type: 'timestamptz' })
   DATE: Date;
 
   @ManyToOne(() => STOCK, (stock) => stock.STOCK_CODE)

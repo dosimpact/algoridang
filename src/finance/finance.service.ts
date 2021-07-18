@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Like, Repository } from 'typeorm';
+import { getConnection, Like, Repository } from 'typeorm';
 import {
   GetStocksInput,
   GetStocksOutput,
@@ -27,7 +27,21 @@ export class FinanceService {
     private readonly STOCK_CATEGORY_LIST_REPO: Repository<STOCK_CATEGORY_LIST>,
     @InjectRepository(DAILY_STOCK)
     private readonly DAILY_STOCK_REPO: Repository<DAILY_STOCK>,
-  ) {}
+  ) {
+    const test = async () => {
+      const res = await DAILY_STOCK_REPO.find({
+        take: 1,
+      });
+      console.log(res);
+      await DAILY_STOCK_REPO.save(
+        DAILY_STOCK_REPO.create({
+          STOCK_CODE: '005930',
+          DATE: '2021-07-17T14:30:00+09:00',
+        }),
+      );
+    };
+    // test();
+  }
 
   async getStocks(): Promise<GetStocksOutput> {
     try {

@@ -27,8 +27,18 @@ export class TodoService {
     private readonly todoRepo: Repository<Todo>,
   ) {
     const test = async () => {
-      const todos = await todoRepo.find({});
-      console.log(todos);
+      // const todos = await todoRepo.find({});
+      // console.log(todos);
+
+      // await todoRepo.save(
+      //   todoRepo.create({
+      //     content: 'test for timestamptz [4]',
+      //   }),
+      // );
+
+      console.log(Date.now());
+      console.log(new Date().toUTCString()); //
+      console.log(new Date().toISOString()); // 2021-07-16T07:28:32.051Z
     };
     // test();
   }

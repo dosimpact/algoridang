@@ -16,15 +16,15 @@ export class CoreEntity {
   id: number;
 
   @Field(() => Date)
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamptz' }) // defaultType : withoutTZ(offset을 무시하겠다.)
   updateAt: Date;
 
   @Field(() => Date)
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   createAt: Date;
 
   @Field(() => Date, { nullable: true })
-  @DeleteDateColumn()
+  @DeleteDateColumn({ type: 'timestamptz' })
   deleteAt: Date;
 
   @Field(() => Int)

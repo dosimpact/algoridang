@@ -16,6 +16,6 @@ export class STOCK_CATEGORY {
   @Column()
   CATEGORY_NAME: string;
 
-  @UpdateDateColumn() // auto updated column
+  @UpdateDateColumn({ type: 'timestamptz' }) // auto updated column
   CHANGE_DATE: Date;
 }
