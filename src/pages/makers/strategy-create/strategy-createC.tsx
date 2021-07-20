@@ -38,8 +38,8 @@ const StrategyCreateC = () => {
         />
         <WhiteSpace size="lg" />
         {tab === SegmentedControlValues[0] && <ScreateBasic />}
-        {tab === SegmentedControlValues[1] && <ScreatePropterties />}
-        {tab === SegmentedControlValues[2] && <ScreateTickers />}
+        {tab === SegmentedControlValues[1] && <ScreateTickers />}
+        {tab === SegmentedControlValues[2] && <ScreatePropterties />}
       </WingBlank>
     </SStrategyCreateC>
   );
