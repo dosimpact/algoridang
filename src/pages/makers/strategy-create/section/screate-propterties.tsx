@@ -54,6 +54,9 @@ const ScreatePropterties = () => {
         </List>
       </article>
       <article className="articleCol selectedCol">
+        <Button className="finish" type="primary">
+          전략 생성 및 백테스팅
+        </Button>
         <div className="targetSettingName flexRow">골든크로스 세부 셋팅</div>
         <List>
           <List.Item>
@@ -91,6 +94,8 @@ const SScreatePropterties = styled.div`
     .targetSettingName {
       height: 6rem;
       font-weight: 700;
+    }
+    .finish {
     }
   }
   .btn {
