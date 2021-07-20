@@ -1,11 +1,9 @@
 import { Controller, Get } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { JwtService } from './auth/jwt.service';
 
 @Controller()
 export class AppController {
-  constructor() {
-    
-  }
+  constructor() {}
 
   @Get()
   getHello(): string {
