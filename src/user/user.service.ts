@@ -2,7 +2,12 @@ import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from 'src/auth/jwt.service';
 import { Repository } from 'typeorm';
-import { LoginUserInput, LoginUserOutput } from './dtos/query.dtos';
+import {
+  GetUserInput,
+  GetUserOutput,
+  LoginUserInput,
+  LoginUserOutput,
+} from './dtos/query.dtos';
 import { USER } from './entities/user.entity';
 
 @Injectable()
@@ -41,11 +46,24 @@ export class UserService {
       return { ok: false, error: '가입된 이메일 정보가 없습니다.' };
     }
   }
-  async me() {}
+  async me() {
+    return 'me';
+  }
 
   async createUser() {}
   async updateUser() {}
   async deleteUser() {}
-  async getUser() {}
+
+  async getUser({ ID }: GetUserInput): Promise<GetUserOutput> {
+    try {
+      const user = await this.userRepo.findOneOrFail({ ID });
+      return { ok: true, user };
+    } catch (error) {
+      return {
+        ok: false,
+        error: '존재하지 않는 사용자 ID',
+      };
+    }
+  }
   async getUserList() {}
 }

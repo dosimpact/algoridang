@@ -1,4 +1,9 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import * as Joi from 'joi';
@@ -14,6 +19,7 @@ import { JwtModule } from './auth/jwt.module';
 import { AppResolver } from './app.resolver';
 import { USER } from './user/entities/user.entity';
 import { UserModule } from './user/user.module';
+import { JwtMiddleWare } from './auth/jwt.middleware';
 
 @Module({
   imports: [
@@ -53,4 +59,11 @@ import { UserModule } from './user/user.module';
   controllers: [AppController],
   providers: [AppResolver],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(JwtMiddleWare).forRoutes({
+      path: '*',
+      method: RequestMethod.ALL,
+    });
+  }
+}
