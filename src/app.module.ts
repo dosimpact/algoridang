@@ -1,24 +1,25 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import * as Joi from 'joi';
 import { join } from 'path';
 import { AppController } from './app.controller';
-import { CounterModule } from './p01/counter/counter.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Counter } from './p01/counter/entities/counter.entity';
-import { Todo } from './p01/todo/entities/todo.entity';
-import { TodoModule } from './p01/todo/todo.module';
 import { STOCK } from './finance/entities/stock.entity';
 import { DAILY_STOCK } from './finance/entities/daliy-stock.entity';
 import { STOCK_CATEGORY_LIST } from './finance/entities/stock-category-list';
 import { STOCK_CATEGORY } from './finance/entities/stock-category';
-import { User } from './test-user/entities/user.entity';
-import { Note } from './test-user/entities/note.entity';
-import { UserModule } from './test-user/user.module';
 import { FinanceModule } from './finance/finance.module';
-import { getConnectionOptions } from 'typeorm';
 import { JwtModule } from './auth/jwt.module';
+import { AppResolver } from './app.resolver';
+import { USER } from './user/entities/user.entity';
+import { UserModule } from './user/user.module';
+import { JwtMiddleWare } from './auth/jwt.middleware';
 
 @Module({
   imports: [
@@ -49,24 +50,20 @@ import { JwtModule } from './auth/jwt.module';
       }),
       synchronize: true,
       logging: false,
-      entities: [
-        Counter,
-        Todo,
-        STOCK,
-        DAILY_STOCK,
-        STOCK_CATEGORY_LIST,
-        STOCK_CATEGORY,
-        User,
-        Note,
-      ],
+      entities: [STOCK, DAILY_STOCK, STOCK_CATEGORY_LIST, STOCK_CATEGORY, USER],
     }),
     JwtModule.forRoot({ privateKey: process.env.JWT_SECRET_KEY }),
-    CounterModule,
-    TodoModule,
-    UserModule,
     FinanceModule,
+    UserModule,
   ],
   controllers: [AppController],
-  providers: [],
+  providers: [AppResolver],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(JwtMiddleWare).forRoutes({
+      path: '*',
+      method: RequestMethod.ALL,
+    });
+  }
+}
