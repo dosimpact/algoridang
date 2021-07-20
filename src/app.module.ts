@@ -18,6 +18,7 @@ import { Note } from './test-user/entities/note.entity';
 import { UserModule } from './test-user/user.module';
 import { FinanceModule } from './finance/finance.module';
 import { getConnectionOptions } from 'typeorm';
+import { JwtModule } from './auth/jwt.module';
 
 @Module({
   imports: [
@@ -47,7 +48,7 @@ import { getConnectionOptions } from 'typeorm';
         },
       }),
       synchronize: true,
-      logging: true,
+      logging: false,
       entities: [
         Counter,
         Todo,
@@ -59,6 +60,7 @@ import { getConnectionOptions } from 'typeorm';
         Note,
       ],
     }),
+    JwtModule.forRoot({ privateKey: process.env.JWT_SECRET_KEY }),
     CounterModule,
     TodoModule,
     UserModule,
