@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useMemo } from "react";
 import styled from "styled-components";
 import { useForm, UseFormRegister } from "react-hook-form";
-import { Flex } from "antd-mobile";
+import { Button } from "antd-mobile";
 
 type IScreateBasicInput = {
   name: string;
@@ -14,6 +14,28 @@ type IScreateBasicInput = {
   openRange: "public" | "private";
 };
 
+const inputNameList = [
+  "name",
+  "description",
+  "tags",
+  "startMoney",
+  "backtestFrom",
+  "backtestTo",
+  "fees",
+  "openRange",
+];
+
+const mapNameToDetail = {
+  name: "전략 이름",
+  description: "전략 설명",
+  tags: "전략 테그",
+  startMoney: "운용 자금",
+  backtestFrom: "백테스트 시작",
+  backtestTo: "백테스트 종료",
+  fees: "수수료",
+  openRange: "공개범위",
+} as Record<string, string>;
+
 const mapNameToPlaceholder = {
   name: "전략 이름",
   description: "전략 설명",
@@ -23,74 +45,129 @@ const mapNameToPlaceholder = {
   backtestTo: "백테스트 종료",
   fees: "수수료",
   openRange: "공개범위",
-};
+} as Record<string, string>;
+
+const mapNameToRemark = {
+  name: "",
+  description: "",
+  tags: "",
+  startMoney: "만원",
+  backtestFrom: "년",
+  backtestTo: "%",
+  fees: "",
+  openRange: "",
+} as Record<string, string>;
 
 const ScreateBasic = () => {
   const { register, handleSubmit, watch, formState } =
     useForm<IScreateBasicInput>();
 
+  const inputNameListM = useMemo<string[]>(() => inputNameList, []);
+
   return (
-    <div>
+    <SScreateBasic>
       <form
-        style={{ display: "flex", flexFlow: "row nowrap" }}
+        className="basicSettingForm"
+        style={{ display: "flex", flexFlow: "column nowrap" }}
         onSubmit={handleSubmit((data) => {
           console.log(data);
         })}
       >
-        <input
-          type="text"
-          placeholder={mapNameToPlaceholder["name"]}
-          {...register("name", {
-            required: true,
+        <div className="inputRow inputRowHeader">
+          <div className="col detail">항목</div>
+          <div className="col inputField">입력</div>
+          <div className="col remark">단위</div>
+        </div>
+        {inputNameListM
+          .filter((name) => name !== "openRange")
+          .map((name, key) => {
+            return (
+              <div className="inputRow" key={key}>
+                <div className="col detail">{mapNameToDetail[name]}</div>
+                <div className="col inputField">
+                  <input
+                    type="text"
+                    placeholder={mapNameToPlaceholder[name]}
+                    {...register(name as keyof IScreateBasicInput, {
+                      // required: true,
+                    })}
+                  ></input>
+                </div>
+                <div className="col remark">{mapNameToRemark[name]}</div>
+              </div>
+            );
           })}
-        ></input>
-        <input
-          type="text"
-          placeholder={mapNameToPlaceholder["description"]}
-          {...register("description", {
-            required: true,
+        <div className="inputRow">
+          <div className="col detail">{mapNameToDetail["openRange"]}</div>
+          <div className="col inputField">
+            <select {...register("openRange")}>
+              {["public", "private"].map((value) => (
+                <option key={value} value={value}>
+                  {value}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="col remark">{mapNameToRemark["openRange"]}</div>
+        </div>
+        <Button
+          type="primary"
+          onClick={handleSubmit((data) => {
+            console.log(data);
           })}
-        ></input>
-        <input
-          type="text"
-          placeholder={mapNameToPlaceholder["fees"]}
-          {...register("fees", {
-            required: true,
-          })}
-        ></input>
-        <input
-          type="text"
-          placeholder={mapNameToPlaceholder["backtestFrom"]}
-          {...register("backtestFrom", {
-            required: true,
-          })}
-        ></input>
-        <input
-          type="text"
-          placeholder={mapNameToPlaceholder["backtestTo"]}
-          {...register("backtestTo", {
-            required: true,
-          })}
-        ></input>
-        <input
-          type="text"
-          placeholder={mapNameToPlaceholder["fees"]}
-          {...register("fees", {
-            required: true,
-          })}
-        ></input>
-        <select {...register("openRange")}>
-          {["public", "private"].map((value) => (
-            <option key={value} value={value}>
-              {value}
-            </option>
-          ))}
-        </select>
+        >
+          완료
+        </Button>
       </form>
-    </div>
+    </SScreateBasic>
   );
 };
 
-const SScreateBasic = styled.div``;
+const SScreateBasic = styled.div`
+  width: 100%;
+  font-size: ${(props) => props.theme.FontSizeXlg};
+
+  .basicSettingForm {
+    max-width: 60rem;
+    width: 100%;
+    background-color: ${(props) => props.theme.ColorWhite};
+    transition: box-shadow 0.2s ease-in-out;
+    :hover {
+      box-shadow: 0 4px 12px 0px rgba(0, 0, 0, 0.25);
+    }
+    border-bottom-right-radius: 1rem;
+
+    .inputRowHeader {
+      .col {
+        text-align: center;
+      }
+    }
+    .inputRow {
+      height: 5rem;
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      padding: 0.5rem 0rem;
+      justify-items: center;
+      align-items: center;
+      border-bottom: ${(props) => props.theme.Border};
+      /* justify-content: center; */
+      /* align-items: center; */
+      .col {
+        display: flex;
+        flex-flow: row nowrap;
+        width: 100%;
+        padding: 0rem 1rem;
+        .detail {
+        }
+        .inputField {
+          width: 100%;
+        }
+        .remark {
+        }
+      }
+    }
+  }
+`;
 
 export default ScreateBasic;

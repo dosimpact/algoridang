@@ -27,6 +27,8 @@ const Theme = {
   FontSizeLg: "1.6rem",
   FontSizeXlg: "1.9rem",
   FontSizeXXlg: "2.3rem",
+  // border
+  Border: "1PX solid #ddd",
   /*breakpoints */
   breakpoints: {
     xs: "0px",
