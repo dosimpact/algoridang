@@ -13,6 +13,7 @@ import { FinanceModule } from './finance/finance.module';
 import { JwtModule } from './auth/jwt.module';
 import { AppResolver } from './app.resolver';
 import { USER } from './user/entities/user.entity';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { USER } from './user/entities/user.entity';
     }),
     JwtModule.forRoot({ privateKey: process.env.JWT_SECRET_KEY }),
     FinanceModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppResolver],

@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsEmail, IsNumber, IsString } from 'class-validator';
 import {
   BeforeInsert,
   BeforeUpdate,
@@ -8,7 +8,10 @@ import {
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { InternalServerErrorException } from '@nestjs/common';
+import { InputType, ObjectType } from '@nestjs/graphql';
 
+@InputType('USERInput', { isAbstract: true })
+@ObjectType()
 @Entity()
 export class USER {
   @IsNumber()
@@ -16,11 +19,12 @@ export class USER {
   ID: number;
 
   @IsString()
-  @Column()
+  @IsEmail()
+  @Column({ unique: true })
   EMAIL: string;
 
   @IsString()
-  @Column()
+  @Column({ nullable: true })
   NAME: string;
 
   @IsString()

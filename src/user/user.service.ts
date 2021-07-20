@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from 'src/auth/jwt.service';
 import { Repository } from 'typeorm';
@@ -11,7 +11,18 @@ export class UserService {
     @InjectRepository(USER)
     private readonly userRepo: Repository<USER>,
     private readonly jwtService: JwtService,
-  ) {}
+  ) {
+    const test = async () => {
+      await this.userRepo.save(
+        this.userRepo.create({
+          EMAIL: 'taker01@naver.com',
+          PASSWORD: 'taker01',
+          NAME: 'taker01',
+        }),
+      );
+    };
+    // test();
+  }
 
   async loginUser({
     EMAIL,
