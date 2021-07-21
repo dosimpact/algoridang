@@ -1,6 +1,6 @@
 import { SubTitle } from "components/data-display/Typo";
 import React from "react";
-import HistoryTable from "./HistoryTable";
+import HistoryTable from "../../data-display/HistoryTable";
 
 interface Indexable {
   [idx: string]: string;
