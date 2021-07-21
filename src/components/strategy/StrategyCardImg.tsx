@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import FNumber from "components/data-display/FNumber";
 
 interface IStrategyCardImg {
   thumnail?: string; // 썸네일 이미지 url

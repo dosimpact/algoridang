@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
+import React from "react";
 import styled from "styled-components";
-import { useForm, UseFormRegister } from "react-hook-form";
-import { Button, List, Checkbox, Icon } from "antd-mobile";
+import { useForm } from "react-hook-form";
+import { Button, List, Checkbox } from "antd-mobile";
 
 const CheckboxItem = Checkbox.CheckboxItem;
 
@@ -22,8 +22,7 @@ type IScreateBasicInput = {
 // 4. 뷰
 
 const ScreatePropterties = () => {
-  const { register, handleSubmit, watch, formState } =
-    useForm<IScreateBasicInput>();
+  const { handleSubmit } = useForm<IScreateBasicInput>();
 
   const data2 = [
     { value: 0, company: "골든 크로스", code: "" },

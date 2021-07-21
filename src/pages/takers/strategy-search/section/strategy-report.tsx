@@ -1,9 +1,9 @@
 import React from "react";
-import { WingBlank, WhiteSpace, Icon, Button } from "antd-mobile";
+import { WingBlank, WhiteSpace, Button } from "antd-mobile";
 import { Title, SubTitle } from "components/data-display/Typo";
 import StrategyCard from "components/strategy/StrategyCard";
 import useBackButton from "hooks/useBackButton";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { toTagsString } from "utils/parse";
 import styled from "styled-components";
 import ReportTable from "components/data-display/ReportTable";
@@ -74,7 +74,6 @@ const dummyDatasReport = {
 const StrategyReport = () => {
   const Back = useBackButton();
   const params = useParams();
-  const history = useHistory();
   console.log(params);
 
   return (

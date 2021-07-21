@@ -1,12 +1,12 @@
 import React from "react";
-import { WingBlank, WhiteSpace, Icon, Button } from "antd-mobile";
+import { WingBlank, WhiteSpace, Button } from "antd-mobile";
 import { Title, SubTitle } from "components/data-display/Typo";
 import StrategyCard from "components/strategy/StrategyCard";
 import useBackButton from "hooks/useBackButton";
 import { useHistory, useParams } from "react-router-dom";
 import { toTagsString } from "utils/parse";
 import styled from "styled-components";
-import HistoryTable from "components/data-display/HistoryTable";
+import HistoryTable from "components/data-display/history/HistoryTable";
 import ChartCumulativeReturn from "components/data-display/ChartCumulativeReturn";
 
 // const Title: React.FC<{ title: string }> = ({ title }) => {

@@ -5,7 +5,7 @@ import { UpdateTodoInput } from "__generated__/globalTypes";
 
 // update todo
 const GqlPrac06 = () => {
-  const [getTodo, { data: todoData, error }] = useTodo({
+  const [getTodo] = useTodo({
     onCompleted: (data) => {
       console.log("check valid todo", data.getTodo);
 
@@ -19,7 +19,7 @@ const GqlPrac06 = () => {
     },
   });
 
-  const [updateTodo, { loading, data }] = useUpdateTodo();
+  const [updateTodo, { data }] = useUpdateTodo();
   const [tmpTodo, setTmpTodo] = useState<UpdateTodoInput>({
     id: 0,
     content: "",

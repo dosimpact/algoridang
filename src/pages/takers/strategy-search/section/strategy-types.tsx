@@ -1,4 +1,4 @@
-import { WingBlank, WhiteSpace, Icon } from "antd-mobile";
+import { WingBlank, WhiteSpace } from "antd-mobile";
 import StrategyCard from "components/strategy/StrategyCard";
 import useBackButton from "hooks/useBackButton";
 import React from "react";
@@ -7,13 +7,6 @@ import { toTagsString } from "utils/parse";
 const Title: React.FC<{ title: string }> = ({ title }) => {
   return <h1 style={{ fontSize: "20px", fontWeight: 700 }}>{title}</h1>;
 };
-const dummyDatas1 = [
-  {
-    title: "골드 기업 종합 점수 Top20 ",
-    subTitle: ["F-Score", "골든 크로스"],
-    CAGR: 22.22,
-  },
-];
 const dummyDatas2 = [
   {
     title: "삼성전자 황금 신호",

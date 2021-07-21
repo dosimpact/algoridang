@@ -1,5 +1,8 @@
+import { WhiteSpace } from "antd-mobile";
 import React from "react";
 import { useLocation } from "react-router-dom";
+import styled from "styled-components";
+import SupdateBasic from "./supdate-basic";
 
 // show basic setting
 // CAGR, MDD
@@ -17,11 +20,15 @@ const StrategyDetail = () => {
   console.log(location);
 
   return (
-    <div>
-      StrategyDetailStrategyDetailStrategyDetailStrategyDetailStrategyDetail
-      StrategyDetailStrategyDetailStrategyDetailStrategyDetailStrategyDetail
-    </div>
+    <SStrategyDetail>
+      <WhiteSpace size="lg" />
+      <SupdateBasic />
+    </SStrategyDetail>
   );
 };
 
 export default StrategyDetail;
+
+const SStrategyDetail = styled.article`
+  padding: 4rem;
+`;

@@ -8,13 +8,6 @@ const Title: React.FC<{ title: string }> = ({ title }) => {
   return <h1 style={{ fontSize: "20px", fontWeight: 700 }}>{title}</h1>;
 };
 
-const dummyDatas1 = [
-  {
-    title: "투자 성향별 종목 검색",
-    subTitle: "나만의 성향에 맞는 전략 찾아봅니다.",
-  },
-];
-
 const dummyDatas2 = [
   {
     title: "삼성전자 황금 신호",

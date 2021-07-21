@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { Button } from "antd-mobile";
 
-type IScreateBasicInput = {
+type ISupdateBasicInput = {
   name: string;
   description: string;
   tags: string;
@@ -58,13 +58,13 @@ const mapNameToRemark = {
   openRange: "",
 } as Record<string, string>;
 
-const ScreateBasic = () => {
-  const { register, handleSubmit } = useForm<IScreateBasicInput>();
+const SupdateBasic = () => {
+  const { register, handleSubmit } = useForm<ISupdateBasicInput>();
 
   const inputNameListM = useMemo<string[]>(() => inputNameList, []);
 
   return (
-    <SScreateBasic>
+    <SSupdateBasic>
       <form
         className="basicSettingForm"
         style={{ display: "flex", flexFlow: "column nowrap" }}
@@ -87,7 +87,7 @@ const ScreateBasic = () => {
                   <input
                     type="text"
                     placeholder={mapNameToPlaceholder[name]}
-                    {...register(name as keyof IScreateBasicInput, {
+                    {...register(name as keyof ISupdateBasicInput, {
                       // required: true,
                     })}
                   ></input>
@@ -115,14 +115,14 @@ const ScreateBasic = () => {
             console.log(data);
           })}
         >
-          완료
+          수정 완료
         </Button>
       </form>
-    </SScreateBasic>
+    </SSupdateBasic>
   );
 };
 
-const SScreateBasic = styled.div`
+const SSupdateBasic = styled.div`
   width: 100%;
   font-size: ${(props) => props.theme.FontSizeXlg};
 
@@ -169,4 +169,4 @@ const SScreateBasic = styled.div`
   }
 `;
 
-export default ScreateBasic;
+export default SupdateBasic;
