@@ -6,8 +6,8 @@ import useBackButton from "hooks/useBackButton";
 import { useHistory, useParams } from "react-router-dom";
 import { toTagsString } from "utils/parse";
 import styled from "styled-components";
-import HistoryTable from "components/data-display/history/HistoryTable";
 import ChartCumulativeReturn from "components/data-display/ChartCumulativeReturn";
+import HistoryTable from "components/strategy-report/history/HistoryTable";
 
 // const Title: React.FC<{ title: string }> = ({ title }) => {
 //   return <h1 style={{ fontSize: "20px", fontWeight: 700 }}>{title}</h1>;
