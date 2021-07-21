@@ -2,74 +2,34 @@ from flask import Flask, render_template, request, jsonify
 from crawling.DB import DB
 from crawling.pricePykrx import CPricePykrx
 
-from celery import Celery
-
-from time import sleep
+from pycelery import processor, state
+from flask_cors import CORS
 
 app = Flask(__name__)
-app.config.update(
-    CELERY_BROKER_URL='redis://:dosimpact@133.186.229.72:6379/0',
-    CELERY_RESULT_BACKEND='redis://:dosimpact@133.186.229.72:6379/0'
-)
+CORS(app)
 
 
 
+@app.route("/plus", methods=["GET"])
+def pushQ_plus():
+    a = request.args.get('a')
+    b = request.args.get('b')
+    if not a or not b:
+        return jsonify({"ok": False, "error": "query string a,b is required"})
 
-def make_celery(app):
-    celery = Celery(
-        app.import_name,
-        backend=app.config['CELERY_RESULT_BACKEND'],
-        broker=app.config['CELERY_BROKER_URL'],
-    )
-    celery.conf.update(app.config)
+    task = processor.add.apply_async([int(a), int(b)])
 
-    class ContextTask(celery.Task):
-        def __call__(self, *args, **kwargs):
-            with app.app_context():
-                return self.run(*args, **kwargs)
+    if not task.id:
+        return jsonify({"ok": False, "error": "celery is down"})
 
-    celery.Task = ContextTask
-    return celery
+    return jsonify({"ok": True, "task_id": task.id})
 
 
-celery = make_celery(app)
-
-task_cache = dict()
-
-@celery.task()
-def add_together(a, b):
-    sleep(5)
-    return a+b
-
-
-# http://127.0.0.1:5000/adder?a=1&b=2
-@app.route('/adder', methods=['GET'])
-def adder():
-    global task_cache
-    a = int(request.args.get('a'))
-    b = int(request.args.get('b'))
-    task = add_together.delay(a, b)
-    task_cache[task.id] = task
-    return task.id
-
-@app.route('/progress', methods=['GET'])
-def progress():
-    global task_cache
-    task_id = request.args.get('task_id')
-    task = task_cache[task_id]
-    return jsonify({
-        'status': task.ready()
-    })
-
-@app.route('/result', methods=['GET'])
-def result():
-    global task_cache
-    task_id = request.args.get('task_id')
-    task = task_cache[task_id]
-    return jsonify({
-        'result': task.get()
-    })
-
+@app.route("/check/<string:task_id>", methods=["GET"])
+def checkQ_plus(task_id):
+    print("task_id", task_id)
+    res = state.get_add_progress(task_id)
+    return jsonify({"ok": True, "task_id": task_id, "res": res})
 
 
 @app.route("/")
@@ -99,9 +59,6 @@ def post():
     elif(request.method == 'POST'):
         value = request.form['input']
         return render_template('default.html', name=value)
-
-
-
 
 if __name__ == "__main__":
     app.run(host ='0.0.0.0',port = 3000)
