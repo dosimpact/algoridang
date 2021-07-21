@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { WingBlank, WhiteSpace } from "antd-mobile";
-import { Link, Route } from "react-router-dom";
+import { Link, Redirect, Route, Switch } from "react-router-dom";
 import StrategyCreateC from "../strategy-create/strategy-createC";
 import StrategyMyC from "../strategy-my/strategy-myC";
 import StrategyPublicC from "../strategy-public/strategy-publicC";
@@ -14,7 +14,7 @@ const NavigationContainer = () => {
       <SHeader>
         <WingBlank className="hwrapper">
           {/* <div className="icon">🥞</div> */}
-          <Link to="/makers">
+          <Link to="/makers/strategy-create">
             <div className="headerName">알고리당</div>
             <div className="headerSubName">Makers</div>
           </Link>
@@ -22,7 +22,7 @@ const NavigationContainer = () => {
       </SHeader>
       <WhiteSpace size="xl" />
       <SNav>
-        <Link to="/makers">
+        <Link to="/makers/strategy-create">
           <div className="navItem flexCenter">퀀트 전략 생성</div>
         </Link>
         <Link to="/makers/strategy-my">
@@ -70,9 +70,12 @@ const SNav = styled.nav`
 const ContentContainer = () => {
   return (
     <section className="content">
-      <Route exact path="/makers/" component={StrategyCreateC} />
-      <Route exact path="/makers/strategy-my" component={StrategyMyC} />
-      <Route exact path="/makers/strategy-public" component={StrategyPublicC} />
+      <Switch>
+        <Route path="/makers/strategy-create" component={StrategyCreateC} />
+        <Route path="/makers/strategy-my" component={StrategyMyC} />
+        <Route path="/makers/strategy-public" component={StrategyPublicC} />
+        <Redirect from="*" to="/makers/strategy-create" />
+      </Switch>
     </section>
   );
 };

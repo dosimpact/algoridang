@@ -1,8 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { Icon } from "antd-mobile";
 import FNumber from "components/data-display/FNumber";
-import { WingBlank } from "antd-mobile";
 
 interface IStrategyCard {
   thumnail?: string;

@@ -1,7 +1,7 @@
 import React from "react";
 import { WingBlank, WhiteSpace, Icon, Button } from "antd-mobile";
 import { Title, SubTitle } from "components/data-display/Typo";
-import StrategyCard from "components/strategy/strategy-card";
+import StrategyCard from "components/strategy/StrategyCard";
 import useBackButton from "hooks/useBackButton";
 import { useHistory, useParams } from "react-router-dom";
 import { toTagsString } from "utils/parse";

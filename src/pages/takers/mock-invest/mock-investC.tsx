@@ -1,6 +1,5 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
-import MockInvestP from "./mock-investP";
 import MockInvestCreate from "./section/mock-invest-create";
 import MockInvestDetail from "./section/mock-invest-detail";
 import MockInvestList from "./section/mock-invest-list";

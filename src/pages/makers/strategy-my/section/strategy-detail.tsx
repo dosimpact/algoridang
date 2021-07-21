@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 
 // show basic setting
 // CAGR, MDD
@@ -12,7 +13,15 @@ import React from "react";
 // 승률 차트
 
 const StrategyDetail = () => {
-  return <div></div>;
+  const location = useLocation();
+  console.log(location);
+
+  return (
+    <div>
+      StrategyDetailStrategyDetailStrategyDetailStrategyDetailStrategyDetail
+      StrategyDetailStrategyDetailStrategyDetailStrategyDetailStrategyDetail
+    </div>
+  );
 };
 
 export default StrategyDetail;
