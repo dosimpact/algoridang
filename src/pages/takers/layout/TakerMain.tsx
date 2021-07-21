@@ -15,22 +15,23 @@ const TabNavigation = () => {
   const location = useLocation();
   const [page, setPage] = React.useState(0);
 
+  // URL 로 접근하는 경우 -> 적절한 Tab으로 변경
+  // http://localhost:3000/takers/mock-invest/details/1
   React.useEffect(() => {
     const checkInitLocation = () => {
-      console.log("checkInitLocation", location);
-
+      // console.log("checkInitLocation", location);
       if (location.pathname.startsWith("/takers/strategy-search")) setPage(0);
       // /takers/mock-invest 경로라면 tab=1 으로
       if (location.pathname.startsWith("/takers/mock-invest")) setPage(1);
     };
-    console.log("checkInitLocation", location);
     checkInitLocation();
     return () => {};
   }, [location]);
 
+  // 뒤로가기로 URL이 바뀌는 경우 -> 적절한 Tab으로 변경
   React.useEffect(() => {
     const unlisten = history.listen((e) => {
-      console.log("changed history", e);
+      // console.log("changed history", e);
       // 뒤로가기를 눌렀을때, 각 탭에 맞는 page가 아니라면 변경해준다.
       // /takers 경로라면 유지
       // /takers/strategy-search 경로라면 tab=0 으로
@@ -40,23 +41,20 @@ const TabNavigation = () => {
     });
     return unlisten;
   }, [history]);
+
   return (
     <nav>
       <Tabs
         // animated={false}
         tabs={tabs}
-        initialPage={0}
         onChange={(tab, index) => {
-          // 탭이 바뀌면 현재의 history는 takers(mainpage)로 변경한다.
           // console.log("onChange", index, tab);
+          // 탭스크롤 -> tabPage를 변경
+          // 탭스크롤 현재의 history는 takers(mainpage)로 변경한다.
+          setPage(index);
           history.push("/takers");
         }}
         page={page}
-        onTabClick={(tab, index) => {
-          // 탭이 클릭되면, tabPage를 변경한다.
-          // console.log("onTabClick", index, tab);
-          setPage(index);
-        }}
       >
         <section>
           <StrategySearch />
