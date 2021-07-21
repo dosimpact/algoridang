@@ -1,6 +1,5 @@
 import React from "react";
-import { WingBlank, WhiteSpace, Button } from "antd-mobile";
-import { SubTitle } from "components/data-display/Typo";
+import { WingBlank, WhiteSpace } from "antd-mobile";
 import StrategyCard from "components/strategy/StrategyCard";
 import { useParams } from "react-router-dom";
 import { toTagsString } from "utils/parse";
@@ -71,7 +70,7 @@ const dummyDatasReport = {
   ],
 };
 
-const StrategyReport = () => {
+const MockInvestReport = () => {
   const params = useParams();
   console.log(params);
 
@@ -79,24 +78,13 @@ const StrategyReport = () => {
     <StrategyDetailP>
       <WingBlank style={{ margin: "15x" }} size="lg">
         <WhiteSpace size="xl" />
-        <BackNav title={"투자 전략 리포트"} />
+        <BackNav title={"모의 투자 리포트"} />
         <WhiteSpace size="xl" />
         <StrategyCard
           title={dummyDatas.title}
           subTitle={toTagsString(dummyDatas.subTitle)}
           CAGR={dummyDatas.CAGR}
         />
-        <>
-          <div className="flexRowSBt">
-            <SubTitle
-              title="모의 투자"
-              style={{ marginRight: "15px" }}
-            ></SubTitle>
-            <Button type="warning" size="small" style={{ width: "100px" }}>
-              시작하기
-            </Button>
-          </div>
-        </>
         {/* 4. 상세 리포트 DetailSummary.tsx  */}
         <DetailSummary
           body={dummyDatasReport.body}
@@ -113,7 +101,7 @@ const StrategyReport = () => {
   );
 };
 
-export default StrategyReport;
+export default MockInvestReport;
 
 const StrategyDetailP = styled.section`
   margin-bottom: 120px;

@@ -7,8 +7,8 @@ import { toTagsString } from "utils/parse";
 import styled from "styled-components";
 import ReturnsStatus from "components/strategy-report/ReturnsStatus";
 import TradingPoints from "components/strategy-report/TradingPoints";
-import TradingHistory from "components/strategy-report/history/TradingHistory";
 import BackNav from "components/takers/BackNav";
+import TradingHistory from "components/strategy-report/TradingHistory";
 
 const dummyDatas = {
   title: "삼성전자 황금 신호",
@@ -53,7 +53,7 @@ const MockInvestDetail = () => {
     <StrategyDetailP>
       <WingBlank style={{ margin: "15x" }} size="lg">
         <WhiteSpace size="xl" />
-        <BackNav title={"모의 투자 리포트"} />
+        <BackNav title={"모의 투자 상세보기"} />
 
         <WhiteSpace size="xl" />
         <StrategyCard
@@ -80,6 +80,26 @@ const MockInvestDetail = () => {
               }}
             >
               변경
+            </Button>
+          </div>
+          <div className="flexRowSBt" style={{ marginTop: "15px" }}>
+            <SubTitle
+              title="상세 전략 리포트"
+              style={{ marginRight: "20px" }}
+            ></SubTitle>
+            <Button
+              type="ghost"
+              size="small"
+              style={{ width: "100px" }}
+              onClick={(e) => {
+                console.log("deatil");
+                history.push(
+                  process.env.PUBLIC_URL +
+                    `/takers/mock-invest/report/${params.id}`
+                );
+              }}
+            >
+              리포트
             </Button>
           </div>
         </>

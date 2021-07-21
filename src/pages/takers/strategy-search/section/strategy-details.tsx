@@ -6,16 +6,10 @@ import useBackButton from "hooks/useBackButton";
 import { useHistory, useParams } from "react-router-dom";
 import { toTagsString } from "utils/parse";
 import styled from "styled-components";
-import ChartCumulativeReturn from "components/data-display/ChartCumulativeReturn";
-import HistoryTable from "components/data-display/HistoryTable";
-
-// const Title: React.FC<{ title: string }> = ({ title }) => {
-//   return <h1 style={{ fontSize: "20px", fontWeight: 700 }}>{title}</h1>;
-// };
-
-// const SubTitle: React.FC<{ title: string }> = ({ title }) => {
-//   return <h1 style={{ fontSize: "16px", fontWeight: 700 }}>{title}</h1>;
-// };
+import TradingHistory from "components/strategy-report/TradingHistory";
+import TradingPoints from "components/strategy-report/TradingPoints";
+import ReturnsStatus from "components/strategy-report/ReturnsStatus";
+import Description from "components/strategy-report/Description";
 
 const dummyDatas = {
   title: "삼성전자 황금 신호",
@@ -90,7 +84,7 @@ const StrategyDetails = () => {
         </div>
         <div className="flexRowSBt" style={{ marginTop: "15px" }}>
           <SubTitle
-            title="상세 전략 보기"
+            title="상세 전략 리포트"
             style={{ marginRight: "20px" }}
           ></SubTitle>
           <Button
@@ -108,57 +102,17 @@ const StrategyDetails = () => {
             리포트
           </Button>
         </div>
-
-        <article className="articleDescription">
-          <div className="flexRow" style={{ marginTop: "50px" }}>
-            <SubTitle title="전략 메이커 설명" style={{ marginTop: "20px" }} />
-          </div>
-          <div className="description" style={{ marginTop: "10px" }}>
-            국민 주식 삼성전자에 가장 어울리는 매매전략인 골든 크로스로 제작
-          </div>
-        </article>
-        <article className="articleReturnsStatus">
-          <div className="flexRow" style={{ marginTop: "50px" }}>
-            <SubTitle title="투자 수익 현황" style={{ marginTop: "20px" }} />
-          </div>
-          <div className="returnsStatus" style={{ margin: "15px 0px" }}>
-            <div className="flexRowSBt" style={{ margin: "5px 0px" }}>
-              <div className="name">예상 연수익률</div>
-            </div>
-            <div className="flexRowSBt" style={{ marginBottom: "15px" }}>
-              <div className="value returnsValue">22.21%</div>
-            </div>
-            <div className="flexRowSBt" style={{ margin: "15px 0px" }}>
-              <div className="name">투자 원금</div>
-              <div className="value">10,160,000원</div>
-            </div>
-            <div className="flexRowSBt" style={{ margin: "15px 0px" }}>
-              <div className="name">총 수익금</div>
-              <div className="value">130,000원</div>
-            </div>
-            <div className="flexRowSBt" style={{ margin: "10px 0px" }}>
-              <div className="name">예상 투자 금액</div>
-              <div className="value">10,290,000원</div>
-            </div>
-          </div>
-        </article>
-
-        <article className="articleTrading">
-          <div className="flexRow" style={{ marginTop: "50px" }}>
-            <SubTitle title="매매 시점" style={{ marginTop: "20px" }} />
-          </div>
-          <ChartCumulativeReturn />
-        </article>
-
-        <article className="articleHistory" style={{ marginBottom: "100px" }}>
-          <div className="flexRow" style={{ marginTop: "50px" }}>
-            <SubTitle title="히스토리" style={{ margin: "20px 0px" }} />
-          </div>
-          <HistoryTable
-            body={dummyDatasHistory.body}
-            header={dummyDatasHistory.header}
-          />
-        </article>
+        {/* 0. 전략 메이커 설명 Description.tsx */}
+        <Description description="국민 주식 삼성전자에 가장 어울리는 매매전략인 골든 크로스로 제작" />
+        {/* 1. 투자 수익 현황 ReturnsStatus.tsx */}
+        <ReturnsStatus title=" 투자 수익 현황" />
+        {/* 2. 매매 시점 TradingPoints.tsx */}
+        <TradingPoints />
+        {/* 3. 트레이딩 히스토리 */}
+        <TradingHistory
+          body={dummyDatasHistory.body}
+          header={dummyDatasHistory.header}
+        />
       </WingBlank>
     </StrategyDetailP>
   );
@@ -167,11 +121,6 @@ const StrategyDetails = () => {
 export default StrategyDetails;
 
 const StrategyDetailP = styled.section`
-  .articleDescription {
-    .description {
-      line-height: 20px;
-    }
-  }
   .articleReturnsStatus {
     .name {
       color: ${(props) => props.theme.ColorGray};
