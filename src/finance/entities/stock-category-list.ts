@@ -1,5 +1,5 @@
 import { IsNumber, IsString } from 'class-validator';
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import { STOCK_CATEGORY } from './stock-category';
 import { STOCK } from './stock.entity';
 
