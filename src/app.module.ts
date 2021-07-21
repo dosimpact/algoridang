@@ -20,6 +20,11 @@ import { AppResolver } from './app.resolver';
 import { USER } from './user/entities/user.entity';
 import { UserModule } from './user/user.module';
 import { JwtMiddleWare } from './auth/jwt.middleware';
+import { StrategyModule } from './strategy/strategy.module';
+import { TradingModule } from './trading/trading.module';
+import { BacktestModule } from './backtest/backtest.module';
+import { MemberModule } from './member/member.module';
+import { BacktestModule } from './backtest/backtest.module';
 
 @Module({
   imports: [
@@ -55,6 +60,10 @@ import { JwtMiddleWare } from './auth/jwt.middleware';
     JwtModule.forRoot({ privateKey: process.env.JWT_SECRET_KEY }),
     FinanceModule,
     UserModule,
+    StrategyModule,
+    TradingModule,
+    BacktestModule,
+    MemberModule,
   ],
   controllers: [AppController],
   providers: [AppResolver],

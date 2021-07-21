@@ -3,9 +3,9 @@ import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import { STOCK } from './stock.entity';
 
 @Entity()
-export class DAILY_STOCK {
+export class Daily_stock {
   @PrimaryColumn({ type: 'timestamptz' })
-  DATE: Date;
+  stock_date: Date;
 
   @ManyToOne(() => STOCK, (stock) => stock.STOCK_CODE)
   @JoinColumn({ name: 'STOCK_CODE' })
@@ -34,56 +34,4 @@ export class DAILY_STOCK {
   @IsNumber()
   @Column({ nullable: true })
   TRADING_VOLUMN: number;
-
-  @IsNumber()
-  @Column({ nullable: true })
-  DAY_S_RANGE: number;
-
-  @IsNumber()
-  @Column({ nullable: true })
-  _3_DAY_MOVING_AVERAGE: number;
-
-  @IsNumber()
-  @Column({ nullable: true })
-  _5_DAY_MOVING_AVERAGE: number;
-
-  @IsNumber()
-  @Column({ nullable: true })
-  _10_DAY_MOVING_AVERAGE: number;
-
-  @IsNumber()
-  @Column({ nullable: true })
-  _20_DAY_MOVING_AVERAGE: number;
-
-  @IsNumber()
-  @Column({ nullable: true })
-  _60_DAY_MOVING_AVERAGE: number;
-
-  @IsNumber()
-  @Column({ nullable: true })
-  _3_DAY_TRADING_AVERAGE: number;
-
-  @IsNumber()
-  @Column({ nullable: true })
-  _5_DAY_TRADING_AVERAGE: number;
-
-  @IsNumber()
-  @Column({ nullable: true })
-  _10_DAY_TRADING_AVERAGE: number;
-
-  @IsNumber()
-  @Column({ nullable: true })
-  _20_DAY_TRADING_AVERAGE: number;
-
-  @IsNumber()
-  @Column({ nullable: true })
-  _60_DAY_TRADING_AVERAGE: number;
-
-  @IsNumber()
-  @Column({ nullable: true })
-  DATE_ORDER_BY_ITEM: number;
-
-  @IsNumber()
-  @Column({ nullable: true })
-  TRADING_VALUE: number;
 }
