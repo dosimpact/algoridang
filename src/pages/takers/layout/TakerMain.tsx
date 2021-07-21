@@ -10,7 +10,7 @@ const tabs = [
   { title: "나의 정보" },
 ];
 
-const TabNavigation = () => {
+const TabNavigationContainer = () => {
   const history = useHistory();
   const location = useLocation();
   const [page, setPage] = React.useState(0);
@@ -69,7 +69,7 @@ const TabNavigation = () => {
   );
 };
 
-const NavBarComponent = () => {
+const NavBarContainer = () => {
   const history = useHistory();
 
   return (
@@ -110,14 +110,14 @@ const NavBarComponent = () => {
   );
 };
 
-const TakerMain = () => {
+const TakerMainContainer = () => {
   return (
     <section>
-      <NavBarComponent />
-      <TabNavigation />
+      <NavBarContainer />
+      <TabNavigationContainer />
     </section>
   );
 };
 
-export default TakerMain;
-export { TakerMain as TakersHome };
+export default TakerMainContainer;
+export { TakerMainContainer as TakersHome };

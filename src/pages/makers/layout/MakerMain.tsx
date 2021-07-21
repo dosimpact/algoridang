@@ -6,53 +6,35 @@ import StrategyCreateC from "../strategy-create/strategy-createC";
 import StrategyMyC from "../strategy-my/strategy-myC";
 import StrategyPublicC from "../strategy-public/strategy-publicC";
 
-const MakerMain = () => {
+const NavigationContainer = () => {
   return (
-    <SMakerMain>
-      <section className="navigation">
-        <WhiteSpace size="xl" />
-        <WhiteSpace size="xl" />
-        <SHeader>
-          <WingBlank className="hwrapper">
-            {/* <div className="icon">🥞</div> */}
-            <Link to="/makers">
-              <div className="headerName">알고리당</div>
-              <div className="headerSubName">Makers</div>
-            </Link>
-          </WingBlank>
-        </SHeader>
-        <WhiteSpace size="xl" />
-        <SNav>
+    <section className="navigation">
+      <WhiteSpace size="xl" />
+      <WhiteSpace size="xl" />
+      <SHeader>
+        <WingBlank className="hwrapper">
+          {/* <div className="icon">🥞</div> */}
           <Link to="/makers">
-            <div className="navItem flexCenter">퀀트 전략 생성</div>
+            <div className="headerName">알고리당</div>
+            <div className="headerSubName">Makers</div>
           </Link>
-          <Link to="/makers/strategy-my">
-            <div className="navItem flexCenter">나의 전략</div>
-          </Link>
-          <Link to="/makers/strategy-public">
-            <div className="navItem flexCenter">공개 전략</div>
-          </Link>
-        </SNav>
-      </section>
-      <section className="content">
-        <Route exact path="/makers/" component={StrategyCreateC} />
-        <Route exact path="/makers/strategy-my" component={StrategyMyC} />
-        <Route
-          exact
-          path="/makers/strategy-public"
-          component={StrategyPublicC}
-        />
-      </section>
-    </SMakerMain>
+        </WingBlank>
+      </SHeader>
+      <WhiteSpace size="xl" />
+      <SNav>
+        <Link to="/makers">
+          <div className="navItem flexCenter">퀀트 전략 생성</div>
+        </Link>
+        <Link to="/makers/strategy-my">
+          <div className="navItem flexCenter">나의 전략</div>
+        </Link>
+        <Link to="/makers/strategy-public">
+          <div className="navItem flexCenter">공개 전략</div>
+        </Link>
+      </SNav>
+    </section>
   );
 };
-const SMakerMain = styled.section`
-  display: grid;
-  grid-template-columns: 25rem 1fr;
-  .navigation {
-    /* background-color: red; */
-  }
-`;
 const SHeader = styled.header`
   .hwrapper {
     display: flex;
@@ -85,6 +67,28 @@ const SNav = styled.nav`
     background-color: ${(props) => props.theme.ColorGrayL1};
   }
 `;
+const ContentContainer = () => {
+  return (
+    <section className="content">
+      <Route exact path="/makers/" component={StrategyCreateC} />
+      <Route exact path="/makers/strategy-my" component={StrategyMyC} />
+      <Route exact path="/makers/strategy-public" component={StrategyPublicC} />
+    </section>
+  );
+};
 
-export default MakerMain;
-export { MakerMain as MakersHome };
+const MakerMainContainer = () => {
+  return (
+    <SMakerMainContainer>
+      <NavigationContainer />
+      <ContentContainer />
+    </SMakerMainContainer>
+  );
+};
+const SMakerMainContainer = styled.section`
+  display: grid;
+  grid-template-columns: 25rem 1fr;
+`;
+
+export default MakerMainContainer;
+export { MakerMainContainer as MakersHome };
