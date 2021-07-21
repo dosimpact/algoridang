@@ -24,7 +24,10 @@ const StrategyCardImgDummy = [
   },
 ];
 
-const StrategyList = () => {
+interface IStrategyList {
+  isPublic: boolean;
+}
+const StrategyList: React.FC<IStrategyList> = ({ isPublic }) => {
   const history = useHistory();
   return (
     <SStrategyMyC>
@@ -35,7 +38,9 @@ const StrategyList = () => {
             subTitle={e.subTitle}
             bottomText={e.bottomText}
             onClick={() => {
-              history.push("/makers/strategy-my/detail/1");
+              isPublic
+                ? history.push("/makers/strategy-public/detail/1")
+                : history.push("/makers/strategy-my/detail/1");
             }}
           />
         );
@@ -45,5 +50,8 @@ const StrategyList = () => {
 };
 const SStrategyMyC = styled.article`
   padding: 4rem;
+  display: grid;
+  grid-gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 28rem));
 `;
 export default StrategyList;

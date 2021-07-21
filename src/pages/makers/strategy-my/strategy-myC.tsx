@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect, Route, Switch, useLocation } from "react-router-dom";
-import StrategyDetail from "./section/strategy-detail";
-import StrategyList from "./section/strategy-list";
+import StrategyDetailC from "./section/strategy-my-detailC";
+import StrategyListC from "./section/strategy-listC";
 
 // 1. route setting
 // strategy-my
@@ -16,11 +16,11 @@ const StrategyMyC = () => {
       <Route
         exact
         path={process.env.PUBLIC_URL + "/makers/strategy-my"}
-        component={StrategyList}
+        component={StrategyListC}
       />
       <Route
         path={process.env.PUBLIC_URL + "/makers/strategy-my/detail/:id"}
-        component={StrategyDetail}
+        component={StrategyDetailC}
       />
       <Redirect from="*" to={process.env.PUBLIC_URL + "/makers/strategy-my"} />
     </Switch>
