@@ -12,6 +12,7 @@ from app import app
 from os.path import join, dirname
 from dotenv import load_dotenv
 
+from openAPI import pricePykrx
 # 윈도우 환경에서는 다음 셋팅을 해야 인수전달이 제대로 된다.
 # in window env Error, https://github.com/celery/celery/pull/4078
 os.environ.setdefault('FORKED_BY_MULTIPROCESSING', '1')
@@ -79,3 +80,23 @@ def add(self, x, y):
         # 현재 작업중인 id
         print(f"done task {self.request.id}")
         return x + y
+
+
+@process.task(bind=True, base=CoreTask)
+def initDB_Corporation(self):
+    with app.app_context():
+        res = ""
+
+        pykrx = pricePykrx.CPricePykrx()
+        tickers = pykrx.getKRStockCodeAll()
+
+        total = len(tickers)
+        for idx in range(total):
+            
+            print(f"progress ({idx}/{total})")
+            
+            res += pykrx.sendKRStockCodeAll(tickers[idx])
+            self.update_state(state='PROGRESS', meta={'current': idx, 'total': total})
+        
+        print("Done")
+        return res

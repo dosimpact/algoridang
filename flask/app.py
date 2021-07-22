@@ -42,9 +42,6 @@ def SetDBStockCodeAll():
     test = data.setDBAllStock()
     return str(test)
 
-@app.route("/DBinit")
-def DBinit():
-    return DB.initDB()
 
 @app.route("/DBdisconection")
 def DBdisconection():
@@ -60,5 +57,20 @@ def post():
         value = request.form['input']
         return render_template('default.html', name=value)
 
+
+
+
+@app.route("/DBinit", methods=["GET"])
+def DBinit():
+    task = processor.initDB_Corporation.apply_async()
+
+    if not task.id:
+        return jsonify({"ok": False, "error": "celery is down"})
+
+    return jsonify({"ok": True, "task_id": task.id})
+
+
+
 if __name__ == "__main__":
     app.run(host ='0.0.0.0',port = 3000)
+    ###
