@@ -1,4 +1,4 @@
-import { IsNumber } from 'class-validator';
+import { IsDate, IsNumber } from 'class-validator';
 import { MemberStrategy } from 'src/strategy/entities';
 import {
   Column,
@@ -10,6 +10,7 @@ import {
 
 @Entity({ name: 'invest_profit_info' })
 export class InvestProfitInfo {
+  @IsNumber()
   @PrimaryGeneratedColumn()
   invest_profit_info_code: number;
 
@@ -30,12 +31,14 @@ export class InvestProfitInfo {
   profit_rate: number;
 
   @IsNumber()
-  @Column({ type: 'numeric', precision: 3, nullable: true })
-  securities_corp_fee;
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+  securities_corp_fee: number;
 
+  @IsDate()
   @Column({ type: 'timestamptz' })
   invest_start_date: Date;
 
+  @IsDate()
   @Column({ type: 'timestamptz', nullable: true })
   invest_end_date: Date;
 

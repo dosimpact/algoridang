@@ -23,7 +23,11 @@ import { MemberInfo } from './member/entities/member-info.entity';
 import { MemberStrategy } from './strategy/entities/member-strategy.entity';
 import { LookupMemberList } from './member/entities/lookup-member-list.entity';
 import { OperationMemberList } from './member/entities/operation-member-list.entity';
-import { BacktestQueue, InvestProfitInfo } from './backtest/entities';
+import {
+  BacktestDetailInfo,
+  BacktestQueue,
+  InvestProfitInfo,
+} from './backtest/entities';
 import { Hash, HashList } from './strategy/entities';
 
 @Module({
@@ -64,6 +68,7 @@ import { Hash, HashList } from './strategy/entities';
         Hash,
         HashList,
         InvestProfitInfo,
+        BacktestDetailInfo,
       ],
     }),
     JwtModule.forRoot({ privateKey: process.env.JWT_SECRET_KEY }),

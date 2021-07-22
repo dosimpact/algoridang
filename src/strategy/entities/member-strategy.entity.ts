@@ -1,5 +1,9 @@
 import { IsBoolean, IsDate, IsEnum, IsNumber, IsString } from 'class-validator';
-import { BacktestQueue, InvestProfitInfo } from 'src/backtest/entities';
+import {
+  BacktestDetailInfo,
+  BacktestQueue,
+  InvestProfitInfo,
+} from 'src/backtest/entities';
 import { LookupMemberList, MemberInfo } from 'src/member/entities';
 import { OperationMemberList } from 'src/member/entities/operation-member-list.entity';
 import {
@@ -67,6 +71,10 @@ export class MemberStrategy {
   // (2) 투자 수익 정보
   @OneToOne(() => InvestProfitInfo, (profitInfo) => profitInfo.strategy)
   investProfitInfo: InvestProfitInfo;
+
+  // (3) 백테스트 상세 정보
+  @OneToOne(() => BacktestDetailInfo, (backTDetail) => backTDetail.strategy)
+  backtestDetailInfo: BacktestDetailInfo;
 
   // ------------------------------------------------------------
   // n:1 관계
