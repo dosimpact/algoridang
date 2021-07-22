@@ -32,6 +32,12 @@ import {
   InvestProfitInfo,
 } from './backtest/entities';
 import { Hash, HashList } from './strategy/entities';
+import {
+  Category,
+  CategoryList,
+  Corporation,
+  DailyStock,
+} from './finance/entities';
 
 @Module({
   imports: [
@@ -75,6 +81,10 @@ import { Hash, HashList } from './strategy/entities';
         AccumulateProfitRateChart,
         BacktestWinRatio,
         BacktestMontlyProfitRateChart,
+        Corporation,
+        DailyStock,
+        Category,
+        CategoryList,
       ],
     }),
     JwtModule.forRoot({ privateKey: process.env.JWT_SECRET_KEY }),
