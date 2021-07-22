@@ -26,6 +26,7 @@ import { OperationMemberList } from './member/entities/operation-member-list.ent
 import {
   AccumulateProfitRateChart,
   BacktestDetailInfo,
+  BacktestMontlyProfitRateChart,
   BacktestQueue,
   BacktestWinRatio,
   InvestProfitInfo,
@@ -73,6 +74,7 @@ import { Hash, HashList } from './strategy/entities';
         BacktestDetailInfo,
         AccumulateProfitRateChart,
         BacktestWinRatio,
+        BacktestMontlyProfitRateChart,
       ],
     }),
     JwtModule.forRoot({ privateKey: process.env.JWT_SECRET_KEY }),

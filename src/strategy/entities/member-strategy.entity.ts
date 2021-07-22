@@ -2,6 +2,7 @@ import { IsBoolean, IsDate, IsEnum, IsNumber, IsString } from 'class-validator';
 import {
   AccumulateProfitRateChart,
   BacktestDetailInfo,
+  BacktestMontlyProfitRateChart,
   BacktestQueue,
   BacktestWinRatio,
   InvestProfitInfo,
@@ -30,7 +31,7 @@ export enum InvestType {
 @Entity({ name: 'member-strategy' })
 export class MemberStrategy {
   @IsNumber()
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: 'bigint' })
   strategy_code: number;
 
   @IsString()
@@ -103,6 +104,10 @@ export class MemberStrategy {
   // (3) 누적수익률 차트 데이터
   @OneToMany(() => AccumulateProfitRateChart, (chart) => chart.strategy)
   accumulateProfitRateChart: AccumulateProfitRateChart[];
+
+  // (4) 월간수익률 차트 데이터
+  @OneToMany(() => BacktestMontlyProfitRateChart, (chart) => chart.strategy)
+  backtestMontlyProfitRateChart: BacktestMontlyProfitRateChart;
 
   // ------------------------------------------------------------
   // n:m 관계
