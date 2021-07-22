@@ -19,6 +19,10 @@ import { StrategyModule } from './strategy/strategy.module';
 import { TradingModule } from './trading/trading.module';
 import { BacktestModule } from './backtest/backtest.module';
 import { MemberModule } from './member/member.module';
+import { MemberInfo } from './member/entities/member-info.entity';
+import { MemberStrategy } from './strategy/entities/member-strategy.entity';
+import { LookupMemberList } from './member/entities/lookup-member-list.entity';
+import { OperationMemberList } from './member/entities/operation-member-list.entity';
 
 @Module({
   imports: [
@@ -49,7 +53,12 @@ import { MemberModule } from './member/member.module';
       }),
       synchronize: true,
       logging: false,
-      entities: [],
+      entities: [
+        MemberInfo,
+        LookupMemberList,
+        OperationMemberList,
+        MemberStrategy,
+      ],
     }),
     JwtModule.forRoot({ privateKey: process.env.JWT_SECRET_KEY }),
     FinanceModule,
