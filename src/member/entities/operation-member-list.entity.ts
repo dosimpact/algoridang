@@ -5,7 +5,7 @@ import { MemberInfo } from './member-info.entity';
 
 // NM mapping table
 // 사용자가 운용중인 전략을 매핑해준다.
-@Entity({ name: 'operation-member-list' })
+@Entity({ name: 'operation_member_list' })
 export class OperationMemberList {
   @IsNumber()
   @PrimaryColumn()

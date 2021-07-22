@@ -1,4 +1,5 @@
 import { IsBoolean, IsDate, IsEnum, IsNumber, IsString } from 'class-validator';
+import { LookupMemberList } from 'src/member/entities';
 import { OperationMemberList } from 'src/member/entities/operation-member-list.entity';
 import {
   Column,
@@ -56,6 +57,9 @@ export class MemberStrategy {
 
   // n:m 관계
 
-  @OneToMany(() => OperationMemberList, (om) => om.strategy_code)
+  @OneToMany(() => OperationMemberList, (om) => om.strategy)
   operationMemberList: OperationMemberList;
+
+  @OneToMany(() => LookupMemberList, (lm) => lm.strategy)
+  lookupMemberList: LookupMemberList;
 }

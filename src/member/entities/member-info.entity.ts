@@ -1,5 +1,6 @@
 import { IsEmail, IsString } from 'class-validator';
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import { LookupMemberList } from './lookup-member-list.entity';
 import { OperationMemberList } from './operation-member-list.entity';
 
 @Entity({ name: 'member_info' })
@@ -18,7 +19,10 @@ export class MemberInfo {
 
   // NM
   // (1) 사용자가 운용중인 전략들
-  @OneToMany(() => OperationMemberList, (om) => om.operation_customer_id)
+  @OneToMany(() => OperationMemberList, (om) => om.operation_customer)
   operationStragetyList: OperationMemberList;
+
   // (2) 사용자가 조회했던 전략들
+  @OneToMany(() => LookupMemberList, (lm) => lm.lookup_customer)
+  lookupStragetyList: LookupMemberList;
 }
