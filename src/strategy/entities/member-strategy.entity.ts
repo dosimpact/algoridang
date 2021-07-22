@@ -3,6 +3,7 @@ import {
   AccumulateProfitRateChart,
   BacktestDetailInfo,
   BacktestQueue,
+  BacktestWinRatio,
   InvestProfitInfo,
 } from 'src/backtest/entities';
 import { LookupMemberList, MemberInfo } from 'src/member/entities';
@@ -76,6 +77,10 @@ export class MemberStrategy {
   // (3) 백테스트 상세 정보
   @OneToOne(() => BacktestDetailInfo, (backTDetail) => backTDetail.strategy)
   backtestDetailInfo: BacktestDetailInfo;
+
+  // (4) 백테스트 승률 정보
+  @OneToOne(() => BacktestWinRatio, (WinRatio) => WinRatio.strategy)
+  backtestWinRatio: BacktestWinRatio;
 
   // ------------------------------------------------------------
   // n:1 관계
