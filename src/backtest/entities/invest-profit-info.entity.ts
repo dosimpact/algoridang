@@ -27,7 +27,7 @@ export class InvestProfitInfo {
   total_profit_price: number; //  총 수익금
 
   @IsNumber()
-  @Column({ type: 'numeric', precision: 3, nullable: true })
+  @Column({ type: 'numeric', precision: 10, scale: 2, nullable: true })
   profit_rate: number;
 
   @IsNumber()

@@ -1,5 +1,6 @@
 import { IsBoolean, IsDate, IsEnum, IsNumber, IsString } from 'class-validator';
 import {
+  AccumulateProfitRateChart,
   BacktestDetailInfo,
   BacktestQueue,
   InvestProfitInfo,
@@ -93,6 +94,10 @@ export class MemberStrategy {
   @ManyToOne(() => MemberInfo, (mi) => mi.stragetyMadeList)
   @JoinColumn({ name: 'operator_id' })
   operator: MemberInfo;
+
+  // (3) 누적수익률 차트 데이터
+  @OneToMany(() => AccumulateProfitRateChart, (chart) => chart.strategy)
+  accumulateProfitRateChart: AccumulateProfitRateChart[];
 
   // ------------------------------------------------------------
   // n:m 관계
