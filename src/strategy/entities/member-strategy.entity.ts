@@ -1,5 +1,5 @@
 import { IsBoolean, IsDate, IsEnum, IsNumber, IsString } from 'class-validator';
-import { BacktestQueue } from 'src/backtest/entities';
+import { BacktestQueue, InvestProfitInfo } from 'src/backtest/entities';
 import { LookupMemberList, MemberInfo } from 'src/member/entities';
 import { OperationMemberList } from 'src/member/entities/operation-member-list.entity';
 import {
@@ -64,6 +64,11 @@ export class MemberStrategy {
   @JoinColumn({ name: 'queue_code' })
   queue: BacktestQueue;
 
+  // (2) 투자 수익 정보
+  @OneToOne(() => InvestProfitInfo, (profitInfo) => profitInfo.strategy)
+  investProfitInfo: InvestProfitInfo;
+
+  // ------------------------------------------------------------
   // n:1 관계
   // (1) 제작자 연결 (전략 author)
   @Column()
@@ -81,6 +86,7 @@ export class MemberStrategy {
   @JoinColumn({ name: 'operator_id' })
   operator: MemberInfo;
 
+  // ------------------------------------------------------------
   // n:m 관계
   // (1) 전략 운용중인 사용자 리스트
   @OneToMany(() => OperationMemberList, (om) => om.strategy)
