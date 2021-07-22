@@ -1,4 +1,5 @@
 import { IsEmail, IsString } from 'class-validator';
+import { MemberStrategy } from 'src/strategy/entities';
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { LookupMemberList } from './lookup-member-list.entity';
 import { OperationMemberList } from './operation-member-list.entity';
@@ -17,12 +18,21 @@ export class MemberInfo {
   @Column({ length: 15 })
   member_name: string;
 
+  // 1:N
+  // (1) 사용자는 여러개의 운용중인 전략을 갖는다. ( 내가 운용중인 전략들(forked+my) )
+  @OneToMany(() => MemberStrategy, (ms) => ms.maker)
+  stragetyOperatedList: MemberStrategy[];
+
+  // (2) 사용자는 여러개의 전략을 만들 수 있다. (내가 제작한 전략들)
+  @OneToMany(() => MemberStrategy, (ms) => ms.operator)
+  stragetyMadeList: MemberStrategy[];
+
   // NM
-  // (1) 사용자가 운용중인 전략들
+  // (1) 내가 운용중인 전략들의 원본 (fork전의 원본들)
   @OneToMany(() => OperationMemberList, (om) => om.operation_customer)
   operationStragetyList: OperationMemberList[];
 
-  // (2) 사용자가 조회했던 전략들
+  // (2) 내가 조회했던 전략들
   @OneToMany(() => LookupMemberList, (lm) => lm.lookup_customer)
   lookupStragetyList: LookupMemberList[];
 }

@@ -4,7 +4,8 @@ import { Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import { MemberInfo } from './member-info.entity';
 
 // NM mapping table
-// 사용자가 운용중인 전략을 매핑해준다.
+// 전략은 origin과 fork 전략이 같은 table에 공존하고 있음
+// 특정 전략을 fork 하면, fork한 사람들을 매핑해주는 매핑 테이블을 만든다.
 @Entity({ name: 'operation_member_list' })
 export class OperationMemberList {
   @IsNumber()

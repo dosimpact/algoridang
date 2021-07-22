@@ -1,12 +1,13 @@
 import { IsBoolean, IsDate, IsEnum, IsNumber, IsString } from 'class-validator';
 import { BacktestQueue } from 'src/backtest/entities';
-import { LookupMemberList } from 'src/member/entities';
+import { LookupMemberList, MemberInfo } from 'src/member/entities';
 import { OperationMemberList } from 'src/member/entities/operation-member-list.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -64,6 +65,21 @@ export class MemberStrategy {
   queue: BacktestQueue;
 
   // n:1 관계
+  // (1) 제작자 연결 (전략 author)
+  @Column()
+  maker_id: string;
+
+  @ManyToOne(() => MemberInfo, (mi) => mi.stragetyOperatedList)
+  @JoinColumn({ name: 'maker_id' })
+  maker: MemberInfo;
+
+  // (2) 운용자 연결(전략 소유자)
+  @Column()
+  operator_id: string;
+
+  @ManyToOne(() => MemberInfo, (mi) => mi.stragetyMadeList)
+  @JoinColumn({ name: 'operator_id' })
+  operator: MemberInfo;
 
   // n:m 관계
   // (1) 전략 운용중인 사용자 리스트
