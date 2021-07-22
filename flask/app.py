@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify
-from crawling.DB import DB
-from crawling.pricePykrx import CPricePykrx
+from openAPI.DB import DB
+from openAPI.pricePykrx import CPricePykrx
 
 from pycelery import processor, state
 from flask_cors import CORS
