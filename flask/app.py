@@ -60,5 +60,40 @@ def post():
         value = request.form['input']
         return render_template('default.html', name=value)
 
+
+
+
+
+
+
+######################backtest
+@app.route("/backtest", methods=["GET","POST"])
+def backTestAPI():
+    data = {}
+    if request.method == 'POST':
+        data["ticker"] = request.form["ticker"]
+        data["startTime"] = request.form["startTime"]
+        data["endTime"] = request.form["endTime"]
+        data["strategyCode"] = request.form["strategyCode"]
+        data["investPrice"] = request.form["investPrice"]
+        data["tradingStrategyCode"] = request.form["tradingStrategyCode"]
+        data["tradingStrategyDetailSettingCode"] = request.form["tradingStrategyDetailSettingCode"]
+
+        if not data["ticker"] or not data["strategyCode"] or not data["investPrice"] or not data["tradingStrategyCode"] or not data["tradingStrategyDetailSettingCode"]:
+            return  jsonify({"ok": False, "error": "some required data is missing!"})
+        if not data["startTime"]:
+            data["startTime"] = "20110101"
+        
+        task = processor.backtestTaskCall.apply_async([data])
+
+        if not task.id:
+            return jsonify({"ok": False, "error": "celery is down"})
+
+        return jsonify({"ok": True, "task_id": task.id})
+
+        
 if __name__ == "__main__":
-    app.run(host ='0.0.0.0',port = 3000)
+    #app.run(host ='0.0.0.0',port = 3000)
+
+    print ("testcode")
+    processor.backtestTestCode()

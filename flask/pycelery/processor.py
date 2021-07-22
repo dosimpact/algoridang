@@ -12,6 +12,10 @@ from app import app
 from os.path import join, dirname
 from dotenv import load_dotenv
 
+
+
+from backtesting import backtesting
+
 # 윈도우 환경에서는 다음 셋팅을 해야 인수전달이 제대로 된다.
 # in window env Error, https://github.com/celery/celery/pull/4078
 os.environ.setdefault('FORKED_BY_MULTIPROCESSING', '1')
@@ -79,3 +83,18 @@ def add(self, x, y):
         # 현재 작업중인 id
         print(f"done task {self.request.id}")
         return x + y
+
+@process.task(bind = True, base = CoreTask)
+def backtestTaskCall(self,data):
+    with app.app_context():
+        print(data)
+        return 
+
+
+
+def backtestTestCode():
+    #data = {'ticker': '["005930","005930"]', 'startTime': '20110101', 'endTime': '', 'strategyCode': '0', 'investPrice': '10000000', 'tradingStrategyCode': '0', 'tradingStrategyDetailSettingCode': '0'}
+    data = {'ticker': '005930', 'startTime': '20110101', 'endTime': '', 'strategyCode': '0', 'investPrice': '10000000', 'tradingStrategyCode': '0', 'tradingStrategyDetailSettingCode': '0'}
+    bk = backtesting.CBackTtrader()
+    res = bk.startbackTest(data['ticker'],data['investPrice'],data['startTime'],data['endTime'])
+    print(res)
