@@ -20,9 +20,9 @@ export class MemberInfo {
   // NM
   // (1) 사용자가 운용중인 전략들
   @OneToMany(() => OperationMemberList, (om) => om.operation_customer)
-  operationStragetyList: OperationMemberList;
+  operationStragetyList: OperationMemberList[];
 
   // (2) 사용자가 조회했던 전략들
   @OneToMany(() => LookupMemberList, (lm) => lm.lookup_customer)
-  lookupStragetyList: LookupMemberList;
+  lookupStragetyList: LookupMemberList[];
 }

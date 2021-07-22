@@ -1,4 +1,4 @@
 import { Entity } from 'typeorm';
 
-@Entity({ name: 'backtest-detail-info' })
+@Entity({ name: 'backtest_detail_info' })
 export class BacktestDetailInfo {}

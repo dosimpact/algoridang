@@ -1,4 +1,4 @@
 import { Entity } from 'typeorm';
 
-@Entity({ name: 'backtest-win-ratio' })
+@Entity({ name: 'backtest_win_ratio' })
 export class BacktestWinRatio {}
