@@ -29,6 +29,7 @@ import {
   BacktestMontlyProfitRateChart,
   BacktestQueue,
   BacktestWinRatio,
+  History,
   InvestProfitInfo,
 } from './backtest/entities';
 import { Hash, HashList } from './strategy/entities';
@@ -76,6 +77,7 @@ import {
         BacktestQueue,
         Hash,
         HashList,
+        History,
         InvestProfitInfo,
         BacktestDetailInfo,
         AccumulateProfitRateChart,

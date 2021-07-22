@@ -5,6 +5,7 @@ import {
   BacktestMontlyProfitRateChart,
   BacktestQueue,
   BacktestWinRatio,
+  History,
   InvestProfitInfo,
 } from 'src/backtest/entities';
 import { LookupMemberList, MemberInfo } from 'src/member/entities';
@@ -122,4 +123,8 @@ export class MemberStrategy {
   // (3) 전략의 태그 리스트
   @OneToMany(() => HashList, (hashList) => hashList.strategy)
   hashList: HashList[];
+
+  // (4) 전략의 해스토리
+  @OneToMany(() => History, (history) => history.strategy)
+  histories: History[];
 }
