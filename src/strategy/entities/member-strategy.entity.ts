@@ -10,6 +10,7 @@ import {
 } from 'src/backtest/entities';
 import { LookupMemberList, MemberInfo } from 'src/member/entities';
 import { OperationMemberList } from 'src/member/entities/operation-member-list.entity';
+import { CustomTradingStrategy } from 'src/trading/entities/custom_trading_strategy';
 import {
   Column,
   CreateDateColumn,
@@ -21,6 +22,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { HashList } from './hash-list.entity';
+import { StockList } from './stock-list.entity';
 
 export enum InvestType {
   Unclassified = 'Unclassified', // 0 - 미분류
@@ -64,13 +66,6 @@ export class MemberStrategy {
   open_yes_no: boolean;
 
   // 1:1 관계
-  // (1) 1개의 백테스트 큐를 가진다.
-  @Column()
-  queue_code: string;
-
-  @OneToOne(() => BacktestQueue, (backtestQueue) => backtestQueue.strategy)
-  @JoinColumn({ name: 'queue_code' })
-  queue: BacktestQueue;
 
   // (2) 투자 수익 정보
   @OneToOne(() => InvestProfitInfo, (profitInfo) => profitInfo.strategy)
@@ -86,6 +81,15 @@ export class MemberStrategy {
 
   // ------------------------------------------------------------
   // n:1 관계
+
+  // (1) 1개의 백테스트 큐를 가진다.
+  @Column()
+  queue_code: string;
+
+  @OneToMany(() => BacktestQueue, (backtestQueue) => backtestQueue.strategy)
+  @JoinColumn({ name: 'queue_code' })
+  queue: BacktestQueue[];
+
   // (1) 제작자 연결 (전략 author)
   @Column()
   maker_id: string;
@@ -110,6 +114,10 @@ export class MemberStrategy {
   @OneToMany(() => BacktestMontlyProfitRateChart, (chart) => chart.strategy)
   backtestMontlyProfitRateChart: BacktestMontlyProfitRateChart;
 
+  // (5) 전략에 셋팅된 매매전략(셋팅포함)
+  @OneToMany(() => CustomTradingStrategy, (cts) => cts.stragety)
+  customTradingStrategy: CustomTradingStrategy[];
+
   // ------------------------------------------------------------
   // n:m 관계
   // (1) 전략 운용중인 사용자 리스트
@@ -124,7 +132,11 @@ export class MemberStrategy {
   @OneToMany(() => HashList, (hashList) => hashList.strategy)
   hashList: HashList[];
 
-  // (4) 전략의 해스토리
+  // (4) 전략의 히스토리
   @OneToMany(() => History, (history) => history.strategy)
   histories: History[];
+
+  // (5) 전략의 유니버셜 매핑
+  @OneToMany(() => StockList, (sl) => sl.strategy)
+  stockList: StockList[];
 }

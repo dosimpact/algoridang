@@ -32,13 +32,15 @@ import {
   History,
   InvestProfitInfo,
 } from './backtest/entities';
-import { Hash, HashList } from './strategy/entities';
+import { Hash, HashList, StockList } from './strategy/entities';
 import {
   Category,
   CategoryList,
   Corporation,
   DailyStock,
 } from './finance/entities';
+import { BaseTradingStrategy } from './trading/entities/base_trading_strategy.entity';
+import { CustomTradingStrategy } from './trading/entities';
 
 @Module({
   imports: [
@@ -70,23 +72,41 @@ import {
       synchronize: true,
       logging: false,
       entities: [
-        MemberInfo,
-        LookupMemberList,
-        OperationMemberList,
-        MemberStrategy,
-        BacktestQueue,
-        Hash,
-        HashList,
-        History,
-        InvestProfitInfo,
-        BacktestDetailInfo,
-        AccumulateProfitRateChart,
-        BacktestWinRatio,
-        BacktestMontlyProfitRateChart,
-        Corporation,
-        DailyStock,
-        Category,
-        CategoryList,
+        ...[
+          // finance (4/4)
+          CategoryList,
+          Category,
+          Corporation,
+          DailyStock,
+        ],
+        ...[
+          // Trading(2/2)
+          CustomTradingStrategy,
+          BaseTradingStrategy,
+        ],
+        ...[
+          //
+          Hash,
+          HashList,
+          MemberStrategy,
+          StockList,
+        ],
+        ...[
+          // back test (7/7)
+          AccumulateProfitRateChart,
+          BacktestDetailInfo,
+          BacktestMontlyProfitRateChart,
+          BacktestQueue,
+          BacktestWinRatio,
+          History,
+          InvestProfitInfo,
+        ],
+        ...[
+          //member (3/3)
+          LookupMemberList,
+          MemberInfo,
+          OperationMemberList,
+        ],
       ],
     }),
     JwtModule.forRoot({ privateKey: process.env.JWT_SECRET_KEY }),
