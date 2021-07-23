@@ -16,6 +16,7 @@ from dotenv import load_dotenv
 
 from backtesting import backtesting
 
+from openAPI import pricePykrx
 # 윈도우 환경에서는 다음 셋팅을 해야 인수전달이 제대로 된다.
 # in window env Error, https://github.com/celery/celery/pull/4078
 os.environ.setdefault('FORKED_BY_MULTIPROCESSING', '1')
@@ -92,9 +93,50 @@ def backtestTaskCall(self,data):
 
 
 
+@process.task(bind=True, base=CoreTask)
+def initDB_Corporation(self):
+    with app.app_context():
+        res = ""
+
+        pykrx = pricePykrx.CPricePykrx()
+        tickers = pykrx.getKRStockCodeAll()
+
+        total = len(tickers)
+        for idx in range(total):
+            
+            print(f"progress ({idx}/{total})")
+            
+            res += pykrx.sendKRStockCodeAll(tickers[idx])
+            self.update_state(state='PROGRESS', meta={'current': idx, 'total': total})
+        
+        print("Done")
+        return res
+
+
+@process.task(bind=True, base=CoreTask)
+def initDB_DailyStock(self):
+    with app.app_context():
+        pykrx = pricePykrx.CPricePykrx()
+        res = pykrx.getAllTickerFromDB()
+        updateData = []
+        total = len(res)
+        idx = 0
+
+        for ticker,name in res:
+            idx += 1
+            df = pykrx.getKRStockDaily(ticker,"20110101",)
+            res = pykrx.sendKRStockDaily(ticker,df)
+
+            if res != "":
+                updateData.append((ticker,name))
+            
+            print(f"progress ({idx}/{total})")
+            self.update_state(state='PROGRESS', meta={'current': idx, 'total': total})
+        return res
+
+
 def backtestTestCode():
     #data = {'ticker': '["005930","005930"]', 'startTime': '20110101', 'endTime': '', 'strategyCode': '0', 'investPrice': '10000000', 'tradingStrategyCode': '0', 'tradingStrategyDetailSettingCode': '0'}
     data = {'ticker': '005930', 'startTime': '20110101', 'endTime': '', 'strategyCode': '0', 'investPrice': '10000000', 'tradingStrategyCode': '0', 'tradingStrategyDetailSettingCode': '0'}
     bk = backtesting.CBackTtrader()
     res = bk.startbackTest(data['ticker'],data['investPrice'],data['startTime'],data['endTime'])
-    print(res)

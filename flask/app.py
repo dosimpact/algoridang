@@ -42,9 +42,6 @@ def SetDBStockCodeAll():
     test = data.setDBAllStock()
     return str(test)
 
-@app.route("/DBinit")
-def DBinit():
-    return DB.initDB()
 
 @app.route("/DBdisconection")
 def DBdisconection():
@@ -91,9 +88,34 @@ def backTestAPI():
 
         return jsonify({"ok": True, "task_id": task.id})
 
-        
+    
+    
+@app.route("/DBinit/Corporation", methods=["GET"])
+def DBinitCrop():
+    task = processor.initDB_Corporation.apply_async()
+
+    if not task.id:
+        return jsonify({"ok": False, "error": "celery is down"})
+
+    return jsonify({"ok": True, "task_id": task.id})
+
+
+@app.route("/DBinit/Daily_stock", methods=["GET"])
+def DBinitDailyStock():
+    task = processor.initDB_DailyStock.apply_async()
+
+    if not task.id:
+        return jsonify({"ok": False, "error": "celery is down"})
+
+    return jsonify({"ok": True, "task_id": task.id})
+
+
+
 if __name__ == "__main__":
     #app.run(host ='0.0.0.0',port = 3000)
 
     print ("testcode")
     processor.backtestTestCode()
+    ###
+
+    
