@@ -1,38 +1,41 @@
 import { CoreOutput } from 'src/common/dtos/output.dto';
-import { DAILY_STOCK } from '../entities/daliy-stock.entity';
-import { STOCK } from '../entities/stock.entity';
+import { Corporation, DailyStock } from '../entities';
 
-// 모든 stock list를 리턴
-export class GetStocksInput {}
+// (1)
+// 모든 Corporation list를 리턴
+export class GetCorporationsInput {}
 
-export class GetStocksOutput extends CoreOutput {
-  stocks?: STOCK[];
+export class GetCorporationsOutput extends CoreOutput {
+  corporations?: Corporation[];
 }
 
-// 여러개의 stock을 검색
-export class GetStocksWithTermInput {
-  term: string; // stock code or stock name
+// (2)
+// 여러개의 Corporation을 검색
+export class GetCorporationsWithTermInput {
+  term: string; // Corporation code or Corporation name
 }
 
-export class GetStocksWithTermOutput extends CoreOutput {
-  stocks?: STOCK[];
+export class GetCorporationsWithTermOutput extends CoreOutput {
+  corporations?: Corporation[];
 }
 
-// 한개의 stock을 검색
-export class GetStockInput {
-  term: string; // stock code or stock name
+// (3)
+// 한개의 Corporation을 검색
+export class GetCorporationInput {
+  term: string; // Corporation code or Corporation name
 }
 
-export class GetStockOutput extends CoreOutput {
-  stock?: STOCK;
+export class GetCorporationOutput extends CoreOutput {
+  corporation?: Corporation;
 }
 
-// stock price 리턴
+// (4)
+// 일봉 데이터 리턴
 export class GetDayilStocksInput {
   term: string;
   skip?: number;
   take?: number;
 }
 export class GetDayilStocksOutput extends CoreOutput {
-  dailyStocks?: DAILY_STOCK[];
+  dailyStocks?: DailyStock[];
 }

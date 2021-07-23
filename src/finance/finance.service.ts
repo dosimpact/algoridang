@@ -1,70 +1,64 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { getConnection, Like, Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 import {
-  GetStocksInput,
-  GetStocksOutput,
-  GetStockInput,
-  GetStockOutput,
-  GetStocksWithTermInput,
-  GetStocksWithTermOutput,
+  GetCorporationInput,
+  GetCorporationOutput,
+  GetCorporationsWithTermOutput,
   GetDayilStocksInput,
   GetDayilStocksOutput,
+  GetCorporationsOutput,
+  GetCorporationsWithTermInput,
 } from './dtos/query.dtos';
-import { DAILY_STOCK } from './entities/daliy-stock.entity';
-import { STOCK_CATEGORY } from './entities/stock-category';
-import { STOCK_CATEGORY_LIST } from './entities/stock-category-list';
-import { STOCK } from './entities/stock.entity';
+import {
+  Category,
+  CategoryList,
+  Corporation,
+  DailyStock,
+} from './entities/index';
+
+// 👨‍💻 FinanceService 의 책임이 막중하다.
+// > 서비스 단위를 나눌필요성..?
+// eg) 가격데이터관련 서비스, 회사관련 서비스
+// >여러 레포가 필요한 서비스라면?
 
 @Injectable()
 export class FinanceService {
   constructor(
-    @InjectRepository(STOCK)
-    private readonly STOCK_REPO: Repository<STOCK>,
-    @InjectRepository(STOCK_CATEGORY)
-    private readonly STOCK_CATEGORY_REPO: Repository<STOCK_CATEGORY>,
-    @InjectRepository(STOCK_CATEGORY_LIST)
-    private readonly STOCK_CATEGORY_LIST_REPO: Repository<STOCK_CATEGORY_LIST>,
-    @InjectRepository(DAILY_STOCK)
-    private readonly DAILY_STOCK_REPO: Repository<DAILY_STOCK>,
-  ) {
-    const test = async () => {
-      const res = await DAILY_STOCK_REPO.find({
-        take: 1,
-      });
-      console.log(res);
-      await DAILY_STOCK_REPO.save(
-        DAILY_STOCK_REPO.create({
-          STOCK_CODE: '005930',
-          DATE: '2021-07-17T14:30:00+09:00',
-        }),
-      );
-    };
-    // test();
-  }
+    @InjectRepository(Category)
+    private readonly CategoryRepo: Repository<Category>,
+    @InjectRepository(CategoryList)
+    private readonly CategoryListRepo: Repository<CategoryList>,
+    @InjectRepository(Corporation)
+    private readonly CorporationRepo: Repository<Corporation>,
+    @InjectRepository(DailyStock)
+    private readonly DailyStockRepo: Repository<DailyStock>,
+  ) {}
 
-  async getStocks(): Promise<GetStocksOutput> {
+  // (1) 모든 회사들의 리스트를 리턴
+  async getCorporations(): Promise<GetCorporationsOutput> {
     try {
-      const stocks = await this.STOCK_REPO.find({});
+      const corporations = await this.CorporationRepo.find({});
       return {
         ok: true,
-        stocks,
+        corporations,
       };
     } catch (error) {}
   }
-  async getStocksWithTerm({
+  // (2) 검색어로, 회사들의 리스트를 리턴
+  async getCorporationsWithTerm({
     term,
-  }: GetStocksWithTermInput): Promise<GetStocksWithTermOutput> {
+  }: GetCorporationsWithTermInput): Promise<GetCorporationsWithTermOutput> {
     try {
-      const stocks = await this.STOCK_REPO.find({
+      const corporations = await this.CorporationRepo.find({
         where: [
-          { STOCK_CODE: Like(`%${term}%`) },
-          { STOCK_NAME: Like(`%${term}%`) },
+          { ticker: Like(`%${term}%`) },
+          { corp_name: Like(`%${term}%`) },
         ],
       });
       return {
         ok: true,
-        stocks,
+        corporations,
       };
     } catch (error) {
       return {
@@ -74,17 +68,20 @@ export class FinanceService {
     }
   }
 
-  async getStock({ term }: GetStockInput): Promise<GetStockOutput> {
+  // (3) 회사정보 하나를 검색합니다.
+  async getCorporation({
+    term,
+  }: GetCorporationInput): Promise<GetCorporationOutput> {
     try {
-      const stock = await this.STOCK_REPO.findOneOrFail({
+      const corporation = await this.CorporationRepo.findOneOrFail({
         where: [
-          { STOCK_CODE: Like(`%${term}%`) },
-          { STOCK_NAME: Like(`%${term}%`) },
+          { ticker: Like(`%${term}%`) },
+          { corp_name: Like(`%${term}%`) },
         ],
       });
       return {
         ok: true,
-        stock,
+        corporation,
       };
     } catch (error) {
       return {
@@ -94,25 +91,26 @@ export class FinanceService {
     }
   }
 
+  // (4) 가격데이터를 검색합니다.
   async getDailyStocks({
     term,
     skip,
     take,
   }: GetDayilStocksInput): Promise<GetDayilStocksOutput> {
     try {
-      const DAILY_STOCKS = await this.DAILY_STOCK_REPO.find({
+      const dailyStocks = await this.DailyStockRepo.find({
         where: {
-          STOCK_CODE: term,
+          ticker: term,
         },
         order: {
-          DATE: 'DESC',
+          stock_date: 'DESC',
         },
         skip: skip || 0,
         take: take || 365,
       });
       return {
         ok: true,
-        dailyStocks: DAILY_STOCKS,
+        dailyStocks,
       };
     } catch (error) {
       return {
