@@ -7,7 +7,7 @@ import { Corporation } from './corporation.entity';
 @Entity({ name: 'category_list' })
 export class CategoryList {
   @IsString()
-  @PrimaryColumn()
+  @PrimaryColumn({ length: 10 })
   ticker: string;
 
   @ManyToOne(() => Corporation, (corporation) => corporation.categoryList)

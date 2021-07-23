@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
 import { MemberStrategy } from 'src/strategy/entities';
-import { Column, Entity, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'backtest_queue' })
 export class BacktestQueue {
@@ -16,6 +16,13 @@ export class BacktestQueue {
   @Column({ type: 'varchar', length: 15 })
   word_info: string;
 
-  @ManyToOne(() => MemberStrategy, (ms) => ms.queue, { onDelete: 'SET NULL' })
+  // (1) 백테스트 큐에 연동된 투자 전략
+  @Column()
+  strategy_code: number;
+
+  @ManyToOne(() => MemberStrategy, (ms) => ms.queueList, {
+    onDelete: 'SET NULL',
+  })
+  @JoinColumn({ name: 'strategy_code' })
   strategy: MemberStrategy;
 }

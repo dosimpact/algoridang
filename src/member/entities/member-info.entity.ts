@@ -19,15 +19,15 @@ import { InputType, ObjectType } from '@nestjs/graphql';
 @Entity({ name: 'member_info' })
 export class MemberInfo {
   @IsEmail()
-  @PrimaryColumn({ length: 255 })
+  @PrimaryColumn({ type: 'varchar', length: 255 })
   email_id: string;
 
   @IsString()
-  @Column({ length: 255 })
+  @Column({ type: 'varchar', length: 255 })
   password: string;
 
   @IsString()
-  @Column({ length: 15 })
+  @Column({ type: 'varchar', length: 15 })
   member_name: string;
 
   // 1:N

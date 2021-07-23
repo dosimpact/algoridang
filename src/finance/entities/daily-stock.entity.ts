@@ -5,7 +5,7 @@ import { Corporation } from './corporation.entity';
 @Entity({ name: 'daily_stock' })
 export class DailyStock {
   @IsDate()
-  @PrimaryColumn()
+  @PrimaryColumn({ type: 'timestamptz' })
   stock_date: Date;
 
   @IsNumber()

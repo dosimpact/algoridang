@@ -49,9 +49,13 @@ export class MemberStrategy {
   @Column({ type: 'enum', enum: InvestType, default: InvestType.Neutral })
   invest_type: InvestType;
 
+  @IsString()
+  @Column()
+  strategy_explanation: string;
+
   @IsBoolean()
   @Column()
-  strategy_explanation: boolean;
+  operation_yes_no: boolean;
 
   @IsBoolean()
   @Column()
@@ -82,13 +86,9 @@ export class MemberStrategy {
   // ------------------------------------------------------------
   // n:1 관계
 
-  // (1) 1개의 백테스트 큐를 가진다.
-  @Column()
-  queue_code: string;
-
+  // (1) N개의 백테스트 큐를 가진다.
   @OneToMany(() => BacktestQueue, (backtestQueue) => backtestQueue.strategy)
-  @JoinColumn({ name: 'queue_code' })
-  queue: BacktestQueue[];
+  queueList: BacktestQueue[];
 
   // (1) 제작자 연결 (전략 author)
   @Column()

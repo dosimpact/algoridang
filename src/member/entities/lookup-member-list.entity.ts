@@ -14,7 +14,7 @@ export class LookupMemberList {
   strategy: MemberStrategy;
 
   @IsNumber()
-  @PrimaryColumn()
+  @PrimaryColumn({ type: 'varchar', length: 255 })
   lookup_customer_id: string;
 
   @ManyToOne(() => MemberInfo, (mi) => mi.lookupStragetyList)

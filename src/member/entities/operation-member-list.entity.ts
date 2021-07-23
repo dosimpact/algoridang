@@ -17,7 +17,7 @@ export class OperationMemberList {
   strategy: MemberStrategy;
 
   @IsNumber()
-  @PrimaryColumn()
+  @PrimaryColumn({ type: 'varchar', length: 255 })
   operation_customer_id: string;
 
   @ManyToOne(() => MemberInfo, (memberInfo) => memberInfo.operationStragetyList)

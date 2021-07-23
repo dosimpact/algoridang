@@ -8,7 +8,7 @@ export class BacktestWinRatio {
   strategy_code: number;
 
   @OneToOne(() => MemberStrategy, (ms) => ms.backtestWinRatio)
-  @JoinColumn()
+  @JoinColumn({ name: 'strategy_code' })
   strategy: MemberStrategy;
 
   @IsNumber()

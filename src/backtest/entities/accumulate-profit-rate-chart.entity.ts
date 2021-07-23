@@ -1,12 +1,6 @@
 import { IsDate, IsNumber } from 'class-validator';
 import { MemberStrategy } from 'src/strategy/entities';
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'accumulate_profit_rate_chart' })
 export class AccumulateProfitRateChart {
