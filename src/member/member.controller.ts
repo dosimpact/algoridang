@@ -1,34 +1,40 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Inject, Request } from '@nestjs/common';
+import { AuthUser } from 'src/auth/auth.decorator';
+import { GetMemberInfoInput, LoginMemberInfoInput } from './dtos/query.dtos';
 import { MemberService } from './member.service';
-import { CreateMemberDto } from './dto/create-member.dto';
-import { UpdateMemberDto } from './dto/update-member.dto';
 
-@Controller('member')
+@Controller('/api/member/')
 export class MemberController {
-  constructor(private readonly memberService: MemberService) {}
+  constructor(
+    @Inject(MemberService.name)
+    private readonly memberService: MemberService,
+  ) {}
 
-  @Post()
-  create(@Body() createMemberDto: CreateMemberDto) {
-    return this.memberService.create(createMemberDto);
+  @Post('login-member-info')
+  async loginMemberInfo(@Body() loginMemberInfoInput: LoginMemberInfoInput) {
+    return this.memberService.loginMemberInfo(loginMemberInfoInput);
   }
 
-  @Get()
-  findAll() {
-    return this.memberService.findAll();
+  @Get('me')
+  async me(@Request() req, @AuthUser() MemberInfo) {
+    // console.log('MemberInfo', req['MemberInfo']);
+    // console.log('AuthMemberInfo', MemberInfo);
+    return MemberInfo;
+    // return this.MemberInfoService.me();
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.memberService.findOne(+id);
+  async createMemberInfo() {
+    return this.memberService.createMemberInfo();
   }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMemberDto: UpdateMemberDto) {
-    return this.memberService.update(+id, updateMemberDto);
+  async updateMemberInfo() {
+    return this.memberService.updateMemberInfo();
   }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.memberService.remove(+id);
+  async deleteMemberInfo() {
+    return this.memberService.deleteMemberInfo();
+  }
+  async getMemberInfo(getMemberInfoInput: GetMemberInfoInput) {
+    return this.memberService.getMemberInfo(getMemberInfoInput);
+  }
+  async getMembersInfo() {
+    return this.memberService.getMembersInfo();
   }
 }

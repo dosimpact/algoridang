@@ -7,17 +7,18 @@ export class FinanceController {
 
   // stock --- api
 
-  // 모든 종목들의 ticker를 출력
+  // (1) 기업 리스트 출력
   @Get('corporations')
   async getCorporations() {
     return this.financeService.getCorporations();
   }
+  // (2) 기업 리스트 출력 (검색어 기능 )
   @Get('corporations/:term')
   async getCorporationsWithTerm(@Param('term') term: string) {
     return this.financeService.getCorporationsWithTerm({ term });
   }
 
-  // 존재하는 티커인지 검색
+  // (3) 기업 리스트 출력 (검색어 기능 )
   @Get('corporation/:term')
   async getCorporation(@Param('term') term: string) {
     return this.financeService.getCorporation({ term });

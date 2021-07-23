@@ -7,11 +7,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import {
-  SettingJSON,
-  StrategyName,
-  StrategyValue,
-} from '../constant/strategy-setting';
+import { SettingJSON, StrategyName } from '../constant/strategy-setting';
 
 @Entity({ name: 'custom_trading_strategy' })
 export class CustomTradingStrategy {

@@ -1,14 +1,14 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
-import { USER } from 'src/user/entities/user.entity';
+import { MemberInfo } from 'src/member/entities';
 
 export const AuthUser = createParamDecorator(
-  (data: unknown, context: ExecutionContext): USER => {
+  (data: unknown, context: ExecutionContext): MemberInfo => {
     if (
       context['contextType'] &&
       String(context['contextType']).startsWith('http')
     ) {
       const request = context.switchToHttp().getRequest();
-      return request['user'];
+      return request['memberInfo'];
     }
   },
 );

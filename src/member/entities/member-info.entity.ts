@@ -1,9 +1,21 @@
+import { InternalServerErrorException } from '@nestjs/common';
 import { IsEmail, IsString } from 'class-validator';
 import { MemberStrategy } from 'src/strategy/entities';
-import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  BeforeUpdate,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryColumn,
+} from 'typeorm';
 import { LookupMemberList } from './lookup-member-list.entity';
 import { OperationMemberList } from './operation-member-list.entity';
+import * as bcrypt from 'bcrypt';
+import { InputType, ObjectType } from '@nestjs/graphql';
 
+@InputType('MemberInfoInput', { isAbstract: true })
+@ObjectType()
 @Entity({ name: 'member_info' })
 export class MemberInfo {
   @IsEmail()
@@ -35,4 +47,28 @@ export class MemberInfo {
   // (2) 내가 조회했던 전략들
   @OneToMany(() => LookupMemberList, (lm) => lm.lookup_customer)
   lookupStragetyList: LookupMemberList[];
+
+  // entity 기능
+
+  // 사용자 생성/비번 업데이트시 SHA256 암호화
+  @BeforeUpdate()
+  @BeforeInsert()
+  async hashPassword() {
+    if (this.password) {
+      try {
+        this.password = await bcrypt.hash(this.password, 10);
+      } catch (error) {
+        throw new InternalServerErrorException();
+      }
+    }
+  }
+
+  async checkPassword(aPassword: string) {
+    try {
+      const ok = await bcrypt.compare(aPassword, this.password);
+      return ok;
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
+  }
 }
