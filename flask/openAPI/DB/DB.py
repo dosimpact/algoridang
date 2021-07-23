@@ -3,6 +3,7 @@ import psycopg2
 from psycopg2 import Error
 from . import identification
 
+import pandas.io.sql as pandsql
 
 
 
@@ -101,7 +102,7 @@ class psql(object):
         return rows
 
 
-    def selectData_print(self, select ="*", table = "", where = None, ):
+    def selectData_print(self, select ="*", table = "", where = None ):
         #print(select,table)
         if where == None:
             query = "select " + str(select)+" from " + str(table) +";"
@@ -109,7 +110,16 @@ class psql(object):
             query = "select " + str(select)+" from " + str(table) +" where "+str(where)+";"
 
         print(query)
-        
+
+
+    def getDataFrameSelectQuery(self, select = "*", table = "", where = None):
+        if where == None:
+            query = "select " + str(select)+" from " + str(table) +";"
+        else:
+            query = "select " + str(select)+" from " + str(table) +" where "+str(where)+";"
+        df = pandsql.read_sql(query, self.__connection)
+        return df
+
 if __name__ == "__main__":
     db = psql()
     db2 = psql()

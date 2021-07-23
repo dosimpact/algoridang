@@ -7,6 +7,10 @@ import pandas as pd
 import backtrader as bt
 from pandas import json_normalize
 
+
+from openAPI.DB import DB
+
+
 class SMACross(bt.Strategy):
     params = dict( 
         pfast=5, # period for the fast moving average 
@@ -63,40 +67,35 @@ class CBackTtrader(object):
     def __init__(self) -> None:
         super().__init__()
 
-    def getDBData(self, ticker,start, end = None):
-        # 기간을 입력하게 해야함.
-        URL = 'http://133.186.229.72:4000/api/finance/dailystock/'+str(ticker)+'?take=3650' 
-        response = requests.get(URL)
-        data = json.loads(response.text)
-        df = json_normalize(data['dailyStocks']) #Results contain the required data
-        
+   
 
-        df["DATE"] = pd.to_datetime(df["DATE"], format='%Y-%m-%d')
-        df = df.set_index("DATE")
-        df = df.sort_values(by=['DATE'], axis=0, ascending=True)
 
-        df = df.loc[:, [
-        "OPEN",
-        "HIGH",
-        "LOW",
-        "CLOSE",
-        "TRADING_VOLUMN"]]
+    def getDBData(self,ticker, start, end = None):
+        DBClass = DB.psql()
+        querySelect = " stock_date, open_price, high_price, low_price, close_price, volume"
+        queryWhere = "\"ticker\" = \'"+ticker+"\' order by stock_date asc;"
+        df = DBClass.getDataFrameSelectQuery(querySelect,"daily_stock",queryWhere)
+       
+        df["stock_date"] = pd.to_datetime(df["stock_date"], format='%Y-%m-%d')
+        df = df.set_index("stock_date")
+        df = df.sort_values(by=['stock_date'], axis=0, ascending=True)
 
         df.rename(columns={
-            "OPEN":"Open"	,
-            "HIGH":"High"	,
-            "LOW":"Low",
-            "CLOSE":'Close'	,
-            "TRADING_VOLUMN":"Volume"
+            "open_price":"Open"	,
+            "high_price":"High"	,
+            "low_price":"Low",
+            "close_price":'Close'	,
+            "volume":"Volume"
         },inplace = True)
-        #print(df)
+
         res = []
-        if end == None:
+        if end == None or end == '':
             res = df[str(pd.to_datetime(start, format='%Y-%m-%d')) : ]
         else:
             res = df[str(pd.to_datetime(start, format='%Y-%m-%d')) :str(pd.to_datetime(end, format='%Y-%m-%d')) ]
-        #print(res)
+
         return res
+
 
     def startbackTest(self,tickerList, cash, startTime, endTime= None):
         if type(tickerList) is list:   
@@ -107,7 +106,7 @@ class CBackTtrader(object):
 
         cerebro = bt.Cerebro()
         #cash setting
-        cerebro.broker.setcash(cash)
+        cerebro.broker.setcash(int(cash))
         dateparser = lambda x: pd.datetime.strptime(x, '%Y-%m-%d')
 
         cerebro.broker.set_coc(True)
@@ -122,6 +121,7 @@ class CBackTtrader(object):
         cerebro.run()
         print('Final Portfolio Value: %.2f' % cerebro.broker.getvalue())
         cerebro.plot()
+
         return cerebro.broker.getvalue()
 
 

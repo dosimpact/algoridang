@@ -89,7 +89,7 @@ def backTestAPI():
         return jsonify({"ok": True, "task_id": task.id})
 
     
-    
+################initialization
 @app.route("/DBinit/Corporation", methods=["GET"])
 def DBinitCrop():
     task = processor.initDB_Corporation.apply_async()
@@ -112,10 +112,8 @@ def DBinitDailyStock():
 
 
 if __name__ == "__main__":
-    #app.run(host ='0.0.0.0',port = 3000)
+    app.run(host ='0.0.0.0',port = 3000)
 
-    print ("testcode")
-    processor.backtestTestCode()
     ###
 
     

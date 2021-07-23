@@ -17,6 +17,8 @@ from dotenv import load_dotenv
 from backtesting import backtesting
 
 from openAPI import pricePykrx
+
+
 # 윈도우 환경에서는 다음 셋팅을 해야 인수전달이 제대로 된다.
 # in window env Error, https://github.com/celery/celery/pull/4078
 os.environ.setdefault('FORKED_BY_MULTIPROCESSING', '1')
@@ -135,8 +137,20 @@ def initDB_DailyStock(self):
         return res
 
 
-def backtestTestCode():
+@process.task(bind=True, base=CoreTask)
+def backtestTestCode(data):
+    with app.app_context():
+        #data = {'ticker': '["005930","005930"]', 'startTime': '20110101', 'endTime': '', 'strategyCode': '0', 'investPrice': '10000000', 'tradingStrategyCode': '0', 'tradingStrategyDetailSettingCode': '0'}
+        #data = {'ticker': '005930', 'startTime': '20170101', 'endTime': '', 'strategyCode': '0', 'investPrice': '10000000', 'tradingStrategyCode': '0', 'tradingStrategyDetailSettingCode': '0'}
+        bk = backtesting.CBackTtrader()
+        res = bk.startbackTest(data['ticker'],data['investPrice'],data['startTime'],data['endTime'])
+        return res
+
+
+def Test___backtestTestCode():
     #data = {'ticker': '["005930","005930"]', 'startTime': '20110101', 'endTime': '', 'strategyCode': '0', 'investPrice': '10000000', 'tradingStrategyCode': '0', 'tradingStrategyDetailSettingCode': '0'}
-    data = {'ticker': '005930', 'startTime': '20110101', 'endTime': '', 'strategyCode': '0', 'investPrice': '10000000', 'tradingStrategyCode': '0', 'tradingStrategyDetailSettingCode': '0'}
+    data = {'ticker': '005930', 'startTime': '20170101', 'endTime': '', 'strategyCode': '0', 'investPrice': '10000000', 'tradingStrategyCode': '0', 'tradingStrategyDetailSettingCode': '0'}
     bk = backtesting.CBackTtrader()
     res = bk.startbackTest(data['ticker'],data['investPrice'],data['startTime'],data['endTime'])
+    
+    return res
