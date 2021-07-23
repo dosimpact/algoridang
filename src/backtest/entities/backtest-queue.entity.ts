@@ -2,6 +2,14 @@ import { IsString } from 'class-validator';
 import { MemberStrategy } from 'src/strategy/entities';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 
+export enum BacktestState {
+  New = 'New', // 생성
+  Ready = 'Ready', // 진입 & 대기중
+  Running = 'Running', // 작업중
+  Success = 'Success', // 완료
+  Error = 'Error', // 애러
+}
+
 @Entity({ name: 'backtest_queue' })
 export class BacktestQueue {
   @IsString()
@@ -9,8 +17,8 @@ export class BacktestQueue {
   queue_code: string;
 
   @IsString()
-  @Column({ type: 'varchar', length: 15 })
-  state_info: string;
+  @Column({ type: 'enum', enum: BacktestState, default: BacktestState.New })
+  state_info: BacktestState;
 
   @IsString()
   @Column({ type: 'varchar', length: 15 })

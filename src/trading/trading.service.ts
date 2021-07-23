@@ -23,4 +23,7 @@ export class TradingService {
   remove(id: number) {
     return `This action removes a #${id} trading`;
   }
+  //   (GET)tradingStrategyList		매매전략리스트 { 기본 셋팅 }	(1) 매매전략 리스트 요청
+  // (POST)createTradingStrategy	tradingStragetyCode
+  // settingJson		(2) (관리자) 메매전략 생성 요청
 }

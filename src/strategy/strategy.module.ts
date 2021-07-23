@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { StrategyService } from './strategy.service';
+import { StrategyReadService, StrategyWriteService } from './strategy.service';
 import { StrategyController } from './strategy.controller';
 import { StrategyResolver } from './strategy.resolver';
 
 @Module({
   controllers: [StrategyController],
-  providers: [StrategyService, StrategyResolver]
+  providers: [StrategyReadService, StrategyWriteService, StrategyResolver],
 })
 export class StrategyModule {}
