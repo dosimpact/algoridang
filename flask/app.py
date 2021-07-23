@@ -60,9 +60,19 @@ def post():
 
 
 
-@app.route("/DBinit", methods=["GET"])
-def DBinit():
+@app.route("/DBinit/Corporation", methods=["GET"])
+def DBinitCrop():
     task = processor.initDB_Corporation.apply_async()
+
+    if not task.id:
+        return jsonify({"ok": False, "error": "celery is down"})
+
+    return jsonify({"ok": True, "task_id": task.id})
+
+
+@app.route("/DBinit/Daily_stock", methods=["GET"])
+def DBinitDailyStock():
+    task = processor.initDB_DailyStock.apply_async()
 
     if not task.id:
         return jsonify({"ok": False, "error": "celery is down"})
@@ -74,3 +84,5 @@ def DBinit():
 if __name__ == "__main__":
     app.run(host ='0.0.0.0',port = 3000)
     ###
+
+    

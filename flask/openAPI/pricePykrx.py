@@ -30,74 +30,58 @@ class CPricePykrx(object):
             queryTable = "corporation( \"ticker\", \"corp_name\")"
             queryValue = "(\'"+ticker+"\',\'"+name+"\')"
             self.__db.insertIntoDataToTable(queryTable,queryValue)
-            return str(ticker)
+            return " "+str(name)
         return ""
 
-    def __getAllTickerFromDB(self):
+    def getAllTickerFromDB(self):
         tickerList = []
         querySelect = "*"
-        queryTable = "STOCK"
+        queryTable = "corporation"
         res = self.__db.selectData(querySelect, queryTable)
         return res
 
-    def __getKRStockDaily(self, tickerList, _from = None, _to= None):
+    def getKRStockDaily(self, ticker, _from = None, _to= None):
         if _to == None:
             _to = str(datetime.today().strftime("%Y%m%d"))
         if _from == None:
             before30Day = datetime.today() - timedelta(30)
             _from = str(before30Day.strftime("%Y%m%d"))
 
-        df = []
-        if type(tickerList) is list:
-            i = 0
-            for name, ticker in tickerList:
-                df.append(stock.get_market_ohlcv_by_date(_from, _to, ticker))
-                i = i + 1
-                #print(len(df))
-        else:
-            df.append(stock.get_market_ohlcv_by_date(_from, _to, tickerList))
+        df = stock.get_market_ohlcv_by_date(_from, _to, ticker)
         return df
     
-    def __sendKRStockDaily(self, tickers, datas):
-        res = []
-        print(len(tickers), len(datas))
-        for i in range(0,len(datas)):
-            flag = 0
-            for idx, row in datas[i].iterrows():
-                stockdate = str(idx.date()).replace("-","")
-                openprice = str(row[0])
-                highprice = str(row[1])
-                lowprice = str(row[2])
-                closeprice = str(row[3])
-                tradingvolume = str(row[4])
+    def sendKRStockDaily(self, ticker, datas):
+        res = ""
+        print(len(datas))
+        for idx, row in datas.iterrows():
+            #stockdate = str(idx.date()).replace("-","")
+            stockdate = str(idx.date()) + "T15:30:00+09:00"
+            openprice = str(row[0])
+            highprice = str(row[1])
+            lowprice = str(row[2])
+            closeprice = str(row[3])
+            tradingvolume = str(row[4])
 
 
+            
+            querySelect = "*"
+            queryTable = "daily_stock"
+            queryWhere = "\"stock_date\" =\'"+str(stockdate)+"\'and \"ticker\" = \'"+str(ticker)+"\'"
+
+            if len(self.__db.selectData(querySelect,queryTable,queryWhere)) == 0:
                 
-                querySelect = "*"
-                queryTable = "DAILY_STOCK"
-                queryWhere = "\"DATE\" =\'"+str(stockdate)+"\'and \"STOCK_CODE\" = \'"+str(tickers[i][1])+"\'"
+                queryTable = "daily_stock(\"stock_date\", \"ticker\", \"open_price\", \"high_price\", \"low_price\", \"close_price\", \"volume\") "
+                queryValue = "(\'"+str(stockdate)+"\',\'"+str(ticker)+"\',"+openprice+","+highprice+","+lowprice+","+closeprice+","+tradingvolume+")"
+                self.__db.insertIntoDataToTable(queryTable,queryValue)
+                res = ticker
 
-                if len(self.__db.selectData(querySelect,queryTable,queryWhere)) == 0:
-                    #self.__db.insertIntoDataToTable()
-
-                    queryTable = "DAILY_STOCK(\"DATE\", \"STOCK_CODE\", \"OPEN\", \"HIGH\", \"LOW\", \"CLOSE\", \"TRADING_VOLUMN\", \
-\"DAY_S_RANGE\", \"_3_DAY_MOVING_AVERAGE\", \"_5_DAY_MOVING_AVERAGE\", \"_10_DAY_MOVING_AVERAGE\", \"_20_DAY_MOVING_AVERAGE\"   \
-, \"_60_DAY_MOVING_AVERAGE\", \"_3_DAY_TRADING_AVERAGE\", \"_5_DAY_TRADING_AVERAGE\", \"_10_DAY_TRADING_AVERAGE\", \"_20_DAY_TRADING_AVERAGE\", \
-\"_60_DAY_TRADING_AVERAGE\", \"DATE_ORDER_BY_ITEM\", \"TRADING_VALUE\") "
-                    queryValue = "(\'"+str(stockdate)+"\',\'"+str(tickers[i][1])+"\',"+openprice+","+highprice+","+lowprice+","+closeprice+","+tradingvolume+",0,0,0,0,0,0,0,0,0,0,0,0,0)"
-                    #self.__db.insertIntoDataToTable_print(queryTable,queryValue)
-                    self.__db.insertIntoDataToTable(queryTable,queryValue)
-
-                    if flag == 0:
-                        res.append(tickers[i][0])
-                        flag = 1
         return res
 
 
     def setDBAllDailyStock(self):
-        tickers = self.__getAllTickerFromDB()
-        dailyDatas = self.__getKRStockDaily(tickers)
-        info = self.__sendKRStockDaily(tickers,dailyDatas)
+        tickers = self.getAllTickerFromDB()
+        dailyDatas = self.getKRStockDaily(tickers)
+        info = self.sendKRStockDaily(tickers,dailyDatas)
         print(info)
         return "123"
     
