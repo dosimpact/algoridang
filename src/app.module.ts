@@ -41,6 +41,7 @@ import {
 } from './finance/entities';
 import { BaseTradingStrategy } from './trading/entities/base_trading_strategy.entity';
 import { CustomTradingStrategy } from './trading/entities';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -110,6 +111,7 @@ import { CustomTradingStrategy } from './trading/entities';
       ],
     }),
     JwtModule.forRoot({ privateKey: process.env.JWT_SECRET_KEY }),
+    UploadModule,
     FinanceModule,
     // UserModule,
     StrategyModule,
