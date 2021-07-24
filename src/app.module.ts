@@ -1,4 +1,5 @@
 import {
+  CacheModule,
   MiddlewareConsumer,
   Module,
   NestModule,
@@ -42,6 +43,7 @@ import {
 import { BaseTradingStrategy } from './trading/entities/base_trading_strategy.entity';
 import { CustomTradingStrategy } from './trading/entities';
 import { UploadModule } from './upload/upload.module';
+import * as redisStore from 'cache-manager-redis-store';
 
 @Module({
   imports: [
@@ -112,6 +114,14 @@ import { UploadModule } from './upload/upload.module';
     }),
     JwtModule.forRoot({ privateKey: process.env.JWT_SECRET_KEY }),
     UploadModule,
+    CacheModule.register({
+      store: redisStore,
+      host: process.env.REDIS_API_CACHE_HOST, // '127.0.0.1',
+      port: process.env.REDIS_API_CACHE_PORT, //6379,
+      password: process.env.REDIS_API_CACHE_PASSWORD, //
+      ttl: +process.env.REDIS_API_CACHE_TTL, // 10초 캐슁
+      // max: 3, // 3개의 key값 유지
+    }),
     FinanceModule,
     // UserModule,
     StrategyModule,
