@@ -69,6 +69,10 @@ export class MemberStrategy {
   @Column()
   open_yes_no: boolean;
 
+  @IsString()
+  @Column({ type: 'varchar', length: 255 })
+  image_url: string;
+
   // 1:1 관계
 
   // (2) 투자 수익 정보
@@ -91,7 +95,7 @@ export class MemberStrategy {
   queueList: BacktestQueue[];
 
   // (1) 제작자 연결 (전략 author)
-  @Column()
+  @Column({ type: 'varchar', length: 255 })
   maker_id: string;
 
   @ManyToOne(() => MemberInfo, (mi) => mi.stragetyOperatedList)
@@ -99,7 +103,7 @@ export class MemberStrategy {
   maker: MemberInfo;
 
   // (2) 운용자 연결(전략 소유자)
-  @Column()
+  @Column({ type: 'varchar', length: 255 })
   operator_id: string;
 
   @ManyToOne(() => MemberInfo, (mi) => mi.stragetyMadeList)

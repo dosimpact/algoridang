@@ -32,7 +32,7 @@ export class AppController {
       console.log(await cacheManager.del('name'));
       console.log(await cacheManager.get('name'));
     };
-    test();
+    // test();
   }
 
   @Get()

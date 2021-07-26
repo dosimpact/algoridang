@@ -1,5 +1,5 @@
 import { InternalServerErrorException } from '@nestjs/common';
-import { IsEmail, IsString } from 'class-validator';
+import { IsEmail, IsEnum, IsString } from 'class-validator';
 import { MemberStrategy } from 'src/strategy/entities';
 import {
   BeforeInsert,
@@ -13,6 +13,11 @@ import { LookupMemberList } from './lookup-member-list.entity';
 import { OperationMemberList } from './operation-member-list.entity';
 import * as bcrypt from 'bcrypt';
 import { InputType, ObjectType } from '@nestjs/graphql';
+
+export enum UserRole {
+  Normal = 'Normal',
+  Admin = 'Admin',
+}
 
 @InputType('MemberInfoInput', { isAbstract: true })
 @ObjectType()
@@ -29,6 +34,10 @@ export class MemberInfo {
   @IsString()
   @Column({ type: 'varchar', length: 15 })
   member_name: string;
+
+  @IsEnum(UserRole)
+  @Column({ type: 'enum', enum: UserRole, default: UserRole.Normal })
+  role: UserRole;
 
   // 1:N
   // (1) 사용자는 여러개의 운용중인 전략을 갖는다. ( 내가 운용중인 전략들(forked+my) )
