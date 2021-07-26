@@ -1,6 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { InjectRepository } from '@nestjs/typeorm';
 import * as AWS from 'aws-sdk';
+import { Repository } from 'typeorm';
+import { UploadedObject } from './entities/uploaded-object.entity';
 @Injectable()
 export class UploadService {
   private readonly S3: AWS.S3;
@@ -9,7 +12,11 @@ export class UploadService {
   private readonly ACL: string;
   private readonly logger = new Logger(UploadService.name);
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    @InjectRepository(UploadedObject)
+    private readonly uploadedObjectRepo: Repository<UploadedObject>,
+  ) {
     // (1) Region + Key 설정
     AWS.config.update({
       credentials: {
@@ -49,11 +56,18 @@ export class UploadService {
         Key,
         Body: file.buffer,
       }).promise();
+
+      const uploaded = await this.uploadedObjectRepo.save(
+        this.uploadedObjectRepo.create({
+          ETag: result.ETag,
+          Key,
+          url: this.__makePublicUrl(`${folder}/${Key}`),
+        }),
+      );
+
       return {
         ok: true,
-        ETag: result.ETag,
-        Key,
-        url: this.__makePublicUrl(`${folder}/${Key}`),
+        ...uploaded,
       };
     } catch (error) {
       this.logger.error(error);

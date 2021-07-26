@@ -118,9 +118,9 @@ export class MemberStrategy {
   @OneToMany(() => BacktestMontlyProfitRateChart, (chart) => chart.strategy)
   backtestMontlyProfitRateChart: BacktestMontlyProfitRateChart;
 
-  // (5) 전략에 셋팅된 매매전략(셋팅포함)
-  @OneToMany(() => CustomTradingStrategy, (cts) => cts.stragety)
-  customTradingStrategy: CustomTradingStrategy[];
+  // (5) (deprecated) 전략에 셋팅된 매매전략(셋팅포함)
+  // @OneToMany(() => CustomTradingStrategy, (cts) => cts.stragety)
+  // customTradingStrategy: CustomTradingStrategy[];
 
   // ------------------------------------------------------------
   // n:m 관계

@@ -1,11 +1,14 @@
 import { IsNumber, IsString } from 'class-validator';
 import { Corporation } from 'src/finance/entities';
-import { Entity, JoinColumn, OneToMany, PrimaryColumn } from 'typeorm';
+import { CustomTradingStrategy } from 'src/trading/entities';
+import { Column, Entity, JoinColumn, OneToMany, PrimaryColumn } from 'typeorm';
 import { MemberStrategy } from './member-strategy.entity';
 
 // 전략이 가지고 있는 티커들 매핑 테이블
+// (1) 어떤 전략 (2) 어떤 종목에 (3) 어떤 매매전략을 적용
 @Entity({ name: 'stock_list' })
 export class StockList {
+  //(1) 어떤 전략
   @IsNumber()
   @PrimaryColumn()
   strategy_code: number;
@@ -14,6 +17,7 @@ export class StockList {
   @JoinColumn({ name: 'strategy_code' })
   strategy: MemberStrategy;
 
+  //(2) 어떤 종목에
   @IsString()
   @PrimaryColumn({ length: 10 })
   ticker: string;
@@ -21,4 +25,13 @@ export class StockList {
   @OneToMany(() => Corporation, (corp) => corp.stragetyList)
   @JoinColumn({ name: 'ticker' })
   corporation: Corporation;
+
+  //(3) 어떤 매매전략을 적용
+  @IsString()
+  @Column()
+  trading_strategy_code: number;
+
+  @OneToMany(() => CustomTradingStrategy, (cts) => cts.stock_lists)
+  @JoinColumn({ name: 'trading_strategy_code' })
+  trading_strategy: CustomTradingStrategy;
 }

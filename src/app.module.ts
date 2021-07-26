@@ -44,6 +44,7 @@ import { BaseTradingStrategy } from './trading/entities/base_trading_strategy.en
 import { CustomTradingStrategy } from './trading/entities';
 import { UploadModule } from './upload/upload.module';
 import * as redisStore from 'cache-manager-redis-store';
+import { UploadedObject } from './upload/entities/uploaded-object.entity';
 
 @Module({
   imports: [
@@ -109,6 +110,10 @@ import * as redisStore from 'cache-manager-redis-store';
           LookupMemberList,
           MemberInfo,
           OperationMemberList,
+        ],
+        ...[
+          //upload
+          UploadedObject,
         ],
       ],
     }),
