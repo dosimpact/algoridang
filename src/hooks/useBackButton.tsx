@@ -5,6 +5,8 @@ import { useHistory } from "react-router";
 const useBackButton = () => {
   const history = useHistory();
 
+  // (1) 부모 컴포넌트의 history tag
+  // (2) forword()
   const handleClick = () => {
     history.goBack();
   };

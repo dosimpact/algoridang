@@ -56,13 +56,13 @@ const TabNavigationContainer = () => {
         }}
         page={page}
       >
+        <section>개별 종목 주가</section>
         <section>
           <StrategySearch />
         </section>
         <section>
           <MockInvest />
         </section>
-        <section>⚠ 나의 정보...</section>
       </Tabs>
       <WhiteSpace />
     </nav>
