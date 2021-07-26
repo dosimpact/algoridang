@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as AWS from 'aws-sdk';
 import { Repository } from 'typeorm';
+import { GetUploadedObjectsOutput } from './dto/query.dtos';
 import { UploadedObject } from './entities/uploaded-object.entity';
 @Injectable()
 export class UploadService {
@@ -49,7 +50,7 @@ export class UploadService {
     const Key = `${Date.now()}${file.originalname}`;
     folder = folder ? folder : 'common';
     try {
-      console.log(`${this.buketName}/${folder}`);
+      // console.log(`${this.buketName}/${folder}`);
       const result = await this.S3.putObject({
         Bucket: `${this.buketName}/${folder}`,
         ACL: this.ACL,
@@ -105,6 +106,21 @@ export class UploadService {
   // (3) 배너 삭제
   async deleteS3Banner(Key: string) {
     return this.deleteS3(`banner/${Key}`);
+  }
+
+  // (1) 업로드된 object들 반환
+  async getUploadedObjects(): Promise<GetUploadedObjectsOutput> {
+    try {
+      const uploadedObjects = await this.uploadedObjectRepo.find({});
+      return {
+        uploadedObjects,
+        ok: true,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+      };
+    }
   }
 }
 
