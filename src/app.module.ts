@@ -14,7 +14,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { FinanceModule } from './finance/finance.module';
 import { JwtModule } from './auth/jwt.module';
 import { AppResolver } from './app.resolver';
-import { UserModule } from './user/user.module';
 import { JwtMiddleWare } from './auth/jwt.middleware';
 import { StrategyModule } from './strategy/strategy.module';
 import { TradingModule } from './trading/trading.module';
