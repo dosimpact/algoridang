@@ -1,23 +1,24 @@
 export enum StrategyName {
+  None = 'None',
   GoldenCross = 'GoldenCross',
   SMA = 'SMA',
 }
 
 export interface StrategyValue {
   GoldenCross: {
-    SMA_A: number;
-    SMA_B: number;
+    pfast: number;
+    pslow: number;
   };
   SMA: {
     SMA_A: number;
   };
 }
-type SName = keyof StrategyValue;
-
-export interface SettingJSON {
-  name: SName;
+export interface SettingJSONFull {
+  name: keyof StrategyValue;
   setting: Partial<StrategyValue>;
 }
+
+export type SettingJSON = Partial<StrategyValue>;
 
 // export interface SettingJSON2<T extends keyof StrategyValue> {
 //   name: T;
