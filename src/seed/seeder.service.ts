@@ -172,12 +172,13 @@ export class SeederService {
     //     alarm_setting: false,
     //     investment_game_invest_delete_yes_no: false,
     //     open_yes_no: true,
-    //     operator_id: 'changyu.park1@gmail.com',
+    //     operator_id: 'blue_rose17@naver.com',
     //     maker_id: 'changyu.park1@gmail.com',
     //     image_url:
     //       'https://algoridang.s3.ap-northeast-2.amazonaws.com/common/1627272438714d_thumb01.jpeg',
     //   }),
     // );
+    this.logger.verbose('✔ seedScenario01');
   }
 
   __createMemberInfo() {
