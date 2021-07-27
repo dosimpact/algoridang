@@ -1,10 +1,7 @@
 import axios from "axios";
 import { getLocalMemberInfo } from "states/local-state";
-import {
-  meOutput,
-  loginMemberInfoInput,
-  loginMemberInfoOutput,
-} from "./dtos/memberInfo.dtos";
+import { loginMemberInfoInput } from "./interface/member/dtos";
+import { GetStrategyListNewOutput } from "./interface/strategy/dtos";
 
 // base setttings ,  interceptors
 
@@ -23,10 +20,10 @@ axios.interceptors.request.use(async (config) => {
 
 export const memberApi = {
   GET: {
-    me: async () => (await axios.get("member/me")).data as meOutput,
+    me: () => axios.get("member/me"),
   },
   POST: {
-    loginMemberInfo: async (body: loginMemberInfoInput) =>
+    loginMemberInfo: (body: loginMemberInfoInput) =>
       axios.post("member/login-member-info", body),
   },
   PATCH: {},
@@ -37,8 +34,24 @@ export const memberApi = {
 
 export const strategyApi = {
   GET: {
-    me: async () =>
-      (await axios.get("strategy/getStrategyListNew")).data as meOutput,
+    getStrategyListNew: () => {
+      return axios.get("strategy/getStrategyListNew");
+    },
+    getStrategyListHighView: () => {
+      return axios.get("strategy/getStrategyListHighView");
+    },
+    getStrategyListType: () => {
+      return axios.get("strategy/getStrategyListType");
+    },
+    getStrategyById: (strategy_code: string) => {
+      return axios.get(`strategy/getStrategyById/${strategy_code}`);
+    },
+    getMyStrategyList: () => {
+      return axios.get("strategy/getMyStrategyList");
+    },
+    getMyStrategyById: (strategy_code: string) => {
+      return axios.get(`strategy/getMyStrategyById/${strategy_code}`);
+    },
   },
   POST: {},
   PATCH: {},

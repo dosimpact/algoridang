@@ -2,6 +2,7 @@ import { WingBlank, WhiteSpace } from "antd-mobile";
 import StrategyCard from "components/strategy/StrategyCard";
 import React from "react";
 import { useHistory } from "react-router-dom";
+import useStrategy from "states/react-query/useStrategy";
 import { toTagsString } from "utils/parse";
 
 const Title: React.FC<{ title: string }> = ({ title }) => {
@@ -34,6 +35,8 @@ const dummyDatas3 = [
 ];
 const StrategyFeeds = () => {
   const history = useHistory();
+  const { strategyListNew } = useStrategy();
+  console.log("strategyListNew", strategyListNew);
 
   return (
     <WingBlank style={{ margin: "15x" }} size="lg">
@@ -49,18 +52,22 @@ const StrategyFeeds = () => {
       <WhiteSpace size="xl" />
       <Title title={"신규 투자 전략"} />
       <WhiteSpace size="xl" />
-      {dummyDatas2.map((data, key) => (
-        <StrategyCard
-          key={key}
-          title={data.title}
-          subTitle={toTagsString(data.subTitle)}
-          CAGR={data.CAGR}
-          onClick={(e) => {
-            console.log("click", e.currentTarget);
-            history.push("/takers/strategy-search/details/1");
-          }}
-        />
-      ))}
+      {strategyListNew &&
+        strategyListNew.map((data, key) => (
+          <StrategyCard
+            key={key}
+            title={data.strategy_name}
+            // subTitle={toTagsString(
+            //   data.hashList?.map((e) => e.hash.hash_contents)
+            // )}
+            CAGR={data.strategy_code}
+            thumnail={data.image_url}
+            onClick={(e) => {
+              console.log("click", e.currentTarget);
+              history.push("/takers/strategy-search/details/1");
+            }}
+          />
+        ))}
       <WhiteSpace size="xl" />
       <Title title={"조회수 높은 투자 전략"} />
       <WhiteSpace size="xl" />

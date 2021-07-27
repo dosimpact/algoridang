@@ -1,10 +1,10 @@
 import { AxiosError } from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { memberApi } from "states/common/api";
+import { memberApi } from "states/api";
 import {
   loginMemberInfoInput,
   loginMemberInfoOutput,
-} from "states/common/dtos/memberInfo.dtos";
+} from "states/interface/member/dtos";
 import { setLocalMemberInfo } from "states/local-state";
 
 //  Query

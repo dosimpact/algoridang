@@ -1,4 +1,4 @@
-import { MemberInfo } from "./common/entities";
+import { MemberInfo } from "./interface/member/entities";
 
 export enum IItemsKeys {
   memberInfo = "memberInfo",
