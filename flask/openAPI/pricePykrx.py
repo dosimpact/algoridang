@@ -1,11 +1,9 @@
 from pykrx import stock
-from .DB.DB import psql
+from .DB.DB import databasepool
 from datetime import datetime, timedelta
 
 
 class CPricePykrx(object):
-    
-    __db = psql()
     __test = 0
     __state = 0
     def __init__(self,test=0):
@@ -23,21 +21,33 @@ class CPricePykrx(object):
 
         #데이터 유무 확인
         name = stock.get_market_ticker_name(ticker)
-        queryWhere = "\"ticker\" = \'"+ticker+"\';"
+        
+        db = databasepool()
+        conn = db.getConn()
+
+        query = "select * from corporation where \"ticker\" = \'"+ticker+"\';"
+        
 
         #없는경우 데이터 입력
-        if len(self.__db.selectData("*","corporation",queryWhere)) == 0:
-            queryTable = "corporation( \"ticker\", \"corp_name\")"
-            queryValue = "(\'"+ticker+"\',\'"+name+"\')"
-            self.__db.insertIntoDataToTable(queryTable,queryValue)
+        if len(db.selectData(conn, query)) == 0:
+            query = "insert into corporation( \"ticker\", \"corp_name\") values(\'"+ticker+"\',\'"+name+"\')"
+            db.insertIntoData(conn,query)
+            db.putConn(conn)
             return " "+str(name)
+        
+        db.putConn(conn)
         return ""
 
     def getAllTickerFromDB(self):
-        tickerList = []
-        querySelect = "*"
-        queryTable = "corporation"
-        res = self.__db.selectData(querySelect, queryTable)
+        
+        db = databasepool()
+        conn = db.getConn()
+
+        query = "select * from corporation "
+
+        res = db.selectData(conn, query)
+
+        db.putConn(conn)
         return res
 
     def getKRStockDaily(self, ticker, _from = None, _to= None):
@@ -51,8 +61,11 @@ class CPricePykrx(object):
         return df
     
     def sendKRStockDaily(self, ticker, datas):
-        res = ""
-        print(len(datas))
+        res = []
+
+        db = databasepool()
+        conn = db.getConn()
+
         for idx, row in datas.iterrows():
             #stockdate = str(idx.date()).replace("-","")
             stockdate = str(idx.date()) + "T15:30:00+09:00"
@@ -63,39 +76,21 @@ class CPricePykrx(object):
             tradingvolume = str(row[4])
 
 
+            query = "select * from daily_stock where \"stock_date\" =\'"+str(stockdate)+"\'and \"ticker\" = \'"+str(ticker)+"\'"
             
-            querySelect = "*"
-            queryTable = "daily_stock"
-            queryWhere = "\"stock_date\" =\'"+str(stockdate)+"\'and \"ticker\" = \'"+str(ticker)+"\'"
-
-            if len(self.__db.selectData(querySelect,queryTable,queryWhere)) == 0:
+            if len(db.selectData(conn,query)) == 0:
                 
-                queryTable = "daily_stock(\"stock_date\", \"ticker\", \"open_price\", \"high_price\", \"low_price\", \"close_price\", \"volume\") "
-                queryValue = "(\'"+str(stockdate)+"\',\'"+str(ticker)+"\',"+openprice+","+highprice+","+lowprice+","+closeprice+","+tradingvolume+")"
-                self.__db.insertIntoDataToTable(queryTable,queryValue)
-                res = ticker
+                query = "insert into daily_stock(\"stock_date\", \"ticker\", \"open_price\", \"high_price\", \"low_price\", \"close_price\", \"volume\") "
+                query += "values(\'"+str(stockdate)+"\',\'"+str(ticker)+"\',"+openprice+","+highprice+","+lowprice+","+closeprice+","+tradingvolume+")"
+                
+                db.insertIntoData(conn,query)
+                res.append(ticker)
 
+        db.putConn(conn)
         return res
 
 
-    def setDBAllDailyStock(self):
-        tickers = self.getAllTickerFromDB()
-        dailyDatas = self.getKRStockDaily(tickers)
-        info = self.sendKRStockDaily(tickers,dailyDatas)
-        print(info)
-        return "123"
-    
-    def setDBAllStock(self):
-        test = self.getKRStockCodeAll()
-        info = self.sendKRStockCodeAll(test)
-        return info
 
-
-
-if __name__ == "__main__":
-    data = CPricePykrx()
-    test = data.setDBAllStock()
-    print(test)
     
 
 
