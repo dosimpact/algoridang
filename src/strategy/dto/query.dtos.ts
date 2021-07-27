@@ -28,12 +28,15 @@ export class GetStrategyByIdOutput extends CoreOutput {
 }
 
 // (GET) getMyStrategyListById(5) 나의 전략 조회(리스트)
-export class GetMyStrategyListByIdInput {}
-export class GetMyStrategyListByIdOutput extends CoreOutput {
+export class GetMyStrategyListInput {
+  email_id: string;
+}
+export class GetMyStrategyListOutput extends CoreOutput {
   memberStrategyList?: MemberStrategy[];
 }
 // (GET) getMyStrategyById(6) 나의 전략 조회
 export class GetMyStrategyByIdInput {
+  email_id: string;
   strategy_code: number;
 }
 export class GetMyStrategyByIdOutput extends CoreOutput {

@@ -10,22 +10,44 @@ import {
 import { StrategyService } from './strategy.service';
 import { CreateStrategyDto } from './dto/create-strategy.dto';
 import { UpdateStrategyDto } from './dto/update-strategy.dto';
+import { AuthUser } from 'src/auth/auth.decorator';
+import { MemberInfo } from 'src/member/entities';
 
-@Controller('strategy')
+@Controller('/api/strategy/')
 export class StrategyController {
   constructor(private readonly strategyService: StrategyService) {}
   // (GET) getStrategyListNew	(1) 신규 투자 전략 API
-  async getStrategyListNew() {}
+  @Get('getStrategyListNew')
+  async getStrategyListNew() {
+    return this.strategyService.getStrategyListNew({});
+  }
   // (GET) getStrategyListHighView (2) 조회수 높은 투자 전략 API
-  async getStrategyListHighView() {}
+  @Get('getStrategyListHighView')
+  async getStrategyListHighView() {
+    return this.strategyService.getStrategyListHighView({});
+  }
   // (GET) getStrategyListType(3) 위험추구/중립형/수익안정형 API
-  async getStrategyListType() {}
+  @Get('getStrategyListType')
+  async getStrategyListType() {
+    return this.strategyService.getStrategyListType({});
+  }
   // (GET) getStrategyById	(4)특정 Id로 전략 조회
-  async getStrategyById() {}
+  @Get('getStrategyById/:strategy_code')
+  async getStrategyById(@Param('strategy_code') strategy_code) {
+    return this.strategyService.getStrategyById({ strategy_code });
+  }
   // (GET) getMyStrategyListById(5) 나의 전략 조회(리스트)
-  async getMyStrategyListById() {}
+  @Get('getMyStrategyListById')
+  async getMyStrategyListById(@AuthUser() MemberInfo: MemberInfo) {
+    return this.strategyService.getMyStrategyList({
+      email_id: MemberInfo.email_id,
+    });
+  }
   // (GET) getMyStrategyById(6) 나의 전략 조회
-  async getMyStrategyById() {}
+  @Get('getMyStrategyById')
+  async getMyStrategyById(@AuthUser() MemberInfo) {
+    return this.strategyService.getMyStrategyById(MemberInfo);
+  }
 
   // (POST) createMyStrategy	(1) 전략 만들기
   async createMyStrategy() {}

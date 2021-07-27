@@ -6,8 +6,8 @@ import { UpdateStrategyDto } from './dto/update-strategy.dto';
 import {
   GetMyStrategyByIdInput,
   GetMyStrategyByIdOutput,
-  GetMyStrategyListByIdInput,
-  GetMyStrategyListByIdOutput,
+  GetMyStrategyListInput,
+  GetMyStrategyListOutput,
   GetStrategyByIdInput,
   GetStrategyByIdOutput,
   GetStrategyListHighViewInput,
@@ -120,7 +120,7 @@ export class StrategyService {
     getStrategyListType: GetStrategyListTypeInput,
   ): Promise<GetStrategyListTypeOutput> {
     try {
-      const [Neutral, RiskTaking, StableIncome, Unclassified] =
+      const [Unclassified, StableIncome, Neutral, RiskTaking] =
         await Promise.all(
           Object.keys(InvestType).map(async (type) => {
             const memberStrategyList = await this.MemberStrategyRepo.find({
@@ -141,10 +141,10 @@ export class StrategyService {
       return {
         ok: true,
         memberStrategyRecordList: {
+          Unclassified,
+          StableIncome,
           Neutral,
           RiskTaking,
-          StableIncome,
-          Unclassified,
         },
       };
     } catch (error) {
@@ -152,25 +152,66 @@ export class StrategyService {
     }
   }
   // (GET) getStrategyById	(4)특정 Id로 전략 조회
-  async getStrategyById(
-    getStrategyById: GetStrategyByIdInput,
-  ): Promise<GetStrategyByIdOutput> {
+  // 공개전략만 조회 가능
+  async getStrategyById({
+    strategy_code,
+  }: GetStrategyByIdInput): Promise<GetStrategyByIdOutput> {
     try {
+      const memberStrategy = await this.MemberStrategyRepo.findOneOrFail({
+        where: {
+          strategy_code,
+          open_yes_no: true,
+        },
+      });
+      return {
+        ok: true,
+        memberStrategy,
+      };
+    } catch (error) {
+      return {
+        ok: false,
+        error: 'getStrategyById fail, no one or not public ',
+      };
+    }
+  }
+  // (GET) getMyStrategyList(5) 나의 전략 조회(리스트)
+  async getMyStrategyList({
+    email_id,
+  }: GetMyStrategyListInput): Promise<GetMyStrategyListOutput> {
+    try {
+      const memberStrategyList = await this.MemberStrategyRepo.find({
+        where: {
+          operator_id: email_id,
+        },
+      });
+      return {
+        ok: true,
+        memberStrategyList,
+      };
     } catch (error) {
       return { ok: false };
     }
   }
-  // (GET) getMyStrategyListById(5) 나의 전략 조회(리스트)
-  async getMyStrategyListById(
-    getMyStrategyListById: GetMyStrategyListByIdInput,
-  ): Promise<GetMyStrategyListByIdOutput> {
-    return { ok: false };
-  }
   // (GET) getMyStrategyById(6) 나의 전략 조회
-  async getMyStrategyById(
-    getMyStrategyById: GetMyStrategyByIdInput,
-  ): Promise<GetMyStrategyByIdOutput> {
-    return { ok: false };
+  // 비공개 전략이더라도, 나는 볼 수 있다.
+  async getMyStrategyById({
+    email_id,
+    strategy_code,
+  }: GetMyStrategyByIdInput): Promise<GetMyStrategyByIdOutput> {
+    try {
+      const memberStrategyList = await this.MemberStrategyRepo.find({
+        where: {
+          operator_id: email_id,
+          strategy_code,
+        },
+      });
+      return {
+        ok: true,
+        memberStrategyList,
+      };
+    } catch (error) {
+      return { ok: false };
+    }
   }
 
   // 2. mutation

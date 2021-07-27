@@ -50,7 +50,7 @@ export class MemberStrategy {
   invest_type: InvestType;
 
   @IsString()
-  @Column({ default: '' })
+  @Column({ nullable: true })
   strategy_explanation: string;
 
   @IsBoolean()
@@ -66,7 +66,7 @@ export class MemberStrategy {
   open_yes_no: boolean;
 
   @IsString()
-  @Column({ type: 'varchar', length: 255, default: '' })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   image_url: string;
 
   @IsDate()
