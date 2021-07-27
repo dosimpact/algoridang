@@ -32,6 +32,7 @@ class CPricePykrx(object):
         if len(db.selectData(conn, query)) == 0:
             query = "insert into corporation( \"ticker\", \"corp_name\") values(\'"+ticker+"\',\'"+name+"\')"
             db.insertIntoData(conn,query)
+            conn.commit()
             db.putConn(conn)
             return " "+str(name)
         
@@ -84,6 +85,7 @@ class CPricePykrx(object):
                 query += "values(\'"+str(stockdate)+"\',\'"+str(ticker)+"\',"+openprice+","+highprice+","+lowprice+","+closeprice+","+tradingvolume+")"
                 
                 db.insertIntoData(conn,query)
+                conn.commit()
                 res.append(ticker)
 
         db.putConn(conn)
