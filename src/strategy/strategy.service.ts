@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { getConnection, Repository } from 'typeorm';
-import { CreateStrategyDto } from './dto/create-strategy.dto';
-import { UpdateStrategyDto } from './dto/update-strategy.dto';
 import {
   GetMyStrategyByIdInput,
   GetMyStrategyByIdOutput,

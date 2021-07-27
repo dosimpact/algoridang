@@ -9,8 +9,6 @@ import {
   SetMetadata,
 } from '@nestjs/common';
 import { StrategyService } from './strategy.service';
-import { CreateStrategyDto } from './dto/create-strategy.dto';
-import { UpdateStrategyDto } from './dto/update-strategy.dto';
 import { AuthUser, Roles } from 'src/auth/auth.decorator';
 import { MemberInfo } from 'src/member/entities';
 
