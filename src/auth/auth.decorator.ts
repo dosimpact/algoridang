@@ -1,5 +1,10 @@
-import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import {
+  createParamDecorator,
+  ExecutionContext,
+  SetMetadata,
+} from '@nestjs/common';
 import { MemberInfo } from 'src/member/entities';
+import { UserRole } from 'src/member/entities/member-info.entity';
 
 export const AuthUser = createParamDecorator(
   (data: unknown, context: ExecutionContext): MemberInfo => {
@@ -12,3 +17,6 @@ export const AuthUser = createParamDecorator(
     }
   },
 );
+
+export type AllowRoles = keyof typeof UserRole | 'Any';
+export const Roles = (roles: AllowRoles[]) => SetMetadata('roles', roles);

@@ -6,11 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  SetMetadata,
 } from '@nestjs/common';
 import { StrategyService } from './strategy.service';
 import { CreateStrategyDto } from './dto/create-strategy.dto';
 import { UpdateStrategyDto } from './dto/update-strategy.dto';
-import { AuthUser } from 'src/auth/auth.decorator';
+import { AuthUser, Roles } from 'src/auth/auth.decorator';
 import { MemberInfo } from 'src/member/entities';
 
 @Controller('/api/strategy/')
@@ -37,16 +38,24 @@ export class StrategyController {
     return this.strategyService.getStrategyById({ strategy_code });
   }
   // (GET) getMyStrategyListById(5) 나의 전략 조회(리스트)
-  @Get('getMyStrategyListById')
-  async getMyStrategyListById(@AuthUser() MemberInfo: MemberInfo) {
+  @Roles(['Any'])
+  @Get('getMyStrategyList')
+  async getMyStrategyList(@AuthUser() MemberInfo: MemberInfo) {
     return this.strategyService.getMyStrategyList({
       email_id: MemberInfo.email_id,
     });
   }
   // (GET) getMyStrategyById(6) 나의 전략 조회
-  @Get('getMyStrategyById')
-  async getMyStrategyById(@AuthUser() MemberInfo) {
-    return this.strategyService.getMyStrategyById(MemberInfo);
+  @Roles(['Any'])
+  @Get('getMyStrategyById/:strategy_code')
+  async getMyStrategyById(
+    @AuthUser() MemberInfo,
+    @Param('strategy_code') strategy_code,
+  ) {
+    return this.strategyService.getMyStrategyById({
+      strategy_code,
+      email_id: MemberInfo.email_id,
+    });
   }
 
   // (POST) createMyStrategy	(1) 전략 만들기

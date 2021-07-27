@@ -44,6 +44,7 @@ import { CustomTradingStrategy } from './trading/entities';
 import { UploadModule } from './upload/upload.module';
 import * as redisStore from 'cache-manager-redis-store';
 import { UploadedObject } from './upload/entities/uploaded-object.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -126,6 +127,7 @@ import { UploadedObject } from './upload/entities/uploaded-object.entity';
       ttl: +process.env.REDIS_API_CACHE_TTL, // 10초 캐슁
       // max: 3, // 3개의 key값 유지
     }),
+    AuthModule,
     FinanceModule,
     // UserModule,
     StrategyModule,
