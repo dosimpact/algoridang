@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useTodo } from "apollo/useTodoQueries";
+import { useTodo } from "states/apollo/useTodoQueries";
 
 const GqlPrac03 = () => {
   const [getTodo, { loading, data }] = useTodo();

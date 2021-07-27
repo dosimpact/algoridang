@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import useTodosNMain from "apollo/useTodoQueries";
+import useTodosNMain from "states/apollo/useTodoQueries";
 
 const GqlPrac04 = () => {
   const [getTodosNMain, { loading, data }] = useTodosNMain();

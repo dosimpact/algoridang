@@ -5,20 +5,34 @@ import theme from "styles/theme";
 import Router from "components/Router";
 import { RecoilRoot } from "recoil";
 import { ApolloProvider } from "@apollo/client";
-import { client } from "apollo/apollo";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { apolloClient } from "states/apollo/apollo";
 
 // - styles
 // GlobalStyles ( reset css + global css )
 // themeProvider
 
+// - react-query (REST server state 관리)
+// client
+
+// - apollo (GQL server state  관리 )
+// client
+
+// - recoil (client state 관리)
+// root
+
+const queryClient = new QueryClient();
+
 function App() {
   return (
     <ThemeProvider theme={theme}>
       <RecoilRoot>
-        <ApolloProvider client={client}>
-          <Router />
-          <GlobalStyles />
-        </ApolloProvider>
+        <QueryClientProvider client={queryClient}>
+          <ApolloProvider client={apolloClient}>
+            <Router />
+            <GlobalStyles />
+          </ApolloProvider>
+        </QueryClientProvider>
       </RecoilRoot>
     </ThemeProvider>
   );

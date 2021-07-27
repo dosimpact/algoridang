@@ -1,6 +1,6 @@
-import { useUpdateTodo } from "apollo/useTodoMutations";
-import { useTodo } from "apollo/useTodoQueries";
 import React, { useState } from "react";
+import { useUpdateTodo } from "states/apollo/useTodoMutations";
+import { useTodo } from "states/apollo/useTodoQueries";
 import { UpdateTodoInput } from "__generated__/globalTypes";
 
 // update todo

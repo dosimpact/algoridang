@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
-import { useCreateTodo } from "apollo/useTodoMutations";
-import { gql_QueryTodos } from "apollo/useTodoQueries";
+import { useCreateTodo } from "states/apollo/useTodoMutations";
+import { gql_QueryTodos } from "states/apollo/useTodoQueries";
 
 const GqlPrac05 = () => {
   const [content, setContent] = useState("");
