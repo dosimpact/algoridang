@@ -5,9 +5,9 @@ import StrategySearch from "../strategy-search/strategy-searchC";
 import { useHistory, useLocation } from "react-router-dom";
 
 const tabs = [
-  { title: <Badge dot>전략 탐색</Badge> },
+  { title: <Badge>종목 탐색</Badge> },
+  { title: <Badge text={"4"}>전략 탐색</Badge> },
   { title: <Badge text={"1"}>모의 투자</Badge> },
-  { title: "나의 정보" },
 ];
 
 const TabNavigationContainer = () => {
@@ -20,9 +20,9 @@ const TabNavigationContainer = () => {
   React.useEffect(() => {
     const checkInitLocation = () => {
       // console.log("checkInitLocation", location);
-      if (location.pathname.startsWith("/takers/strategy-search")) setPage(0);
+      if (location.pathname.startsWith("/takers/strategy-search")) setPage(1);
       // /takers/mock-invest 경로라면 tab=1 으로
-      if (location.pathname.startsWith("/takers/mock-invest")) setPage(1);
+      if (location.pathname.startsWith("/takers/mock-invest")) setPage(2);
     };
     checkInitLocation();
     return () => {};
@@ -35,9 +35,9 @@ const TabNavigationContainer = () => {
       // 뒤로가기를 눌렀을때, 각 탭에 맞는 page가 아니라면 변경해준다.
       // /takers 경로라면 유지
       // /takers/strategy-search 경로라면 tab=0 으로
-      if (e.pathname.startsWith("/takers/strategy-search")) setPage(0);
+      if (e.pathname.startsWith("/takers/strategy-search")) setPage(1);
       // /takers/mock-invest 경로라면 tab=1 으로
-      if (e.pathname.startsWith("/takers/mock-invest")) setPage(1);
+      if (e.pathname.startsWith("/takers/mock-invest")) setPage(2);
     });
     return unlisten;
   }, [history]);
