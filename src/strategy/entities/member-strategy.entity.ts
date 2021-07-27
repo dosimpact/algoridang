@@ -42,10 +42,6 @@ export class MemberStrategy {
   @Column({ type: 'varchar', length: 30 })
   strategy_name: string;
 
-  @IsDate()
-  @CreateDateColumn({ type: 'timestamptz' })
-  create_date: Date;
-
   @IsEnum(InvestType)
   @Column({ type: 'enum', enum: InvestType, default: InvestType.Unclassified })
   invest_type: InvestType;
@@ -55,7 +51,7 @@ export class MemberStrategy {
   strategy_explanation: string;
 
   @IsBoolean()
-  @Column()
+  @Column({ default: false })
   operation_yes_no: boolean; // 전략 탐색
 
   @IsBoolean()
@@ -63,12 +59,16 @@ export class MemberStrategy {
   alarm_setting: boolean;
 
   @IsBoolean()
-  @Column()
+  @Column({ default: false })
   open_yes_no: boolean;
 
   @IsString()
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 255, default: '' })
   image_url: string;
+
+  @IsDate()
+  @CreateDateColumn({ type: 'timestamptz' })
+  create_date: Date;
 
   @IsDate()
   @DeleteDateColumn({ type: 'timestamptz' })

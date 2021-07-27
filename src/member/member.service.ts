@@ -40,7 +40,7 @@ export class MemberService {
       const ok = MemberInfo.checkPassword(password);
       if (!ok) return { ok: false, error: '잘못된 비밀번호 입니다.' };
       const token = this.jwtService.sign({
-        id: MemberInfo.email_id,
+        email_id: MemberInfo.email_id,
       });
       return {
         ok: true,

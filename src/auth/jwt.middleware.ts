@@ -17,9 +17,9 @@ export class JwtMiddleWare implements NestMiddleware<Request, Response> {
       const token = req.headers['x-jwt'];
       try {
         const decoded = this.jwtService.verify(token.toString());
-        if (typeof decoded === 'object' && decoded.hasOwnProperty('id')) {
+        if (typeof decoded === 'object' && decoded.hasOwnProperty('email_id')) {
           const { ok, memberInfo } = await this.memberService.getMemberInfo({
-            email_id: decoded['id'],
+            email_id: decoded['email_id'],
           });
           if (ok) req['memberInfo'] = memberInfo;
         }

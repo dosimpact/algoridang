@@ -18,6 +18,7 @@ export class StrategyService {
     StockList: Repository<StockList>,
   ) {}
 
+  // 1. query
   // (GET) getStrategyListNew	(1) 신규 투자 전략 API
   async getStrategyListNew() {}
   // (GET) getStrategyListHighView (2) 조회수 높은 투자 전략 API
@@ -31,6 +32,7 @@ export class StrategyService {
   // (GET) getMyStrategyById(6) 나의 전략 조회
   async getMyStrategyById() {}
 
+  // 2. mutation
   // (POST) createMyStrategy	(1) 전략 만들기
   async createMyStrategy() {}
   // (POST) updateMyStrategyById		(2) 나의 전략 업데이트
@@ -41,6 +43,6 @@ export class StrategyService {
   async recoverStrategyById() {}
   // (POST) noticeMyStrategyById		(5) 나의 전략 알림기능
   async noticeMyStrategyById() {}
-  // (POST) copyStrategy	id		(1) 투자 전략 복사  ( API )
+  // (POST) copyStrategy	id		(6) 투자 전략 복사  ( API )
   async copyStrategy() {}
 }
