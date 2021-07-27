@@ -1,11 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button, WhiteSpace, WingBlank } from "antd-mobile";
-
+import useMember from "states/react-query/useMember";
 // todo : makers, takers 선택 저장하기
 const LandingPage = () => {
+  const { logIn, memberInfo } = useMember();
+  console.log("memberInfo", memberInfo);
+
   return (
     <WingBlank>
+      <Button
+        onClick={() => {
+          logIn({ email_id: "test@test.com", password: "test" });
+        }}
+      >
+        login
+      </Button>
       <WhiteSpace />
       <h1 style={{ fontSize: "20px" }}>알고리당에 오신것을 환영합니다.</h1>
       <WhiteSpace />

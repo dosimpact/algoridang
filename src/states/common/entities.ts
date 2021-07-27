@@ -8,5 +8,7 @@ export interface MemberInfo {
   password?: string;
   member_name?: string;
   role?: UserRole;
+
+  // client state
   token?: string;
 }

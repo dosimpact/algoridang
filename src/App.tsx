@@ -6,6 +6,7 @@ import Router from "components/Router";
 import { RecoilRoot } from "recoil";
 import { ApolloProvider } from "@apollo/client";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 import { apolloClient } from "states/apollo/apollo";
 
 // - styles
@@ -32,6 +33,7 @@ function App() {
             <Router />
             <GlobalStyles />
           </ApolloProvider>
+          <ReactQueryDevtools initialIsOpen={true} />
         </QueryClientProvider>
       </RecoilRoot>
     </ThemeProvider>

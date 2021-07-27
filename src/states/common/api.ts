@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getLocalMemberInfo } from "states/local-state";
-import { loginMemberInfo, meOutput } from "./dtos";
+import { meOutput, loginMemberInfoInput, loginMemberInfoOutput } from "./dtos";
 
 // base setttings ,  interceptors
 
@@ -8,7 +8,7 @@ axios.defaults.baseURL = process.env.REACT_APP_SERVER_URI;
 
 // jwt 토큰
 axios.interceptors.request.use(async (config) => {
-  if (!config.headers["x-jwt"]) {
+  if (!config.headers["x-jwt"] && getLocalMemberInfo()?.token) {
     config.headers["x-jwt"] = getLocalMemberInfo()?.token;
   }
   config.headers["Content-Type"] = "application/json";
@@ -22,8 +22,8 @@ export const memberApi = {
     me: async () => (await axios.get("member/me")).data as meOutput,
   },
   POST: {
-    loginMemberInfo: async () =>
-      (await axios.get("member/me")).data as loginMemberInfo,
+    loginMemberInfo: async (body: loginMemberInfoInput) =>
+      axios.post("member/login-member-info", body),
   },
   PATCH: {},
   DELETE: {},

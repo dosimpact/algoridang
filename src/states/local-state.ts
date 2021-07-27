@@ -5,7 +5,7 @@ export enum IItemsKeys {
 }
 
 export const getLocalMemberInfo = () =>
-  JSON.parse(localStorage.getItem(IItemsKeys.memberInfo) || "") as MemberInfo;
+  JSON.parse(localStorage.getItem(IItemsKeys.memberInfo) || "{}") as MemberInfo;
 
 export const setLocalMemberInfo = (memberInfo: MemberInfo) =>
   localStorage.setItem(IItemsKeys.memberInfo, JSON.stringify(memberInfo));
