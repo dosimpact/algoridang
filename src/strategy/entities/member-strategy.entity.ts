@@ -32,6 +32,9 @@ export enum InvestType {
   RiskTaking = 'RiskTaking', // 3 - 위험추구형
 }
 
+// (1) relation 가능한 string을 주고 싶다.
+export type MemberStrategyRelation = Array<keyof MemberStrategy | string>;
+
 @Entity({ name: 'member-strategy' })
 export class MemberStrategy {
   @IsNumber()
@@ -47,7 +50,7 @@ export class MemberStrategy {
   invest_type: InvestType;
 
   @IsString()
-  @Column()
+  @Column({ default: '' })
   strategy_explanation: string;
 
   @IsBoolean()

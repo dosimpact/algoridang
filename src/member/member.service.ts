@@ -17,15 +17,15 @@ export class MemberService {
     private readonly memberInfoRepo: Repository<MemberInfo>,
     private readonly jwtService: JwtService,
   ) {
-    // const test = async () => {
-    //   await this.memberInfoRepo.save(
-    //     this.memberInfoRepo.create({
-    //       email_id: 'test02@test.com',
-    //       password: 'test02',
-    //       member_name: '익명의 너구리',
-    //     }),
-    //   );
-    // };
+    const test = async () => {
+      await this.memberInfoRepo.save(
+        this.memberInfoRepo.create({
+          email_id: 'ypd03008@gmail.com',
+          password: 'ypd03008',
+          member_name: '익명의 ypd03008',
+        }),
+      );
+    };
     // test();
   }
 
