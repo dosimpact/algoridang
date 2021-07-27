@@ -32,7 +32,7 @@ class CPricePykrx(object):
         if len(db.selectData(conn, query)) == 0:
             query = "insert into corporation( \"ticker\", \"corp_name\") values(\'"+ticker+"\',\'"+name+"\')"
             db.insertIntoData(conn,query)
-            conn.commit()
+            conn.comiit()
             db.putConn(conn)
             return " "+str(name)
         

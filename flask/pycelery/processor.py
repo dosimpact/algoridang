@@ -154,3 +154,4 @@ def Test___backtestTestCode():
     res = bk.startbackTest(data['ticker'],data['investPrice'],data['startTime'],data['endTime'])
     
     return res
+

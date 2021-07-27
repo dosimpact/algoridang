@@ -8,7 +8,7 @@ import backtrader as bt
 from pandas import json_normalize
 
 
-from openAPI.DB import DB
+from openAPI.DB.DB import databasepool
 
 
 class SMACross(bt.Strategy):
@@ -71,31 +71,35 @@ class CBackTtrader(object):
 
 
     def getDBData(self,ticker, start, end = None):
-        DBClass = DB.psql()
-        querySelect = " stock_date, open_price, high_price, low_price, close_price, volume"
-        queryWhere = "\"ticker\" = \'"+ticker+"\' order by stock_date asc;"
-        df = DBClass.getDataFrameSelectQuery(querySelect,"daily_stock",queryWhere)
-       
-        df["stock_date"] = pd.to_datetime(df["stock_date"], format='%Y-%m-%d')
-        df = df.set_index("stock_date")
-        df = df.sort_values(by=['stock_date'], axis=0, ascending=True)
+        DBClass = databasepool()
+        conn = DBClass.getConn()
+        if DBClass:
+            query = "select stock_date, open_price, high_price, low_price, close_price, volume from daily_stock"
+            query += " where \"ticker\" = \'"+ticker+"\' order by stock_date asc;"
+            
+            df = DBClass.selectDataframe(conn,query)
+            df["stock_date"] = pd.to_datetime(df["stock_date"], format='%Y-%m-%d')
+            df = df.set_index("stock_date")
+            df = df.sort_values(by=['stock_date'], axis=0, ascending=True)
 
-        df.rename(columns={
-            "open_price":"Open"	,
-            "high_price":"High"	,
-            "low_price":"Low",
-            "close_price":'Close'	,
-            "volume":"Volume"
-        },inplace = True)
+            df.rename(columns={
+                "open_price":"Open"	,
+                "high_price":"High"	,
+                "low_price":"Low",
+                "close_price":'Close'	,
+                "volume":"Volume"
+            },inplace = True)
 
-        res = []
-        if end == None or end == '':
-            res = df[str(pd.to_datetime(start, format='%Y-%m-%d')) : ]
-        else:
-            res = df[str(pd.to_datetime(start, format='%Y-%m-%d')) :str(pd.to_datetime(end, format='%Y-%m-%d')) ]
+            res = []
+            if end == None or end == '':
+                res = df[str(pd.to_datetime(start, format='%Y-%m-%d')) : ]
+            else:
+                res = df[str(pd.to_datetime(start, format='%Y-%m-%d')) :str(pd.to_datetime(end, format='%Y-%m-%d')) ]
 
-        return res
+            DBClass.putConn(conn)
 
+            return res
+        return "error"
 
     def startbackTest(self,tickerList, cash, startTime, endTime= None):
         if type(tickerList) is list:   

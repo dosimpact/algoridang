@@ -64,7 +64,16 @@ class databasepool(object):
             return rows
         return "error"
 
+    def selectDataframe(self, ps_connection, query):
+        
+        if (ps_connection):
+            
+            ps_cursor = ps_connection.cursor()
+            df = pandsql.read_sql(query,ps_connection)
+            ps_cursor.close()
 
+            return df
+        return "error"
 dbinit = databasepool()
 
 
