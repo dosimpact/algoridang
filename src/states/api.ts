@@ -1,6 +1,10 @@
 import axios from "axios";
 import { getLocalMemberInfo } from "states/local-state";
-import { meOutput, loginMemberInfoInput, loginMemberInfoOutput } from "./dtos";
+import {
+  meOutput,
+  loginMemberInfoInput,
+  loginMemberInfoOutput,
+} from "./dtos/memberInfo.dtos";
 
 // base setttings ,  interceptors
 
@@ -30,3 +34,13 @@ export const memberApi = {
 };
 
 // (2) strategy api
+
+export const strategyApi = {
+  GET: {
+    me: async () =>
+      (await axios.get("strategy/getStrategyListNew")).data as meOutput,
+  },
+  POST: {},
+  PATCH: {},
+  DELETE: {},
+};

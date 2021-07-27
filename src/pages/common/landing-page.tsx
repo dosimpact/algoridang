@@ -11,7 +11,10 @@ const LandingPage = () => {
     <WingBlank>
       <Button
         onClick={() => {
-          logIn({ email_id: "test@test.com", password: "test" });
+          logIn({
+            email_id: "ypd03008@gmail.com",
+            password: "ypd03008",
+          });
         }}
       >
         login
