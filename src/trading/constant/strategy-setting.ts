@@ -33,7 +33,7 @@ export type SettingJSON = Partial<StrategyValue>;
 //   },
 // };
 
-// const SettingJSONGolden1: SettingJSON1 = {
-//   name: 'GoldenCross',
-//   setting: { GoldenCross: { SMA_A: 2, SMA_B: 1 } },
-// };
+const SettingJSONGolden1: SettingJSONFull = {
+  name: 'GoldenCross',
+  setting: { GoldenCross: { pfast: 2, pslow: 1 } },
+};

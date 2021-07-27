@@ -14,6 +14,7 @@ import { CustomTradingStrategy } from 'src/trading/entities/custom_trading_strat
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -46,7 +47,7 @@ export class MemberStrategy {
   create_date: Date;
 
   @IsEnum(InvestType)
-  @Column({ type: 'enum', enum: InvestType, default: InvestType.Neutral })
+  @Column({ type: 'enum', enum: InvestType, default: InvestType.Unclassified })
   invest_type: InvestType;
 
   @IsString()
@@ -55,15 +56,11 @@ export class MemberStrategy {
 
   @IsBoolean()
   @Column()
-  operation_yes_no: boolean;
+  operation_yes_no: boolean; // 전략 탐색
 
   @IsBoolean()
-  @Column()
+  @Column({ default: false })
   alarm_setting: boolean;
-
-  @IsBoolean()
-  @Column()
-  investment_game_invest_delete_yes_no: boolean;
 
   @IsBoolean()
   @Column()
@@ -72,6 +69,10 @@ export class MemberStrategy {
   @IsString()
   @Column({ type: 'varchar', length: 255 })
   image_url: string;
+
+  @IsDate()
+  @DeleteDateColumn({ type: 'timestamptz' })
+  deleteAt: Date;
 
   // 1:1 관계
 
