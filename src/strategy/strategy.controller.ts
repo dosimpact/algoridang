@@ -1,10 +1,11 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, UseInterceptors } from '@nestjs/common';
 import { StrategyService } from './strategy.service';
 import { AuthUser, Roles } from 'src/auth/auth.decorator';
-import { MemberInfo } from 'src/member/entities';
+import { HttpBodyCacheInterceptor } from 'src/common/service/HttpCacheInterceptor';
 
+@UseInterceptors(HttpBodyCacheInterceptor)
 @Controller('/api/strategy/')
-export class StrategyController {
+export class StrategyQueryController {
   constructor(private readonly strategyService: StrategyService) {}
   // (GET) getStrategyListNew	(1) 신규 투자 전략 API
   @Get('getStrategyListNew')
@@ -46,6 +47,11 @@ export class StrategyController {
       email_id: MemberInfo.email_id,
     });
   }
+}
+
+@Controller('/api/strategy/')
+export class StrategyMutationController {
+  constructor(private readonly strategyService: StrategyService) {}
 
   // (POST) createMyStrategy	(1) 전략 만들기
   async createMyStrategy() {}

@@ -1,7 +1,7 @@
 import { PickType } from '@nestjs/graphql';
 import { IsString } from 'class-validator';
 import { CoreOutput, CorePaginationOutput } from 'src/common/dtos/output.dto';
-import { LookupMemberList, MemberInfo } from '../entities';
+import { LookupMemberList, MemberInfo, OperationMemberList } from '../entities';
 
 // (1) 로그인
 export class LoginMemberInfoInput extends PickType(MemberInfo, [
@@ -33,11 +33,20 @@ export class GetMemberInfoListOutput extends CorePaginationOutput {
   memberInfos?: MemberInfo[];
 }
 
+// () 전략 운용 회원 매핑 테이블 도회
+export class GetOperationMemberListInput {
+  strategy_code: number;
+  operation_customer_id: string;
+}
+export class GetOperationMemberListOutput extends CoreOutput {
+  operationMemberList?: OperationMemberList[];
+}
+
 // () 조회 회원 매핑 테이블 도회
-export class getLookupMemberListInput {
+export class GetLookupMemberListInput {
   strategy_code: number;
   lookup_customer_id: string;
 }
-export class getLookupMemberListOutput extends CoreOutput {
+export class GetLookupMemberListOutput extends CoreOutput {
   lookupMemberList?: LookupMemberList[];
 }

@@ -211,6 +211,13 @@ export class StrategyService {
           strategy_code,
           open_yes_no: true,
         },
+        relations: [
+          'hashList',
+          'hashList.hash',
+          'investProfitInfo',
+          'backtestDetailInfo',
+          'operationMemberList',
+        ],
       });
       return {
         ok: true,
@@ -238,6 +245,13 @@ export class StrategyService {
           },
           skip,
           take,
+          relations: [
+            'hashList',
+            'hashList.hash',
+            'investProfitInfo',
+            'backtestDetailInfo',
+            'operationMemberList',
+          ],
         });
       return {
         ok: true,
@@ -262,6 +276,13 @@ export class StrategyService {
           operator_id: email_id,
           strategy_code,
         },
+        relations: [
+          'hashList',
+          'hashList.hash',
+          'investProfitInfo',
+          'backtestDetailInfo',
+          'operationMemberList',
+        ],
       });
       return {
         ok: true,
@@ -316,6 +337,7 @@ export class StrategyService {
           ...strategy.investProfitInfo,
         }),
       );
+      newStrategy.investProfitInfo = newInvestInfo;
       // (3) 해쉬 태그 리스트 생성
       const tagIdList = await this.__upsertHashTags(strategy.tags);
       // 해쉬 태그 매핑 테이블 생성
@@ -330,6 +352,16 @@ export class StrategyService {
           );
         }),
       );
+      // (4) 전략 얻어보기
+      const memberStrategy = (
+        await this.getStrategyById({
+          strategy_code: newStrategy.strategy_code,
+        })
+      ).memberStrategy;
+      return {
+        ok: true,
+        memberStrategy,
+      };
     } catch (error) {
       this.logger.error(error);
       return { ok: false };

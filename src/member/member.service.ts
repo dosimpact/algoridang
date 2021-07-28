@@ -1,11 +1,18 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from 'src/auth/jwt.service';
+import { CoreOutput } from 'src/common/dtos/output.dto';
 import { StrategyService } from 'src/strategy/strategy.service';
 import { Repository } from 'typeorm';
 import {
-  getLookupMemberListInput,
-  getLookupMemberListOutput,
+  GetLookupMemberListInput,
+  GetLookupMemberListOutput,
+  GetMemberInfoListInput,
+  GetMemberInfoListOutput,
+  GetOperationMemberListInput,
+  GetOperationMemberListOutput,
+  MeInput,
+  MeOutput,
   GetMemberInfoInput,
   GetMemberInfoOutput,
   LoginMemberInfoInput,
@@ -83,7 +90,7 @@ export class MemberService {
   async getLookupMemberList({
     lookup_customer_id,
     strategy_code,
-  }: getLookupMemberListInput): Promise<getLookupMemberListOutput> {
+  }: GetLookupMemberListInput): Promise<GetLookupMemberListOutput> {
     try {
       const lookupMemberList = await this.lookupMemberListRepo.find({
         where: {
@@ -104,31 +111,88 @@ export class MemberService {
   async upsertLookupMember(
     strategy_code: number,
     email_id: string,
-  ): Promise<boolean> {
+  ): Promise<CoreOutput> {
+    const lookup_customer_id = email_id;
     try {
       // 사용자와 전략이 존재하고, 조회회원 목록이 없다면
       if (
-        (await this.strategyService.getStrategyById({ strategy_code })).ok ===
-          true &&
-        (await this.getMemberInfo({ email_id })).ok === true &&
-        (
-          await this.getLookupMemberList({
-            lookup_customer_id: email_id,
-            strategy_code,
-          })
-        ).ok === false
+        (await this.strategyService.getStrategyById({ strategy_code })).ok &&
+        (await this.getMemberInfo({ email_id })).ok &&
+        (await this.getLookupMemberList({ lookup_customer_id, strategy_code }))
+          .ok === false
       ) {
-        await this.getLookupMemberList({
-          lookup_customer_id: email_id,
-          strategy_code,
-        });
+        await this.lookupMemberListRepo.save(
+          this.lookupMemberListRepo.create({
+            lookup_customer_id,
+            strategy_code,
+          }),
+        );
+        return { ok: true };
+      } else {
+        return { ok: false };
       }
       // await Promise.all();
       // 추가
     } catch (error) {
-      return false;
-      // this.logger.error(error);
-      // throw new Error('__upsertLookup error');
+      this.logger.error(error);
+      return { ok: false };
+    }
+  }
+  // 전략 가동 매핑 테이블을 찾는다.
+  async getOperationMemberList({
+    operation_customer_id,
+    strategy_code,
+  }: GetOperationMemberListInput): Promise<GetOperationMemberListOutput> {
+    try {
+      const operationMemberList = await this.operationMemberListRepo.find({
+        where: {
+          operation_customer_id,
+          strategy_code,
+        },
+      });
+      return {
+        ok: true,
+        operationMemberList,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return { ok: false };
+    }
+  }
+
+  // 특정 전략을 운용하는 회원을 추가한다.
+  async upsertOperationMember(
+    strategy_code: number,
+    email_id: string,
+  ): Promise<CoreOutput> {
+    const operation_customer_id = email_id;
+    try {
+      // 사용자와 전략이 존재하고, 구동 회원 목록이 없다면
+      if (
+        (await this.strategyService.getStrategyById({ strategy_code })).ok &&
+        (await this.getMemberInfo({ email_id })).ok &&
+        (
+          await this.getOperationMemberList({
+            operation_customer_id,
+            strategy_code,
+          })
+        ).ok === false
+      ) {
+        await this.operationMemberListRepo.save(
+          this.operationMemberListRepo.create({
+            operation_customer_id,
+            strategy_code,
+          }),
+        );
+        return { ok: true };
+      } else {
+        return { ok: false };
+      }
+      // await Promise.all();
+      // 추가
+    } catch (error) {
+      this.logger.error(error);
+      return { ok: false };
     }
   }
 }
