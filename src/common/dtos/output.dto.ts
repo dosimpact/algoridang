@@ -18,8 +18,8 @@ export class CorePaginationOutput {
   error?: string;
 
   @Field(() => Int, { nullable: true })
-  totalPage: number;
+  totalPage?: number;
 
   @Field(() => Int, { nullable: true })
-  totalResult: number;
+  totalResult?: number;
 }

@@ -1,6 +1,12 @@
 import { IsNumber } from 'class-validator';
 import { MemberStrategy } from 'src/strategy/entities';
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'backtest_detail_info' })
 export class BacktestDetailInfo {
@@ -36,5 +42,6 @@ export class BacktestDetailInfo {
   strategy_code: number;
 
   @OneToOne(() => MemberStrategy, (ms) => ms.backtestDetailInfo)
+  @JoinColumn({ name: 'strategy_code' })
   strategy: MemberStrategy;
 }

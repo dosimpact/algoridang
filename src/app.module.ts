@@ -74,7 +74,7 @@ import { AuthModule } from './auth/auth.module';
         },
       }),
       synchronize: true,
-      logging: true,
+      logging: false,
       entities: [
         ...[
           // finance (4/4)

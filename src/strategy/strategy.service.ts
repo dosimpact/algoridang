@@ -30,13 +30,12 @@ import {
   UpdateMyStrategyByIdOutput,
 } from './dto/mutation.dtos';
 import { Hash, HashList, MemberStrategy, StockList } from './entities';
-import {
-  InvestType,
-  MemberStrategyRelation,
-} from './entities/member-strategy.entity';
+import { InvestType } from './entities/member-strategy.entity';
+import { Logger } from '@nestjs/common';
 
 @Injectable()
 export class StrategyService {
+  private readonly logger = new Logger(StrategyService.name);
   constructor(
     @InjectRepository(Hash)
     private readonly HashRepo: Repository<Hash>,
@@ -48,22 +47,20 @@ export class StrategyService {
     private readonly StockListRepo: Repository<StockList>,
   ) {
     const test = async () => {
-      Object.keys(InvestType).map(async (type) => {
-        console.log(InvestType[type]);
-
-        // const memberStrategyList = await this.MemberStrategyRepo.find({
-        //   order: {
-        //     create_date: 'DESC',
-        //   },
-        //   where: {
-        //     invest_type: InvestType[type],
-        //   },
-        //   relations: ['operationMemberList'],
-        //   // join: { innerJoin: ['operationMemberList'] },
-        // });
-        // console.log(JSON.stringify(memberStrategyList, null, 4));
-      });
-
+      // Object.keys(InvestType).map(async (type) => {
+      // console.log(InvestType[type]);
+      // const memberStrategyList = await this.MemberStrategyRepo.find({
+      //   order: {
+      //     create_date: 'DESC',
+      //   },
+      //   where: {
+      //     invest_type: InvestType[type],
+      //   },
+      //   relations: ['operationMemberList'],
+      //   // join: { innerJoin: ['operationMemberList'] },
+      // });
+      // console.log(JSON.stringify(memberStrategyList, null, 4));
+      // });
       // const res = await this.MemberStrategyRepo.createQueryBuilder(
       //   'member-strategy',
       // )
@@ -76,33 +73,49 @@ export class StrategyService {
 
   // 1. query
   // (GET) getStrategyListNew	(1) 신규 투자 전략 API
-  async getStrategyListNew(
-    getStrategyListNew: GetStrategyListNewInput,
-  ): Promise<GetStrategyListNewOutput> {
+  async getStrategyListNew({
+    skip = 0,
+    take = 10,
+  }: GetStrategyListNewInput): Promise<GetStrategyListNewOutput> {
     try {
-      const memberStrategyList = await this.MemberStrategyRepo.find({
-        order: {
-          create_date: 'DESC',
-        },
-      });
+      const [memberStrategyList, totalResult] =
+        await this.MemberStrategyRepo.findAndCount({
+          order: {
+            create_date: 'DESC',
+          },
+          relations: [
+            'hashList',
+            'hashList.hash',
+            'investProfitInfo',
+            'backtestDetailInfo',
+          ],
+          skip,
+          take,
+        });
       return {
         ok: true,
         memberStrategyList,
+        totalResult,
+        totalPage: Math.ceil(totalResult / take),
       };
     } catch (error) {
+      this.logger.error(error);
       return { ok: false };
     }
   }
   // (GET) getStrategyListHighView (2) 조회수 높은 투자 전략 API
-  async getStrategyListHighView(
-    getStrategyListHighView: GetStrategyListHighViewInput,
-  ): Promise<GetStrategyListHighViewOutput> {
+  async getStrategyListHighView({
+    skip = 0,
+    take = 5,
+  }: GetStrategyListHighViewInput): Promise<GetStrategyListHighViewOutput> {
     try {
       const memberStrategyList = await this.MemberStrategyRepo.find({
         order: {
           create_date: 'DESC',
         },
         relations: ['operationMemberList'],
+        skip,
+        take,
         // join: { innerJoin: ['operationMemberList'] },
       });
       memberStrategyList.sort(
@@ -110,9 +123,22 @@ export class StrategyService {
       );
       return { ok: true, memberStrategyList };
     } catch (error) {
+      this.logger.error(error);
       return { ok: false };
     }
   }
+  /*
+      SELECT 
+      A.strategy_code,
+      count(B)
+    FROM member_strategy as A
+    left join lookup_member_list as B 
+    on 
+      A.strategy_code =
+      B.strategy_code
+    group by A.strategy_code
+    ;
+  */
   // (GET) getStrategyListType(3) 위험추구/중립형/수익안정형 API
   async getStrategyListType(
     getStrategyListType: GetStrategyListTypeInput,
@@ -146,6 +172,7 @@ export class StrategyService {
         },
       };
     } catch (error) {
+      this.logger.error(error);
       return { ok: false, error: 'cannot get getStrategyListType' };
     }
   }
@@ -166,6 +193,7 @@ export class StrategyService {
         memberStrategy,
       };
     } catch (error) {
+      this.logger.error(error);
       return {
         ok: false,
         error: 'getStrategyById fail, no one or not public ',
@@ -187,6 +215,7 @@ export class StrategyService {
         memberStrategyList,
       };
     } catch (error) {
+      this.logger.error(error);
       return { ok: false };
     }
   }
@@ -208,6 +237,7 @@ export class StrategyService {
         memberStrategyList,
       };
     } catch (error) {
+      this.logger.error(error);
       return { ok: false };
     }
   }

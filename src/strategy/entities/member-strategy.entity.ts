@@ -33,7 +33,24 @@ export enum InvestType {
 }
 
 // (1) relation 가능한 string을 주고 싶다.
-export type MemberStrategyRelation = Array<keyof MemberStrategy | string>;
+export type MemberStrategyFullRelation = Array<
+  | keyof Pick<
+      MemberStrategy,
+      | 'investProfitInfo'
+      | 'backtestDetailInfo'
+      | 'backtestWinRatio'
+      | 'queueList'
+      | 'maker'
+      | 'operator'
+      | 'accumulateProfitRateChart'
+      | 'backtestMontlyProfitRateChart'
+      | 'operationMemberList'
+      | 'lookupMemberList'
+      | 'hashList'
+      | 'histories'
+      | 'stockList'
+    >
+>;
 
 @Entity({ name: 'member_strategy' })
 export class MemberStrategy {

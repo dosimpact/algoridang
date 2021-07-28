@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  SetMetadata,
-} from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { StrategyService } from './strategy.service';
 import { AuthUser, Roles } from 'src/auth/auth.decorator';
 import { MemberInfo } from 'src/member/entities';
@@ -38,7 +29,7 @@ export class StrategyController {
   // (GET) getMyStrategyListById(5) 나의 전략 조회(리스트)
   @Roles(['Any'])
   @Get('getMyStrategyList')
-  async getMyStrategyList(@AuthUser() MemberInfo: MemberInfo) {
+  async getMyStrategyList(@AuthUser() MemberInfo) {
     return this.strategyService.getMyStrategyList({
       email_id: MemberInfo.email_id,
     });
