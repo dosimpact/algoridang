@@ -41,7 +41,9 @@ export class BacktestDetailInfo {
   @IsNumber()
   strategy_code: number;
 
-  @OneToOne(() => MemberStrategy, (ms) => ms.backtestDetailInfo)
+  @OneToOne(() => MemberStrategy, (ms) => ms.backtestDetailInfo, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'strategy_code' })
   strategy: MemberStrategy;
 }

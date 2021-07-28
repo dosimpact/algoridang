@@ -271,7 +271,7 @@ export class StrategyService {
     strategy_code,
   }: GetMyStrategyByIdInput): Promise<GetMyStrategyByIdOutput> {
     try {
-      const memberStrategyList = await this.MemberStrategyRepo.find({
+      const memberStrategy = await this.MemberStrategyRepo.findOne({
         where: {
           operator_id: email_id,
           strategy_code,
@@ -286,7 +286,7 @@ export class StrategyService {
       });
       return {
         ok: true,
-        memberStrategyList,
+        memberStrategy,
       };
     } catch (error) {
       this.logger.error(error);
@@ -294,6 +294,7 @@ export class StrategyService {
     }
   }
   async __upsertHashTags(tags: string[]): Promise<number[]> {
+    if (!tags) return [];
     try {
       const __upsertHashTagsReuslt = await Promise.all(
         tags.map(async (tag) => {
@@ -329,6 +330,8 @@ export class StrategyService {
       const newStrategy = await this.MemberStrategyRepo.save(
         this.MemberStrategyRepo.create({
           ...strategy,
+          maker_id: email_id,
+          operator_id: email_id,
         }),
       );
       // (2) 투자 수익 정보 생성
@@ -340,7 +343,7 @@ export class StrategyService {
       );
       newStrategy.investProfitInfo = newInvestInfo;
       // (3) 해쉬 태그 리스트 생성
-      const tagIdList = await this.__upsertHashTags(strategy.tags);
+      const tagIdList = await this.__upsertHashTags(strategy?.tags);
       // 해쉬 태그 매핑 테이블 생성
       await Promise.all(
         tagIdList.map(async (tagId) => {
@@ -354,14 +357,15 @@ export class StrategyService {
         }),
       );
       // (4) 전략 얻어보기
-      const memberStrategy = (
-        await this.getStrategyById({
-          strategy_code: newStrategy.strategy_code,
-        })
-      ).memberStrategy;
+      const res = await this.getMyStrategyById({
+        email_id,
+        strategy_code: newStrategy.strategy_code,
+      });
+      if (!res.ok) throw new Error('cannot find getMyStrategyById');
+
       return {
         ok: true,
-        memberStrategy,
+        memberStrategy: res?.memberStrategy,
       };
     } catch (error) {
       this.logger.error(error);

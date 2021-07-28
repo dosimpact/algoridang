@@ -41,5 +41,5 @@ export class GetMyStrategyByIdInput {
   strategy_code: number;
 }
 export class GetMyStrategyByIdOutput extends CoreOutput {
-  memberStrategyList?: MemberStrategy[];
+  memberStrategy?: MemberStrategy;
 }

@@ -7,7 +7,9 @@ export class BacktestWinRatio {
   @PrimaryColumn()
   strategy_code: number;
 
-  @OneToOne(() => MemberStrategy, (ms) => ms.backtestWinRatio)
+  @OneToOne(() => MemberStrategy, (ms) => ms.backtestWinRatio, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'strategy_code' })
   strategy: MemberStrategy;
 

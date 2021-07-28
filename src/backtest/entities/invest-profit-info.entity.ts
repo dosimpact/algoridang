@@ -19,12 +19,13 @@ export class InvestProfitInfo {
 
   @IsNumber()
   @IsOptional()
-  @Column({ type: 'bigint', default: 10000000 })
+  @Column({ type: 'bigint', nullable: true })
   invest_price?: number; // 평가 금액 = 투자원금+총수익금
 
   @IsNumber()
-  @Column({ type: 'bigint' })
-  invest_principal: number; // 투자 원금
+  @IsOptional()
+  @Column({ type: 'bigint', default: 10000000 })
+  invest_principal?: number; // 투자 원금
 
   @IsNumber()
   @IsOptional()
@@ -55,7 +56,9 @@ export class InvestProfitInfo {
   @Column()
   strategy_code: number;
 
-  @OneToOne(() => MemberStrategy, (ms) => ms.investProfitInfo)
+  @OneToOne(() => MemberStrategy, (ms) => ms.investProfitInfo, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'strategy_code' })
   strategy: MemberStrategy;
 }
