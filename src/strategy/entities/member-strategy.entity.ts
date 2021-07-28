@@ -1,4 +1,10 @@
-import { IsBoolean, IsDate, IsEnum, IsNumber, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsDateString,
+  IsEnum,
+  IsNumber,
+  IsString,
+} from 'class-validator';
 import {
   AccumulateProfitRateChart,
   BacktestDetailInfo,
@@ -86,11 +92,11 @@ export class MemberStrategy {
   @Column({ type: 'varchar', length: 255, nullable: true })
   image_url: string;
 
-  @IsDate()
+  @IsDateString()
   @CreateDateColumn({ type: 'timestamptz' })
   create_date: Date;
 
-  @IsDate()
+  @IsDateString()
   @DeleteDateColumn({ type: 'timestamptz' })
   deleteAt: Date;
 

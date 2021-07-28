@@ -321,6 +321,7 @@ export class StrategyService {
   // 2. mutation
   // (POST) createMyStrategy	(1) 전략 만들기
   async createMyStrategy(
+    email_id: string,
     strategy: CreateMyStrategyInput,
   ): Promise<CreateMyStrategyOutput> {
     try {

@@ -1,10 +1,10 @@
-import { IsDate, IsNumber, IsString } from 'class-validator';
+import { IsDate, IsDateString, IsNumber, IsString } from 'class-validator';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import { Corporation } from './corporation.entity';
 
 @Entity({ name: 'daily_stock' })
 export class DailyStock {
-  @IsDate()
+  @IsDateString()
   @PrimaryColumn({ type: 'timestamptz' })
   stock_date: Date;
 

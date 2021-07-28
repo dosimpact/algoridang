@@ -1,4 +1,5 @@
-import { IsDate, IsNumber } from 'class-validator';
+import { InputType, ObjectType } from '@nestjs/graphql';
+import { IsDate, IsDateString, IsNumber, IsOptional } from 'class-validator';
 import { MemberStrategy } from 'src/strategy/entities';
 import {
   Column,
@@ -8,6 +9,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
+@InputType('InvestProfitInfo', { isAbstract: true })
+@ObjectType()
 @Entity({ name: 'invest_profit_info' })
 export class InvestProfitInfo {
   @IsNumber()
@@ -15,32 +18,37 @@ export class InvestProfitInfo {
   invest_profit_info_code: number;
 
   @IsNumber()
+  @IsOptional()
   @Column({ type: 'bigint', default: 10000000 })
-  invest_price: number; // 평가 금액 = 투자원금+총수익금
+  invest_price?: number; // 평가 금액 = 투자원금+총수익금
 
   @IsNumber()
   @Column({ type: 'bigint' })
   invest_principal: number; // 투자 원금
 
   @IsNumber()
+  @IsOptional()
   @Column({ type: 'bigint', nullable: true })
-  total_profit_price: number; //  총 수익금
+  total_profit_price?: number; //  총 수익금
 
   @IsNumber()
+  @IsOptional()
   @Column({ type: 'numeric', precision: 10, scale: 2, nullable: true })
-  profit_rate: number;
+  profit_rate?: number; // 수익률
 
   @IsNumber()
-  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
-  securities_corp_fee: number;
+  @IsOptional()
+  @Column({ type: 'decimal', precision: 10, scale: 2, default: 0.01 })
+  securities_corp_fee?: number; // 수수료
 
-  @IsDate()
+  @IsDateString()
   @Column({ type: 'timestamptz' })
   invest_start_date: Date;
 
-  @IsDate()
+  @IsDateString()
+  @IsOptional()
   @Column({ type: 'timestamptz', nullable: true })
-  invest_end_date: Date;
+  invest_end_date?: Date;
 
   // 1:N
   // (1) 대상 전략의 수익

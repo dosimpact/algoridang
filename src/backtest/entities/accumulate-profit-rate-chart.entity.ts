@@ -1,4 +1,4 @@
-import { IsDate, IsNumber } from 'class-validator';
+import { IsDate, IsDateString, IsNumber } from 'class-validator';
 import { MemberStrategy } from 'src/strategy/entities';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -12,7 +12,7 @@ export class AccumulateProfitRateChart {
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   profit_rate: number;
 
-  @IsDate()
+  @IsDateString()
   @Column({ type: 'timestamptz' })
   chart_rate: Date;
 

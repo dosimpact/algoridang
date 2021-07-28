@@ -1,29 +1,58 @@
-import { PartialType } from '@nestjs/graphql';
+import { InputType, PartialType } from '@nestjs/graphql';
+import { Type } from 'class-transformer';
+import {
+  IsBoolean,
+  IsDate,
+  IsEnum,
+  IsNumber,
+  IsObject,
+  IsOptional,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
+import { CreateInvestProfitInfoInput } from 'src/backtest/dto/mutation.dtos';
 import { CoreOutput } from 'src/common/dtos/output.dto';
 import { MemberStrategy } from '../entities';
 import { InvestType } from '../entities/member-strategy.entity';
 
 // (POST) createMyStrategy	(1) 전략 만들기
+@InputType()
 export class CreateMyStrategyInput {
-  email_id: string; // 사용자 아이디
-
+  @IsOptional()
+  @IsString({ each: true })
   tags?: string[]; //해쉬 태그들
 
+  @IsString()
   strategy_name: string;
-  invest_type: InvestType;
-  strategy_explanation: string;
-  operation_yes_no: boolean; // 전략 탐색
-  alarm_setting: boolean;
-  open_yes_no: boolean;
-  image_url: string;
 
-  investProfitInfo: {
-    invest_principal?: number; // 투자 원금
-    securities_corp_fee?: number;
-    invest_start_date: Date;
-    invest_end_date?: Date;
-  };
+  @IsOptional()
+  @IsEnum(InvestType)
+  invest_type?: InvestType;
+
+  @IsString()
+  strategy_explanation: string;
+
+  @IsOptional()
+  @IsBoolean()
+  operation_yes_no?: boolean; // 전략 탐색
+
+  @IsOptional()
+  @IsBoolean()
+  alarm_setting: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  open_yes_no?: boolean;
+
+  @IsOptional()
+  @IsString()
+  image_url?: string;
+
+  @ValidateNested()
+  @Type()
+  investProfitInfo: CreateInvestProfitInfoInput;
 }
+
 export class CreateMyStrategyOutput extends CoreOutput {
   memberStrategy?: MemberStrategy;
 }

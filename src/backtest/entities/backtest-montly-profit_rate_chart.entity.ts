@@ -1,4 +1,4 @@
-import { IsDate, IsNumber } from 'class-validator';
+import { IsDate, IsDateString, IsNumber } from 'class-validator';
 import { MemberStrategy } from 'src/strategy/entities';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -8,7 +8,7 @@ export class BacktestMontlyProfitRateChart {
   @PrimaryGeneratedColumn()
   backtest_monthly_profit_rate_chart_code: number;
 
-  @IsDate()
+  @IsDateString()
   @Column({ type: 'timestamptz' })
   chart_month: Date;
 

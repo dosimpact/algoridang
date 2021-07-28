@@ -1,5 +1,5 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { IsDate, IsNumber } from 'class-validator';
+import { IsDate, IsDateString, IsNumber } from 'class-validator';
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -17,17 +17,17 @@ export class CoreEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @IsDate()
+  @IsDateString()
   @Field(() => Date)
   @UpdateDateColumn({ type: 'timestamptz' }) // defaultType : withoutTZ(offset을 무시하겠다.)
   updateAt: Date;
 
-  @IsDate()
+  @IsDateString()
   @Field(() => Date)
   @CreateDateColumn({ type: 'timestamptz' })
   createAt: Date;
 
-  @IsDate()
+  @IsDateString()
   @Field(() => Date, { nullable: true })
   @DeleteDateColumn({ type: 'timestamptz' })
   deleteAt: Date;

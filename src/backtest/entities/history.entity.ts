@@ -1,4 +1,4 @@
-import { IsDate, IsNumber, IsString } from 'class-validator';
+import { IsDate, IsDateString, IsNumber, IsString } from 'class-validator';
 import { Corporation } from 'src/finance/entities';
 import { MemberStrategy } from 'src/strategy/entities';
 import {
@@ -15,7 +15,7 @@ export class History {
   @PrimaryGeneratedColumn()
   history_code: number;
 
-  @IsDate()
+  @IsDateString()
   @Column({ type: 'timestamptz' })
   history_date: Date;
 

@@ -1,4 +1,4 @@
-import { IsDate, IsNumber, IsString } from 'class-validator';
+import { IsDate, IsDateString, IsNumber, IsString } from 'class-validator';
 import { CoreEntity } from 'src/common/entities/core.entity';
 import {
   Column,
@@ -24,15 +24,15 @@ export class UploadedObject extends CoreEntity {
   @Column({ type: 'varchar' })
   url: string;
 
-  @IsDate()
+  @IsDateString()
   @UpdateDateColumn({ type: 'timestamptz' }) // defaultType : withoutTZ(offset을 무시하겠다.)
   updateAt: Date;
 
-  @IsDate()
+  @IsDateString()
   @CreateDateColumn({ type: 'timestamptz' })
   createAt: Date;
 
-  @IsDate()
+  @IsDateString()
   @DeleteDateColumn({ type: 'timestamptz' })
   deleteAt: Date;
 

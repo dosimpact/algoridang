@@ -1,4 +1,4 @@
-import { IsDate, IsNumber, IsString } from 'class-validator';
+import { IsDate, IsDateString, IsNumber, IsString } from 'class-validator';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import { Category } from './category.entity';
 import { Corporation } from './corporation.entity';
@@ -22,7 +22,7 @@ export class CategoryList {
   @JoinColumn({ name: 'category_code' })
   category: Category;
 
-  @IsDate()
+  @IsDateString()
   @Column()
   change_date: Date;
 }

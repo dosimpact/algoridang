@@ -1,7 +1,16 @@
-import { Controller, Get, Param, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  UseInterceptors,
+} from '@nestjs/common';
 import { StrategyService } from './strategy.service';
 import { AuthUser, Roles } from 'src/auth/auth.decorator';
 import { HttpBodyCacheInterceptor } from 'src/common/service/HttpCacheInterceptor';
+import { CreateMyStrategyInput } from './dto/mutation.dtos';
+import { MemberInfo } from 'src/member/entities';
 
 @UseInterceptors(HttpBodyCacheInterceptor)
 @Controller('/api/strategy/')
@@ -54,7 +63,16 @@ export class StrategyMutationController {
   constructor(private readonly strategyService: StrategyService) {}
 
   // (POST) createMyStrategy	(1) 전략 만들기
-  async createMyStrategy() {}
+  @Roles(['Any'])
+  @Post('createMyStrategy')
+  async createMyStrategy(
+    @AuthUser() member: MemberInfo,
+    @Body() createMyStrategy: CreateMyStrategyInput,
+  ) {
+    return this.strategyService.createMyStrategy(member.email_id, {
+      ...createMyStrategy,
+    });
+  }
   // (POST) updateMyStrategyById		(2) 나의 전략 업데이트
   async updateMyStrategyById() {}
   // (POST) deleteMyStrategyById	 	(3) 나의 전략 softdelete

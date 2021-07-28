@@ -1,4 +1,4 @@
-import { IsDate, IsNumber, IsString } from 'class-validator';
+import { IsDate, IsDateString, IsNumber, IsString } from 'class-validator';
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { CategoryList } from './category-list.entity';
 
@@ -12,7 +12,7 @@ export class Category {
   @Column({ length: 20 })
   category_name: string;
 
-  @IsDate()
+  @IsDateString()
   @Column({ type: 'timestamptz' })
   change_date: Date;
 
