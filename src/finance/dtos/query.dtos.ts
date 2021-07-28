@@ -1,3 +1,4 @@
+import { CorePaginationInput } from 'src/common/dtos/input.dto';
 import { CoreOutput } from 'src/common/dtos/output.dto';
 import { Corporation, DailyStock } from '../entities';
 
@@ -31,10 +32,10 @@ export class GetCorporationOutput extends CoreOutput {
 
 // (4)
 // 일봉 데이터 리턴
-export class GetDayilStocksInput {
+export class GetDayilStocksInput extends CorePaginationInput {
   term: string;
-  skip?: number;
-  take?: number;
+  // skip?: number;
+  // take?: number;
 }
 export class GetDayilStocksOutput extends CoreOutput {
   dailyStocks?: DailyStock[];

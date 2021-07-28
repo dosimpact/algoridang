@@ -35,7 +35,7 @@ export enum InvestType {
 // (1) relation 가능한 string을 주고 싶다.
 export type MemberStrategyRelation = Array<keyof MemberStrategy | string>;
 
-@Entity({ name: 'member-strategy' })
+@Entity({ name: 'member_strategy' })
 export class MemberStrategy {
   @IsNumber()
   @PrimaryGeneratedColumn({ type: 'bigint' })
