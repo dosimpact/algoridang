@@ -57,6 +57,8 @@ export class StrategyController {
   async recoverStrategyById() {}
   // (POST) noticeMyStrategyById		(5) 나의 전략 알림기능
   async noticeMyStrategyById() {}
-  // (POST) copyStrategy	id		(1) 투자 전략 복사  ( API )
+  // (POST) copyStrategy	id		(6) 투자 전략 복사  ( API )
   async copyStrategy() {}
+  // (POST) addLookupStrategy	id		(7) 투자 전략 조회자 추가  ( API )
+  async addLookupStrategy() {}
 }

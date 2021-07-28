@@ -1,8 +1,9 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { MemberService } from './member.service';
 import { MemberController } from './member.controller';
 import { LookupMemberList, MemberInfo, OperationMemberList } from './entities';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { StrategyModule } from 'src/strategy/strategy.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       LookupMemberList,
       OperationMemberList,
     ]),
+    forwardRef(() => StrategyModule),
   ],
   controllers: [MemberController],
   providers: [MemberService],

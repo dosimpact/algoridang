@@ -22,8 +22,8 @@ import {
   CreateMyStrategyOutput,
   DeleteMyStrategyByIdInput,
   DeleteMyStrategyByIdOutput,
-  MoticeMyStrategyByIdInput,
-  MoticeMyStrategyByIdOutput,
+  NoticeMyStrategyByIdInput,
+  NoticeMyStrategyByIdOutput,
   RecoverStrategyByIdInput,
   RecoverStrategyByIdOutput,
   UpdateMyStrategyByIdInput,
@@ -32,10 +32,13 @@ import {
 import { Hash, HashList, MemberStrategy, StockList } from './entities';
 import { InvestType } from './entities/member-strategy.entity';
 import { Logger } from '@nestjs/common';
+import { InvestProfitInfo } from 'src/backtest/entities';
+import { MemberService } from 'src/member/member.service';
 
 @Injectable()
 export class StrategyService {
   private readonly logger = new Logger(StrategyService.name);
+  private readonly hashReg = new RegExp(/(#[\d|\w|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*)/);
   constructor(
     @InjectRepository(Hash)
     private readonly HashRepo: Repository<Hash>,
@@ -45,8 +48,13 @@ export class StrategyService {
     private readonly MemberStrategyRepo: Repository<MemberStrategy>,
     @InjectRepository(StockList)
     private readonly StockListRepo: Repository<StockList>,
+    @InjectRepository(InvestProfitInfo)
+    private readonly investProfitInfoRepo: Repository<InvestProfitInfo>,
   ) {
     const test = async () => {
+      // console.log(
+      // await memberService.getMemberInfo({ email_id: 'ypd03008@gmail.com' }),
+      // );
       // Object.keys(InvestType).map(async (type) => {
       // console.log(InvestType[type]);
       // const memberStrategyList = await this.MemberStrategyRepo.find({
@@ -109,19 +117,30 @@ export class StrategyService {
     take = 5,
   }: GetStrategyListHighViewInput): Promise<GetStrategyListHighViewOutput> {
     try {
-      const memberStrategyList = await this.MemberStrategyRepo.find({
-        order: {
-          create_date: 'DESC',
-        },
-        relations: ['operationMemberList'],
-        skip,
-        take,
-        // join: { innerJoin: ['operationMemberList'] },
-      });
+      const [memberStrategyList, totalResult] =
+        await this.MemberStrategyRepo.findAndCount({
+          order: {
+            create_date: 'DESC',
+          },
+          relations: [
+            'hashList',
+            'hashList.hash',
+            'investProfitInfo',
+            'backtestDetailInfo',
+            'operationMemberList',
+          ],
+          // join: { innerJoin: ['operationMemberList'] },
+        });
       memberStrategyList.sort(
         (a, b) => b.operationMemberList.length - a.operationMemberList.length,
       );
-      return { ok: true, memberStrategyList };
+      memberStrategyList.slice(skip, skip + take);
+      return {
+        ok: true,
+        memberStrategyList,
+        totalResult,
+        totalPage: Math.ceil(totalResult / take),
+      };
     } catch (error) {
       this.logger.error(error);
       return { ok: false };
@@ -154,10 +173,15 @@ export class StrategyService {
               where: {
                 invest_type: InvestType[type],
               },
-              relations: ['operationMemberList'],
-              // join: { innerJoin: ['operationMemberList'] },
+              relations: [
+                'hashList',
+                'hashList.hash',
+                'investProfitInfo',
+                'backtestDetailInfo',
+                'operationMemberList',
+              ],
             });
-            console.log(JSON.stringify(memberStrategyList, null, 4));
+            // console.log(JSON.stringify(memberStrategyList, null, 4));
             return memberStrategyList;
           }),
         );
@@ -203,16 +227,23 @@ export class StrategyService {
   // (GET) getMyStrategyList(5) 나의 전략 조회(리스트)
   async getMyStrategyList({
     email_id,
+    skip = 0,
+    take = 20,
   }: GetMyStrategyListInput): Promise<GetMyStrategyListOutput> {
     try {
-      const memberStrategyList = await this.MemberStrategyRepo.find({
-        where: {
-          operator_id: email_id,
-        },
-      });
+      const [memberStrategyList, totalResult] =
+        await this.MemberStrategyRepo.findAndCount({
+          where: {
+            operator_id: email_id,
+          },
+          skip,
+          take,
+        });
       return {
         ok: true,
         memberStrategyList,
+        totalResult,
+        totalPage: Math.ceil(totalResult / take),
       };
     } catch (error) {
       this.logger.error(error);
@@ -241,18 +272,130 @@ export class StrategyService {
       return { ok: false };
     }
   }
+  async __upsertHashTags(tags: string[]): Promise<number[]> {
+    try {
+      const __upsertHashTagsReuslt = await Promise.all(
+        tags.map(async (tag) => {
+          if (this.hashReg.test(tag)) {
+            let hash = await this.HashRepo.findOne({
+              where: { hash_contents: tag },
+            });
+            if (hash) return hash.hash_code;
+            hash = await this.HashRepo.save(
+              this.HashRepo.create({ hash_contents: tag }),
+            );
+            return hash.hash_code;
+          } else {
+            return -1;
+          }
+        }),
+      );
+      return __upsertHashTagsReuslt;
+    } catch (error) {
+      this.logger.error(error);
+      throw new Error('__makeHashTags error');
+    }
+  }
 
   // 2. mutation
   // (POST) createMyStrategy	(1) 전략 만들기
-  async createMyStrategy() {}
+  async createMyStrategy(
+    strategy: CreateMyStrategyInput,
+  ): Promise<CreateMyStrategyOutput> {
+    try {
+      // (1) 전략 생성
+      const newStrategy = await this.MemberStrategyRepo.save(
+        this.MemberStrategyRepo.create({
+          ...strategy,
+        }),
+      );
+      // (2) 투자 수익 정보 생성
+      const newInvestInfo = await this.investProfitInfoRepo.save(
+        this.investProfitInfoRepo.create({
+          strategy_code: newStrategy.strategy_code,
+          ...strategy.investProfitInfo,
+        }),
+      );
+      // (3) 해쉬 태그 리스트 생성
+      const tagIdList = await this.__upsertHashTags(strategy.tags);
+      // 해쉬 태그 매핑 테이블 생성
+      await Promise.all(
+        tagIdList.map(async (tagId) => {
+          if (tagId === -1) return;
+          await this.HashListRepo.save(
+            this.HashListRepo.create({
+              hash_code: tagId,
+              strategy_code: newStrategy.strategy_code,
+            }),
+          );
+        }),
+      );
+    } catch (error) {
+      this.logger.error(error);
+      return { ok: false };
+    }
+  }
   // (POST) updateMyStrategyById		(2) 나의 전략 업데이트
-  async updateMyStrategyById() {}
+  async updateMyStrategyById(
+    updateMyStrategyByIdInput: UpdateMyStrategyByIdInput,
+  ): Promise<UpdateMyStrategyByIdOutput> {
+    try {
+      // (1) 전략 업데이트
+      // (2) 투자 수익 정보 업데이트
+    } catch (error) {
+      this.logger.error(error);
+      return { ok: false };
+    }
+  }
   // (POST) deleteMyStrategyById	 	(3) 나의 전략 softdelete
-  async deleteMyStrategyById() {}
+  async deleteMyStrategyById(
+    deleteMyStrategyByIdInput: DeleteMyStrategyByIdInput,
+  ): Promise<DeleteMyStrategyByIdOutput> {
+    try {
+      // 전략 soft delete
+      // 투자 수익 soft delete
+    } catch (error) {
+      this.logger.error(error);
+      return { ok: false };
+    }
+  }
   // (POST) recoverStrategyById		(4) (관리자) 나의 전략 recover
-  async recoverStrategyById() {}
+  async recoverStrategyById(
+    recoverStrategyByIdInput: RecoverStrategyByIdInput,
+  ): Promise<RecoverStrategyByIdOutput> {
+    try {
+      // 전략 검색 withDelete
+      // 전략 복구
+    } catch (error) {
+      this.logger.error(error);
+      return { ok: false };
+    }
+  }
   // (POST) noticeMyStrategyById		(5) 나의 전략 알림기능
-  async noticeMyStrategyById() {}
+  async noticeMyStrategyById(
+    noticeMyStrategyByIdInput: NoticeMyStrategyByIdInput,
+  ): Promise<NoticeMyStrategyByIdOutput> {
+    try {
+      // 전략 알림 기능 on/off
+    } catch (error) {
+      this.logger.error(error);
+      return { ok: false };
+    }
+  }
   // (POST) copyStrategy	id		(6) 투자 전략 복사  ( API )
-  async copyStrategy() {}
+  async copyStrategy(
+    copyStrategyOutput: CopyStrategyInput,
+  ): Promise<CopyStrategyOutput> {
+    try {
+      // 사용자 투자 전략 그대로 복제
+      // 하드 카피할 테이블 리스트
+      // 재설정 : 운용자 아이디, 무조건 비공개,
+      // 셋팅이 완료되면, 큐 요청을 flask에 한다.
+      // todo (큐 관련 모듈 제작 필요 )
+    } catch (error) {
+      this.logger.error(error);
+      return { ok: false };
+    }
+  }
+  async addLookupStrategy() {}
 }
