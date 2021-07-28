@@ -2,6 +2,7 @@ from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
 import json
+from backtrader import strategy
 import requests
 import pandas as pd
 import backtrader as bt
@@ -12,15 +13,14 @@ from openAPI.DB.DB import databasepool
 
 
 class SMACross(bt.Strategy):
-    params = dict( 
-        pfast=5, # period for the fast moving average 
-        pslow=20 # period for the slow moving average 
-    )
+    param = [ 5 , 20 ]
     def __init__(self):
-        sma1 = bt.ind.SMA(period=self.p.pfast) # fast moving average 
-        sma2 = bt.ind.SMA(period=self.p.pslow) # slow moving average 
+        sma1 = bt.ind.SMA(period=self.param[0]) # fast moving average 
+        sma2 = bt.ind.SMA(period=self.param[1]) # slow moving average 
         self.crossover = bt.ind.CrossOver(sma1, sma2) # crossover signal 
         self.holding = 0
+
+  
     def next(self): 
         if not self.position: # not in the market 
             if self.crossover > 0: # if fast crosses slow to the upside 
@@ -115,6 +115,8 @@ class CBackTtrader(object):
 
         cerebro.broker.set_coc(True)
         # Add a strategy
+        SMACross.pfast = 5
+        SMACross.pslow = 20
         cerebro.addstrategy(SMACross)
 
         #pandas data inpute
@@ -124,13 +126,68 @@ class CBackTtrader(object):
         print('Starting Portfolio Value: %.2f' % cerebro.broker.getvalue())
         cerebro.run()
         print('Final Portfolio Value: %.2f' % cerebro.broker.getvalue())
-        cerebro.plot()
+        #cerebro.plot()
 
         return cerebro.broker.getvalue()
 
+    def __setStrategy(self, startegyCode):
+        strategyList = []
+        DBClass = databasepool()
+        conn = DBClass.getConn()
+        if DBClass:
+            query = "select ms.strategy_code, sl.ticker, cts.trading_strategy_code,cts.setting_json \
+from \"member_strategy\" ms , \
+\"stock_list\" sl,\
+\"custom_trading_strategy\" cts  \
+where ms.strategy_code = sl.strategy_code  \
+and sl.trading_strategy_code = cts.trading_strategy_code  \
+and ms.strategy_code = 1;"
 
-if __name__ == "__main__":
-    backtest = CBackTtrader()
-    tickerList = ["005930"]
-    res = backtest.startbackTest(tickerList, 10000000,"20110101",)
-    print(res)
+            df = DBClass.selectDataframe(conn,query)
+            DBClass.putConn(conn)
+            print(df)
+            for index, row in df.iterrows():
+                if  row[2]== 1:
+                    setting = [row[3]['GoldenCross']['pfast'],row[3]['GoldenCross']['pslow']]
+                    strategyList.append(( row[1] , SMACross ,setting, 1)) 
+
+
+        return strategyList
+        #(ticker, strategy, setting , weigth)
+
+
+    def requestBacktest(self, data):
+        #data = {'ticker': '["005930","005930"]', 'startTime': '20110101', 'endTime': '', 'strategyCode': '1', 'investPrice': '10000000'}
+        
+        
+        #self.__setStrategy(data["strategyCode"])
+        case = (self.__setStrategy(data["strategyCode"]))
+        caseNum = len(case)
+        total = 0
+
+        for ticker , stg, setting, wgt in case:
+            cerebro = bt.Cerebro()
+            for i in range(len(stg.param)):
+                stg.param[i] = setting[i]
+
+            cerebro.broker.setcash(int(data['investPrice'])*wgt/caseNum)
+            
+            cerebro.broker.set_coc(True) # 구매 신청시 무조건 최대 금액으로 살 수 있음.
+            cerebro.addstrategy(stg)
+
+            #pandas data inpute
+            cerebro.adddata(bt.feeds.PandasData(dataname = self.getDBData(ticker,data['startTime'],data['endTime'])),name=ticker)
+            
+
+            print('Starting Portfolio Value: %.2f' % cerebro.broker.getvalue())
+            cerebro.run()
+            print('Final Portfolio Value: %.2f' % cerebro.broker.getvalue())
+            #cerebro.plot()
+            total += cerebro.broker.getvalue()
+
+
+        return total
+
+
+
+

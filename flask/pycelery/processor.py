@@ -87,11 +87,6 @@ def add(self, x, y):
         print(f"done task {self.request.id}")
         return x + y
 
-@process.task(bind = True, base = CoreTask)
-def backtestTaskCall(self,data):
-    with app.app_context():
-        print(data)
-        return 
 
 
 
@@ -138,20 +133,23 @@ def initDB_DailyStock(self):
 
 
 @process.task(bind=True, base=CoreTask)
-def backtestTestCode(data):
-    with app.app_context():
-        #data = {'ticker': '["005930","005930"]', 'startTime': '20110101', 'endTime': '', 'strategyCode': '0', 'investPrice': '10000000', 'tradingStrategyCode': '0', 'tradingStrategyDetailSettingCode': '0'}
-        #data = {'ticker': '005930', 'startTime': '20170101', 'endTime': '', 'strategyCode': '0', 'investPrice': '10000000', 'tradingStrategyCode': '0', 'tradingStrategyDetailSettingCode': '0'}
-        bk = backtesting.CBackTtrader()
-        res = bk.startbackTest(data['ticker'],data['investPrice'],data['startTime'],data['endTime'])
-        return res
+def backtestTaskCall(self,data):
+    #data = {'ticker': '["005930","005930"]', 'startTime': '20110101', 'endTime': '', 'strategyCode': '0', 'investPrice': '10000000', 'tradingStrategyCode': '0', 'tradingStrategyDetailSettingCode': '0'}
+    #data = {'ticker': '005930', 'startTime': '20170101', 'endTime': '', 'strategyCode': '0', 'investPrice': '10000000', 'tradingStrategyCode': '0', 'tradingStrategyDetailSettingCode': '0'}
+    bk = backtesting.CBackTtrader()
+    #res = bk.startbackTest(data['ticker'],data['investPrice'],data['startTime'],data['endTime'])
+    res = bk.requestBacktest(data)
+
+    return res
 
 
 def Test___backtestTestCode():
     #data = {'ticker': '["005930","005930"]', 'startTime': '20110101', 'endTime': '', 'strategyCode': '0', 'investPrice': '10000000', 'tradingStrategyCode': '0', 'tradingStrategyDetailSettingCode': '0'}
     data = {'ticker': '005930', 'startTime': '20170101', 'endTime': '', 'strategyCode': '0', 'investPrice': '10000000', 'tradingStrategyCode': '0', 'tradingStrategyDetailSettingCode': '0'}
     bk = backtesting.CBackTtrader()
-    res = bk.startbackTest(data['ticker'],data['investPrice'],data['startTime'],data['endTime'])
+    #res = bk.startbackTest(data['ticker'],data['investPrice'],data['startTime'],data['endTime'])
+    
+    res = bk.requestBacktest(data)
     
     return res
 

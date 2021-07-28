@@ -73,10 +73,8 @@ def backTestAPI():
         data["endTime"] = request.form["endTime"]
         data["strategyCode"] = request.form["strategyCode"]
         data["investPrice"] = request.form["investPrice"]
-        data["tradingStrategyCode"] = request.form["tradingStrategyCode"]
-        data["tradingStrategyDetailSettingCode"] = request.form["tradingStrategyDetailSettingCode"]
 
-        if not data["ticker"] or not data["strategyCode"] or not data["investPrice"] or not data["tradingStrategyCode"] or not data["tradingStrategyDetailSettingCode"]:
+        if not data["ticker"] or not data["strategyCode"] or not data["investPrice"] :
             return  jsonify({"ok": False, "error": "some required data is missing!"})
         if not data["startTime"]:
             data["startTime"] = "20110101"
@@ -112,8 +110,7 @@ def DBinitDailyStock():
 
 
 if __name__ == "__main__":
-    #app.run(host ='0.0.0.0',port = 3000)
-    print(processor.Test___backtestTestCode())
-    ###
+    app.run(host ='0.0.0.0',port = 3000)
+    #print(processor.Test___backtestTestCode())
 
     
