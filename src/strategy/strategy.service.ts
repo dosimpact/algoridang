@@ -33,12 +33,11 @@ import { Hash, HashList, MemberStrategy, StockList } from './entities';
 import { InvestType } from './entities/member-strategy.entity';
 import { Logger } from '@nestjs/common';
 import { InvestProfitInfo } from 'src/backtest/entities';
-import { MemberService } from 'src/member/member.service';
+import { StrategyHashService } from './strategy-hash.service';
 
 @Injectable()
 export class StrategyService {
   private readonly logger = new Logger(StrategyService.name);
-  private readonly hashReg = new RegExp(/(#[\d|\w|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]*)/);
   constructor(
     @InjectRepository(Hash)
     private readonly HashRepo: Repository<Hash>,
@@ -50,34 +49,8 @@ export class StrategyService {
     private readonly StockListRepo: Repository<StockList>,
     @InjectRepository(InvestProfitInfo)
     private readonly investProfitInfoRepo: Repository<InvestProfitInfo>,
-  ) {
-    const test = async () => {
-      // console.log(
-      // await memberService.getMemberInfo({ email_id: 'ypd03008@gmail.com' }),
-      // );
-      // Object.keys(InvestType).map(async (type) => {
-      // console.log(InvestType[type]);
-      // const memberStrategyList = await this.MemberStrategyRepo.find({
-      //   order: {
-      //     create_date: 'DESC',
-      //   },
-      //   where: {
-      //     invest_type: InvestType[type],
-      //   },
-      //   relations: ['operationMemberList'],
-      //   // join: { innerJoin: ['operationMemberList'] },
-      // });
-      // console.log(JSON.stringify(memberStrategyList, null, 4));
-      // });
-      // const res = await this.MemberStrategyRepo.createQueryBuilder(
-      //   'member-strategy',
-      // )
-      //   .innerJoin('member-strategy.operationMemberList', 'operationMemberList')
-      //   .getMany();
-      // console.log(res);
-    };
-    test();
-  }
+    private readonly HashService: StrategyHashService,
+  ) {}
 
   // 1. query
   // (GET) getStrategyListNew	(1) 신규 투자 전략 API
@@ -293,31 +266,6 @@ export class StrategyService {
       return { ok: false };
     }
   }
-  async __upsertHashTags(tags: string[]): Promise<number[]> {
-    if (!tags) return [];
-    try {
-      const __upsertHashTagsReuslt = await Promise.all(
-        tags.map(async (tag) => {
-          if (this.hashReg.test(tag)) {
-            let hash = await this.HashRepo.findOne({
-              where: { hash_contents: tag },
-            });
-            if (hash) return hash.hash_code;
-            hash = await this.HashRepo.save(
-              this.HashRepo.create({ hash_contents: tag }),
-            );
-            return hash.hash_code;
-          } else {
-            return -1;
-          }
-        }),
-      );
-      return __upsertHashTagsReuslt;
-    } catch (error) {
-      this.logger.error(error);
-      throw new Error('__makeHashTags error');
-    }
-  }
 
   // 2. mutation
   // (POST) createMyStrategy	(1) 전략 만들기
@@ -343,18 +291,11 @@ export class StrategyService {
       );
       newStrategy.investProfitInfo = newInvestInfo;
       // (3) 해쉬 태그 리스트 생성
-      const tagIdList = await this.__upsertHashTags(strategy?.tags);
+      const tagIdList = await this.HashService.__upsertHashTags(strategy?.tags);
       // 해쉬 태그 매핑 테이블 생성
-      await Promise.all(
-        tagIdList.map(async (tagId) => {
-          if (tagId === -1) return;
-          await this.HashListRepo.save(
-            this.HashListRepo.create({
-              hash_code: tagId,
-              strategy_code: newStrategy.strategy_code,
-            }),
-          );
-        }),
+      await this.HashService.__upsertHashList(
+        tagIdList,
+        newStrategy.strategy_code,
       );
       // (4) 전략 얻어보기
       const res = await this.getMyStrategyById({

@@ -10,6 +10,7 @@ import { Hash, HashList, MemberStrategy, StockList } from './entities';
 import { InvestProfitInfo } from 'src/backtest/entities';
 import { ConfigModule } from '@nestjs/config';
 import * as redisStore from 'cache-manager-redis-store';
+import { StrategyHashService } from './strategy-hash.service';
 
 @Module({
   imports: [
@@ -34,7 +35,7 @@ import * as redisStore from 'cache-manager-redis-store';
     ]),
   ],
   controllers: [StrategyMutationController, StrategyQueryController],
-  providers: [StrategyService, StrategyResolver],
+  providers: [StrategyService, StrategyHashService, StrategyResolver],
   exports: [StrategyService],
 })
 export class StrategyModule {}
