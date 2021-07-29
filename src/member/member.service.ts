@@ -9,6 +9,8 @@ import {
   CreateMemberInfoOutput,
   UpdateMemberInfoInput,
   UpdateMemberInfoOutput,
+  UpsertLookupMemberInput,
+  UpsertOperationMemberInput,
 } from './dtos/mutation.dtos';
 import {
   GetLookupMemberListInput,
@@ -167,7 +169,7 @@ export class MemberService {
   }
   async deleteMemberInfo() {}
 
-  // 조회회원 매핑 테이블을 찾는다.
+  // 특정 전략을 조회한 회원리스트 (매핑 테이블을 찾는다.)
   async getLookupMemberList({
     lookup_customer_id,
     strategy_code,
@@ -188,11 +190,11 @@ export class MemberService {
       return { ok: false };
     }
   }
-  // 특정 전략을 조회한 회원을 추가한다.
-  async upsertLookupMember(
-    strategy_code: number,
-    email_id: string,
-  ): Promise<CoreOutput> {
+  // (10) 특정 전략을 조회한 회원을 추가한다.
+  async upsertLookupMember({
+    email_id,
+    strategy_code,
+  }: UpsertLookupMemberInput): Promise<CoreOutput> {
     const lookup_customer_id = email_id;
     try {
       // 사용자와 전략이 존재하고, 조회회원 목록이 없다면
@@ -219,7 +221,7 @@ export class MemberService {
       return { ok: false };
     }
   }
-  // 전략 가동 매핑 테이블을 찾는다.
+  // 전략 가동 중인 맴버 리턴 (매핑 테이블을 찾는다.)
   async getOperationMemberList({
     operation_customer_id,
     strategy_code,
@@ -241,11 +243,11 @@ export class MemberService {
     }
   }
 
-  // 특정 전략을 운용하는 회원을 추가한다.
-  async upsertOperationMember(
-    strategy_code: number,
-    email_id: string,
-  ): Promise<CoreOutput> {
+  //(12) 특정 전략을 운용하는 회원을 추가한다.
+  async upsertOperationMember({
+    email_id,
+    strategy_code,
+  }: UpsertOperationMemberInput): Promise<CoreOutput> {
     const operation_customer_id = email_id;
     try {
       // 사용자와 전략이 존재하고, 구동 회원 목록이 없다면

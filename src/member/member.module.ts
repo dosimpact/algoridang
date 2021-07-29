@@ -1,6 +1,9 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { MemberService } from './member.service';
-import { MemberController } from './member.controller';
+import {
+  MemberQueryController,
+  MemberMutationController,
+} from './member.controller';
 import { LookupMemberList, MemberInfo, OperationMemberList } from './entities';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { StrategyModule } from 'src/strategy/strategy.module';
@@ -14,7 +17,7 @@ import { StrategyModule } from 'src/strategy/strategy.module';
     ]),
     forwardRef(() => StrategyModule),
   ],
-  controllers: [MemberController],
+  controllers: [MemberQueryController, MemberMutationController],
   providers: [MemberService],
   exports: [MemberService],
 })
