@@ -1,5 +1,6 @@
 import { PickType } from '@nestjs/graphql';
 import { IsString } from 'class-validator';
+import { CorePaginationInput } from 'src/common/dtos/input.dto';
 import { CoreOutput, CorePaginationOutput } from 'src/common/dtos/output.dto';
 import { LookupMemberList, MemberInfo, OperationMemberList } from '../entities';
 
@@ -28,9 +29,9 @@ export class GetMemberInfoOutput extends CoreOutput {
 }
 
 // (4) 사용자 리스트 출력
-export class GetMemberInfoListInput {}
+export class GetMemberInfoListInput extends CorePaginationInput {}
 export class GetMemberInfoListOutput extends CorePaginationOutput {
-  memberInfos?: MemberInfo[];
+  memberInfoList?: MemberInfo[];
 }
 
 // () 전략 운용 회원 매핑 테이블 도회

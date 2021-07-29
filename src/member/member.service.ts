@@ -73,7 +73,27 @@ export class MemberService {
       };
     }
   }
-  async getMembersInfo() {}
+  async getMemberInfoList({
+    skip = 0,
+    take = 100,
+  }: GetMemberInfoListInput): Promise<GetMemberInfoListOutput> {
+    try {
+      const [memberInfoList, totalResult] =
+        await this.memberInfoRepo.findAndCount({
+          skip,
+          take,
+        });
+      return {
+        ok: true,
+        memberInfoList,
+        totalResult,
+        totalPage: Math.ceil(totalResult / take),
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return { ok: false };
+    }
+  }
 
   async loginMemberInfo({
     email_id,

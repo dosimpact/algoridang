@@ -6,8 +6,9 @@ import {
   Inject,
   Request,
   Param,
+  Query,
 } from '@nestjs/common';
-import { AuthUser } from 'src/auth/auth.decorator';
+import { AuthUser, Roles } from 'src/auth/auth.decorator';
 import {
   CreateMemberInfoInput,
   UpdateMemberInfoInput,
@@ -30,17 +31,14 @@ export class MemberController {
     // return this.MemberInfoService.me();
   }
 
-  async deleteMemberInfo() {
-    return this.memberService.deleteMemberInfo();
-  }
-
   @Get('getMemberInfo/:email_id')
   async getMemberInfo(@Param('email_id') email_id: string) {
     return this.memberService.getMemberInfo({ email_id });
   }
-
-  async getMembersInfo() {
-    return this.memberService.getMembersInfo();
+  // @Roles(["Admin"])
+  @Get('getMemberInfoList')
+  async getMemberInfoList(@Query('take') take, @Query('skip') skip) {
+    return this.memberService.getMemberInfoList({ skip, take });
   }
   @Post('loginMemberInfo')
   async loginMemberInfo(@Body() loginMemberInfoInput: LoginMemberInfoInput) {
@@ -55,5 +53,10 @@ export class MemberController {
   @Post('updateMemberInfo')
   async updateMemberInfo(@Body() updateMemberInfo: UpdateMemberInfoInput) {
     return this.memberService.updateMemberInfo(updateMemberInfo);
+  }
+
+  // @Roles(["Admin"])
+  async deleteMemberInfo() {
+    return this.memberService.deleteMemberInfo();
   }
 }
