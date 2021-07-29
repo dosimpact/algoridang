@@ -5,6 +5,12 @@ import { CoreOutput } from 'src/common/dtos/output.dto';
 import { StrategyService } from 'src/strategy/strategy.service';
 import { Repository } from 'typeorm';
 import {
+  CreateMemberInfoInput,
+  CreateMemberInfoOutput,
+  UpdateMemberInfoInput,
+  UpdateMemberInfoOutput,
+} from './dtos/mutation.dtos';
+import {
   GetLookupMemberListInput,
   GetLookupMemberListOutput,
   GetMemberInfoListInput,
@@ -45,6 +51,30 @@ export class MemberService {
     // test();
   }
 
+  async getMemberInfo({
+    email_id,
+  }: GetMemberInfoInput): Promise<GetMemberInfoOutput> {
+    try {
+      const memberInfo = await this.memberInfoRepo.findOne({
+        where: {
+          email_id,
+        },
+      });
+      if (!memberInfo)
+        return {
+          ok: false,
+          error: '존재하지 않는 사용자 ID',
+        };
+      return { ok: true, memberInfo };
+    } catch (error) {
+      this.logger.error(error);
+      return {
+        ok: false,
+      };
+    }
+  }
+  async getMembersInfo() {}
+
   async loginMemberInfo({
     email_id,
     password,
@@ -67,24 +97,55 @@ export class MemberService {
     }
   }
 
-  async createMemberInfo() {}
-  async updateMemberInfo() {}
-  async deleteMemberInfo() {}
-
-  async getMemberInfo({
+  async createMemberInfo({
     email_id,
-  }: GetMemberInfoInput): Promise<GetMemberInfoOutput> {
+    member_name,
+    password,
+  }: CreateMemberInfoInput): Promise<CreateMemberInfoOutput> {
     try {
-      const memberInfo = await this.memberInfoRepo.findOneOrFail({ email_id });
-      return { ok: true, memberInfo };
-    } catch (error) {
+      let memberInfo = await this.memberInfoRepo.findOne({
+        where: { email_id },
+      });
+      if (memberInfo)
+        return { ok: false, error: 'error: email is already taken' };
+      memberInfo = await this.memberInfoRepo.save(
+        this.memberInfoRepo.create({
+          email_id,
+          member_name,
+          password,
+        }),
+      );
       return {
-        ok: false,
-        error: '존재하지 않는 사용자 ID',
+        ok: true,
+        memberInfo,
       };
+    } catch (error) {
+      this.logger.error(error);
+      return { ok: false };
     }
   }
-  async getMembersInfo() {}
+  async updateMemberInfo({
+    email_id,
+    member_name,
+    password,
+  }: UpdateMemberInfoInput): Promise<UpdateMemberInfoOutput> {
+    try {
+      const res = await this.getMemberInfo({ email_id });
+      if (!res.ok) return res;
+      const memberInfo = res.memberInfo;
+      if (member_name) memberInfo.member_name = member_name;
+      if (password) memberInfo.password = password;
+      await this.memberInfoRepo.save(memberInfo);
+      return {
+        ok: true,
+        memberInfo,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return { ok: false };
+    }
+  }
+  async deleteMemberInfo() {}
 
   // 조회회원 매핑 테이블을 찾는다.
   async getLookupMemberList({

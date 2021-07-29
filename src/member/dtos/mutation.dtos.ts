@@ -1,4 +1,6 @@
-import { PickType, PartialType } from '@nestjs/graphql';
+// import { PickType, PartialType } from '@nestjs/graphql';
+import { PartialType, PickType } from '@nestjs/mapped-types';
+import { IsEmail } from 'class-validator';
 import { CoreOutput } from 'src/common/dtos/output.dto';
 import { MemberInfo } from '../entities';
 
@@ -14,7 +16,10 @@ export class CreateMemberInfoOutput extends CoreOutput {
 }
 
 // (2) 사용자 업데이트
-export class UpdateMemberInfoInput extends PartialType(CreateMemberInfoInput) {}
+export class UpdateMemberInfoInput extends PartialType(CreateMemberInfoInput) {
+  @IsEmail()
+  email_id: string;
+}
 
 export class UpdateMemberInfoOutput extends CoreOutput {
   memberInfo?: MemberInfo;
