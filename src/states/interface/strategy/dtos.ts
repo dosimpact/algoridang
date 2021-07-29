@@ -1,4 +1,4 @@
-import { CoreOutput } from "../common/entities";
+import { CoreOutput } from "../common/dtos";
 import { InvestType, MemberStrategy } from "./entities";
 
 // (GET) getStrategyListNew	(1) 신규 투자 전략 API

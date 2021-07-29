@@ -57,9 +57,9 @@ const StrategyFeeds = () => {
           <StrategyCard
             key={key}
             title={data.strategy_name}
-            // subTitle={toTagsString(
-            //   data.hashList?.map((e) => e.hash.hash_contents)
-            // )}
+            subTitle={toTagsString(
+              data.hashList?.map((e) => e?.hash?.hash_contents)
+            )}
             CAGR={data.strategy_code}
             thumnail={data.image_url}
             onClick={(e) => {
