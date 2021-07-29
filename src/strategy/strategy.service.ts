@@ -34,6 +34,7 @@ import { InvestType } from './entities/member-strategy.entity';
 import { Logger } from '@nestjs/common';
 import { InvestProfitInfo } from 'src/backtest/entities';
 import { StrategyHashService } from './strategy-hash.service';
+import { async } from 'rxjs';
 
 @Injectable()
 export class StrategyService {
@@ -50,7 +51,18 @@ export class StrategyService {
     @InjectRepository(InvestProfitInfo)
     private readonly investProfitInfoRepo: Repository<InvestProfitInfo>,
     private readonly HashService: StrategyHashService,
-  ) {}
+  ) {
+    const test = async () => {
+      const res = this.MemberStrategyRepo.findOne({
+        where: {
+          strategy_code: 23,
+        },
+        relations: ['hashList'],
+      });
+      // console.log(res);
+    };
+    test();
+  }
 
   // 1. query
   // (GET) getStrategyListNew	(1) 신규 투자 전략 API
