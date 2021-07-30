@@ -102,8 +102,9 @@ export class MemberService {
     password,
   }: LoginMemberInfoInput): Promise<LoginMemberInfoOutput> {
     try {
-      const MemberInfo = await this.memberInfoRepo.findOneOrFail({
+      const MemberInfo = await this.memberInfoRepo.findOne({
         where: { email_id },
+        select: ['password', 'email_id'],
       });
       if (!MemberInfo)
         return { ok: false, error: '가입된 이메일 정보가 없습니다.' };
