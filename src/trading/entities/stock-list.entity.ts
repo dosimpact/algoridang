@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 import { Corporation } from 'src/finance/entities';
 import { CustomTradingStrategy } from 'src/trading/entities';
 import { Column, Entity, JoinColumn, OneToMany, PrimaryColumn } from 'typeorm';
@@ -28,8 +28,9 @@ export class StockList {
 
   //(3) 어떤 매매전략을 적용
   @IsString()
-  @Column()
-  trading_strategy_code: number;
+  @IsOptional()
+  @Column({ nullable: true })
+  trading_strategy_code?: number;
 
   @OneToMany(() => CustomTradingStrategy, (cts) => cts.stock_lists)
   @JoinColumn({ name: 'trading_strategy_code' })

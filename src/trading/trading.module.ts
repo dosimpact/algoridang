@@ -1,10 +1,27 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TradingService } from './trading.service';
-import { TradingController } from './trading.controller';
 import { TradingResolver } from './trading.resolver';
+import {
+  TradingMutationController,
+  TradingQueryController,
+} from './trading.controller';
+import { BaseTradingStrategy, CustomTradingStrategy } from './entities';
+import { StockList } from './entities/stock-list.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { FinanceModule } from 'src/finance/finance.module';
+import { StrategyModule } from 'src/strategy/strategy.module';
 
 @Module({
-  controllers: [TradingController],
-  providers: [TradingService, TradingResolver]
+  imports: [
+    TypeOrmModule.forFeature([
+      BaseTradingStrategy,
+      CustomTradingStrategy,
+      StockList,
+    ]),
+    forwardRef(() => FinanceModule),
+    forwardRef(() => StrategyModule),
+  ],
+  controllers: [TradingQueryController, TradingMutationController],
+  providers: [TradingService, TradingResolver],
 })
 export class TradingModule {}

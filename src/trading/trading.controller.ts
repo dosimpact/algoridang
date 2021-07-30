@@ -1,34 +1,32 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { TradingService } from './trading.service';
-import { CreateTradingDto } from './dto/create-trading.dto';
-import { UpdateTradingDto } from './dto/update-trading.dto';
 
 @Controller('trading')
-export class TradingController {
+export class TradingQueryController {
   constructor(private readonly tradingService: TradingService) {}
+  //(1) 기본 매매전략
+  async getBaseTradingStrategy() {}
+  //(2) 기본 매매전략리스트
+  async getBaseTradingStrategyList() {}
+  //(3) 기본 매매전략 카피
+  async copyBaseTradingStrategy() {}
+  //(4)  전략에 티커 추가하기
+  async addTicker() {}
+  //(5) 전략에 매매전략 추가하기
+  async addTradingStrategy() {}
+  //(6) 전략에 티커 + 매매전략 추가하기
+  async upsertTickerWithTradingStrategy() {}
+}
 
-  @Post()
-  create(@Body() createTradingDto: CreateTradingDto) {
-    return this.tradingService.create(createTradingDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.tradingService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.tradingService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTradingDto: UpdateTradingDto) {
-    return this.tradingService.update(+id, updateTradingDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.tradingService.remove(+id);
-  }
+@Controller('trading')
+export class TradingMutationController {
+  constructor(private readonly tradingService: TradingService) {}
 }

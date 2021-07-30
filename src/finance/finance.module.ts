@@ -28,6 +28,6 @@ import { ConfigModule } from '@nestjs/config';
   ],
   controllers: [FinanceController],
   providers: [FinanceService],
-  exports: [],
+  exports: [FinanceService],
 })
 export class FinanceModule {}
