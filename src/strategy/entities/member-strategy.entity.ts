@@ -29,7 +29,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { HashList } from './hash-list.entity';
-import { StockList } from './stock-list.entity';
+import { StockList } from '../../trading/entities/stock-list.entity';
 
 export enum InvestType {
   Unclassified = 'Unclassified', // 0 - 미분류

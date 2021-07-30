@@ -2,7 +2,7 @@ import { IsNumber, IsString } from 'class-validator';
 import { Corporation } from 'src/finance/entities';
 import { CustomTradingStrategy } from 'src/trading/entities';
 import { Column, Entity, JoinColumn, OneToMany, PrimaryColumn } from 'typeorm';
-import { MemberStrategy } from './member-strategy.entity';
+import { MemberStrategy } from '../../strategy/entities/member-strategy.entity';
 
 // 전략이 가지고 있는 티커들 매핑 테이블
 // (1) 어떤 전략 (2) 어떤 종목에 (3) 어떤 매매전략을 적용
