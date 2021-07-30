@@ -1,7 +1,7 @@
 import { IsEnum, IsNumber, IsString } from 'class-validator';
-import { StockList } from 'src/strategy/entities';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { SettingJSON, StrategyName } from '../constant/strategy-setting';
+import { StockList } from './stock-list.entity';
 
 @Entity({ name: 'custom_trading_strategy' })
 export class CustomTradingStrategy {

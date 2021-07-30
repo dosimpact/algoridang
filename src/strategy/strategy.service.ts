@@ -269,6 +269,10 @@ export class StrategyService {
           'operationMemberList',
         ],
       });
+      if (!memberStrategy)
+        return {
+          ok: false,
+        };
       return {
         ok: true,
         memberStrategy,

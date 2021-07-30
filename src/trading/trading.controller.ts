@@ -1,34 +1,59 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { AuthUser, Roles } from 'src/auth/auth.decorator';
+import { MemberInfo } from 'src/member/entities';
+import {
+  AddTickerInput,
+  AddTradingStrategyInput,
+  UpsertTickerWithTradingStrategyInput,
+} from './dto/mutation.dtos';
 import { TradingService } from './trading.service';
-import { CreateTradingDto } from './dto/create-trading.dto';
-import { UpdateTradingDto } from './dto/update-trading.dto';
 
-@Controller('trading')
-export class TradingController {
+@Controller('/api/trading/')
+export class TradingQueryController {
   constructor(private readonly tradingService: TradingService) {}
-
-  @Post()
-  create(@Body() createTradingDto: CreateTradingDto) {
-    return this.tradingService.create(createTradingDto);
+  //(1) 기본 매매전략
+  @Get('getBaseTradingStrategy/:code')
+  async getBaseTradingStrategy(@Param('code') code) {
+    return this.tradingService.getBaseTradingStrategy({
+      trading_strategy_code: code,
+    });
   }
-
-  @Get()
-  findAll() {
-    return this.tradingService.findAll();
+  //(2) 기본 매매전략리스트
+  @Get('getBaseTradingStrategyList')
+  async getBaseTradingStrategyList() {
+    return this.tradingService.getBaseTradingStrategyList({});
   }
+}
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.tradingService.findOne(+id);
+@Controller('/api/trading/')
+export class TradingMutationController {
+  constructor(private readonly tradingService: TradingService) {}
+  //(4)  전략에 티커 추가하기
+  @Roles(['Any'])
+  @Post('addTicker')
+  async addTicker(
+    @AuthUser() m: MemberInfo,
+    @Body() addTicker: AddTickerInput,
+  ) {
+    return this.tradingService.addTicker(m.email_id, {
+      ...addTicker,
+    });
   }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTradingDto: UpdateTradingDto) {
-    return this.tradingService.update(+id, updateTradingDto);
+  //(5) 전략에 매매전략 추가하기
+  @Post('addTradingStrategy')
+  async addTradingStrategy(@Body() body: AddTradingStrategyInput) {
+    return this.tradingService.addTradingStrategy(body);
   }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.tradingService.remove(+id);
+  //(6) 전략에 티커 + 매매전략 추가하기
+  @Roles(['Any'])
+  @Post('upsertTickerWithTradingStrategy')
+  async upsertTickerWithTradingStrategy(
+    @AuthUser() m: MemberInfo,
+    @Body() body: UpsertTickerWithTradingStrategyInput,
+  ) {
+    return this.tradingService.upsertTickerWithTradingStrategy(
+      m.email_id,
+      body,
+    );
   }
 }
