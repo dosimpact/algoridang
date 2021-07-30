@@ -105,7 +105,9 @@ export class MemberService {
       const MemberInfo = await this.memberInfoRepo.findOneOrFail({
         where: { email_id },
       });
-      const ok = MemberInfo.checkPassword(password);
+      if (!MemberInfo)
+        return { ok: false, error: '가입된 이메일 정보가 없습니다.' };
+      const ok = await MemberInfo.checkPassword(password);
       if (!ok) return { ok: false, error: '잘못된 비밀번호 입니다.' };
       const token = this.jwtService.sign({
         email_id: MemberInfo.email_id,
@@ -115,7 +117,8 @@ export class MemberService {
         token,
       };
     } catch (error) {
-      return { ok: false, error: '가입된 이메일 정보가 없습니다.' };
+      this.logger.error(error);
+      return { ok: false };
     }
   }
 

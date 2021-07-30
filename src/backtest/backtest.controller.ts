@@ -1,34 +1,49 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  UseInterceptors,
+  Post,
+  Body,
+} from '@nestjs/common';
+import { Roles } from 'src/auth/auth.decorator';
+import { HttpBodyCacheInterceptor } from 'src/common/service/HttpCacheInterceptor';
 import { BacktestService } from './backtest.service';
-import { CreateBacktestDto } from './dto/create-backtest.dto';
-import { UpdateBacktestDto } from './dto/update-backtest.dto';
+import {
+  AddHistoryInput,
+  DeleteHistoryInput,
+  UpdateHistoryInput,
+} from './dto/mutation.dtos';
 
-@Controller('backtest')
-export class BacktestController {
+@UseInterceptors(HttpBodyCacheInterceptor)
+@Controller('/api/backtest/')
+export class BacktestQueryController {
+  constructor(private readonly backtestService: BacktestService) {}
+  @Get('getHistoryList/:strategy_code')
+  async getHistoryList(@Param() strategy_code: number) {
+    return this.backtestService.getHistoryList({ strategy_code });
+  }
+}
+
+@Controller('/api/backtest/')
+export class BacktestMutationController {
   constructor(private readonly backtestService: BacktestService) {}
 
-  @Post()
-  create(@Body() createBacktestDto: CreateBacktestDto) {
-    return this.backtestService.create(createBacktestDto);
+  @Roles(['DAServer'])
+  @Post('addHistory')
+  async addHistory(@Body() addHistoryInput: AddHistoryInput) {
+    return this.backtestService.addHistory(addHistoryInput);
   }
 
-  @Get()
-  findAll() {
-    return this.backtestService.findAll();
+  @Roles(['DAServer'])
+  @Post('deleteHistory')
+  async deleteHistory(@Body() deleteHistoryInput: DeleteHistoryInput) {
+    return this.backtestService.deleteHistory(deleteHistoryInput);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.backtestService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBacktestDto: UpdateBacktestDto) {
-    return this.backtestService.update(+id, updateBacktestDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.backtestService.remove(+id);
+  @Roles(['DAServer'])
+  @Post('updateHistory')
+  async updateHistory(@Body() updateHistoryInput: UpdateHistoryInput) {
+    return this.backtestService.updateHistory(updateHistoryInput);
   }
 }

@@ -1,4 +1,4 @@
-import { IsDate, IsDateString, IsNumber, IsString } from 'class-validator';
+import { IsDateString, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Corporation } from 'src/finance/entities';
 import { MemberStrategy } from 'src/strategy/entities';
 import {
@@ -20,12 +20,14 @@ export class History {
   history_date: Date;
 
   @IsNumber()
-  @Column({ type: 'bigint' })
-  buy_sale_price: number;
+  @IsOptional()
+  @Column({ type: 'bigint', nullable: true })
+  buy_sale_price?: number;
 
   @IsNumber()
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
-  profit_loss_rate: number;
+  @IsOptional()
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+  profit_loss_rate?: number;
 
   // 1:N
   // (1) 어떤 전략의 히스토리? 연결
@@ -39,10 +41,13 @@ export class History {
 
   // (2) 어떤 회사의 히스토리인지
   @IsString()
-  @Column()
-  ticker: string; // 티커
+  @IsOptional()
+  @Column({ nullable: true })
+  ticker?: string; // 티커 //
 
-  @ManyToOne(() => Corporation)
+  // db의 ticker가 사라져도 global고유값이 ticker는 살리도록
+  // 회사는 구지 이 history을 알 필요는 없으니 단방향 연결을 했음
+  @ManyToOne(() => Corporation, { onDelete: 'NO ACTION' })
   @JoinColumn({ name: 'ticker' })
   corporation: Corporation;
 }
