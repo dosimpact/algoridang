@@ -86,10 +86,10 @@ export class TradingService {
     }
   }
   //(4)  전략에 티커 추가하기
-  async addTicker({
-    strategy_code,
-    ticker,
-  }: AddTickerInput): Promise<AddTickerOutput> {
+  async addTicker(
+    email_id: string,
+    { strategy_code, ticker }: AddTickerInput,
+  ): Promise<AddTickerOutput> {
     try {
       // 티커 및 전략 존재성
       const existTicker = await this.financeService.getCorporation({
@@ -98,8 +98,9 @@ export class TradingService {
       if (!existTicker.ok || existTicker.corporation.ticker !== ticker)
         return { ok: false, error: 'cannot find corp given ticker' };
 
-      const existStrategy = await this.strategyService.getStrategyById({
+      const existStrategy = await this.strategyService.getMyStrategyById({
         strategy_code,
+        email_id,
       });
       if (!existStrategy.ok)
         return {
@@ -127,6 +128,7 @@ export class TradingService {
     trading_strategy_code,
   }: AddTradingStrategyInput): Promise<AddTradingStrategyOutput> {
     try {
+      // 전략 테이블 찾기
       const stocksTable = await this.stockListRepo.findOne({
         where: {
           strategy_code,
@@ -153,14 +155,17 @@ export class TradingService {
     }
   }
   //(6) 전략에 티커 + 매매전략 추가하기
-  async upsertTickerWithTradingStrategy({
-    setting_json,
-    strategy_code,
-    ticker,
-    trading_strategy_code,
-  }: UpsertTickerWithTradingStrategyInput): Promise<UpsertTickerWithTradingStrategyOutput> {
+  async upsertTickerWithTradingStrategy(
+    email_id,
+    {
+      setting_json,
+      strategy_code,
+      ticker,
+      trading_strategy_code,
+    }: UpsertTickerWithTradingStrategyInput,
+  ): Promise<UpsertTickerWithTradingStrategyOutput> {
     try {
-      await this.addTicker({ strategy_code, ticker });
+      await this.addTicker(email_id, { strategy_code, ticker });
       const { stocksTable } = await this.addTradingStrategy({
         setting_json,
         strategy_code,

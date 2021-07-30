@@ -1,5 +1,11 @@
 import { Type } from 'class-transformer';
-import { IsJSON, IsNumber, IsString, ValidateNested } from 'class-validator';
+import {
+  IsEmail,
+  IsJSON,
+  IsNumber,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 import { CoreOutput } from 'src/common/dtos/output.dto';
 import { SettingJSON } from '../constant/strategy-setting';
 import { CustomTradingStrategy } from '../entities';

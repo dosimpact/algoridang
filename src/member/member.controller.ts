@@ -46,7 +46,10 @@ export class MemberQueryController {
 
   // 조회회원 매핑 테이블을 찾는다.
   @Get('getLookupMemberList/:strategy_code')
-  async getLookupMemberList(@AuthUser() m: MemberInfo, @Param() strategy_code) {
+  async getLookupMemberList(
+    @AuthUser() m: MemberInfo,
+    @Param('strategy_code') strategy_code,
+  ) {
     return this.memberService.getLookupMemberList({
       lookup_customer_id: m.email_id,
       strategy_code,
@@ -56,7 +59,7 @@ export class MemberQueryController {
   @Get('getOperationMemberList/:strategy_code')
   async getOperationMemberList(
     @AuthUser() m: MemberInfo,
-    @Param() strategy_code,
+    @Param('strategy_code') strategy_code,
   ) {
     return this.memberService.getOperationMemberList({
       operation_customer_id: m.email_id,
