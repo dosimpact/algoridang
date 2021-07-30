@@ -1,5 +1,5 @@
-import { InternalServerErrorException } from '@nestjs/common';
-import { IsEmail, IsEnum, IsString } from 'class-validator';
+import { InternalServerErrorException, Logger } from '@nestjs/common';
+import { IsBoolean, IsEmail, IsEnum, IsString } from 'class-validator';
 import { MemberStrategy } from 'src/strategy/entities';
 import {
   BeforeInsert,
@@ -17,6 +17,7 @@ import { InputType, ObjectType } from '@nestjs/graphql';
 export enum UserRole {
   Normal = 'Normal',
   Admin = 'Admin',
+  DAServer = 'DAServer',
 }
 
 @InputType('MemberInfoInput', { isAbstract: true })
@@ -38,6 +39,10 @@ export class MemberInfo {
   @IsEnum(UserRole)
   @Column({ type: 'enum', enum: UserRole, default: UserRole.Normal })
   role: UserRole;
+
+  @IsBoolean()
+  @Column({ type: 'boolean', default: false })
+  verified: boolean;
 
   // 1:N
   // (1) 사용자는 여러개의 운용중인 전략을 갖는다. ( 내가 운용중인 전략들(forked+my) )
@@ -77,6 +82,7 @@ export class MemberInfo {
       const ok = await bcrypt.compare(aPassword, this.password);
       return ok;
     } catch (error) {
+      new Logger().error(error);
       throw new InternalServerErrorException();
     }
   }

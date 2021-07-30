@@ -1,4 +1,4 @@
-import { CacheModule, Module } from '@nestjs/common';
+import { CacheModule, CacheStoreFactory, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FinanceController } from './finance.controller';
 import { FinanceService } from './finance.service';
@@ -19,10 +19,8 @@ import { ConfigModule } from '@nestjs/config';
       ignoreEnvFile: process.env.NODE_ENV === 'prod',
     }),
     CacheModule.register({
-      store: redisStore,
-      host: process.env.REDIS_API_CACHE_HOST, // '127.0.0.1',
-      port: +process.env.REDIS_API_CACHE_PORT, //6379,
-      password: process.env.REDIS_API_CACHE_PASSWORD, //
+      store: redisStore as CacheStoreFactory,
+      url: process.env.REDIS_API_CACHE_URL,
       ttl: +process.env.REDIS_API_CACHE_TTL, // 10초 캐슁
       // max: 3, // 3개의 key값 유지
     }),

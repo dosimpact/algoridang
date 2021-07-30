@@ -21,12 +21,12 @@ export class History {
 
   @IsNumber()
   @IsOptional()
-  @Column({ type: 'bigint' })
+  @Column({ type: 'bigint', nullable: true })
   buy_sale_price?: number;
 
   @IsNumber()
   @IsOptional()
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
   profit_loss_rate?: number;
 
   // 1:N
@@ -42,7 +42,7 @@ export class History {
   // (2) 어떤 회사의 히스토리인지
   @IsString()
   @IsOptional()
-  @Column()
+  @Column({ nullable: true })
   ticker?: string; // 티커 //
 
   // db의 ticker가 사라져도 global고유값이 ticker는 살리도록

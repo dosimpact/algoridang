@@ -1,5 +1,11 @@
 import { PartialType, PickType } from '@nestjs/mapped-types';
-import { IsDateString, IsNumber, IsOptional } from 'class-validator';
+import {
+  IsArray,
+  IsDateString,
+  IsInt,
+  IsNumber,
+  IsOptional,
+} from 'class-validator';
 import { CoreOutput } from 'src/common/dtos/output.dto';
 import { History } from '../entities';
 
@@ -27,14 +33,14 @@ export class AddHistoryInput extends PickType(History, [
   'ticker',
 ]) {}
 export class AddHistoryOutput extends CoreOutput {
-  affectedRow: number;
+  history?: History;
 }
 export class DeleteHistoryInput {
-  @IsNumber()
+  @IsInt({ each: true })
   history_code: number | number[];
 }
 export class DeleteHistoryOutput extends CoreOutput {
-  affectedRow: number;
+  affected: number;
 }
 
 export class UpdateHistoryInput extends PartialType(AddHistoryInput) {
@@ -42,5 +48,5 @@ export class UpdateHistoryInput extends PartialType(AddHistoryInput) {
   history_code: number;
 }
 export class UpdateHistoryOutput extends CoreOutput {
-  affectedRow: number;
+  history?: History;
 }
