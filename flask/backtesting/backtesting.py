@@ -9,9 +9,6 @@ import backtrader as bt
 from pandas import json_normalize
 
 
-import quantstats
-
-
 from openAPI.DB.DB import databasepool
 
 
@@ -168,39 +165,27 @@ and ms.strategy_code = 1;"
         caseNum = len(case)
         total = 0
 
-        cerebro = bt.Cerebro()
-        
-
-
         for ticker , stg, setting, wgt in case:
-            fddata = bt.feeds.PandasData(dataname = self.getDBData(ticker,data['startTime'],data['endTime']))
-            cerebro.adddata(fddata,name=ticker)
-
+            cerebro = bt.Cerebro()
             for i in range(len(stg.param)):
                 stg.param[i] = setting[i]
 
+            cerebro.broker.setcash(int(data['investPrice'])*wgt/caseNum)
+            
+            cerebro.broker.set_coc(True) # 구매 신청시 무조건 최대 금액으로 살 수 있음.
             cerebro.addstrategy(stg)
 
-        cerebro.addanalyzer(bt.analyzers.PyFolio, _name = 'PyFolio')
-        cerebro.broker.setcash(int(data['investPrice']))
-        cerebro.broker.set_coc(True) # 구매 신청시 무조건 최대 금액으로 살 수 있음.
+            #pandas data inpute
+            cerebro.adddata(bt.feeds.PandasData(dataname = self.getDBData(ticker,data['startTime'],data['endTime'])),name=ticker)
+            
 
-        #pandas data inpute
-        
+            print('Starting Portfolio Value: %.2f' % cerebro.broker.getvalue())
+            cerebro.run()
+            print('Final Portfolio Value: %.2f' % cerebro.broker.getvalue())
+            #cerebro.plot()
+            total += cerebro.broker.getvalue()
 
-        print('Starting Portfolio Value: %.2f' % cerebro.broker.getvalue())
-        results = cerebro.run()
-        print('Final Portfolio Value: %.2f' % cerebro.broker.getvalue())
 
-        strat = results[0]
-
-        portfolio_stats = strat.analyzers.getbyname('PyFolio')
-        returns, positions, transactions, gross_lev = portfolio_stats.get_pf_items()
-        returns.index = returns.index.tz_convert(None)
-        
-        quantstats.reports.metrics(returns, mode='full')
-
-        total = cerebro.broker.getvalue()
         return total
 
 
