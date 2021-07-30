@@ -64,7 +64,7 @@ export class TradingService {
     }
   }
   //(3) 기본 매매전략 카피
-  async copyBaseTradingStrategy({
+  async __copyBaseTradingStrategy({
     setting_json,
     trading_strategy_code,
   }: CopyBaseTradingStrategyInput): Promise<CopyBaseTradingStrategyOutput> {
@@ -121,21 +121,53 @@ export class TradingService {
   }
   //(5) 전략에 매매전략 추가하기
   async addTradingStrategy({
-    customTradingStrategy,
     strategy_code,
     ticker,
+    setting_json,
+    trading_strategy_code,
   }: AddTradingStrategyInput): Promise<AddTradingStrategyOutput> {
     try {
+      const stocksTable = await this.stockListRepo.findOne({
+        where: {
+          strategy_code,
+          ticker,
+        },
+      });
+      if (!stocksTable) return { ok: false, error: 'cannot find stocksTable' };
+      const { ok, customTradingStrategy } =
+        await this.__copyBaseTradingStrategy({
+          setting_json,
+          trading_strategy_code,
+        });
+      if (!ok) return { ok: false, error: 'cannot __copyBaseTradingStrategy' };
+
+      // 전략을 추가한다.
+      stocksTable.trading_strategy_code =
+        customTradingStrategy.trading_strategy_code;
+      await this.stockListRepo.save(stocksTable);
+
+      return { ok: true, stocksTable };
     } catch (error) {
       this.logger.error(error);
       return { ok: false };
     }
   }
   //(6) 전략에 티커 + 매매전략 추가하기
-  async upsertTickerWithTradingStrategy(
-    upsertTickerWithTradingStrategy: UpsertTickerWithTradingStrategyInput,
-  ): Promise<UpsertTickerWithTradingStrategyOutput> {
+  async upsertTickerWithTradingStrategy({
+    setting_json,
+    strategy_code,
+    ticker,
+    trading_strategy_code,
+  }: UpsertTickerWithTradingStrategyInput): Promise<UpsertTickerWithTradingStrategyOutput> {
     try {
+      await this.addTicker({ strategy_code, ticker });
+      const { stocksTable } = await this.addTradingStrategy({
+        setting_json,
+        strategy_code,
+        ticker,
+        trading_strategy_code,
+      });
+      return { ok: true, stocksTable };
     } catch (error) {
       this.logger.error(error);
       return { ok: false };

@@ -33,9 +33,14 @@ export class AddTradingStrategyInput {
   strategy_code: number;
   @IsString()
   ticker: string;
-  @ValidateNested()
-  @Type()
-  customTradingStrategy: CustomTradingStrategy;
+
+  @IsNumber()
+  trading_strategy_code: number;
+
+  //   @ValidateNested()
+  //   @Type()
+  @IsJSON()
+  setting_json: SettingJSON;
 }
 export class AddTradingStrategyOutput extends CoreOutput {
   stocksTable?: StockList;
@@ -46,9 +51,13 @@ export class UpsertTickerWithTradingStrategyInput {
   strategy_code: number;
   @IsString()
   ticker: string;
-  @ValidateNested()
-  @Type()
-  customTradingStrategy: CustomTradingStrategy;
+
+  @IsNumber()
+  trading_strategy_code: number;
+  //   @ValidateNested()
+  //   @Type()
+  @IsJSON()
+  setting_json: SettingJSON;
 }
 export class UpsertTickerWithTradingStrategyOutput extends CoreOutput {
   stocksTable?: StockList;
