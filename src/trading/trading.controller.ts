@@ -3,7 +3,7 @@ import { AuthUser, Roles } from 'src/auth/auth.decorator';
 import { MemberInfo } from 'src/member/entities';
 import { AddUniversalInput } from './dto/mutation.dtos';
 import {
-  AddTradingStrategyInput,
+  UpsertTradingStrategyInput,
   UpsertTickerWithTradingStrategyInput,
 } from './dto/mutation.dtos';
 import { TradingService } from './trading.service';
@@ -39,12 +39,14 @@ export class TradingMutationController {
       ...addTicker,
     });
   }
-  // todo refactor
   //(5) 전략에 매매전략 추가하기
-  // @Post('addTradingStrategy')
-  // async addTradingStrategy(@Body() body: AddTradingStrategyInput) {
-  //   return this.tradingService.addTradingStrategy(body);
-  // }
+  @Post('upsertTradingStrategy')
+  async upsertTradingStrategy(
+    @AuthUser() m: MemberInfo,
+    @Body() body: UpsertTradingStrategyInput,
+  ) {
+    return this.tradingService.upsertTradingStrategy(m.email_id, body);
+  }
   // todo refactor
   //(6) 전략에 티커 + 매매전략 추가하기
   // @Roles(['Any'])

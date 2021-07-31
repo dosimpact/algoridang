@@ -2,13 +2,14 @@ import { PickType } from '@nestjs/mapped-types';
 import { Type } from 'class-transformer';
 import {
   IsBoolean,
+  IsEnum,
   IsJSON,
   IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
 import { CoreOutput } from 'src/common/dtos/output.dto';
-import { SettingJSON } from '../constant/strategy-setting';
+import { SettingJSON, StrategyName } from '../constant/strategy-setting';
 import { Universal } from '../entities';
 // import { StockList } from '../entities/stock-list.entity';
 
@@ -37,22 +38,21 @@ export class AddUniversalOutput extends CoreOutput {
   universal?: Universal;
 }
 
-export class AddTradingStrategyInput {
+export class UpsertTradingStrategyInput {
   @IsNumber()
   strategy_code: number;
-  @IsString()
-  ticker: string;
-
   @IsNumber()
-  trading_strategy_code: number;
+  universal_code: number;
 
+  @IsEnum(StrategyName)
+  trading_strategy_name: StrategyName;
   //   @ValidateNested()
   //   @Type()
   @IsJSON()
   setting_json: SettingJSON;
 }
-export class AddTradingStrategyOutput extends CoreOutput {
-  // stocksTable?: StockList;
+export class UpsertTradingStrategyOutput extends CoreOutput {
+  universal?: Universal;
 }
 
 export class UpsertTickerWithTradingStrategyInput {

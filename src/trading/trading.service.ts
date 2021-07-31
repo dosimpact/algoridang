@@ -6,8 +6,8 @@ import { Repository } from 'typeorm';
 import {
   AddUniversalInput,
   AddUniversalOutput,
-  AddTradingStrategyInput,
-  AddTradingStrategyOutput,
+  UpsertTradingStrategyInput,
+  UpsertTradingStrategyOutput,
   CopyBaseTradingStrategyInput,
   CopyBaseTradingStrategyOutput,
   UpsertTickerWithTradingStrategyInput,
@@ -71,7 +71,8 @@ export class TradingService {
       return { ok: false };
     }
   }
-  //(3) 기본 매매전략 카피
+  //(3) 기본 매매전략 카피 (deprecated)
+  // - 유니버셜에 바로 추가
   //🚀todo refactor
   // async __copyBaseTradingStrategy({
   //   setting_json,
@@ -114,7 +115,7 @@ export class TradingService {
       if (!existTicker.ok || existTicker.corporation.ticker !== ticker)
         return { ok: false, error: 'cannot find corp given ticker' };
 
-      const existStrategy = await this.strategyService.getMyStrategyById({
+      const existStrategy = await this.strategyService.__checkMyStrategy({
         strategy_code,
         email_id,
       });
@@ -139,39 +140,48 @@ export class TradingService {
       return { ok: false };
     }
   }
-  // todo refactor
-  //(5) 전략에 매매전략 추가하기
-  // async addTradingStrategy({
-  //   strategy_code,
-  //   ticker,
-  //   setting_json,
-  //   trading_strategy_code,
-  // }: AddTradingStrategyInput): Promise<AddTradingStrategyOutput> {
-  //   try {
-  //     전략 테이블 찾기
-  //     const stocksTable = await this.stockListRepo.findOne({
-  //       where: {
-  //         strategy_code,
-  //         ticker,
-  //       },
-  //     });
-  //     if (!stocksTable) return { ok: false, error: 'cannot find stocksTable' };
-  //     const { ok, customTradingStrategy } =
-  //       await this.__copyBaseTradingStrategy({
-  //         setting_json,
-  //         trading_strategy_code,
-  //       });
-  //     if (!ok) return { ok: false, error: 'cannot __copyBaseTradingStrategy' };
-  //     // 전략을 추가한다.
-  //     stocksTable.trading_strategy_code =
-  //       customTradingStrategy.trading_strategy_code;
-  //     await this.stockListRepo.save(stocksTable);
-  //     return { ok: true, stocksTable };
-  //   } catch (error) {
-  //     this.logger.error(error);
-  //     return { ok: false };
-  //   }
-  // }
+  // (5) 전략에 매매전략 추가하기
+  async upsertTradingStrategy(
+    email_id: string,
+    {
+      strategy_code,
+      universal_code,
+      trading_strategy_name,
+      setting_json,
+    }: UpsertTradingStrategyInput,
+  ): Promise<UpsertTradingStrategyOutput> {
+    try {
+      // 전략 및 유니버셜 존재성 확인
+      const existStrategy = await this.strategyService.__checkMyStrategy({
+        strategy_code,
+        email_id,
+      });
+      if (!existStrategy.ok)
+        return {
+          ok: false,
+          error: 'cannot find strategy_code given strategy_code',
+        };
+      // unversial을 찾아 전략 추가
+      const universal = await this.universalRepo.findOne({
+        where: {
+          universal_code,
+        },
+      });
+      if (!universal)
+        return {
+          ok: false,
+          error: 'cannot find universal given universal_code',
+        };
+      if (setting_json) universal.setting_json = setting_json;
+      if (trading_strategy_name)
+        universal.trading_strategy_name = trading_strategy_name;
+      await this.universalRepo.save(universal);
+      return { ok: true, universal };
+    } catch (error) {
+      this.logger.error(error);
+      return { ok: false };
+    }
+  }
   // todo refactor
   //(6) 전략에 티커 + 매매전략 추가하기
   // async upsertTickerWithTradingStrategy(

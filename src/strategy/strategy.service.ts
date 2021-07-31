@@ -283,6 +283,31 @@ export class StrategyService {
     }
   }
 
+  async __checkMyStrategy({
+    email_id,
+    strategy_code,
+  }: GetMyStrategyByIdInput): Promise<GetMyStrategyByIdOutput> {
+    try {
+      const memberStrategy = await this.MemberStrategyRepo.findOne({
+        where: {
+          operator_id: email_id,
+          strategy_code,
+        },
+      });
+      if (!memberStrategy)
+        return {
+          ok: false,
+        };
+      return {
+        ok: true,
+        memberStrategy,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return { ok: false };
+    }
+  }
+
   // 2. mutation
   // (POST) createMyStrategy	(1) 전략 만들기
   async createMyStrategy(
