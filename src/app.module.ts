@@ -33,7 +33,7 @@ import {
   History,
   InvestProfitInfo,
 } from './backtest/entities';
-import { Hash, HashList, StockList } from './strategy/entities';
+import { Hash, HashList } from './strategy/entities';
 import {
   Category,
   CategoryList,
@@ -41,7 +41,7 @@ import {
   DailyStock,
 } from './finance/entities';
 import { BaseTradingStrategy } from './trading/entities/base_trading_strategy.entity';
-import { CustomTradingStrategy } from './trading/entities';
+import { SimpleBacktest, Universal } from './trading/entities';
 import { UploadModule } from './upload/upload.module';
 import * as redisStore from 'cache-manager-redis-store';
 import { UploadedObject } from './upload/entities/uploaded-object.entity';
@@ -85,16 +85,18 @@ import { AuthModule } from './auth/auth.module';
           DailyStock,
         ],
         ...[
-          // Trading(2/2)
-          CustomTradingStrategy,
+          // Trading(4/4)
+          // CustomTradingStrategy,
           BaseTradingStrategy,
+          SimpleBacktest,
+          Universal,
         ],
         ...[
-          //
+          // Strategy-entity (3/3)
           Hash,
           HashList,
           MemberStrategy,
-          StockList,
+          // StockList,
         ],
         ...[
           // back test (7/7)

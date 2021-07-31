@@ -6,7 +6,7 @@ import {
 } from './strategy.controller';
 import { StrategyResolver } from './strategy.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Hash, HashList, MemberStrategy, StockList } from './entities';
+import { Hash, HashList, MemberStrategy } from './entities';
 import { InvestProfitInfo } from 'src/backtest/entities';
 import { ConfigModule } from '@nestjs/config';
 import * as redisStore from 'cache-manager-redis-store';
@@ -28,7 +28,7 @@ import { StrategyHashService } from './strategy-hash.service';
       Hash,
       HashList,
       MemberStrategy,
-      StockList,
+      // StockList,
       InvestProfitInfo,
     ]),
   ],

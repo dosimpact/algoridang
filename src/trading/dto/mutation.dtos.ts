@@ -1,70 +1,55 @@
-import { Type } from 'class-transformer';
-import {
-  IsEmail,
-  IsJSON,
-  IsNumber,
-  IsString,
-  ValidateNested,
-} from 'class-validator';
+import { IntersectionType, OmitType, PickType } from '@nestjs/mapped-types';
+import { IsEnum, IsNumber, IsObject } from 'class-validator';
 import { CoreOutput } from 'src/common/dtos/output.dto';
-import { SettingJSON } from '../constant/strategy-setting';
-import { CustomTradingStrategy } from '../entities';
-import { StockList } from '../entities/stock-list.entity';
+import { SettingJSON, StrategyName } from '../constant/strategy-setting';
+import { Universal } from '../entities';
+// import { StockList } from '../entities/stock-list.entity';
 
 export class CopyBaseTradingStrategyInput {
   @IsNumber()
   trading_strategy_code: number;
 
-  //   @ValidateNested()
-  //   @Type()
-  @IsJSON()
+  @IsObject()
   setting_json: SettingJSON;
 }
+// todo refactor
 export class CopyBaseTradingStrategyOutput extends CoreOutput {
-  customTradingStrategy?: CustomTradingStrategy;
+  // customTradingStrategy?: CustomTradingStrategy;
 }
 
-export class AddTickerInput {
+export class AddUniversalInput extends PickType(Universal, [
+  'strategy_code',
+  'ticker',
+  'start_date',
+  'end_date',
+  'select_yes_no',
+]) {}
+export class AddUniversalOutput extends CoreOutput {
+  universal?: Universal;
+}
+
+export class UpsertTradingStrategyInput {
   @IsNumber()
   strategy_code: number;
-  @IsString()
-  ticker: string;
-}
-export class AddTickerOutput extends CoreOutput {
-  stocksTable?: StockList;
-}
-
-export class AddTradingStrategyInput {
   @IsNumber()
-  strategy_code: number;
-  @IsString()
-  ticker: string;
+  universal_code: number;
 
-  @IsNumber()
-  trading_strategy_code: number;
+  @IsEnum(StrategyName)
+  trading_strategy_name: StrategyName;
 
-  //   @ValidateNested()
-  //   @Type()
-  @IsJSON()
+  // https://github.com/typestack/class-validator/issues/126
+  // interface는 컴파일되므로 검사할 수 없다.
+  @IsObject()
   setting_json: SettingJSON;
 }
-export class AddTradingStrategyOutput extends CoreOutput {
-  stocksTable?: StockList;
+export class UpsertTradingStrategyOutput extends CoreOutput {
+  universal?: Universal;
 }
 
-export class UpsertTickerWithTradingStrategyInput {
-  @IsNumber()
-  strategy_code: number;
-  @IsString()
-  ticker: string;
-
-  @IsNumber()
-  trading_strategy_code: number;
-  //   @ValidateNested()
-  //   @Type()
-  @IsJSON()
-  setting_json: SettingJSON;
-}
+export class UpsertTickerWithTradingStrategyInput extends IntersectionType(
+  AddUniversalInput,
+  OmitType(UpsertTradingStrategyInput, ['universal_code']),
+) {}
 export class UpsertTickerWithTradingStrategyOutput extends CoreOutput {
-  stocksTable?: StockList;
+  universal?: Universal;
 }

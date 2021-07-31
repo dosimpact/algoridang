@@ -27,11 +27,13 @@ import {
   Hash,
   HashList,
   MemberStrategy,
-  StockList,
+  // StockList,
 } from 'src/strategy/entities';
 import {
   BaseTradingStrategy,
-  CustomTradingStrategy,
+  // CustomTradingStrategy,
+  SimpleBacktest,
+  Universal,
 } from 'src/trading/entities';
 import { UploadedObject } from 'src/upload/entities/uploaded-object.entity';
 import { UserRole } from 'src/member/entities/member-info.entity';
@@ -72,18 +74,22 @@ export class SeederService {
     private readonly Corporation: Repository<Corporation>,
     @InjectRepository(DailyStock)
     private readonly DailyStock: Repository<DailyStock>,
-    @InjectRepository(CustomTradingStrategy)
-    private readonly CustomTradingStrategy: Repository<CustomTradingStrategy>,
+    // @InjectRepository(CustomTradingStrategy)
+    // private readonly CustomTradingStrategy: Repository<CustomTradingStrategy>,
     @InjectRepository(BaseTradingStrategy)
     private readonly BaseTradingStrategy: Repository<BaseTradingStrategy>,
+    @InjectRepository(SimpleBacktest)
+    private readonly SimpleBacktest: Repository<SimpleBacktest>,
+    @InjectRepository(Universal)
+    private readonly Universal: Repository<Universal>,
     @InjectRepository(Hash)
     private readonly Hash: Repository<Hash>,
     @InjectRepository(HashList)
     private readonly HashList: Repository<HashList>,
     @InjectRepository(MemberStrategy)
     private readonly MemberStrategy: Repository<MemberStrategy>,
-    @InjectRepository(StockList)
-    private readonly StockList: Repository<StockList>,
+    // @InjectRepository(StockList)
+    // private readonly StockList: Repository<StockList>,
     @InjectRepository(AccumulateProfitRateChart)
     private readonly AccumulateProfitRateChart: Repository<AccumulateProfitRateChart>,
     @InjectRepository(BacktestDetailInfo)

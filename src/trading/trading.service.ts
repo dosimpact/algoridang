@@ -4,23 +4,29 @@ import { FinanceService } from 'src/finance/finance.service';
 import { StrategyService } from 'src/strategy/strategy.service';
 import { Repository } from 'typeorm';
 import {
-  AddTickerInput,
-  AddTickerOutput,
-  AddTradingStrategyInput,
-  AddTradingStrategyOutput,
+  AddUniversalInput,
+  AddUniversalOutput,
+  UpsertTradingStrategyInput,
+  UpsertTradingStrategyOutput,
   CopyBaseTradingStrategyInput,
   CopyBaseTradingStrategyOutput,
   UpsertTickerWithTradingStrategyInput,
   UpsertTickerWithTradingStrategyOutput,
 } from './dto/mutation.dtos';
+
 import {
   getBaseTradingStrategyInput,
   getBaseTradingStrategyListInput,
   getBaseTradingStrategyListOutput,
   getBaseTradingStrategyOutput,
 } from './dto/query.dtos';
-import { BaseTradingStrategy, CustomTradingStrategy } from './entities';
-import { StockList } from './entities/stock-list.entity';
+import {
+  BaseTradingStrategy,
+  // CustomTradingStrategy,
+  SimpleBacktest,
+  Universal,
+} from './entities';
+// import { StockList } from './entities/stock-list.entity';
 
 @Injectable()
 export class TradingService {
@@ -28,10 +34,12 @@ export class TradingService {
   constructor(
     @InjectRepository(BaseTradingStrategy)
     private readonly baseTradingStRepo: Repository<BaseTradingStrategy>,
-    @InjectRepository(CustomTradingStrategy)
-    private readonly customTradingStRepo: Repository<CustomTradingStrategy>,
-    @InjectRepository(StockList)
-    private readonly stockListRepo: Repository<StockList>,
+    // @InjectRepository(CustomTradingStrategy)
+    // private readonly customTradingStRepo: Repository<CustomTradingStrategy>,
+    @InjectRepository(SimpleBacktest)
+    private readonly simpleBacktestRepo: Repository<SimpleBacktest>,
+    @InjectRepository(Universal)
+    private readonly universalRepo: Repository<Universal>,
     private readonly financeService: FinanceService,
     private readonly strategyService: StrategyService,
   ) {}
@@ -63,33 +71,42 @@ export class TradingService {
       return { ok: false };
     }
   }
-  //(3) 기본 매매전략 카피
-  async __copyBaseTradingStrategy({
-    setting_json,
-    trading_strategy_code,
-  }: CopyBaseTradingStrategyInput): Promise<CopyBaseTradingStrategyOutput> {
-    try {
-      const tradingStrategy = await this.baseTradingStRepo.findOne({
-        where: { trading_strategy_code },
-      });
-      if (!tradingStrategy) return { ok: false };
-      const customTradingStrategy = await this.customTradingStRepo.save(
-        this.customTradingStRepo.create({
-          ...tradingStrategy,
-          setting_json,
-        }),
-      );
-      return { ok: true, customTradingStrategy };
-    } catch (error) {
-      this.logger.error(error);
-      return { ok: false };
-    }
-  }
+  //(3) 기본 매매전략 카피 (deprecated)
+  // - 유니버셜에 바로 추가
+  //🚀todo refactor
+  // async __copyBaseTradingStrategy({
+  //   setting_json,
+  //   trading_strategy_code,
+  // }: CopyBaseTradingStrategyInput): Promise<CopyBaseTradingStrategyOutput> {
+  //   try {
+  //     const tradingStrategy = await this.baseTradingStRepo.findOne({
+  //       where: { trading_strategy_code },
+  //     });
+  //     if (!tradingStrategy) return { ok: false };
+  //     const customTradingStrategy = await this.customTradingStRepo.save(
+  //       this.customTradingStRepo.create({
+  //         ...tradingStrategy,
+  //         setting_json,
+  //       }),
+  //     );
+  //     return { ok: true, customTradingStrategy };
+  //   } catch (error) {
+  //     this.logger.error(error);
+  //     return { ok: false };
+  //   }
+  // }
+
   //(4)  전략에 티커 추가하기
-  async addTicker(
+  async addUniversal(
     email_id: string,
-    { strategy_code, ticker }: AddTickerInput,
-  ): Promise<AddTickerOutput> {
+    {
+      strategy_code,
+      ticker,
+      end_date,
+      start_date,
+      select_yes_no,
+    }: AddUniversalInput,
+  ): Promise<AddUniversalOutput> {
     try {
       // 티커 및 전략 존재성
       const existTicker = await this.financeService.getCorporation({
@@ -98,7 +115,7 @@ export class TradingService {
       if (!existTicker.ok || existTicker.corporation.ticker !== ticker)
         return { ok: false, error: 'cannot find corp given ticker' };
 
-      const existStrategy = await this.strategyService.getMyStrategyById({
+      const existStrategy = await this.strategyService.__checkMyStrategy({
         strategy_code,
         email_id,
       });
@@ -107,72 +124,94 @@ export class TradingService {
           ok: false,
           error: 'cannot find strategy_code given strategy_code',
         };
-      // 매핑 테이블 생성
-      const stocksTable = await this.stockListRepo.save(
-        this.stockListRepo.create({
+      // universal 매핑 테이블 생성
+      const universal = await this.universalRepo.save(
+        this.universalRepo.create({
           ticker,
           strategy_code,
+          end_date,
+          start_date,
+          select_yes_no,
         }),
       );
-      return { ok: true, stocksTable };
+      return { ok: true, universal };
     } catch (error) {
       this.logger.error(error);
       return { ok: false };
     }
   }
-  //(5) 전략에 매매전략 추가하기
-  async addTradingStrategy({
-    strategy_code,
-    ticker,
-    setting_json,
-    trading_strategy_code,
-  }: AddTradingStrategyInput): Promise<AddTradingStrategyOutput> {
+  // (5) 전략에 매매전략 추가하기
+  async upsertTradingStrategy(
+    email_id: string,
+    {
+      strategy_code,
+      universal_code,
+      trading_strategy_name,
+      setting_json,
+    }: UpsertTradingStrategyInput,
+  ): Promise<UpsertTradingStrategyOutput> {
     try {
-      // 전략 테이블 찾기
-      const stocksTable = await this.stockListRepo.findOne({
+      // 전략 및 유니버셜 존재성 확인
+      const existStrategy = await this.strategyService.__checkMyStrategy({
+        strategy_code,
+        email_id,
+      });
+      if (!existStrategy.ok)
+        return {
+          ok: false,
+          error: 'cannot find strategy_code given strategy_code',
+        };
+      // unversial을 찾아 전략 추가
+      const universal = await this.universalRepo.findOne({
         where: {
-          strategy_code,
-          ticker,
+          universal_code,
         },
       });
-      if (!stocksTable) return { ok: false, error: 'cannot find stocksTable' };
-      const { ok, customTradingStrategy } =
-        await this.__copyBaseTradingStrategy({
-          setting_json,
-          trading_strategy_code,
-        });
-      if (!ok) return { ok: false, error: 'cannot __copyBaseTradingStrategy' };
-
-      // 전략을 추가한다.
-      stocksTable.trading_strategy_code =
-        customTradingStrategy.trading_strategy_code;
-      await this.stockListRepo.save(stocksTable);
-
-      return { ok: true, stocksTable };
+      if (!universal)
+        return {
+          ok: false,
+          error: 'cannot find universal given universal_code',
+        };
+      if (setting_json) universal.setting_json = setting_json;
+      if (trading_strategy_name)
+        universal.trading_strategy_name = trading_strategy_name;
+      await this.universalRepo.save(universal);
+      return { ok: true, universal };
     } catch (error) {
       this.logger.error(error);
       return { ok: false };
     }
   }
+  // todo refactor
   //(6) 전략에 티커 + 매매전략 추가하기
   async upsertTickerWithTradingStrategy(
     email_id,
     {
       setting_json,
+      start_date,
       strategy_code,
       ticker,
-      trading_strategy_code,
+      trading_strategy_name,
+      end_date,
+      select_yes_no,
     }: UpsertTickerWithTradingStrategyInput,
   ): Promise<UpsertTickerWithTradingStrategyOutput> {
     try {
-      await this.addTicker(email_id, { strategy_code, ticker });
-      const { stocksTable } = await this.addTradingStrategy({
-        setting_json,
+      const res = await this.addUniversal(email_id, {
         strategy_code,
         ticker,
-        trading_strategy_code,
+        end_date,
+        start_date,
+        select_yes_no,
       });
-      return { ok: true, stocksTable };
+      if (!res.ok) return res;
+      const { universal } = await this.upsertTradingStrategy(email_id, {
+        setting_json,
+        strategy_code,
+        trading_strategy_name,
+        universal_code: res.universal.universal_code,
+      });
+      return { ok: true, universal };
     } catch (error) {
       this.logger.error(error);
       return { ok: false };

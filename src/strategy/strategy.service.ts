@@ -29,7 +29,7 @@ import {
   UpdateMyStrategyByIdInput,
   UpdateMyStrategyByIdOutput,
 } from './dto/mutation.dtos';
-import { Hash, HashList, MemberStrategy, StockList } from './entities';
+import { Hash, HashList, MemberStrategy } from './entities';
 import { InvestType } from './entities/member-strategy.entity';
 import { Logger } from '@nestjs/common';
 import { InvestProfitInfo } from 'src/backtest/entities';
@@ -46,8 +46,8 @@ export class StrategyService {
     private readonly HashListRepo: Repository<HashList>,
     @InjectRepository(MemberStrategy)
     private readonly MemberStrategyRepo: Repository<MemberStrategy>,
-    @InjectRepository(StockList)
-    private readonly StockListRepo: Repository<StockList>,
+    // @InjectRepository(StockList)
+    // private readonly StockListRepo: Repository<StockList>,
     @InjectRepository(InvestProfitInfo)
     private readonly investProfitInfoRepo: Repository<InvestProfitInfo>,
     private readonly HashService: StrategyHashService,
@@ -268,6 +268,31 @@ export class StrategyService {
           'backtestDetailInfo',
           'operationMemberList',
         ],
+      });
+      if (!memberStrategy)
+        return {
+          ok: false,
+        };
+      return {
+        ok: true,
+        memberStrategy,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      return { ok: false };
+    }
+  }
+
+  async __checkMyStrategy({
+    email_id,
+    strategy_code,
+  }: GetMyStrategyByIdInput): Promise<GetMyStrategyByIdOutput> {
+    try {
+      const memberStrategy = await this.MemberStrategyRepo.findOne({
+        where: {
+          operator_id: email_id,
+          strategy_code,
+        },
       });
       if (!memberStrategy)
         return {

@@ -4,6 +4,7 @@ import {
   IsEnum,
   IsNumber,
   IsString,
+  ValidateNested,
 } from 'class-validator';
 import {
   AccumulateProfitRateChart,
@@ -16,7 +17,6 @@ import {
 } from 'src/backtest/entities';
 import { LookupMemberList, MemberInfo } from 'src/member/entities';
 import { OperationMemberList } from 'src/member/entities/operation-member-list.entity';
-import { CustomTradingStrategy } from 'src/trading/entities/custom_trading_strategy';
 import {
   Column,
   CreateDateColumn,
@@ -29,7 +29,10 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { HashList } from './hash-list.entity';
-import { StockList } from '../../trading/entities/stock-list.entity';
+import { Universal } from 'src/trading/entities/universal';
+import { UniversalProducer } from '../json/universal_producer.entity';
+import { Type } from 'class-transformer';
+// import { StockList } from '../../trading/entities/stock-list.entity';
 
 export enum InvestType {
   Unclassified = 'Unclassified', // 0 - 미분류
@@ -54,7 +57,6 @@ export type MemberStrategyFullRelation = Array<
       | 'lookupMemberList'
       | 'hashList'
       | 'histories'
-      | 'stockList'
     >
 >;
 
@@ -99,6 +101,11 @@ export class MemberStrategy {
   @IsDateString()
   @DeleteDateColumn({ type: 'timestamptz' })
   deleteAt: Date;
+
+  @ValidateNested()
+  @Type()
+  @Column({ type: 'json', nullable: true })
+  universal_producer?: UniversalProducer;
 
   // 1:1 관계
 
@@ -149,6 +156,10 @@ export class MemberStrategy {
   // @OneToMany(() => CustomTradingStrategy, (cts) => cts.stragety)
   // customTradingStrategy: CustomTradingStrategy[];
 
+  // (6) 전략은 유니버셜을 같는다. 1:N 튜플 매칭
+  @OneToMany(() => Universal, (univ) => univ.memberStrategy)
+  universal: Universal;
+
   // ------------------------------------------------------------
   // n:m 관계
   // (1) 전략 운용중인 사용자 리스트
@@ -168,6 +179,6 @@ export class MemberStrategy {
   histories: History[];
 
   // (5) 전략의 유니버셜 매핑
-  @OneToMany(() => StockList, (sl) => sl.strategy)
-  stockList: StockList[];
+  // @OneToMany(() => StockList, (sl) => sl.strategy)
+  // stockList: StockList[];
 }

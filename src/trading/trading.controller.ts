@@ -2,8 +2,8 @@ import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { AuthUser, Roles } from 'src/auth/auth.decorator';
 import { MemberInfo } from 'src/member/entities';
 import {
-  AddTickerInput,
-  AddTradingStrategyInput,
+  AddUniversalInput,
+  UpsertTradingStrategyInput,
   UpsertTickerWithTradingStrategyInput,
 } from './dto/mutation.dtos';
 import { TradingService } from './trading.service';
@@ -30,19 +30,23 @@ export class TradingMutationController {
   constructor(private readonly tradingService: TradingService) {}
   //(4)  전략에 티커 추가하기
   @Roles(['Any'])
-  @Post('addTicker')
-  async addTicker(
+  @Post('addUniversal')
+  async addUniversal(
     @AuthUser() m: MemberInfo,
-    @Body() addTicker: AddTickerInput,
+    @Body() addUniversal: AddUniversalInput,
   ) {
-    return this.tradingService.addTicker(m.email_id, {
-      ...addTicker,
+    return this.tradingService.addUniversal(m.email_id, {
+      ...addUniversal,
     });
   }
   //(5) 전략에 매매전략 추가하기
-  @Post('addTradingStrategy')
-  async addTradingStrategy(@Body() body: AddTradingStrategyInput) {
-    return this.tradingService.addTradingStrategy(body);
+  @Roles(['Any'])
+  @Post('upsertTradingStrategy')
+  async upsertTradingStrategy(
+    @AuthUser() m: MemberInfo,
+    @Body() body: UpsertTradingStrategyInput,
+  ) {
+    return this.tradingService.upsertTradingStrategy(m.email_id, body);
   }
   //(6) 전략에 티커 + 매매전략 추가하기
   @Roles(['Any'])
