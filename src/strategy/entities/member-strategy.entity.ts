@@ -4,6 +4,7 @@ import {
   IsEnum,
   IsNumber,
   IsString,
+  ValidateNested,
 } from 'class-validator';
 import {
   AccumulateProfitRateChart,
@@ -29,6 +30,8 @@ import {
 } from 'typeorm';
 import { HashList } from './hash-list.entity';
 import { Universal } from 'src/trading/entities/universal';
+import { UniversalProducer } from '../json/universal_producer.entity';
+import { Type } from 'class-transformer';
 // import { StockList } from '../../trading/entities/stock-list.entity';
 
 export enum InvestType {
@@ -98,6 +101,11 @@ export class MemberStrategy {
   @IsDateString()
   @DeleteDateColumn({ type: 'timestamptz' })
   deleteAt: Date;
+
+  @ValidateNested()
+  @Type()
+  @Column({ type: 'json', nullable: true })
+  universal_producer?: UniversalProducer;
 
   // 1:1 관계
 
