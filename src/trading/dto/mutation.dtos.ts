@@ -1,13 +1,5 @@
-import { IntersectionType, PickType } from '@nestjs/mapped-types';
-import { Type } from 'class-transformer';
-import {
-  IsBoolean,
-  IsEnum,
-  IsJSON,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IntersectionType, OmitType, PickType } from '@nestjs/mapped-types';
+import { IsEnum, IsNumber, IsObject } from 'class-validator';
 import { CoreOutput } from 'src/common/dtos/output.dto';
 import { SettingJSON, StrategyName } from '../constant/strategy-setting';
 import { Universal } from '../entities';
@@ -17,9 +9,7 @@ export class CopyBaseTradingStrategyInput {
   @IsNumber()
   trading_strategy_code: number;
 
-  //   @ValidateNested()
-  //   @Type()
-  @IsJSON()
+  @IsObject()
   setting_json: SettingJSON;
 }
 // todo refactor
@@ -46,9 +36,10 @@ export class UpsertTradingStrategyInput {
 
   @IsEnum(StrategyName)
   trading_strategy_name: StrategyName;
-  //   @ValidateNested()
-  //   @Type()
-  @IsJSON()
+
+  // https://github.com/typestack/class-validator/issues/126
+  // interface는 컴파일되므로 검사할 수 없다.
+  @IsObject()
   setting_json: SettingJSON;
 }
 export class UpsertTradingStrategyOutput extends CoreOutput {
@@ -57,7 +48,7 @@ export class UpsertTradingStrategyOutput extends CoreOutput {
 
 export class UpsertTickerWithTradingStrategyInput extends IntersectionType(
   AddUniversalInput,
-  UpsertTradingStrategyInput,
+  OmitType(UpsertTradingStrategyInput, ['universal_code']),
 ) {}
 export class UpsertTickerWithTradingStrategyOutput extends CoreOutput {
   universal?: Universal;

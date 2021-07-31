@@ -192,24 +192,24 @@ export class TradingService {
       strategy_code,
       ticker,
       trading_strategy_name,
-      universal_code,
       end_date,
       select_yes_no,
     }: UpsertTickerWithTradingStrategyInput,
   ): Promise<UpsertTickerWithTradingStrategyOutput> {
     try {
-      await this.addUniversal(email_id, {
+      const res = await this.addUniversal(email_id, {
         strategy_code,
         ticker,
         end_date,
         start_date,
         select_yes_no,
       });
+      if (!res.ok) return res;
       const { universal } = await this.upsertTradingStrategy(email_id, {
         setting_json,
         strategy_code,
         trading_strategy_name,
-        universal_code,
+        universal_code: res.universal.universal_code,
       });
       return { ok: true, universal };
     } catch (error) {

@@ -45,7 +45,6 @@ export class Universal {
     type: 'enum',
     enum: StrategyName,
     default: StrategyName.GoldenCross,
-    unique: true,
   })
   trading_strategy_name: StrategyName;
 

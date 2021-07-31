@@ -1,8 +1,8 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { AuthUser, Roles } from 'src/auth/auth.decorator';
 import { MemberInfo } from 'src/member/entities';
-import { AddUniversalInput } from './dto/mutation.dtos';
 import {
+  AddUniversalInput,
   UpsertTradingStrategyInput,
   UpsertTickerWithTradingStrategyInput,
 } from './dto/mutation.dtos';
@@ -30,16 +30,17 @@ export class TradingMutationController {
   constructor(private readonly tradingService: TradingService) {}
   //(4)  전략에 티커 추가하기
   @Roles(['Any'])
-  @Post('addTicker')
-  async addTicker(
+  @Post('addUniversal')
+  async addUniversal(
     @AuthUser() m: MemberInfo,
-    @Body() addTicker: AddUniversalInput,
+    @Body() addUniversal: AddUniversalInput,
   ) {
     return this.tradingService.addUniversal(m.email_id, {
-      ...addTicker,
+      ...addUniversal,
     });
   }
   //(5) 전략에 매매전략 추가하기
+  @Roles(['Any'])
   @Post('upsertTradingStrategy')
   async upsertTradingStrategy(
     @AuthUser() m: MemberInfo,
