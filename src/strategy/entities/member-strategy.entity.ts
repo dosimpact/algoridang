@@ -30,6 +30,7 @@ import {
 } from 'typeorm';
 import { HashList } from './hash-list.entity';
 import { StockList } from '../../trading/entities/stock-list.entity';
+import { Universal } from 'src/trading/entities/universal';
 
 export enum InvestType {
   Unclassified = 'Unclassified', // 0 - 미분류
@@ -148,6 +149,10 @@ export class MemberStrategy {
   // (5) (deprecated) 전략에 셋팅된 매매전략(셋팅포함)
   // @OneToMany(() => CustomTradingStrategy, (cts) => cts.stragety)
   // customTradingStrategy: CustomTradingStrategy[];
+
+  // (6) 전략은 유니버셜을 같는다. 1:N 튜플 매칭
+  @OneToMany(() => Universal, (univ) => univ.memberStrategy)
+  universal: Universal;
 
   // ------------------------------------------------------------
   // n:m 관계
