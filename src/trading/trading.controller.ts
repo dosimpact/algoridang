@@ -2,7 +2,6 @@ import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { AuthUser, Roles } from 'src/auth/auth.decorator';
 import { MemberInfo } from 'src/member/entities';
 import {
-  AddTickerInput,
   AddTradingStrategyInput,
   UpsertTickerWithTradingStrategyInput,
 } from './dto/mutation.dtos';

@@ -41,11 +41,7 @@ import {
   DailyStock,
 } from './finance/entities';
 import { BaseTradingStrategy } from './trading/entities/base_trading_strategy.entity';
-import {
-  CustomTradingStrategy,
-  SimpleBacktest,
-  Universal,
-} from './trading/entities';
+import { SimpleBacktest, Universal } from './trading/entities';
 import { UploadModule } from './upload/upload.module';
 import * as redisStore from 'cache-manager-redis-store';
 import { UploadedObject } from './upload/entities/uploaded-object.entity';
@@ -90,7 +86,7 @@ import { AuthModule } from './auth/auth.module';
         ],
         ...[
           // Trading(4/4)
-          CustomTradingStrategy,
+          // CustomTradingStrategy,
           BaseTradingStrategy,
           SimpleBacktest,
           Universal,

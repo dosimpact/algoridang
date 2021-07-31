@@ -1,14 +1,8 @@
 import { Type } from 'class-transformer';
-import {
-  IsEmail,
-  IsJSON,
-  IsNumber,
-  IsString,
-  ValidateNested,
-} from 'class-validator';
+import { IsJSON, IsNumber, IsString } from 'class-validator';
 import { CoreOutput } from 'src/common/dtos/output.dto';
 import { SettingJSON } from '../constant/strategy-setting';
-import { CustomTradingStrategy } from '../entities';
+import { Universal } from '../entities';
 // import { StockList } from '../entities/stock-list.entity';
 
 export class CopyBaseTradingStrategyInput {
@@ -20,18 +14,19 @@ export class CopyBaseTradingStrategyInput {
   @IsJSON()
   setting_json: SettingJSON;
 }
+// todo refactor
 export class CopyBaseTradingStrategyOutput extends CoreOutput {
-  customTradingStrategy?: CustomTradingStrategy;
+  // customTradingStrategy?: CustomTradingStrategy;
 }
 
-export class AddTickerInput {
+export class AddUniversalInput {
   @IsNumber()
   strategy_code: number;
   @IsString()
   ticker: string;
 }
-export class AddTickerOutput extends CoreOutput {
-  // stocksTable?: StockList;
+export class AddUniversalOutput extends CoreOutput {
+  universal?: Universal;
 }
 
 export class AddTradingStrategyInput {

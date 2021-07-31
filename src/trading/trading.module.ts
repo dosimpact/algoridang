@@ -5,7 +5,12 @@ import {
   TradingMutationController,
   TradingQueryController,
 } from './trading.controller';
-import { BaseTradingStrategy, CustomTradingStrategy } from './entities';
+import {
+  BaseTradingStrategy,
+  // CustomTradingStrategy,
+  SimpleBacktest,
+  Universal,
+} from './entities';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FinanceModule } from 'src/finance/finance.module';
 import { StrategyModule } from 'src/strategy/strategy.module';
@@ -15,8 +20,10 @@ import { StrategyModule } from 'src/strategy/strategy.module';
   imports: [
     TypeOrmModule.forFeature([
       BaseTradingStrategy,
-      CustomTradingStrategy,
+      // CustomTradingStrategy,
       // StockList,
+      SimpleBacktest,
+      Universal,
     ]),
     forwardRef(() => FinanceModule),
     forwardRef(() => StrategyModule),

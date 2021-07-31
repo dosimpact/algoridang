@@ -4,6 +4,7 @@
 // import { Column, Entity, JoinColumn, OneToMany, PrimaryColumn } from 'typeorm';
 // import { MemberStrategy } from '../../strategy/entities/member-strategy.entity';
 
+// deprecated Entity
 // // 전략이 가지고 있는 티커들 매핑 테이블
 // // (1) 어떤 전략 (2) 어떤 종목에 (3) 어떤 매매전략을 적용
 // @Entity({ name: 'stock_list' })

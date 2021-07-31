@@ -16,7 +16,6 @@ import {
 } from 'src/backtest/entities';
 import { LookupMemberList, MemberInfo } from 'src/member/entities';
 import { OperationMemberList } from 'src/member/entities/operation-member-list.entity';
-import { CustomTradingStrategy } from 'src/trading/entities/custom_trading_strategy';
 import {
   Column,
   CreateDateColumn,

@@ -3,23 +3,19 @@ import {
   IsDateString,
   IsEnum,
   IsNumber,
-  IsOptional,
   IsString,
 } from 'class-validator';
 import { Corporation } from 'src/finance/entities';
-import { CustomTradingStrategy } from 'src/trading/entities';
 import {
   Column,
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToMany,
   OneToOne,
-  PrimaryColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { MemberStrategy } from '../../strategy/entities/member-strategy.entity';
-import { SettingJSON } from '../constant/strategy-setting';
+import { SettingJSON, StrategyName } from '../constant/strategy-setting';
 import { SimpleBacktest } from './simple-backtest.entity';
 
 // 유니버스 테이블
@@ -40,9 +36,14 @@ export class Universal {
   @Column({ type: 'timestamptz' })
   end_date: Date;
   // 해당 종목을 돌릴 전략이름과 셋팅
-  @IsString()
-  @Column()
-  trading_strategy_name: string;
+  @IsEnum(StrategyName)
+  @Column({
+    type: 'enum',
+    enum: StrategyName,
+    default: StrategyName.GoldenCross,
+    unique: true,
+  })
+  trading_strategy_name: StrategyName;
 
   @IsString()
   @Column({ type: 'json', default: {} })

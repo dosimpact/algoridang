@@ -25,7 +25,8 @@ import {
 import { Hash, HashList, MemberStrategy } from 'src/strategy/entities';
 import {
   BaseTradingStrategy,
-  CustomTradingStrategy,
+  SimpleBacktest,
+  Universal,
 } from 'src/trading/entities';
 import { UploadedObject } from 'src/upload/entities/uploaded-object.entity';
 import { SeederService } from './seeder.service';
@@ -61,9 +62,10 @@ import { SeederService } from './seeder.service';
           DailyStock,
         ],
         ...[
-          // Trading(2/2)
-          CustomTradingStrategy,
+          // Trading(4/4)
           BaseTradingStrategy,
+          SimpleBacktest,
+          Universal,
         ],
         ...[
           //
@@ -103,9 +105,10 @@ import { SeederService } from './seeder.service';
         DailyStock,
       ],
       ...[
-        // Trading(2/2)
-        CustomTradingStrategy,
+        // Trading(4/4)
         BaseTradingStrategy,
+        SimpleBacktest,
+        Universal,
       ],
       ...[
         //

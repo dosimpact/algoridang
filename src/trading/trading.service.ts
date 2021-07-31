@@ -4,8 +4,8 @@ import { FinanceService } from 'src/finance/finance.service';
 import { StrategyService } from 'src/strategy/strategy.service';
 import { Repository } from 'typeorm';
 import {
-  AddTickerInput,
-  AddTickerOutput,
+  AddUniversalInput,
+  AddUniversalOutput,
   AddTradingStrategyInput,
   AddTradingStrategyOutput,
   CopyBaseTradingStrategyInput,
@@ -20,7 +20,12 @@ import {
   getBaseTradingStrategyListOutput,
   getBaseTradingStrategyOutput,
 } from './dto/query.dtos';
-import { BaseTradingStrategy, CustomTradingStrategy } from './entities';
+import {
+  BaseTradingStrategy,
+  // CustomTradingStrategy,
+  SimpleBacktest,
+  Universal,
+} from './entities';
 // import { StockList } from './entities/stock-list.entity';
 
 @Injectable()
@@ -29,10 +34,12 @@ export class TradingService {
   constructor(
     @InjectRepository(BaseTradingStrategy)
     private readonly baseTradingStRepo: Repository<BaseTradingStrategy>,
-    @InjectRepository(CustomTradingStrategy)
-    private readonly customTradingStRepo: Repository<CustomTradingStrategy>,
-    // @InjectRepository(StockList)
-    // private readonly stockListRepo: Repository<StockList>,
+    // @InjectRepository(CustomTradingStrategy)
+    // private readonly customTradingStRepo: Repository<CustomTradingStrategy>,
+    @InjectRepository(SimpleBacktest)
+    private readonly simpleBacktestRepo: Repository<SimpleBacktest>,
+    @InjectRepository(Universal)
+    private readonly universalRepo: Repository<Universal>,
     private readonly financeService: FinanceService,
     private readonly strategyService: StrategyService,
   ) {}
@@ -65,63 +72,64 @@ export class TradingService {
     }
   }
   //(3) 기본 매매전략 카피
-  async __copyBaseTradingStrategy({
-    setting_json,
-    trading_strategy_code,
-  }: CopyBaseTradingStrategyInput): Promise<CopyBaseTradingStrategyOutput> {
-    try {
-      const tradingStrategy = await this.baseTradingStRepo.findOne({
-        where: { trading_strategy_code },
-      });
-      if (!tradingStrategy) return { ok: false };
-      const customTradingStrategy = await this.customTradingStRepo.save(
-        this.customTradingStRepo.create({
-          ...tradingStrategy,
-          setting_json,
-        }),
-      );
-      return { ok: true, customTradingStrategy };
-    } catch (error) {
-      this.logger.error(error);
-      return { ok: false };
-    }
-  }
   // todo refactor
-  //(4)  전략에 티커 추가하기
-  // async addTicker(
-  //   email_id: string,
-  //   { strategy_code, ticker }: AddTickerInput,
-  // ): Promise<AddTickerOutput> {
+  // async __copyBaseTradingStrategy({
+  //   setting_json,
+  //   trading_strategy_code,
+  // }: CopyBaseTradingStrategyInput): Promise<CopyBaseTradingStrategyOutput> {
   //   try {
-  //     // 티커 및 전략 존재성
-  //     const existTicker = await this.financeService.getCorporation({
-  //       term: ticker,
+  //     const tradingStrategy = await this.baseTradingStRepo.findOne({
+  //       where: { trading_strategy_code },
   //     });
-  //     if (!existTicker.ok || existTicker.corporation.ticker !== ticker)
-  //       return { ok: false, error: 'cannot find corp given ticker' };
-
-  //     const existStrategy = await this.strategyService.getMyStrategyById({
-  //       strategy_code,
-  //       email_id,
-  //     });
-  //     if (!existStrategy.ok)
-  //       return {
-  //         ok: false,
-  //         error: 'cannot find strategy_code given strategy_code',
-  //       };
-  //     // 매핑 테이블 생성
-  //     const stocksTable = await this.stockListRepo.save(
-  //       this.stockListRepo.create({
-  //         ticker,
-  //         strategy_code,
+  //     if (!tradingStrategy) return { ok: false };
+  //     const customTradingStrategy = await this.customTradingStRepo.save(
+  //       this.customTradingStRepo.create({
+  //         ...tradingStrategy,
+  //         setting_json,
   //       }),
   //     );
-  //     return { ok: true, stocksTable };
+  //     return { ok: true, customTradingStrategy };
   //   } catch (error) {
   //     this.logger.error(error);
   //     return { ok: false };
   //   }
   // }
+  // todo refactor
+  //(4)  전략에 티커 추가하기
+  async addUniversal(
+    email_id: string,
+    { strategy_code, ticker }: AddUniversalInput,
+  ): Promise<AddUniversalOutput> {
+    try {
+      // 티커 및 전략 존재성
+      const existTicker = await this.financeService.getCorporation({
+        term: ticker,
+      });
+      if (!existTicker.ok || existTicker.corporation.ticker !== ticker)
+        return { ok: false, error: 'cannot find corp given ticker' };
+
+      const existStrategy = await this.strategyService.getMyStrategyById({
+        strategy_code,
+        email_id,
+      });
+      if (!existStrategy.ok)
+        return {
+          ok: false,
+          error: 'cannot find strategy_code given strategy_code',
+        };
+      // 매핑 테이블 생성
+      const universal = await this.universalRepo.save(
+        this.universalRepo.create({
+          ticker,
+          strategy_code,
+        }),
+      );
+      return { ok: true, universal };
+    } catch (error) {
+      this.logger.error(error);
+      return { ok: false };
+    }
+  }
   // todo refactor
   //(5) 전략에 매매전략 추가하기
   // async addTradingStrategy({
