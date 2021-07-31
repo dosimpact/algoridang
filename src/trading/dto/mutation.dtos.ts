@@ -1,4 +1,4 @@
-import { PickType } from '@nestjs/mapped-types';
+import { IntersectionType, PickType } from '@nestjs/mapped-types';
 import { Type } from 'class-transformer';
 import {
   IsBoolean,
@@ -55,19 +55,10 @@ export class UpsertTradingStrategyOutput extends CoreOutput {
   universal?: Universal;
 }
 
-export class UpsertTickerWithTradingStrategyInput {
-  @IsNumber()
-  strategy_code: number;
-  @IsString()
-  ticker: string;
-
-  @IsNumber()
-  trading_strategy_code: number;
-  //   @ValidateNested()
-  //   @Type()
-  @IsJSON()
-  setting_json: SettingJSON;
-}
+export class UpsertTickerWithTradingStrategyInput extends IntersectionType(
+  AddUniversalInput,
+  UpsertTradingStrategyInput,
+) {}
 export class UpsertTickerWithTradingStrategyOutput extends CoreOutput {
-  // stocksTable?: StockList;
+  universal?: Universal;
 }

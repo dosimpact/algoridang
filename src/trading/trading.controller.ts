@@ -47,17 +47,16 @@ export class TradingMutationController {
   ) {
     return this.tradingService.upsertTradingStrategy(m.email_id, body);
   }
-  // todo refactor
   //(6) 전략에 티커 + 매매전략 추가하기
-  // @Roles(['Any'])
-  // @Post('upsertTickerWithTradingStrategy')
-  // async upsertTickerWithTradingStrategy(
-  //   @AuthUser() m: MemberInfo,
-  //   @Body() body: UpsertTickerWithTradingStrategyInput,
-  // ) {
-  //   return this.tradingService.upsertTickerWithTradingStrategy(
-  //     m.email_id,
-  //     body,
-  //   );
-  // }
+  @Roles(['Any'])
+  @Post('upsertTickerWithTradingStrategy')
+  async upsertTickerWithTradingStrategy(
+    @AuthUser() m: MemberInfo,
+    @Body() body: UpsertTickerWithTradingStrategyInput,
+  ) {
+    return this.tradingService.upsertTickerWithTradingStrategy(
+      m.email_id,
+      body,
+    );
+  }
 }

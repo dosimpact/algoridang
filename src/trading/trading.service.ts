@@ -184,29 +184,39 @@ export class TradingService {
   }
   // todo refactor
   //(6) 전략에 티커 + 매매전략 추가하기
-  // async upsertTickerWithTradingStrategy(
-  //   email_id,
-  //   {
-  //     setting_json,
-  //     strategy_code,
-  //     ticker,
-  //     trading_strategy_code,
-  //   }: UpsertTickerWithTradingStrategyInput,
-  // ): Promise<UpsertTickerWithTradingStrategyOutput> {
-  //   try {
-  //     await this.addTicker(email_id, { strategy_code, ticker });
-  //     const { stocksTable } = await this.addTradingStrategy({
-  //       setting_json,
-  //       strategy_code,
-  //       ticker,
-  //       trading_strategy_code,
-  //     });
-  //     return { ok: true };
-  //   } catch (error) {
-  //     this.logger.error(error);
-  //     return { ok: false };
-  //   }
-  // }
+  async upsertTickerWithTradingStrategy(
+    email_id,
+    {
+      setting_json,
+      start_date,
+      strategy_code,
+      ticker,
+      trading_strategy_name,
+      universal_code,
+      end_date,
+      select_yes_no,
+    }: UpsertTickerWithTradingStrategyInput,
+  ): Promise<UpsertTickerWithTradingStrategyOutput> {
+    try {
+      await this.addUniversal(email_id, {
+        strategy_code,
+        ticker,
+        end_date,
+        start_date,
+        select_yes_no,
+      });
+      const { universal } = await this.upsertTradingStrategy(email_id, {
+        setting_json,
+        strategy_code,
+        trading_strategy_name,
+        universal_code,
+      });
+      return { ok: true, universal };
+    } catch (error) {
+      this.logger.error(error);
+      return { ok: false };
+    }
+  }
 
   //   (GET)tradingStrategyList		매매전략리스트 { 기본 셋팅 }	(1) 매매전략 리스트 요청
   // (POST)createTradingStrategy	tradingStragetyCode
