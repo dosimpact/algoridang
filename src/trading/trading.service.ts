@@ -72,7 +72,7 @@ export class TradingService {
     }
   }
   //(3) 기본 매매전략 카피
-  // todo refactor
+  //🚀todo refactor
   // async __copyBaseTradingStrategy({
   //   setting_json,
   //   trading_strategy_code,
@@ -94,11 +94,17 @@ export class TradingService {
   //     return { ok: false };
   //   }
   // }
-  // todo refactor
+
   //(4)  전략에 티커 추가하기
   async addUniversal(
     email_id: string,
-    { strategy_code, ticker }: AddUniversalInput,
+    {
+      strategy_code,
+      ticker,
+      end_date,
+      start_date,
+      select_yes_no,
+    }: AddUniversalInput,
   ): Promise<AddUniversalOutput> {
     try {
       // 티커 및 전략 존재성
@@ -117,11 +123,14 @@ export class TradingService {
           ok: false,
           error: 'cannot find strategy_code given strategy_code',
         };
-      // 매핑 테이블 생성
+      // universal 매핑 테이블 생성
       const universal = await this.universalRepo.save(
         this.universalRepo.create({
           ticker,
           strategy_code,
+          end_date,
+          start_date,
+          select_yes_no,
         }),
       );
       return { ok: true, universal };

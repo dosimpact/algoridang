@@ -3,6 +3,7 @@ import {
   IsDateString,
   IsEnum,
   IsNumber,
+  IsOptional,
   IsString,
 } from 'class-validator';
 import { Corporation } from 'src/finance/entities';
@@ -26,15 +27,18 @@ export class Universal {
   universal_code: number;
   // 유니버셜의 종목 선택 여부
   @IsBoolean()
+  @IsOptional()
   @Column({ default: false })
-  select_yes_no: boolean;
+  select_yes_no?: boolean;
   // 시작 날짜와 끝 날짜
   @IsDateString()
   @Column({ type: 'timestamptz' })
   start_date: Date;
+
   @IsDateString()
-  @Column({ type: 'timestamptz' })
-  end_date: Date;
+  @IsOptional()
+  @Column({ type: 'timestamptz', nullable: true })
+  end_date?: Date;
   // 해당 종목을 돌릴 전략이름과 셋팅
   @IsEnum(StrategyName)
   @Column({
