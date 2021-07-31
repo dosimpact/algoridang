@@ -8,6 +8,7 @@ import pandas as pd
 import backtrader as bt
 from pandas import json_normalize
 
+import quantstats
 
 from openAPI.DB.DB import databasepool
 
@@ -101,6 +102,7 @@ class CBackTtrader(object):
             return res
         return "error"
 
+
     def startbackTest(self,tickerList, cash, startTime, endTime= None):
         if type(tickerList) is list:   
             ticker = tickerList[0]
@@ -130,7 +132,7 @@ class CBackTtrader(object):
 
         return cerebro.broker.getvalue()
 
-    def __setStrategy(self, startegyCode):
+    def __setStrategy(self, strategyCode):
         strategyList = []
         DBClass = databasepool()
         conn = DBClass.getConn()
@@ -142,27 +144,29 @@ from \"member_strategy\" ms , \
 where ms.strategy_code = sl.strategy_code  \
 and sl.trading_strategy_code = cts.trading_strategy_code  \
 and ms.strategy_code = 1;"
-
+            query = "select u.strategy_code,u.ticker, u.trading_strategy_name ,u.setting_json from universal u where u.strategy_code = "+str(strategyCode)
+            
             df = DBClass.selectDataframe(conn,query)
             DBClass.putConn(conn)
-            print(df)
             for index, row in df.iterrows():
-                if  row[2]== 1:
+                if  row[2]== 'GoldenCross':
                     setting = [row[3]['GoldenCross']['pfast'],row[3]['GoldenCross']['pslow']]
                     strategyList.append(( row[1] , SMACross ,setting, 1)) 
-
 
         return strategyList
         #(ticker, strategy, setting , weigth)
 
 
-    def requestBacktest(self, data):
+    def requestBacktestOneStock(self, data):
         #data = {'ticker': '["005930","005930"]', 'startTime': '20110101', 'endTime': '', 'strategyCode': '1', 'investPrice': '10000000'}
         
         
         #self.__setStrategy(data["strategyCode"])
         case = (self.__setStrategy(data["strategyCode"]))
-        caseNum = len(case)
+        if len(case) == 0 :
+            print("DB dose'not have any data in this field...")
+            return "error"
+
         total = 0
 
         for ticker , stg, setting, wgt in case:
@@ -170,20 +174,33 @@ and ms.strategy_code = 1;"
             for i in range(len(stg.param)):
                 stg.param[i] = setting[i]
 
-            cerebro.broker.setcash(int(data['investPrice'])*wgt/caseNum)
+            cerebro.broker.setcash(int(data['investPrice']))
             
             cerebro.broker.set_coc(True) # 구매 신청시 무조건 최대 금액으로 살 수 있음.
             cerebro.addstrategy(stg)
-
+            cerebro.addanalyzer(bt.analyzers.PyFolio, _name = 'PyFolio')
+       
             #pandas data inpute
             cerebro.adddata(bt.feeds.PandasData(dataname = self.getDBData(ticker,data['startTime'],data['endTime'])),name=ticker)
             
 
             print('Starting Portfolio Value: %.2f' % cerebro.broker.getvalue())
-            cerebro.run()
+            results = cerebro.run()
             print('Final Portfolio Value: %.2f' % cerebro.broker.getvalue())
             #cerebro.plot()
-            total += cerebro.broker.getvalue()
+            strat = results[0]
+
+            portfolio_stats = strat.analyzers.getbyname('PyFolio')
+            returns, positions, transactions, gross_lev = portfolio_stats.get_pf_items()
+            returns.index = returns.index.tz_convert(None)
+            
+            for idx, data in returns.items():
+                print(idx, data)
+            metrics = quantstats.reports.metrics(returns, mode='full', display=False)
+            
+            total+= cerebro.broker.getvalue()
+            break
+
 
 
         return total
