@@ -29,8 +29,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { HashList } from './hash-list.entity';
-import { StockList } from '../../trading/entities/stock-list.entity';
 import { Universal } from 'src/trading/entities/universal';
+// import { StockList } from '../../trading/entities/stock-list.entity';
 
 export enum InvestType {
   Unclassified = 'Unclassified', // 0 - 미분류
@@ -55,7 +55,6 @@ export type MemberStrategyFullRelation = Array<
       | 'lookupMemberList'
       | 'hashList'
       | 'histories'
-      | 'stockList'
     >
 >;
 
@@ -173,6 +172,6 @@ export class MemberStrategy {
   histories: History[];
 
   // (5) 전략의 유니버셜 매핑
-  @OneToMany(() => StockList, (sl) => sl.strategy)
-  stockList: StockList[];
+  // @OneToMany(() => StockList, (sl) => sl.strategy)
+  // stockList: StockList[];
 }

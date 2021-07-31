@@ -9,7 +9,7 @@ import {
 import { CoreOutput } from 'src/common/dtos/output.dto';
 import { SettingJSON } from '../constant/strategy-setting';
 import { CustomTradingStrategy } from '../entities';
-import { StockList } from '../entities/stock-list.entity';
+// import { StockList } from '../entities/stock-list.entity';
 
 export class CopyBaseTradingStrategyInput {
   @IsNumber()
@@ -31,7 +31,7 @@ export class AddTickerInput {
   ticker: string;
 }
 export class AddTickerOutput extends CoreOutput {
-  stocksTable?: StockList;
+  // stocksTable?: StockList;
 }
 
 export class AddTradingStrategyInput {
@@ -49,7 +49,7 @@ export class AddTradingStrategyInput {
   setting_json: SettingJSON;
 }
 export class AddTradingStrategyOutput extends CoreOutput {
-  stocksTable?: StockList;
+  // stocksTable?: StockList;
 }
 
 export class UpsertTickerWithTradingStrategyInput {
@@ -66,5 +66,5 @@ export class UpsertTickerWithTradingStrategyInput {
   setting_json: SettingJSON;
 }
 export class UpsertTickerWithTradingStrategyOutput extends CoreOutput {
-  stocksTable?: StockList;
+  // stocksTable?: StockList;
 }

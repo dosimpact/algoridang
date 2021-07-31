@@ -33,7 +33,7 @@ import {
   History,
   InvestProfitInfo,
 } from './backtest/entities';
-import { Hash, HashList, StockList } from './strategy/entities';
+import { Hash, HashList } from './strategy/entities';
 import {
   Category,
   CategoryList,
@@ -100,7 +100,7 @@ import { AuthModule } from './auth/auth.module';
           Hash,
           HashList,
           MemberStrategy,
-          StockList,
+          // StockList,
         ],
         ...[
           // back test (7/7)

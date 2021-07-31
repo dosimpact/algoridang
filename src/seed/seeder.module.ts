@@ -22,12 +22,7 @@ import {
   MemberInfo,
   OperationMemberList,
 } from 'src/member/entities';
-import {
-  Hash,
-  HashList,
-  MemberStrategy,
-  StockList,
-} from 'src/strategy/entities';
+import { Hash, HashList, MemberStrategy } from 'src/strategy/entities';
 import {
   BaseTradingStrategy,
   CustomTradingStrategy,
@@ -75,7 +70,7 @@ import { SeederService } from './seeder.service';
           Hash,
           HashList,
           MemberStrategy,
-          StockList,
+          // StockList,
         ],
         ...[
           // back test (7/7)
@@ -117,7 +112,7 @@ import { SeederService } from './seeder.service';
         Hash,
         HashList,
         MemberStrategy,
-        StockList,
+        // StockList,
       ],
       ...[
         // back test (7/7)

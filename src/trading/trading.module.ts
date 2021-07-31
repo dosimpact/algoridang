@@ -6,17 +6,17 @@ import {
   TradingQueryController,
 } from './trading.controller';
 import { BaseTradingStrategy, CustomTradingStrategy } from './entities';
-import { StockList } from './entities/stock-list.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FinanceModule } from 'src/finance/finance.module';
 import { StrategyModule } from 'src/strategy/strategy.module';
+// import { StockList } from './entities/stock-list.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
       BaseTradingStrategy,
       CustomTradingStrategy,
-      StockList,
+      // StockList,
     ]),
     forwardRef(() => FinanceModule),
     forwardRef(() => StrategyModule),

@@ -28,32 +28,35 @@ export class TradingQueryController {
 @Controller('/api/trading/')
 export class TradingMutationController {
   constructor(private readonly tradingService: TradingService) {}
+  // todo refactor
   //(4)  전략에 티커 추가하기
-  @Roles(['Any'])
-  @Post('addTicker')
-  async addTicker(
-    @AuthUser() m: MemberInfo,
-    @Body() addTicker: AddTickerInput,
-  ) {
-    return this.tradingService.addTicker(m.email_id, {
-      ...addTicker,
-    });
-  }
+  // @Roles(['Any'])
+  // @Post('addTicker')
+  // async addTicker(
+  //   @AuthUser() m: MemberInfo,
+  //   @Body() addTicker: AddTickerInput,
+  // ) {
+  //   return this.tradingService.addTicker(m.email_id, {
+  //     ...addTicker,
+  //   });
+  // }
+  // todo refactor
   //(5) 전략에 매매전략 추가하기
-  @Post('addTradingStrategy')
-  async addTradingStrategy(@Body() body: AddTradingStrategyInput) {
-    return this.tradingService.addTradingStrategy(body);
-  }
+  // @Post('addTradingStrategy')
+  // async addTradingStrategy(@Body() body: AddTradingStrategyInput) {
+  //   return this.tradingService.addTradingStrategy(body);
+  // }
+  // todo refactor
   //(6) 전략에 티커 + 매매전략 추가하기
-  @Roles(['Any'])
-  @Post('upsertTickerWithTradingStrategy')
-  async upsertTickerWithTradingStrategy(
-    @AuthUser() m: MemberInfo,
-    @Body() body: UpsertTickerWithTradingStrategyInput,
-  ) {
-    return this.tradingService.upsertTickerWithTradingStrategy(
-      m.email_id,
-      body,
-    );
-  }
+  // @Roles(['Any'])
+  // @Post('upsertTickerWithTradingStrategy')
+  // async upsertTickerWithTradingStrategy(
+  //   @AuthUser() m: MemberInfo,
+  //   @Body() body: UpsertTickerWithTradingStrategyInput,
+  // ) {
+  //   return this.tradingService.upsertTickerWithTradingStrategy(
+  //     m.email_id,
+  //     body,
+  //   );
+  // }
 }

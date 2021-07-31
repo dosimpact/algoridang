@@ -1,7 +1,7 @@
 import { IsEnum, IsNumber, IsString } from 'class-validator';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { SettingJSON, StrategyName } from '../constant/strategy-setting';
-import { StockList } from './stock-list.entity';
+// import { StockList } from './stock-list.entity';
 
 @Entity({ name: 'custom_trading_strategy' })
 export class CustomTradingStrategy {
@@ -31,6 +31,6 @@ export class CustomTradingStrategy {
   // stragety: MemberStrategy;
 
   //(2) 해당 전략을 사용하는 종목들 (mapping table)
-  @OneToMany(() => StockList, (sl) => sl.trading_strategy)
-  stock_lists: StockList[];
+  // @OneToMany(() => StockList, (sl) => sl.trading_strategy)
+  // stock_lists: StockList[];
 }

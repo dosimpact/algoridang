@@ -27,7 +27,7 @@ import {
   Hash,
   HashList,
   MemberStrategy,
-  StockList,
+  // StockList,
 } from 'src/strategy/entities';
 import {
   BaseTradingStrategy,
@@ -82,8 +82,8 @@ export class SeederService {
     private readonly HashList: Repository<HashList>,
     @InjectRepository(MemberStrategy)
     private readonly MemberStrategy: Repository<MemberStrategy>,
-    @InjectRepository(StockList)
-    private readonly StockList: Repository<StockList>,
+    // @InjectRepository(StockList)
+    // private readonly StockList: Repository<StockList>,
     @InjectRepository(AccumulateProfitRateChart)
     private readonly AccumulateProfitRateChart: Repository<AccumulateProfitRateChart>,
     @InjectRepository(BacktestDetailInfo)

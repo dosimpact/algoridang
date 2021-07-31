@@ -1,5 +1,4 @@
 import { IsString } from 'class-validator';
-import { StockList } from 'src/strategy/entities';
 import { Universal } from 'src/trading/entities';
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { CategoryList } from './category-list.entity';
@@ -30,8 +29,8 @@ export class Corporation {
   categoryList: CategoryList[];
 
   // (2) 이 회사를 참조하는 전략들
-  @OneToMany(() => StockList, (sl) => sl.corporation)
-  stragetyList: StockList[];
+  // @OneToMany(() => StockList, (sl) => sl.corporation)
+  // stragetyList: StockList[];
 
   // (3) 이 회사를 히스토리로 가지는 전략들 리스트 (참조 안함)
 }
