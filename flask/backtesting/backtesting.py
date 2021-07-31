@@ -12,6 +12,32 @@ import quantstats
 
 from openAPI.DB.DB import databasepool
 
+class BarAnalysis(bt.analyzers.Analyzer):
+
+    def start(self):
+        self.rets = list()
+
+    def next(self):
+        try:
+            self.rets.append(
+                [
+                    self.datas[0].datetime.datetime(),
+                    self.datas[0].open[0],
+                    self.datas[0].high[0],
+                    self.datas[0].low[0],
+                    self.datas[0].close[0],
+                    self.datas[0].volume[0],
+                    self.strategy.getposition().size,
+                    self.strategy.broker.getvalue(),
+                    self.strategy.broker.getcash(),
+                ]
+            )
+        except:
+            pass
+
+    def get_analysis(self):
+        return self.rets
+
 
 class SMACross(bt.Strategy):
     param = [ 5 , 20 ]
@@ -137,13 +163,6 @@ class CBackTtrader(object):
         DBClass = databasepool()
         conn = DBClass.getConn()
         if DBClass:
-            query = "select ms.strategy_code, sl.ticker, cts.trading_strategy_code,cts.setting_json \
-from \"member_strategy\" ms , \
-\"stock_list\" sl,\
-\"custom_trading_strategy\" cts  \
-where ms.strategy_code = sl.strategy_code  \
-and sl.trading_strategy_code = cts.trading_strategy_code  \
-and ms.strategy_code = 1;"
             query = "select u.strategy_code,u.ticker, u.trading_strategy_name ,u.setting_json from universal u where u.strategy_code = "+str(strategyCode)
             
             df = DBClass.selectDataframe(conn,query)
@@ -151,6 +170,7 @@ and ms.strategy_code = 1;"
             for index, row in df.iterrows():
                 if  row[2]== 'GoldenCross':
                     setting = [row[3]['GoldenCross']['pfast'],row[3]['GoldenCross']['pslow']]
+                    setting = [5,20]
                     strategyList.append(( row[1] , SMACross ,setting, 1)) 
 
         return strategyList
@@ -179,6 +199,7 @@ and ms.strategy_code = 1;"
             cerebro.broker.set_coc(True) # 구매 신청시 무조건 최대 금액으로 살 수 있음.
             cerebro.addstrategy(stg)
             cerebro.addanalyzer(bt.analyzers.PyFolio, _name = 'PyFolio')
+            cerebro.addanalyzer(BarAnalysis, _name="bar_data")
        
             #pandas data inpute
             cerebro.adddata(bt.feeds.PandasData(dataname = self.getDBData(ticker,data['startTime'],data['endTime'])),name=ticker)
@@ -190,14 +211,21 @@ and ms.strategy_code = 1;"
             #cerebro.plot()
             strat = results[0]
 
+            ### get all data
+
+            bar_data_res = strat.analyzers.bar_data.get_analysis()
+            df = pd.DataFrame(bar_data_res)
+            print(df)
+
             portfolio_stats = strat.analyzers.getbyname('PyFolio')
             returns, positions, transactions, gross_lev = portfolio_stats.get_pf_items()
             returns.index = returns.index.tz_convert(None)
             
-            for idx, data in returns.items():
-                print(idx, data)
+            #for idx, data in returns.items():
+            #    print(idx, data)
             metrics = quantstats.reports.metrics(returns, mode='full', display=False)
-            
+            print (metrics)
+
             total+= cerebro.broker.getvalue()
             break
 
