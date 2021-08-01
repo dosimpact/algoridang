@@ -13,25 +13,30 @@ import quantstats
 from openAPI.DB.DB import databasepool
 
 class BarAnalysis(bt.analyzers.Analyzer):
-
+    ticker = ""
+    rets = {}
     def start(self):
-        self.rets = list()
-
+        self.rets['data']  = {}
+        
     def next(self):
         try:
-            self.rets.append(
-                [
-                    self.datas[0].datetime.datetime(),
-                    self.datas[0].open[0],
-                    self.datas[0].high[0],
-                    self.datas[0].low[0],
-                    self.datas[0].close[0],
-                    self.datas[0].volume[0],
-                    self.strategy.getposition().size,
-                    self.strategy.broker.getvalue(),
-                    self.strategy.broker.getcash(),
-                ]
-            )
+            if not self.rets['data'].get(str(self.datas[0].datetime.datetime())) :
+                self.rets['data'][str(self.datas[0].datetime.datetime())]  = []
+            
+            self.rets['data'][str(self.datas[0].datetime.datetime())].append(
+                    [
+                        #self.datas[0].datetime.datetime(),
+                        self.ticker,
+                        self.datas[0].open[0],
+                        self.datas[0].high[0],
+                        self.datas[0].low[0],
+                        self.datas[0].close[0],
+                        self.datas[0].volume[0],
+                        self.strategy.getposition().size,
+                        self.strategy.broker.getvalue(),  # 주식 + 현금
+                        self.strategy.broker.getcash(),  # 현금
+                    ]
+                )
         except:
             pass
 
@@ -56,11 +61,11 @@ class SMACross(bt.Strategy):
                 self.buy(size=size) # 매수 size = 구매 개수 설정 
                 
                 dt = self.datas[0].datetime.date(0)
-                print('%s' % (dt.isoformat()),"buy : ",self.data.close[0])
+                #print('%s' % (dt.isoformat()),"buy : ",self.data.close[0])
         elif self.crossover < 0: # in the market & cross to the downside 
             
             dt = self.datas[0].datetime.date(0)
-            print('%s' % (dt.isoformat()),"sell : ",self.data.close[0])
+            #print('%s' % (dt.isoformat()),"sell : ",self.data.close[0])
             self.close() # 매도
         #print(self.data.close[0])
     
@@ -84,8 +89,8 @@ class SMACross(bt.Strategy):
         if ftest == 2:
             print("sell : ",stock_price)
         """
-        print('%s[%d] holding[%d] price[%d] cash[%.2f] value[%.2f]'
-              % (action, abs(order.size), self.holding, stock_price, cash, value))
+        #print('%s[%d] holding[%d] price[%d] cash[%.2f] value[%.2f]'
+        #      % (action, abs(order.size), self.holding, stock_price, cash, value))
 
 
 
@@ -199,6 +204,7 @@ class CBackTtrader(object):
             cerebro.broker.set_coc(True) # 구매 신청시 무조건 최대 금액으로 살 수 있음.
             cerebro.addstrategy(stg)
             cerebro.addanalyzer(bt.analyzers.PyFolio, _name = 'PyFolio')
+            BarAnalysis.ticker = ticker
             cerebro.addanalyzer(BarAnalysis, _name="bar_data")
        
             #pandas data inpute
@@ -215,7 +221,7 @@ class CBackTtrader(object):
 
             bar_data_res = strat.analyzers.bar_data.get_analysis()
             df = pd.DataFrame(bar_data_res)
-            print(df)
+            df.to_csv('saleLog.txt', sep = '\t')
 
             portfolio_stats = strat.analyzers.getbyname('PyFolio')
             returns, positions, transactions, gross_lev = portfolio_stats.get_pf_items()
