@@ -153,37 +153,6 @@ export class SeederService {
   // seed - relation mapping
   // (1) 시나리오
   async seedScenario01() {
-    // 사용자 1,2 를 만든다.
-    // const user1 = await this.MemberInfo.save(
-    //   this.MemberInfo.create({
-    //     email_id: 'blue_rose17@naver.com',
-    //     password: '123',
-    //     member_name: 'Test_Taker1',
-    //   }),
-    // );
-    // const user2 = await this.MemberInfo.save(
-    //   this.MemberInfo.create({
-    //     email_id: 'changyu.park1@gmail.com',
-    //     password: '123',
-    //     member_name: 'Test_Maker1',
-    //   }),
-    // );
-    // 사용자 전략 생성
-    // const st1 = await this.MemberStrategy.save(
-    //   this.MemberStrategy.create({
-    //     strategy_name: '찬규의 테스트 케이스',
-    //     invest_type: InvestType.StableIncome,
-    //     strategy_explanation: '찬규의 테스트 관련 전략 설명란 입니다.',
-    //     operation_yes_no: true,
-    //     alarm_setting: false,
-    //     investment_game_invest_delete_yes_no: false,
-    //     open_yes_no: true,
-    //     operator_id: 'blue_rose17@naver.com',
-    //     maker_id: 'changyu.park1@gmail.com',
-    //     image_url:
-    //       'https://algoridang.s3.ap-northeast-2.amazonaws.com/common/1627272438714d_thumb01.jpeg',
-    //   }),
-    // );
     this.logger.verbose('✔ seedScenario01');
   }
 
