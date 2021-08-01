@@ -3,6 +3,7 @@ from __future__ import (absolute_import, division, print_function,
 
 import json
 from backtrader import strategy
+#from quantstats._plotting.wrappers import daily_returns
 import requests
 import pandas as pd
 import backtrader as bt
@@ -15,6 +16,9 @@ from openAPI.DB.DB import databasepool
 class BarAnalysis(bt.analyzers.Analyzer):
     ticker = ""
     rets = {}
+    winCnt = 0
+    loseCnt = 0
+    tradehistory = []
     def start(self):
         self.rets['data']  = {}
         
@@ -42,8 +46,41 @@ class BarAnalysis(bt.analyzers.Analyzer):
 
     def get_analysis(self):
         return self.rets
+    def get_winloseCnt(self):
+        return self.winCnt,self.loseCnt
+    def get_tradehistory(self):
+        return self.tradehistory
+
+    def notify_trade(self, trade):
+        date = self.data.datetime.datetime()
+        
+        if trade.isopen:
+            self.tradehistory.append([str(date),trade.price,None,self.ticker])
+            """
+            print('-'*32,' OPEN NOTIFY TRADE ','-'*32)
+            print('{}, Price: {}'.format(date,trade.price))
+            """
+                                                
 
 
+        if trade.isclosed:
+            #히스토리 생성기
+            self.tradehistory.append([str(date),self.datas[0].close[0],round(self.datas[0].close[0]/trade.price*100-100,2),self.ticker])
+
+            """
+            print('-'*32,' CLOSE NOTIFY TRADE ','-'*32)
+            print('{}, Price: {}, Profit, Gross {}, Net {}'.format(
+                                                date,
+                                                trade.price,
+                                                round(trade.pnl,2),
+                                                round(trade.pnlcomm,2)))
+                                                """
+            # 승수 계산기
+            if round(trade.pnl,2) > 0:
+                self.winCnt += 1
+            else:
+                self.loseCnt += 1
+                
 class SMACross(bt.Strategy):
     param = [ 5 , 20 ]
     def __init__(self):
@@ -93,7 +130,7 @@ class SMACross(bt.Strategy):
         #      % (action, abs(order.size), self.holding, stock_price, cash, value))
 
 
-
+   
 
 class CBackTtrader(object):
     def __init__(self) -> None:
@@ -133,7 +170,7 @@ class CBackTtrader(object):
             return res
         return "error"
 
-
+#data startbackTest
     def startbackTest(self,tickerList, cash, startTime, endTime= None):
         if type(tickerList) is list:   
             ticker = tickerList[0]
@@ -196,6 +233,7 @@ class CBackTtrader(object):
 
         for ticker , stg, setting, wgt in case:
             cerebro = bt.Cerebro()
+            cerebro.params.tradehistory = True
             for i in range(len(stg.param)):
                 stg.param[i] = setting[i]
 
@@ -217,11 +255,10 @@ class CBackTtrader(object):
             #cerebro.plot()
             strat = results[0]
 
-            ### get all data
-
+            ### 일간 수익 로그
             bar_data_res = strat.analyzers.bar_data.get_analysis()
-            df = pd.DataFrame(bar_data_res)
-            df.to_csv('saleLog.txt', sep = '\t')
+            dailydata = pd.DataFrame(bar_data_res)
+            dailydata.to_csv('saleLog.txt', sep = '\t')
 
             portfolio_stats = strat.analyzers.getbyname('PyFolio')
             returns, positions, transactions, gross_lev = portfolio_stats.get_pf_items()
@@ -230,8 +267,22 @@ class CBackTtrader(object):
             #for idx, data in returns.items():
             #    print(idx, data)
             metrics = quantstats.reports.metrics(returns, mode='full', display=False)
-            print (metrics)
+            print ("%%%%"*5)
+            #백테스트 상세정보
+            print(metrics.loc['CAGR%']['Strategy'], metrics.loc['Max Drawdown ']['Strategy'], )
 
+            #월간 수익률
+            print(quantstats.stats.monthly_returns(returns))
+
+            # 승수 출력
+            winCnt, loseCnt = strat.analyzers.bar_data.get_winloseCnt()
+            print(winCnt,loseCnt)
+
+
+            # 히스토리 출력하기
+            tradehitory = strat.analyzers.bar_data.get_tradehistory()
+            print(tradehitory)
+            print ("%%%%"*5)
             total+= cerebro.broker.getvalue()
             break
 
