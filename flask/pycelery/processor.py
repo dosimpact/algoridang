@@ -121,7 +121,7 @@ def initDB_DailyStock(self):
 
         for ticker,name in res:
             idx += 1
-            df = pykrx.getKRStockDaily(ticker,"20110101",)
+            df = pykrx.getKRStockDaily(ticker)
             res = pykrx.sendKRStockDaily(ticker,df)
 
             if res != "":
@@ -133,23 +133,14 @@ def initDB_DailyStock(self):
 
 
 @process.task(bind=True, base=CoreTask)
-def backtestTaskCall(self,data):
-    #data = {'ticker': '["005930","005930"]', 'startTime': '20110101', 'endTime': '', 'strategyCode': '0', 'investPrice': '10000000', 'tradingStrategyCode': '0', 'tradingStrategyDetailSettingCode': '0'}
-    #data = {'ticker': '005930', 'startTime': '20170101', 'endTime': '', 'strategyCode': '0', 'investPrice': '10000000', 'tradingStrategyCode': '0', 'tradingStrategyDetailSettingCode': '0'}
+def backtestTaskCall(self,strategyCode):
     bk = backtesting.CBackTtrader()
-    #res = bk.startbackTest(data['ticker'],data['investPrice'],data['startTime'],data['endTime'])
-    res = bk.requestBacktestOneStock(data)
-
+    res = bk.requestBacktestOneStock(strategyCode)
     return res
 
 
-def Test___backtestTestCode():
-    #data = {'ticker': '["005930","005930"]', 'startTime': '20110101', 'endTime': '', 'strategyCode': '0', 'investPrice': '10000000', 'tradingStrategyCode': '0', 'tradingStrategyDetailSettingCode': '0'}
-    data = {'ticker': '005930', 'startTime': '20190304', 'endTime': '', 'strategyCode': '1', 'investPrice': '10000000', 'tradingStrategyCode': '0', 'tradingStrategyDetailSettingCode': '0'}
+def Test___backtestTestCode(strategyCode):
     bk = backtesting.CBackTtrader()
-    #res = bk.startbackTest(data['ticker'],data['investPrice'],data['startTime'],data['endTime'])
-    
-    res = bk.requestBacktestOneStock(data)
-    
+    res = bk.requestBacktestOneStock(strategyCode)
     return res
 

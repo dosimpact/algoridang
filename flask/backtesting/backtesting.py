@@ -17,7 +17,7 @@ import numpy as _np
 # 거래 개월수
 from dateutil.relativedelta import relativedelta
 import datetime
-
+import math
 
 class BarAnalysis(bt.analyzers.Analyzer):
     ticker = ""
@@ -223,13 +223,169 @@ class CBackTtrader(object):
 
         return strategyList
         #(ticker, strategy, setting , weigth)
+    
+
+    def __saveHistoryTable(self, tradehitory,strategyCode):
+        DBClass = databasepool()
+        conn = DBClass.getConn()
+        
+        for i in range(len(tradehitory)):
+            query  = "select * from history "
+            query += " where strategy_code = " + str(strategyCode)
+            query += " and ticker = \'" + str(tradehitory[i][3])+"\'"
+            query += " and history_date = \'"+str(tradehitory[i][0]) + "\';"
+
+            if len(DBClass.selectData(conn,query)) == 1:
+                if tradehitory[i][2] != None :
+                    query = "update history set "
+                    query += " buy_sale_price = " + str(tradehitory[i][1]) + ","
+                    query += " profit_loss_rate = " + str(tradehitory[i][2])
+                    query += " where strategy_code = " + str(strategyCode)
+                    query += " and ticker = \'" + str(tradehitory[i][3]) + "\'"
+                    query += " and history_date = \'"+str(tradehitory[i][0]) + "\';"
+                    DBClass.upDateData(conn,query)
+                else :
+                    query = "update history set "
+                    query += " buy_sale_price = " + str(tradehitory[i][1]) 
+                    query += " where strategy_code = " + str(strategyCode)
+                    query += " and ticker =  \'" + str(tradehitory[i][3]) + "\'"
+                    query += " and history_date = \'"+str(tradehitory[i][0]) + "\';"
+                    DBClass.upDateData(conn,query)
+                
+            else :
+                if tradehitory[i][2] != None :
+                    query = "insert into history(\"history_date\",\"buy_sale_price\",\"profit_loss_rate\",\"strategy_code\",\"ticker\")"
+                    query += "values(\'"+str(tradehitory[i][0]) + "\'," + str(tradehitory[i][1])+","+str(tradehitory[i][2])+","+str(strategyCode)+",\'"+str(tradehitory[i][3]) + "\')"
+                    #print(query)
+
+                else :
+                    query = "insert into history(\"history_date\",\"buy_sale_price\",\"strategy_code\",\"ticker\")"
+                    query += "values(\'"+str(tradehitory[i][0]) + "\'," + str(tradehitory[i][1])+","+str(strategyCode)+",\'"+str(tradehitory[i][3]) + "\')"
+                    #print(query)
+
+            DBClass.insertIntoData(conn,query)
+        conn.commit()
+        
+        DBClass.putConn(conn)
+    
+
+    def __saveBacktestMonthlyProfitRateChartTable(self,monthlyProfitRatioChartData,strategyCode):
+        DBClass = databasepool()
+        conn = DBClass.getConn()
+
+        #query = "delete from backtest_montly_profit_rate_chart where strategy_code = "+str(strategyCode)+";"
+        #DBClass.deleteData(conn,query)
 
 
-    def requestBacktestOneStock(self, data):
-        #data = {'ticker': '["005930","005930"]', 'startTime': '20110101', 'endTime': '', 'strategyCode': '1', 'investPrice': '10000000'}
         
+        for i in range(len(monthlyProfitRatioChartData)):
+            query = "select * from backtest_montly_profit_rate_chart where chart_month = " + "\'"+str(monthlyProfitRatioChartData[i][0]) + "\'  "
+            query += " and strategy_code = " + str(strategyCode) + ";"
+
+            if len(DBClass.selectData(conn,query)) == 1:
+                query = "update backtest_montly_profit_rate_chart set "
+                query += "  \"profit_rate\" = " + str(monthlyProfitRatioChartData[i][1])
+                query += "  where strategy_code = "+str(strategyCode)
+                query += "  and chart_month = " + "\'" + str(monthlyProfitRatioChartData[i][0]) + "\';"
+                DBClass.upDateData(conn,query)
+
+            else :
+                query = "insert into backtest_montly_profit_rate_chart(\"chart_month\",\"profit_rate\",\"strategy_code\")"
+                query += "values(\'"+str(monthlyProfitRatioChartData[i][0]) + "\'," + str(monthlyProfitRatioChartData[i][1]) +","+str(strategyCode)+")"
+                DBClass.insertIntoData(conn,query)
         
-        #self.__setStrategy(data["strategyCode"])
+        conn.commit()
+        DBClass.putConn(conn)
+
+
+    def __saveBacktestWinRatioTable(self,win,lose,strategyCode):
+        DBClass = databasepool()
+        conn = DBClass.getConn()
+        query = "select * from backtest_win_ratio where strategy_code = "+str(strategyCode)+";"
+        if len (DBClass.selectData(conn,query)) == 1:
+            query = "update backtest_win_ratio set "
+            query += " \"win_count\" = " + str(win) + ","
+            query += " \"loss_count\" = " + str(lose)
+            query += " where strategy_code = "+str(strategyCode)+";"
+            DBClass.upDateData(conn,query)
+
+        else:
+            query = "insert into backtest_win_ratio(\"win_count\",\"loss_count\",\"strategy_code\")"
+            query += "values("+str(win) + "," + str(lose) +","+str(strategyCode)+")"
+            DBClass.insertIntoData(conn,query)
+        
+        # DELEET TEST CODE
+        # print(DBClass.selectData(conn,"select * from member_strategy where strategy_code = 1"))
+
+        conn.commit()
+        DBClass.putConn(conn)
+
+
+    def __saveBacktestDetailInfoTable(self,backtestDetailInfo,strategyCode):
+        DBClass = databasepool()
+        conn = DBClass.getConn()
+        query = "select * from backtest_detail_info where strategy_code = " + str(strategyCode) + ";"
+        if len(DBClass.selectData(conn,query)) == 1:
+            query = "update backtest_detail_info set"
+            query += " \"year_avg_profit_rate\" = " + str(backtestDetailInfo[0])+ ","
+            query += " \"mdd\" = " + str(backtestDetailInfo[1])+ ","
+            query += " \"trading_month_count\" = " + str(backtestDetailInfo[2])+ ","
+            query += " \"rising_month_count\" = " + str(backtestDetailInfo[3])+ ","
+            query += " \"month_avg_profit_rate\" = " + str(backtestDetailInfo[4])+ ","
+            query += " \"monthly_volatility\" = " + str(backtestDetailInfo[5])
+            query += " where strategy_code = " +str(strategyCode)+";"
+            DBClass.upDateData(conn,query)
+        else :
+            query = "insert into backtest_detail_info(\"year_avg_profit_rate\", \"mdd\", \"trading_month_count\", \"rising_month_count\", \"month_avg_profit_rate\", \"monthly_volatility\", \"strategy_code\")"
+            query+= "values(" + str(backtestDetailInfo[0])+"," + str(backtestDetailInfo[1]) + "," + str(backtestDetailInfo[2]) +"," + str(backtestDetailInfo[3]) + "," + str(backtestDetailInfo[4]) + "," + str(backtestDetailInfo[5]) + ","+ str(strategyCode)+ ");"
+            DBClass.insertIntoData(conn,query)
+        conn.commit()
+        DBClass.putConn(conn)
+
+
+    def __saveInvestProfitInfoTable(self, investProfitInfo , strategyCode):
+        DBClass = databasepool()
+        conn = DBClass.getConn()
+
+        query = "update invest_profit_info set "
+        query += " invest_price = " +str(investProfitInfo[0]) +","
+        query += " invest_principal = " +str(investProfitInfo[1]) +","
+        query += " total_profit_price = " +str(investProfitInfo[2]) +","
+        query += " profit_rate = " +str(investProfitInfo[3])
+        query += " where strategy_code = " +str(strategyCode)+";"
+
+        DBClass.upDateData(conn,query)
+        conn.commit()
+        DBClass.putConn(conn)
+
+
+    def __setInitData(self, strategyCode):
+        data = {}
+        data["strategyCode"] = strategyCode
+
+        DBClass = databasepool()
+        conn = DBClass.getConn()
+
+        query = "select invest_start_date, invest_principal, strategy_code, securities_corp_fee, invest_end_date"
+        query += " from invest_profit_info where  strategy_code = " + str(strategyCode)
+        res = DBClass.selectData(conn,query)
+        DBClass.putConn(conn)
+
+
+        data['startTime'] = str(res[0][0])[:10].replace("-","")
+        data['investPrice'] = res[0][1]
+        data['securitiesCorpFee'] = float(res[0][3])
+        if res[0][4] != None:
+            data['endTime'] = str(res[0][4])[:10].replace("-","")
+        else:
+            data['endTime'] = ""
+
+        return data
+
+
+    def requestBacktestOneStock(self,strategyCode):
+        data = self.__setInitData(strategyCode)
+        
         case = (self.__setStrategy(data["strategyCode"]))
         if len(case) == 0 :
             print("DB dose'not have any data in this field...")
@@ -260,7 +416,9 @@ class CBackTtrader(object):
             print('Final Portfolio Value: %.2f' % cerebro.broker.getvalue())
             #cerebro.plot()
             strat = results[0]
+            total+= cerebro.broker.getvalue()
 
+            #####################################################################################
             ### 일간 수익 로그
             bar_data_res = strat.analyzers.bar_data.get_analysis()
             dailydata = pd.DataFrame(bar_data_res)
@@ -273,38 +431,70 @@ class CBackTtrader(object):
             #for idx, data in returns.items():
             #    print(idx, data)
             metrics = quantstats.reports.metrics(returns, mode='full', display=False)
+            #print(metrics)
             print ("%%%%"*5)
+
+            # 거래 일수
+            if data['endTime'] != '':
+                delta = datetime.datetime.strptime(data['endTime'],"%Y%m%d") - datetime.datetime.strptime(data['startTime'],"%Y%m%d")  # 두 날짜의 차이 구하기
+            else :
+                delta = datetime.datetime.now() - datetime.datetime.strptime(data['startTime'],"%Y%m%d")  # 두 날짜의 차이 구하기
+            #print(delta.days)
+
+            # 월평균 수익률
+            monthlyCAGR = quantstats.stats.cagr(returns, monthly=True)
+            monthlyCAGR = round(monthlyCAGR,2)
 
 
             # 월간 변동성
             MONTHLY_TRADING_DAY = 22
-            monthlyVolatility= quantstats.stats.volatility(returns) * _np.sqrt(MONTHLY_TRADING_DAY)
+            monthlyVolatility = quantstats.stats.volatility(returns ,periods= delta.days, trading_year_days=MONTHLY_TRADING_DAY)
+            monthlyVolatility = round(monthlyVolatility,2)
 
-            # 거래 개월수
-            if data['endTime'] != '':
-                delta = relativedelta(datetime.datetime.strptime(data['endTime'],"%Y%m%d"), datetime.datetime.strptime(data['startTime'],"%Y%m%d"))  # 두 날짜의 차이 구하기
-            else :
-                delta = relativedelta(datetime.datetime.now(), datetime.datetime.strptime(data['startTime'],"%Y%m%d"))  # 두 날짜의 차이 구하기
-            
-            tradeMonth = 12 * delta.years + delta.months  # 두 날짜의 차이나는 개월수
-            print(tradeMonth)
+            #월간 수익률 차트 데이터 
+            monthlyProfitRatioChartDataMeta = quantstats.stats.monthly_returns(returns)
+            monthlyProfitRatioChartData = []
+            monthlyProfitRatioRiseMonth = 0
+            RiseMonth = 0
+            for idx ,row in monthlyProfitRatioChartDataMeta.iterrows():
+                for i in range(12):
+                    monthlydata = [str(idx)+str(i+1).zfill(2)+"01",round(row[i],2)]
+                    monthlyProfitRatioChartData.append(monthlydata)
+                    if monthlydata[1] > 0:
+                        RiseMonth += 1
+                    else :
+                        if monthlyProfitRatioRiseMonth < RiseMonth:
+                            monthlyProfitRatioRiseMonth = RiseMonth
+                        RiseMonth = 0
+
+            #print(monthlyProfitRatioChartData)
+
+            # 투자 수익 정보
+            investProfitInfo = [total, int(data['investPrice']), total- int(data['investPrice']), round(total / int(data['investPrice']),2)-1]
 
             #백테스트 상세정보
-            print(metrics.loc['CAGR%']['Strategy'], metrics.loc['Max Drawdown ']['Strategy'],tradeMonth, "상승개월 수", "월평균 수익률" , monthlyVolatility )
+            backtestDetailInfo = [metrics.loc['CAGR%']['Strategy'], metrics.loc['Max Drawdown ']['Strategy'],math.ceil(delta.days/30), monthlyProfitRatioRiseMonth ,monthlyCAGR , monthlyVolatility]
+            #print(backtestDetailInfo)
 
-            #월간 수익률
-            print(quantstats.stats.monthly_returns(returns))
 
             # 승수 출력
             winCnt, loseCnt = strat.analyzers.bar_data.get_winloseCnt()
-            print(winCnt,loseCnt)
+            #print(winCnt,loseCnt)
 
 
             # 히스토리 출력하기
             tradehitory = strat.analyzers.bar_data.get_tradehistory()
-            print(tradehitory)
+            #print(tradehitory)
+
+            # 데이터 저장하기
+            self.__saveHistoryTable(tradehitory,data["strategyCode"])
+            self.__saveBacktestMonthlyProfitRateChartTable(monthlyProfitRatioChartData,data["strategyCode"])
+            self.__saveBacktestWinRatioTable(winCnt, loseCnt, data["strategyCode"])
+            self.__saveBacktestDetailInfoTable(backtestDetailInfo,data["strategyCode"])
+            self.__saveInvestProfitInfoTable(investProfitInfo , data["strategyCode"])
+
             print ("%%%%"*5)
-            total+= cerebro.broker.getvalue()
+            
             break
 
 

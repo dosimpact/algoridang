@@ -68,18 +68,12 @@ def post():
 def backTestAPI():
     data = {}
     if request.method == 'POST':
-        data["ticker"] = request.form["ticker"]
-        data["startTime"] = request.form["startTime"]
-        data["endTime"] = request.form["endTime"]
-        data["strategyCode"] = request.form["strategyCode"]
-        data["investPrice"] = request.form["investPrice"]
+        dstrategyCode = request.form["strategyCode"]
 
-        if not data["ticker"] or not data["strategyCode"] or not data["investPrice"] :
+        if not dstrategyCode  :
             return  jsonify({"ok": False, "error": "some required data is missing!"})
-        if not data["startTime"]:
-            data["startTime"] = "20110101"
         
-        task = processor.backtestTaskCall.apply_async([data])
+        task = processor.backtestTaskCall.apply_async([dstrategyCode])
 
         if not task.id:
             return jsonify({"ok": False, "error": "celery is down"})
@@ -110,7 +104,7 @@ def DBinitDailyStock():
 
 
 if __name__ == "__main__":
-    app.run(host ='0.0.0.0',port = 3000)
-    #print(processor.Test___backtestTestCode())
+    #app.run(host ='0.0.0.0',port = 3000)
+    print(processor.Test___backtestTestCode(1))
 
     
