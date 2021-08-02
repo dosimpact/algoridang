@@ -1,7 +1,15 @@
-import React, { useLayoutEffect, useRef, useState, useCallback } from "react";
-import { createChart, IChartApi } from "lightweight-charts";
+import React, { useLayoutEffect, useRef, useEffect, useCallback } from "react";
+import { createChart, IChartApi, ISeriesApi } from "lightweight-charts";
 
-const Sample = () => {
+interface ILineData {
+  time: string;
+  value: number;
+}
+interface ILineSeriesChart {
+  datas?: ILineData[];
+}
+
+const LineSeriesChart: React.FC<ILineSeriesChart> = ({ datas }) => {
   // refObject - JSX 컨테이너는 readonly ( usecallback에 의해 )
   const charContainer = useRef<HTMLDivElement>();
   // Mutable Object - JSX 컨테이너 안의 chart 인스턴스를 리랜더링 가능
@@ -21,6 +29,9 @@ const Sample = () => {
       }
     })
   );
+
+  const lineSeries = useRef<ISeriesApi<"Line">>();
+
   // chart 컨테이너를 참조하는 함수
   const handleContainerRef = useCallback((node) => {
     if (node) {
@@ -41,8 +52,8 @@ const Sample = () => {
         },
       });
       charApi.current = chart;
-      const lineSeries = chart.addLineSeries();
-      lineSeries.setData([
+      lineSeries.current = chart.addLineSeries();
+      lineSeries.current.setData([
         { time: "2019-04-11", value: 80.01 },
         { time: "2019-04-12", value: 96.63 },
         { time: "2019-04-13", value: 76.64 },
@@ -63,12 +74,25 @@ const Sample = () => {
       }
       // 컴포넌트가 unmount 되면 차트 Ref 제거
       charApi.current = undefined;
+      // 컴포넌트가 unmount 되면 차트 DataSetter Ref 제거
+      lineSeries.current = undefined;
     };
   }, [charContainer]);
 
+  const setLineData = (data?: ILineData[]) => {
+    if (lineSeries.current && data) {
+      lineSeries.current?.setData(data);
+    }
+  };
+
+  useEffect(() => {
+    setLineData(datas);
+    return () => {};
+  }, [datas]);
+
   return (
     <div>
-      <h2>Sample</h2>
+      <h2>LineSeriesChart</h2>
       <div
         className="chartContainer"
         ref={(node) => handleContainerRef(node)}
@@ -77,4 +101,4 @@ const Sample = () => {
   );
 };
 
-export default Sample;
+export default LineSeriesChart;

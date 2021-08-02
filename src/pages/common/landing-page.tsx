@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Button, WhiteSpace, WingBlank } from "antd-mobile";
 import useMember from "states/react-query/useMember";
 import Sample from "components/light-weight/Sample";
+import LineSeriesChart from "components/light-weight/LineSeriesChart";
 // todo : makers, takers 선택 저장하기
 const LandingPage = () => {
   const { logIn, memberInfo } = useMember();
@@ -40,7 +41,13 @@ const LandingPage = () => {
         </ul>
       </nav>
       <div>Landing page</div>
-      <Sample />
+      {/* <Sample /> */}
+      <LineSeriesChart
+        datas={[
+          { time: "2019-04-11", value: 80.01 },
+          { time: "2019-04-12", value: 96.63 },
+        ]}
+      />
     </WingBlank>
   );
 };
