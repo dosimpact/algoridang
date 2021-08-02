@@ -26,7 +26,7 @@ export interface Corporation {
   // (3) 이 회사를 히스토리로 가지는 전략들 리스트 (참조 안함)
 }
 export interface DailyStock {
-  stock_date: Date;
+  stock_date: string;
   open_price: number; //OHLCV
   high_price: number; //OHLCV
   low_price: number; //OHLCV

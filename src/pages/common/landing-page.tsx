@@ -1,13 +1,30 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Button, WhiteSpace, WingBlank } from "antd-mobile";
 import useMember from "states/react-query/useMember";
 import Sample from "components/light-weight/Sample";
-import LineSeriesChart from "components/light-weight/LineSeriesChart";
+import LineSeriesChart, {
+  ILineData,
+} from "components/light-weight/LineSeriesChart";
+import useDailyStock from "states/react-query/finance/useDailyStock";
 // todo : makers, takers 선택 저장하기
 const LandingPage = () => {
   const { logIn, memberInfo } = useMember();
   console.log("memberInfo", memberInfo);
+
+  const { dayilStocks, error, isLoading } = useDailyStock(
+    "006400",
+    20,
+    0,
+    "ASC"
+  );
+  console.log("dayilStocks", dayilStocks);
+
+  const res = dayilStocks?.map((daily) => ({
+    time: daily.stock_date,
+    value: Number(daily.close_price),
+  }));
+  console.log("res", res);
 
   return (
     <WingBlank>
@@ -42,12 +59,7 @@ const LandingPage = () => {
       </nav>
       <div>Landing page</div>
       {/* <Sample /> */}
-      <LineSeriesChart
-        datas={[
-          { time: "2019-04-11", value: 80.01 },
-          { time: "2019-04-12", value: 96.63 },
-        ]}
-      />
+      <LineSeriesChart datas={res} />
     </WingBlank>
   );
 };

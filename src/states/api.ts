@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getLocalMemberInfo } from "states/local-state";
+import { GetDayilStocksInput } from "./interface/finance/dtos";
 import { loginMemberInfoInput } from "./interface/member/dtos";
 import { GetStrategyListNewOutput } from "./interface/strategy/dtos";
 
@@ -51,6 +52,24 @@ export const strategyApi = {
     },
     getMyStrategyById: (strategy_code: string) => {
       return axios.get(`strategy/getMyStrategyById/${strategy_code}`);
+    },
+  },
+  POST: {},
+  PATCH: {},
+  DELETE: {},
+};
+
+// (3) finance api
+export const financeApi = {
+  GET: {
+    dailystock: ({ term, skip, take, sort }: GetDayilStocksInput) => {
+      return axios.get(`finance/dailystock/${term}`, {
+        params: {
+          skip,
+          take,
+          sort,
+        },
+      });
     },
   },
   POST: {},
