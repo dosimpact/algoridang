@@ -2,7 +2,6 @@ import axios from "axios";
 import { getLocalMemberInfo } from "states/local-state";
 import { GetDayilStocksInput } from "./interface/finance/dtos";
 import { loginMemberInfoInput } from "./interface/member/dtos";
-import { GetStrategyListNewOutput } from "./interface/strategy/dtos";
 
 // base setttings ,  interceptors
 

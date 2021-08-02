@@ -1,4 +1,3 @@
-import React from "react";
 import { useQuery } from "react-query";
 import { financeApi } from "states/api";
 import { GetDayilStocksOutput } from "states/interface/finance/dtos";

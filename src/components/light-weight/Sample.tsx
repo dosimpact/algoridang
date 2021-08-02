@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState, useCallback } from "react";
+import React, { useLayoutEffect, useRef, useCallback } from "react";
 import { createChart, IChartApi } from "lightweight-charts";
 
 const Sample = () => {

@@ -1,23 +1,15 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Button, WhiteSpace, WingBlank } from "antd-mobile";
 import useMember from "states/react-query/useMember";
-import Sample from "components/light-weight/Sample";
-import LineSeriesChart, {
-  ILineData,
-} from "components/light-weight/LineSeriesChart";
+import LineSeriesChart from "components/light-weight/LineSeriesChart";
 import useDailyStock from "states/react-query/finance/useDailyStock";
 // todo : makers, takers 선택 저장하기
 const LandingPage = () => {
   const { logIn, memberInfo } = useMember();
   console.log("memberInfo", memberInfo);
 
-  const { dayilStocks, error, isLoading } = useDailyStock(
-    "005930",
-    365,
-    0,
-    "ASC"
-  );
+  const { dayilStocks } = useDailyStock("005930", 365, 0, "ASC");
 
   const res2 = useMemo(
     () =>
