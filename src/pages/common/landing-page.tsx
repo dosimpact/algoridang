@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button, WhiteSpace, WingBlank } from "antd-mobile";
 import useMember from "states/react-query/useMember";
+import Sample from "components/light-weight/Sample";
 // todo : makers, takers 선택 저장하기
 const LandingPage = () => {
   const { logIn, memberInfo } = useMember();
@@ -39,6 +40,7 @@ const LandingPage = () => {
         </ul>
       </nav>
       <div>Landing page</div>
+      <Sample />
     </WingBlank>
   );
 };
