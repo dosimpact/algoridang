@@ -1,5 +1,4 @@
-import { AxiosError } from "axios";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { memberApi } from "states/api";
 import {
   loginMemberInfoInput,
@@ -15,8 +14,6 @@ import { setLocalMemberInfo } from "states/local-state";
 //
 //
 const useMember = () => {
-  const queryClient = useQueryClient();
-
   const { data } = useQuery("me", () => {
     return memberApi.GET.me();
   });

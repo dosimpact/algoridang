@@ -1,13 +1,10 @@
 import React from "react";
-import { WingBlank, WhiteSpace, Button } from "antd-mobile";
-import { SubTitle } from "components/data-display/Typo";
+import { WingBlank, WhiteSpace } from "antd-mobile";
 import StrategyCard from "components/strategy/StrategyCard";
-import { useHistory, useParams } from "react-router-dom";
 import { toTagsString } from "utils/parse";
 import styled from "styled-components";
 import ReturnsStatus from "components/strategy-report/ReturnsStatus";
 import TradingPoints from "components/strategy-report/TradingPoints";
-import BackNav from "components/takers/BackNav";
 import TradingHistory from "components/strategy-report/TradingHistory";
 import DetailSummary from "components/strategy-report/DetailSummary";
 import CumulativeReturn from "components/strategy-report/CumulativeReturn";
