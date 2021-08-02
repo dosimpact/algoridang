@@ -62,7 +62,7 @@ import { AuthModule } from './auth/auth.module';
     }),
     GraphQLModule.forRoot({
       introspection: true,
-      playground: true,
+      // playground: true,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
     }),
