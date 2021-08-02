@@ -12,6 +12,12 @@ from pandas import json_normalize
 import quantstats
 
 from openAPI.DB.DB import databasepool
+import numpy as _np
+
+# 거래 개월수
+from dateutil.relativedelta import relativedelta
+import datetime
+
 
 class BarAnalysis(bt.analyzers.Analyzer):
     ticker = ""
@@ -268,8 +274,23 @@ class CBackTtrader(object):
             #    print(idx, data)
             metrics = quantstats.reports.metrics(returns, mode='full', display=False)
             print ("%%%%"*5)
+
+
+            # 월간 변동성
+            MONTHLY_TRADING_DAY = 22
+            monthlyVolatility= quantstats.stats.volatility(returns) * _np.sqrt(MONTHLY_TRADING_DAY)
+
+            # 거래 개월수
+            if data['endTime'] != '':
+                delta = relativedelta(datetime.datetime.strptime(data['endTime'],"%Y%m%d"), datetime.datetime.strptime(data['startTime'],"%Y%m%d"))  # 두 날짜의 차이 구하기
+            else :
+                delta = relativedelta(datetime.datetime.now(), datetime.datetime.strptime(data['startTime'],"%Y%m%d"))  # 두 날짜의 차이 구하기
+            
+            tradeMonth = 12 * delta.years + delta.months  # 두 날짜의 차이나는 개월수
+            print(tradeMonth)
+
             #백테스트 상세정보
-            print(metrics.loc['CAGR%']['Strategy'], metrics.loc['Max Drawdown ']['Strategy'], )
+            print(metrics.loc['CAGR%']['Strategy'], metrics.loc['Max Drawdown ']['Strategy'],tradeMonth, "상승개월 수", "월평균 수익률" , monthlyVolatility )
 
             #월간 수익률
             print(quantstats.stats.monthly_returns(returns))
