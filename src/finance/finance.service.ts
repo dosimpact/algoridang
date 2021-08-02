@@ -96,6 +96,7 @@ export class FinanceService {
     term,
     skip,
     take,
+    sort,
   }: GetDayilStocksInput): Promise<GetDayilStocksOutput> {
     try {
       const dailyStocks = await this.DailyStockRepo.find({
@@ -103,7 +104,7 @@ export class FinanceService {
           ticker: term,
         },
         order: {
-          stock_date: 'DESC',
+          stock_date: sort === 'ASC' ? 'ASC' : 'DESC',
         },
         skip: skip || 0,
         take: take || 365,

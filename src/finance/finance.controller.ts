@@ -32,7 +32,8 @@ export class FinanceController {
     @Param('term') term: string,
     @Query('skip') skip: number,
     @Query('take') take: number,
+    @Query('sort') sort: string,
   ) {
-    return this.financeService.getDailyStocks({ term, take, skip });
+    return this.financeService.getDailyStocks({ term, take, skip, sort });
   }
 }

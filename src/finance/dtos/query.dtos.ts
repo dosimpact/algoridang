@@ -34,6 +34,7 @@ export class GetCorporationOutput extends CoreOutput {
 // 일봉 데이터 리턴
 export class GetDayilStocksInput extends CorePaginationInput {
   term: string;
+  sort: string;
   // skip?: number;
   // take?: number;
 }
