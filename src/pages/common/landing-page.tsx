@@ -13,18 +13,20 @@ const LandingPage = () => {
   console.log("memberInfo", memberInfo);
 
   const { dayilStocks, error, isLoading } = useDailyStock(
-    "006400",
-    20,
+    "005930",
+    365,
     0,
     "ASC"
   );
-  console.log("dayilStocks", dayilStocks);
 
-  const res = dayilStocks?.map((daily) => ({
-    time: daily.stock_date,
-    value: Number(daily.close_price),
-  }));
-  console.log("res", res);
+  const res2 = useMemo(
+    () =>
+      dayilStocks?.map((daily) => ({
+        time: daily.stock_date,
+        value: Number(daily.close_price),
+      })),
+    [dayilStocks]
+  );
 
   return (
     <WingBlank>
@@ -59,7 +61,7 @@ const LandingPage = () => {
       </nav>
       <div>Landing page</div>
       {/* <Sample /> */}
-      <LineSeriesChart datas={res} />
+      <LineSeriesChart datas={res2} />
     </WingBlank>
   );
 };
