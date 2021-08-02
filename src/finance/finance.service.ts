@@ -104,11 +104,15 @@ export class FinanceService {
           ticker: term,
         },
         order: {
-          stock_date: sort === 'ASC' ? 'ASC' : 'DESC',
+          stock_date: 'DESC',
         },
         skip: skip || 0,
         take: take || 365,
       });
+      if (sort === 'ASC') {
+        dailyStocks.reverse();
+      }
+
       return {
         ok: true,
         dailyStocks,
