@@ -269,28 +269,54 @@ class CBackTtrader(object):
         DBClass.putConn(conn)
     
 
+    def __saveBacktestDailyProfitRateChartTable(self,returns, strategyCode):
+
+        DBClass = databasepool()
+        conn = DBClass.getConn()
+
+        for idx,value in returns.iteritems():
+            query = "select * from backtest_daily_profit_rate_chart where chart_month = " + "\'"+str(idx) + "\'  "
+            query += " and strategy_code = " + str(value) + ";"
+
+            if len(DBClass.selectData(conn,query)) == 1:
+                query = "update backtest_daily_profit_rate_chart set "
+                query += "  \"profit_rate\" = " + str(value)
+                query += "  where strategy_code = "+str(strategyCode)
+                query += "  and chart_month = " + "\'" + str(idx) + "\';"
+                DBClass.upDateData(conn,query)
+
+            else :
+                query = "insert into backtest_daily_profit_rate_chart(\"chart_month\",\"profit_rate\",\"strategy_code\")"
+                query += "values(\'"+str(idx) + "\'," + str(value) +","+str(strategyCode)+")"
+                DBClass.insertIntoData(conn,query)
+
+        conn.commit()
+        DBClass.putConn(conn)
+
+
+
     def __saveBacktestMonthlyProfitRateChartTable(self,monthlyProfitRatioChartData,strategyCode):
         DBClass = databasepool()
         conn = DBClass.getConn()
 
-        #query = "delete from backtest_montly_profit_rate_chart where strategy_code = "+str(strategyCode)+";"
+        #query = "delete from backtest_monthly_profit_rate_chart where strategy_code = "+str(strategyCode)+";"
         #DBClass.deleteData(conn,query)
 
 
         
         for i in range(len(monthlyProfitRatioChartData)):
-            query = "select * from backtest_montly_profit_rate_chart where chart_month = " + "\'"+str(monthlyProfitRatioChartData[i][0]) + "\'  "
+            query = "select * from backtest_monthly_profit_rate_chart where chart_month = " + "\'"+str(monthlyProfitRatioChartData[i][0]) + "\'  "
             query += " and strategy_code = " + str(strategyCode) + ";"
 
             if len(DBClass.selectData(conn,query)) == 1:
-                query = "update backtest_montly_profit_rate_chart set "
+                query = "update backtest_monthly_profit_rate_chart set "
                 query += "  \"profit_rate\" = " + str(monthlyProfitRatioChartData[i][1])
                 query += "  where strategy_code = "+str(strategyCode)
                 query += "  and chart_month = " + "\'" + str(monthlyProfitRatioChartData[i][0]) + "\';"
                 DBClass.upDateData(conn,query)
 
             else :
-                query = "insert into backtest_montly_profit_rate_chart(\"chart_month\",\"profit_rate\",\"strategy_code\")"
+                query = "insert into backtest_monthly_profit_rate_chart(\"chart_month\",\"profit_rate\",\"strategy_code\")"
                 query += "values(\'"+str(monthlyProfitRatioChartData[i][0]) + "\'," + str(monthlyProfitRatioChartData[i][1]) +","+str(strategyCode)+")"
                 DBClass.insertIntoData(conn,query)
         
@@ -358,6 +384,27 @@ class CBackTtrader(object):
         conn.commit()
         DBClass.putConn(conn)
 
+    def __saveAccumulateProfitRateChartTable(self, data, strategyCode ):
+        DBClass = databasepool()
+        conn = DBClass.getConn()
+        for idx, row in data.iterrows():
+                
+            query = "select * from accumulate_profit_rate_chart where strategy_code = " + str(strategyCode)
+            query += " and chart_date = \'" + str(idx)+"\';"
+            
+            if len(DBClass.selectData(conn,query)) == 1:
+                query  = "update accumulate_profit_rate_chart set"
+                query += " profit_rate = " + str(row[1])
+                query += " where strategy_code = " + str(strategyCode)
+                query += " and chart_date = \'" + str(idx) + "\';"
+                DBClass.upDateData(conn,query)
+            else :
+                query  = "insert into accumulate_profit_rate_chart(\"profit_rate\",\"chart_date\",\"strategy_code\")"
+                query += " values("+ str(row[1]) + ",\'" + str(idx) + "\'," + str(strategyCode)+")"
+                DBClass.insertIntoData(conn,query)
+        conn.commit()
+        DBClass.putConn(conn)
+
 
     def __setInitData(self, strategyCode):
         data = {}
@@ -383,9 +430,42 @@ class CBackTtrader(object):
         return data
 
 
-    def requestBacktestOneStock(self,strategyCode):
+    def __setDailyAccumulate(self, data, init):
+        sum = []
+        for idx, row in data.iterrows():
+            sumdata = 0
+
+            for i in range(len(row[0])):
+                sumdata += row[0][i][7]
+            sum.append(round(sumdata/init - 1,2))
+        data['DCR'] = sum
+        return data
+
+
+    def __initQueue(self, id , state, info, strategyCode):
+        DBClass = databasepool()
+        conn = DBClass.getConn()
+        query = "select * from backtest_queue where queue_code = \'" + str(id) + "\';"
+
+        if len(DBClass.selectData(conn,query)) == 1:
+            query = "update backtest_queue set "
+            query += " state_info = \'" + str(state) + "\',"
+            query += " work_info = \'" + str(info) + "\'"
+            query += " where queue_code = \'" + str(id) + "\';"
+            DBClass.upDateData(conn,query)
+        else:
+            query = "insert into backtest_queue(\"queue_code\",\"state_info\",\"work_info\",\"strategy_code\")"
+            query += " values(\'" + str(id) + "\',\'"+ str(state) +"\',\'" + str(info)+ "\'," + str(strategyCode) + ")"
+            DBClass.insertIntoData(conn,query)
+
+        conn.commit()
+        DBClass.putConn(conn)
+
+
+
+    def requestBacktestOneStock(self,id, strategyCode):
         data = self.__setInitData(strategyCode)
-        
+        self.__initQueue(id, "Running", "Queue" , strategyCode)
         case = (self.__setStrategy(data["strategyCode"]))
         if len(case) == 0 :
             print("DB dose'not have any data in this field...")
@@ -422,6 +502,7 @@ class CBackTtrader(object):
             ### 일간 수익 로그
             bar_data_res = strat.analyzers.bar_data.get_analysis()
             dailydata = pd.DataFrame(bar_data_res)
+            dailydata = self.__setDailyAccumulate(dailydata,data['investPrice'])
             dailydata.to_csv('saleLog.txt', sep = '\t')
 
             portfolio_stats = strat.analyzers.getbyname('PyFolio')
@@ -433,7 +514,9 @@ class CBackTtrader(object):
             metrics = quantstats.reports.metrics(returns, mode='full', display=False)
             #print(metrics)
             print ("%%%%"*5)
+            #print(dailydata)
 
+            
             # 거래 일수
             if data['endTime'] != '':
                 delta = datetime.datetime.strptime(data['endTime'],"%Y%m%d") - datetime.datetime.strptime(data['startTime'],"%Y%m%d")  # 두 날짜의 차이 구하기
@@ -447,8 +530,8 @@ class CBackTtrader(object):
 
 
             # 월간 변동성
-            MONTHLY_TRADING_DAY = 22
-            monthlyVolatility = quantstats.stats.volatility(returns ,periods= delta.days, trading_year_days=MONTHLY_TRADING_DAY)
+            
+            monthlyVolatility = quantstats.stats.volatility(returns ,periods= delta.days)
             monthlyVolatility = round(monthlyVolatility,2)
 
             #월간 수익률 차트 데이터 
@@ -492,6 +575,8 @@ class CBackTtrader(object):
             self.__saveBacktestWinRatioTable(winCnt, loseCnt, data["strategyCode"])
             self.__saveBacktestDetailInfoTable(backtestDetailInfo,data["strategyCode"])
             self.__saveInvestProfitInfoTable(investProfitInfo , data["strategyCode"])
+            self.__saveBacktestDailyProfitRateChartTable(returns, data["strategyCode"])
+            self.__saveAccumulateProfitRateChartTable(dailydata,data["strategyCode"])
 
             print ("%%%%"*5)
             
@@ -499,6 +584,7 @@ class CBackTtrader(object):
 
 
 
+        self.__initQueue(id, "Success", "Queue" , strategyCode)
         return total
 
 

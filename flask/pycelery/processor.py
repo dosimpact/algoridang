@@ -51,7 +51,7 @@ process.conf.update(
 
 
 # celery 실행 명령어
-# celery -A processor.process worker --loglevel=info
+# celery -A pycelery.processor.process worker --loglevel=info
 # 최소 3개 ~ 10개의 워커가 작동
 # celery -A processor.process worker --loglevel=info --autoscale=3,3
 
@@ -134,8 +134,9 @@ def initDB_DailyStock(self):
 
 @process.task(bind=True, base=CoreTask)
 def backtestTaskCall(self,strategyCode):
+    
     bk = backtesting.CBackTtrader()
-    res = bk.requestBacktestOneStock(strategyCode)
+    res = bk.requestBacktestOneStock(self.request.id, strategyCode)
     return res
 
 
