@@ -39,7 +39,6 @@ export class FinanceService {
   async getCorporations(): Promise<GetCorporationsOutput> {
     // Service 로직에서 EntityNotFoundError 애러를 던지다.
     // throw new EntityNotFoundError(Corporation, 'banana');
-    throw new Error('something is wrong');
     // 500 애러를 리턴합니다.
     // throw new Error('unkown error');
     try {
@@ -66,10 +65,10 @@ export class FinanceService {
         corporations,
       };
     } catch (error) {
-      return {
-        ok: false,
-        error: `cannot find stock by ${term}`,
-      };
+      throw new EntityNotFoundError(
+        Corporation,
+        `cannot find stock by ${term}`,
+      );
     }
   }
 
@@ -89,10 +88,10 @@ export class FinanceService {
         corporation,
       };
     } catch (error) {
-      return {
-        ok: false,
-        error: `cannot find stock by ${term}`,
-      };
+      throw new EntityNotFoundError(
+        Corporation,
+        `cannot find stock by ${term}`,
+      );
     }
   }
 
@@ -123,10 +122,10 @@ export class FinanceService {
         dailyStocks,
       };
     } catch (error) {
-      return {
-        ok: false,
-        error: `cannot find dailystock with term ${term}`,
-      };
+      throw new EntityNotFoundError(
+        DailyStock,
+        `cannot find dailystock with term ${term}`,
+      );
     }
   }
 }
