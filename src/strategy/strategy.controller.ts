@@ -8,11 +8,11 @@ import {
 } from '@nestjs/common';
 import { StrategyService } from './strategy.service';
 import { AuthUser, Roles } from 'src/auth/auth.decorator';
-import { HttpBodyCacheInterceptor } from 'src/common/service/HttpCacheInterceptor';
+import { HttpCacheInterceptor } from 'src/common/service/HttpCacheInterceptor';
 import { CreateMyStrategyInput } from './dto/mutation.dtos';
 import { MemberInfo } from 'src/member/entities';
 
-@UseInterceptors(HttpBodyCacheInterceptor)
+@UseInterceptors(HttpCacheInterceptor)
 @Controller('/api/strategy/')
 export class StrategyQueryController {
   constructor(private readonly strategyService: StrategyService) {}

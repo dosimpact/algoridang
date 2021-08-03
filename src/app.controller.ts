@@ -12,15 +12,14 @@ import {
   Req,
   UseInterceptors,
   Options,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import { Request } from 'express';
-import {
-  HttpBodyCacheInterceptor,
-  HttpCacheInterceptor,
-} from './common/service/HttpCacheInterceptor';
+import { HttpCacheInterceptor } from './common/service/HttpCacheInterceptor';
 
-@UseInterceptors(HttpBodyCacheInterceptor)
+@UseInterceptors(HttpCacheInterceptor)
 @Controller()
 export class AppController {
   constructor(
@@ -36,9 +35,10 @@ export class AppController {
     // test();
   }
 
-  @Options()
   @Get()
   getHello(): string {
+    throw new HttpException('banana BAD_REQUEST', HttpStatus.BAD_REQUEST);
+    throw new HttpException('banana Forbidden', HttpStatus.FORBIDDEN);
     return 'Hello World!~~';
   }
 

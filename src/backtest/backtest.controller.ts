@@ -7,7 +7,7 @@ import {
   Body,
 } from '@nestjs/common';
 import { Roles } from 'src/auth/auth.decorator';
-import { HttpBodyCacheInterceptor } from 'src/common/service/HttpCacheInterceptor';
+import { HttpCacheInterceptor } from 'src/common/service/HttpCacheInterceptor';
 import { BacktestService } from './backtest.service';
 import {
   AddHistoryInput,
@@ -15,7 +15,7 @@ import {
   UpdateHistoryInput,
 } from './dto/mutation.dtos';
 
-@UseInterceptors(HttpBodyCacheInterceptor)
+@UseInterceptors(HttpCacheInterceptor)
 @Controller('/api/backtest/')
 export class BacktestQueryController {
   constructor(private readonly backtestService: BacktestService) {}

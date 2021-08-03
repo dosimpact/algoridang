@@ -1,8 +1,8 @@
 import { Controller, Get, Param, Query, UseInterceptors } from '@nestjs/common';
-import { HttpBodyCacheInterceptor } from 'src/common/service/HttpCacheInterceptor';
+import { HttpCacheInterceptor } from 'src/common/service/HttpCacheInterceptor';
 import { FinanceService } from './finance.service';
 
-@UseInterceptors(HttpBodyCacheInterceptor)
+@UseInterceptors(HttpCacheInterceptor)
 @Controller('/api/finance/')
 export class FinanceController {
   constructor(private readonly financeService: FinanceService) {}
