@@ -60,6 +60,28 @@ def post():
 
 
 
+
+
+
+######################backtest
+@app.route("/backtest", methods=["GET","POST"])
+def backTestAPI():
+    data = {}
+    if request.method == 'POST':
+        dstrategyCode = request.form["strategyCode"]
+
+        if not dstrategyCode  :
+            return  jsonify({"ok": False, "error": "some required data is missing!"})
+        
+        task = processor.backtestTaskCall.apply_async([dstrategyCode])
+
+        if not task.id:
+            return jsonify({"ok": False, "error": "celery is down"})
+
+        return jsonify({"ok": True, "task_id": task.id})
+
+    
+################initialization
 @app.route("/DBinit/Corporation", methods=["GET"])
 def DBinitCrop():
     task = processor.initDB_Corporation.apply_async()
@@ -83,6 +105,6 @@ def DBinitDailyStock():
 
 if __name__ == "__main__":
     app.run(host ='0.0.0.0',port = 3000)
-    ###
+    #print(processor.Test___backtestTestCode(1))
 
     

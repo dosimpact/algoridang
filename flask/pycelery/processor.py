@@ -12,7 +12,13 @@ from app import app
 from os.path import join, dirname
 from dotenv import load_dotenv
 
+
+
+from backtesting import backtesting
+
 from openAPI import pricePykrx
+
+
 # 윈도우 환경에서는 다음 셋팅을 해야 인수전달이 제대로 된다.
 # in window env Error, https://github.com/celery/celery/pull/4078
 os.environ.setdefault('FORKED_BY_MULTIPROCESSING', '1')
@@ -45,7 +51,7 @@ process.conf.update(
 
 
 # celery 실행 명령어
-# celery -A processor.process worker --loglevel=info
+# celery -A pycelery.processor.process worker --loglevel=info
 # 최소 3개 ~ 10개의 워커가 작동
 # celery -A processor.process worker --loglevel=info --autoscale=3,3
 
@@ -82,6 +88,8 @@ def add(self, x, y):
         return x + y
 
 
+
+
 @process.task(bind=True, base=CoreTask)
 def initDB_Corporation(self):
     with app.app_context():
@@ -113,7 +121,7 @@ def initDB_DailyStock(self):
 
         for ticker,name in res:
             idx += 1
-            df = pykrx.getKRStockDaily(ticker,"20110101",)
+            df = pykrx.getKRStockDaily(ticker)
             res = pykrx.sendKRStockDaily(ticker,df)
 
             if res != "":
@@ -122,3 +130,18 @@ def initDB_DailyStock(self):
             print(f"progress ({idx}/{total})")
             self.update_state(state='PROGRESS', meta={'current': idx, 'total': total})
         return res
+
+
+@process.task(bind=True, base=CoreTask)
+def backtestTaskCall(self,strategyCode):
+    
+    bk = backtesting.CBackTtrader()
+    res = bk.requestBacktestOneStock(self.request.id, strategyCode)
+    return res
+
+
+def Test___backtestTestCode(strategyCode):
+    bk = backtesting.CBackTtrader()
+    res = bk.requestBacktestOneStock(strategyCode)
+    return res
+
