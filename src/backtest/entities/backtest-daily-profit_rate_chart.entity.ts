@@ -2,11 +2,11 @@ import { IsDate, IsDateString, IsNumber } from 'class-validator';
 import { MemberStrategy } from 'src/strategy/entities';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({ name: 'backtest_montly_profit_rate_chart' })
-export class BacktestMontlyProfitRateChart {
+@Entity({ name: 'backtest_daily_profit_rate_chart' })
+export class BacktestDailyProfitRateChart {
   @IsNumber()
   @PrimaryGeneratedColumn()
-  backtest_monthly_profit_rate_chart_code: number;
+  backtest_daily_profit_rate_chart_code: number;
 
   @IsDateString()
   @Column({ type: 'timestamptz' })

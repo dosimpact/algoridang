@@ -1,8 +1,8 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as AWS from 'aws-sdk';
-import { Repository } from 'typeorm';
+import { EntityNotFoundError, Repository } from 'typeorm';
 import { GetUploadedObjectsOutput } from './dto/query.dtos';
 import { UploadedObject } from './entities/uploaded-object.entity';
 @Injectable()
@@ -33,6 +33,25 @@ export class UploadService {
     this.ACL = 'public-read';
 
     // this.deleteS3('banner/1627107563231robot-dev.png');
+    const test = async () => {
+      await this.testUpload();
+    };
+    test();
+  }
+  async testUploadFail() {
+    throw new HttpException('upload fail', HttpStatus.BAD_REQUEST);
+    throw new EntityNotFoundError(UploadedObject, 'UploadedObject');
+    return { file: 'file~~' };
+  }
+  async testUpload() {
+    try {
+      const result = await this.testUploadFail();
+      console.log('result', result);
+    } catch (error) {
+      // console.log('error', error);
+      console.log('error : ', error.response, error.status, error.message);
+      console.log('error stack: ', error.stack);
+    }
   }
 
   // 버킷 생성
