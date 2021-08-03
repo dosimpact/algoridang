@@ -11,6 +11,7 @@ import {
   Query,
   Req,
   UseInterceptors,
+  Options,
 } from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import { Request } from 'express';
@@ -35,6 +36,7 @@ export class AppController {
     // test();
   }
 
+  @Options()
   @Get()
   getHello(): string {
     return 'Hello World!~~';
