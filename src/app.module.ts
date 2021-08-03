@@ -28,6 +28,7 @@ import {
   AccumulateProfitRateChart,
   BacktestDetailInfo,
   BacktestMontlyProfitRateChart,
+  BacktestDailyProfitRateChart,
   BacktestQueue,
   BacktestWinRatio,
   History,
@@ -46,6 +47,9 @@ import { UploadModule } from './upload/upload.module';
 import * as redisStore from 'cache-manager-redis-store';
 import { UploadedObject } from './upload/entities/uploaded-object.entity';
 import { AuthModule } from './auth/auth.module';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { LoggingInterceptor } from './common/service/LogginInterceptor';
+import { ErrorHandlerInterceptor } from './common/service/ErrorHandlerInterceptor';
 
 @Module({
   imports: [
@@ -99,10 +103,11 @@ import { AuthModule } from './auth/auth.module';
           // StockList,
         ],
         ...[
-          // back test (7/7)
+          // back test (8/8)
           AccumulateProfitRateChart,
           BacktestDetailInfo,
           BacktestMontlyProfitRateChart,
+          BacktestDailyProfitRateChart,
           BacktestQueue,
           BacktestWinRatio,
           History,
@@ -137,7 +142,13 @@ import { AuthModule } from './auth/auth.module';
     MemberModule,
   ],
   controllers: [AppController],
-  providers: [AppResolver],
+  providers: [
+    AppResolver,
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ErrorHandlerInterceptor,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

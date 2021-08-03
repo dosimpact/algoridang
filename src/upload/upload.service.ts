@@ -1,8 +1,8 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as AWS from 'aws-sdk';
-import { Repository } from 'typeorm';
+import { EntityNotFoundError, Repository } from 'typeorm';
 import { GetUploadedObjectsOutput } from './dto/query.dtos';
 import { UploadedObject } from './entities/uploaded-object.entity';
 @Injectable()
@@ -31,8 +31,6 @@ export class UploadService {
     this.buketName = configService.get('AWS_S3_BUCKET_NAME');
     this.region = configService.get('AWS_CONFIG_REGION');
     this.ACL = 'public-read';
-
-    // this.deleteS3('banner/1627107563231robot-dev.png');
   }
 
   // 버킷 생성
@@ -49,31 +47,26 @@ export class UploadService {
   async uploadS3(file: Express.Multer.File, folder?: string) {
     const Key = `${Date.now()}${file.originalname}`;
     folder = folder ? folder : 'common';
-    try {
-      // console.log(`${this.buketName}/${folder}`);
-      const result = await this.S3.putObject({
-        Bucket: `${this.buketName}/${folder}`,
-        ACL: this.ACL,
+    // console.log(`${this.buketName}/${folder}`);
+    const result = await this.S3.putObject({
+      Bucket: `${this.buketName}/${folder}`,
+      ACL: this.ACL,
+      Key,
+      Body: file.buffer,
+    }).promise();
+
+    const uploaded = await this.uploadedObjectRepo.save(
+      this.uploadedObjectRepo.create({
+        ETag: result.ETag,
         Key,
-        Body: file.buffer,
-      }).promise();
+        url: this.__makePublicUrl(`${folder}/${Key}`),
+      }),
+    );
 
-      const uploaded = await this.uploadedObjectRepo.save(
-        this.uploadedObjectRepo.create({
-          ETag: result.ETag,
-          Key,
-          url: this.__makePublicUrl(`${folder}/${Key}`),
-        }),
-      );
-
-      return {
-        ok: true,
-        ...uploaded,
-      };
-    } catch (error) {
-      this.logger.error(error);
-      return { ok: false };
-    }
+    return {
+      ok: true,
+      ...uploaded,
+    };
   }
 
   // (2) icon 폴더 업로드
@@ -89,15 +82,11 @@ export class UploadService {
 
   // (1) 오브젝트 삭제
   async deleteS3(Key: string) {
-    try {
-      await this.S3.deleteObject({
-        Bucket: this.buketName,
-        Key,
-      }).promise();
-      return { ok: true };
-    } catch (error) {
-      this.logger.error(error);
-    }
+    await this.S3.deleteObject({
+      Bucket: this.buketName,
+      Key,
+    }).promise();
+    return { ok: true };
   }
   // (2) 아이콘 삭제
   async deleteS3Icon(Key: string) {
@@ -110,17 +99,11 @@ export class UploadService {
 
   // (1) 업로드된 object들 반환
   async getUploadedObjects(): Promise<GetUploadedObjectsOutput> {
-    try {
-      const uploadedObjects = await this.uploadedObjectRepo.find({});
-      return {
-        uploadedObjects,
-        ok: true,
-      };
-    } catch (error) {
-      return {
-        ok: false,
-      };
-    }
+    const uploadedObjects = await this.uploadedObjectRepo.find({});
+    return {
+      uploadedObjects,
+      ok: true,
+    };
   }
 }
 

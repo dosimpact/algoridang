@@ -47,29 +47,17 @@ export class TradingService {
   async getBaseTradingStrategy({
     trading_strategy_code,
   }: getBaseTradingStrategyInput): Promise<getBaseTradingStrategyOutput> {
-    try {
-      const baseTradingStrategy = await this.baseTradingStRepo.findOne({
-        where: { trading_strategy_code },
-      });
-      if (!baseTradingStrategy)
-        return { ok: false, error: 'cannot find preset st. by Id ' };
-      return { ok: true, baseTradingStrategy };
-    } catch (error) {
-      this.logger.error(error);
-      return { ok: false };
-    }
+    const baseTradingStrategy = await this.baseTradingStRepo.findOneOrFail({
+      where: { trading_strategy_code },
+    });
+    return { ok: true, baseTradingStrategy };
   }
   //(2) 기본 매매전략리스트
   async getBaseTradingStrategyList(
     getBaseTradingStrategyList: getBaseTradingStrategyListInput,
   ): Promise<getBaseTradingStrategyListOutput> {
-    try {
-      const baseTradingStrategyList = await this.baseTradingStRepo.find({});
-      return { ok: true, baseTradingStrategyList };
-    } catch (error) {
-      this.logger.error(error);
-      return { ok: false };
-    }
+    const baseTradingStrategyList = await this.baseTradingStRepo.find({});
+    return { ok: true, baseTradingStrategyList };
   }
   //(3) 기본 매매전략 카피 (deprecated)
   // - 유니버셜에 바로 추가
@@ -107,38 +95,27 @@ export class TradingService {
       select_yes_no,
     }: AddUniversalInput,
   ): Promise<AddUniversalOutput> {
-    try {
-      // 티커 및 전략 존재성
-      const existTicker = await this.financeService.getCorporation({
-        term: ticker,
-      });
-      if (!existTicker.ok || existTicker.corporation.ticker !== ticker)
-        return { ok: false, error: 'cannot find corp given ticker' };
+    // 티커 및 전략 존재성
+    await this.financeService.getCorporation({
+      term: ticker,
+    });
 
-      const existStrategy = await this.strategyService.__checkMyStrategy({
+    await this.strategyService.__checkMyStrategy({
+      strategy_code,
+      email_id,
+    });
+
+    // universal 매핑 테이블 생성
+    const universal = await this.universalRepo.save(
+      this.universalRepo.create({
+        ticker,
         strategy_code,
-        email_id,
-      });
-      if (!existStrategy.ok)
-        return {
-          ok: false,
-          error: 'cannot find strategy_code given strategy_code',
-        };
-      // universal 매핑 테이블 생성
-      const universal = await this.universalRepo.save(
-        this.universalRepo.create({
-          ticker,
-          strategy_code,
-          end_date,
-          start_date,
-          select_yes_no,
-        }),
-      );
-      return { ok: true, universal };
-    } catch (error) {
-      this.logger.error(error);
-      return { ok: false };
-    }
+        end_date,
+        start_date,
+        select_yes_no,
+      }),
+    );
+    return { ok: true, universal };
   }
   // (5) 전략에 매매전략 추가하기
   async upsertTradingStrategy(
@@ -150,37 +127,22 @@ export class TradingService {
       setting_json,
     }: UpsertTradingStrategyInput,
   ): Promise<UpsertTradingStrategyOutput> {
-    try {
-      // 전략 및 유니버셜 존재성 확인
-      const existStrategy = await this.strategyService.__checkMyStrategy({
-        strategy_code,
-        email_id,
-      });
-      if (!existStrategy.ok)
-        return {
-          ok: false,
-          error: 'cannot find strategy_code given strategy_code',
-        };
-      // unversial을 찾아 전략 추가
-      const universal = await this.universalRepo.findOne({
-        where: {
-          universal_code,
-        },
-      });
-      if (!universal)
-        return {
-          ok: false,
-          error: 'cannot find universal given universal_code',
-        };
-      if (setting_json) universal.setting_json = setting_json;
-      if (trading_strategy_name)
-        universal.trading_strategy_name = trading_strategy_name;
-      await this.universalRepo.save(universal);
-      return { ok: true, universal };
-    } catch (error) {
-      this.logger.error(error);
-      return { ok: false };
-    }
+    // 전략 및 유니버셜 존재성 확인
+    const existStrategy = await this.strategyService.__checkMyStrategy({
+      strategy_code,
+      email_id,
+    });
+    // unversial을 찾아 전략 추가
+    const universal = await this.universalRepo.findOneOrFail({
+      where: {
+        universal_code,
+      },
+    });
+    if (setting_json) universal.setting_json = setting_json;
+    if (trading_strategy_name)
+      universal.trading_strategy_name = trading_strategy_name;
+    await this.universalRepo.save(universal);
+    return { ok: true, universal };
   }
   //(6) 전략에 티커 + 매매전략 추가하기
   async upsertTickerWithTradingStrategy(
@@ -195,25 +157,20 @@ export class TradingService {
       select_yes_no,
     }: UpsertTickerWithTradingStrategyInput,
   ): Promise<UpsertTickerWithTradingStrategyOutput> {
-    try {
-      const res = await this.addUniversal(email_id, {
-        strategy_code,
-        ticker,
-        end_date,
-        start_date,
-        select_yes_no,
-      });
-      if (!res.ok) return res;
-      const { universal } = await this.upsertTradingStrategy(email_id, {
-        setting_json,
-        strategy_code,
-        trading_strategy_name,
-        universal_code: res.universal.universal_code,
-      });
-      return { ok: true, universal };
-    } catch (error) {
-      this.logger.error(error);
-      return { ok: false };
-    }
+    const res = await this.addUniversal(email_id, {
+      strategy_code,
+      ticker,
+      end_date,
+      start_date,
+      select_yes_no,
+    });
+    if (!res.ok) return res;
+    const { universal } = await this.upsertTradingStrategy(email_id, {
+      setting_json,
+      strategy_code,
+      trading_strategy_name,
+      universal_code: res.universal.universal_code,
+    });
+    return { ok: true, universal };
   }
 }

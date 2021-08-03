@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Like, Repository } from 'typeorm';
+import { EntityNotFoundError, Like, Repository } from 'typeorm';
 import {
   GetCorporationInput,
   GetCorporationOutput,
@@ -37,58 +37,41 @@ export class FinanceService {
 
   // (1) 모든 회사들의 리스트를 리턴
   async getCorporations(): Promise<GetCorporationsOutput> {
-    try {
-      const corporations = await this.CorporationRepo.find({});
-      return {
-        ok: true,
-        corporations,
-      };
-    } catch (error) {}
+    const corporations = await this.CorporationRepo.find({});
+    return {
+      ok: true,
+      corporations,
+    };
   }
   // (2) 검색어로, 회사들의 리스트를 리턴
   async getCorporationsWithTerm({
     term,
   }: GetCorporationsWithTermInput): Promise<GetCorporationsWithTermOutput> {
-    try {
-      const corporations = await this.CorporationRepo.find({
-        where: [
-          { ticker: Like(`%${term}%`) },
-          { corp_name: Like(`%${term}%`) },
-        ],
-      });
-      return {
-        ok: true,
-        corporations,
-      };
-    } catch (error) {
-      return {
-        ok: false,
-        error: `cannot find stock by ${term}`,
-      };
-    }
+    const corporations = await this.CorporationRepo.find({
+      where: [{ ticker: Like(`%${term}%`) }, { corp_name: Like(`%${term}%`) }],
+    });
+    if (!corporations)
+      throw new EntityNotFoundError(
+        Corporation,
+        `cannot find stock by ${term}`,
+      );
+    return {
+      ok: true,
+      corporations,
+    };
   }
 
   // (3) 회사정보 하나를 검색합니다.
   async getCorporation({
     term,
   }: GetCorporationInput): Promise<GetCorporationOutput> {
-    try {
-      const corporation = await this.CorporationRepo.findOneOrFail({
-        where: [
-          { ticker: Like(`%${term}%`) },
-          { corp_name: Like(`%${term}%`) },
-        ],
-      });
-      return {
-        ok: true,
-        corporation,
-      };
-    } catch (error) {
-      return {
-        ok: false,
-        error: `cannot find stock by ${term}`,
-      };
-    }
+    const corporation = await this.CorporationRepo.findOneOrFail({
+      where: [{ ticker: Like(`%${term}%`) }, { corp_name: Like(`%${term}%`) }],
+    });
+    return {
+      ok: true,
+      corporation,
+    };
   }
 
   // (4) 가격데이터를 검색합니다.
@@ -98,30 +81,27 @@ export class FinanceService {
     take,
     sort,
   }: GetDayilStocksInput): Promise<GetDayilStocksOutput> {
-    try {
-      const dailyStocks = await this.DailyStockRepo.find({
-        where: {
-          ticker: term,
-        },
-        order: {
-          stock_date: 'DESC',
-        },
-        skip: skip || 0,
-        take: take || 365,
-      });
-      if (sort === 'ASC') {
-        dailyStocks.reverse();
-      }
-
-      return {
-        ok: true,
-        dailyStocks,
-      };
-    } catch (error) {
-      return {
-        ok: false,
-        error: `cannot find dailystock with term ${term}`,
-      };
+    const dailyStocks = await this.DailyStockRepo.find({
+      where: {
+        ticker: term,
+      },
+      order: {
+        stock_date: 'DESC',
+      },
+      skip: skip || 0,
+      take: take || 365,
+    });
+    if (sort === 'ASC') {
+      dailyStocks.reverse();
     }
+    if (!dailyStocks)
+      throw new EntityNotFoundError(
+        DailyStock,
+        `cannot find dailystock with term ${term}`,
+      );
+    return {
+      ok: true,
+      dailyStocks,
+    };
   }
 }
