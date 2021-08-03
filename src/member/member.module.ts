@@ -17,8 +17,8 @@ import { StrategyModule } from 'src/strategy/strategy.module';
     ]),
     forwardRef(() => StrategyModule),
   ],
-  controllers: [MemberQueryController, MemberMutationController],
   providers: [MemberService],
+  controllers: [MemberQueryController, MemberMutationController],
   exports: [MemberService],
 })
 export class MemberModule {}

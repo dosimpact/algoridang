@@ -21,10 +21,7 @@ import { MemberService } from './member.service';
 
 @Controller('/api/member/')
 export class MemberQueryController {
-  constructor(
-    @Inject(MemberService.name)
-    private readonly memberService: MemberService,
-  ) {}
+  constructor(private readonly memberService: MemberService) {}
 
   @Get('me')
   async me(@Request() req, @AuthUser() MemberInfo) {
@@ -70,10 +67,7 @@ export class MemberQueryController {
 
 @Controller('/api/member/')
 export class MemberMutationController {
-  constructor(
-    @Inject(MemberService.name)
-    private readonly memberService: MemberService,
-  ) {}
+  constructor(private readonly memberService: MemberService) {}
 
   @Post('loginMemberInfo')
   async loginMemberInfo(@Body() loginMemberInfoInput: LoginMemberInfoInput) {
