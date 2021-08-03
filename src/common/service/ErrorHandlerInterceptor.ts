@@ -4,6 +4,7 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  InternalServerErrorException,
   NestInterceptor,
   NotFoundException,
 } from '@nestjs/common';
@@ -25,7 +26,8 @@ export class ErrorHandlerInterceptor implements NestInterceptor {
           // throw new HttpException(error.message, HttpStatus.NOT_FOUND);
           throw new NotFoundException(error.message);
         } else {
-          throw error;
+          // 500 애러는 숨기는것이 맞는지 모르겠다.
+          throw new InternalServerErrorException(error.message);
         }
       }),
     );

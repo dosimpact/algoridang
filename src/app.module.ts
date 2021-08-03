@@ -49,6 +49,7 @@ import { UploadedObject } from './upload/entities/uploaded-object.entity';
 import { AuthModule } from './auth/auth.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from './common/service/LogginInterceptor';
+import { ErrorHandlerInterceptor } from './common/service/ErrorHandlerInterceptor';
 
 @Module({
   imports: [
@@ -145,7 +146,7 @@ import { LoggingInterceptor } from './common/service/LogginInterceptor';
     AppResolver,
     {
       provide: APP_INTERCEPTOR,
-      useClass: LoggingInterceptor,
+      useClass: ErrorHandlerInterceptor,
     },
   ],
 })

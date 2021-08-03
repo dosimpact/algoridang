@@ -1,11 +1,9 @@
 import { Controller, Get, Param, Query, UseInterceptors } from '@nestjs/common';
 import { ErrorHandlerInterceptor } from 'src/common/service/ErrorHandlerInterceptor';
 import { HttpCacheInterceptor } from 'src/common/service/HttpCacheInterceptor';
-import { LoggingInterceptor } from 'src/common/service/LogginInterceptor';
 import { FinanceService } from './finance.service';
 
-@UseInterceptors(LoggingInterceptor)
-@UseInterceptors(ErrorHandlerInterceptor)
+// @UseInterceptors(ErrorHandlerInterceptor)
 @UseInterceptors(HttpCacheInterceptor)
 @Controller('/api/finance/')
 export class FinanceController {

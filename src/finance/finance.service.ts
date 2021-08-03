@@ -38,7 +38,8 @@ export class FinanceService {
   // (1) 모든 회사들의 리스트를 리턴
   async getCorporations(): Promise<GetCorporationsOutput> {
     // Service 로직에서 EntityNotFoundError 애러를 던지다.
-    throw new EntityNotFoundError(Corporation, 'banana');
+    // throw new EntityNotFoundError(Corporation, 'banana');
+    throw new Error('something is wrong');
     // 500 애러를 리턴합니다.
     // throw new Error('unkown error');
     try {
