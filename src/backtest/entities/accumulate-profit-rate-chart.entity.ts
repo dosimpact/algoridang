@@ -1,4 +1,4 @@
-import { IsDate, IsDateString, IsNumber } from 'class-validator';
+import { IsDateString, IsNumber } from 'class-validator';
 import { MemberStrategy } from 'src/strategy/entities';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
@@ -14,7 +14,7 @@ export class AccumulateProfitRateChart {
 
   @IsDateString()
   @Column({ type: 'timestamptz' })
-  chart_rate: Date;
+  chart_date: Date;
 
   // 1:N 관계
   // (1) 차트에 대한 원본 전략 매핑
