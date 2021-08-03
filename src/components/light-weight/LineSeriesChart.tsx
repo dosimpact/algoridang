@@ -1,15 +1,32 @@
 import React, { useLayoutEffect, useRef, useEffect, useCallback } from "react";
 import { createChart, IChartApi, ISeriesApi } from "lightweight-charts";
+import * as LightweightCharts from "lightweight-charts";
 
 export interface ILineData {
   time: string;
   value: number;
 }
+export interface IonCrossHairChange {
+  price: number;
+}
 interface ILineSeriesChart {
   datas?: ILineData[];
+  onCrossHairChange?: (e: IonCrossHairChange) => void;
 }
 
-const LineSeriesChart: React.FC<ILineSeriesChart> = ({ datas }) => {
+// todo
+// 리팩토링 : (1) 생성과 소멸 useEffect로 잘 했는가
+// 데이터 set : (2) useEffect로 데이터를 셋팅을 ?
+// 데이터 onChange 함수 : (3) 적절한 설계인가?
+// React.memo 로 랜더링 최적화 하였는가?
+
+const LineSeriesChart: React.FC<ILineSeriesChart> = ({
+  datas,
+  onCrossHairChange,
+}) => {
+  // onCrossHairChange = useMemo(() => onCrossHairChange, [onCrossHairChange]);
+  // onCrossHairChange = useCallback(() => onCrossHairChange, []);
+
   // refObject - JSX 컨테이너는 readonly ( usecallback에 의해 )
   const charContainer = useRef<HTMLDivElement>();
   // Mutable Object - JSX 컨테이너 안의 chart 인스턴스를 리랜더링 가능
@@ -30,7 +47,9 @@ const LineSeriesChart: React.FC<ILineSeriesChart> = ({ datas }) => {
     })
   );
 
-  const lineSeries = useRef<ISeriesApi<"Line">>();
+  // 그래프의 Area 시리즈 데이터를 참조
+  // const lineSeries = useRef<ISeriesApi<"Line">>();
+  const SeriesApiArea = useRef<ISeriesApi<"Area">>();
 
   // chart 컨테이너를 참조하는 함수
   const handleContainerRef = useCallback((node) => {
@@ -45,32 +64,64 @@ const LineSeriesChart: React.FC<ILineSeriesChart> = ({ datas }) => {
   useLayoutEffect(() => {
     if (charContainer.current) {
       //   console.log("createChart elements");
+      const width = 600;
+      // const height = 300;
       const chart = createChart(charContainer.current, {
         height: 500,
         layout: {
-          fontSize: 20,
+          fontSize: 11,
+        },
+        rightPriceScale: {
+          visible: true,
+        },
+        leftPriceScale: {
+          visible: false,
+        },
+        grid: {
+          horzLines: {
+            color: "#ebebeb",
+          },
+          vertLines: {
+            color: "#ebebeb",
+          },
         },
       });
       charApi.current = chart;
-      lineSeries.current = chart.addLineSeries();
-      lineSeries.current.setData([]);
+      SeriesApiArea.current = chart.addAreaSeries({
+        topColor: "rgba(76, 175, 80, 0.5)",
+        lineColor: "rgba(76, 175, 80, 1)",
+        bottomColor: "rgba(76, 175, 80, 0)",
+        lineWidth: 2,
+      });
+      if (datas) {
+        SeriesApiArea.current?.setData(datas as ILineData[]);
+      }
+      // todo 쓰로틀링
+      // update tooltip
+      chart.subscribeCrosshairMove(function (param) {
+        if (onCrossHairChange) {
+          const price = param.seriesPrices.get(SeriesApiArea.current!);
+          onCrossHairChange({ price: Number(price) });
+        }
+      });
     }
 
     return () => {
       // 컴포넌트가 unmount 되면 차트DOM 제거
       if (charContainer.current) {
+        // console.log("will remove child!", charContainer.current.childNodes[0]);
         charContainer.current?.removeChild(charContainer.current.childNodes[0]);
       }
       // 컴포넌트가 unmount 되면 차트 Ref 제거
       charApi.current = undefined;
       // 컴포넌트가 unmount 되면 차트 DataSetter Ref 제거
-      lineSeries.current = undefined;
+      SeriesApiArea.current = undefined;
     };
-  }, [charContainer]);
+  }, [charContainer, onCrossHairChange, datas]);
 
   const setLineData = (data?: ILineData[]) => {
-    if (lineSeries.current && data) {
-      lineSeries.current?.setData(data);
+    if (SeriesApiArea.current && data) {
+      SeriesApiArea.current?.setData(data);
     }
   };
 
@@ -91,3 +142,18 @@ const LineSeriesChart: React.FC<ILineSeriesChart> = ({ datas }) => {
 };
 
 export default LineSeriesChart;
+
+// export default React.memo(LineSeriesChart, (prev, next) => {
+// console.log(
+//   "onCrossHairChange",
+//   prev.onCrossHairChange === next.onCrossHairChange
+// );
+// console.log("datas", prev.datas === next.datas);
+
+// 항상 존재, 컴포넌트가 소멸될때만 제거한다.
+// return true;
+
+// datas가 바뀌면 컴포넌트 자체를 리랜더링
+// (인스턴스화)된 컴포넌트를 없앨 이유가 없음
+// return prev.datas === next.datas;
+// });

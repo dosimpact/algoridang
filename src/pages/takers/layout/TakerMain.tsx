@@ -2,6 +2,7 @@ import React from "react";
 import { NavBar, Icon, Tabs, WhiteSpace, Badge } from "antd-mobile";
 import MockInvest from "../mock-invest/mock-investC";
 import StrategySearch from "../strategy-search/strategy-searchC";
+import TickerSearch from "../ticker-search/ticker-searchC";
 import { useHistory, useLocation } from "react-router-dom";
 
 const tabs = [
@@ -45,7 +46,8 @@ const TabNavigationContainer = () => {
   return (
     <nav>
       <Tabs
-        // animated={false}
+        swipeable={false}
+        animated={true}
         tabs={tabs}
         onChange={(tab, index) => {
           // console.log("onChange", index, tab);
@@ -56,7 +58,9 @@ const TabNavigationContainer = () => {
         }}
         page={page}
       >
-        <section>개별 종목 주가</section>
+        <section>
+          <TickerSearch />
+        </section>
         <section>
           <StrategySearch />
         </section>

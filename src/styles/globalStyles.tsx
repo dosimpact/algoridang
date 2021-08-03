@@ -38,4 +38,23 @@ export default createGlobalStyle`
         align-items:center;
         justify-content:center;
     }
+
+    .tooltip {
+	width: 120px;
+	height: 24px;
+	position: absolute;
+	display: none;
+	padding: 6px;
+	box-sizing: border-box;
+	font-size: 11px;
+	border-radius: 2px;
+	background-color: rgb(76, 175, 80);
+	text-align: center;
+	z-index: 1000;
+	top: 3px;
+	left: 10px;
+	pointer-events: none;
+	color: #fff;
+    }
+
 `;
