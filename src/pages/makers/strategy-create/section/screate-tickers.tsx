@@ -1,20 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useForm } from "react-hook-form";
 import { Button, List, Checkbox, Icon } from "antd-mobile";
+import TickerSearch from "components/inputs/TickerSearch";
+import { Corporation } from "states/interface/finance/entities";
+import { useRecoilState } from "recoil";
+import { atomStrategyState } from "states/recoil/strategy";
 
 const CheckboxItem = Checkbox.CheckboxItem;
 
-type IScreateBasicInput = {
-  name: string;
-  description: string;
-  tags: string;
-  startMoney: number;
-  backtestFrom: string;
-  backtestTo: string;
-  fees: number;
-  openRange: "public" | "private";
-};
+// const data2 = [
+//   { value: 0, company: "basketball", code: "00FF12DD" },
+//   { value: 1, company: "football", code: "00FF12DD" },
+// ];
 
 // 1. 코드 기업명 검색
 // 2. 기업리스트 리스트 뷰
@@ -22,35 +19,45 @@ type IScreateBasicInput = {
 // 4. 뷰
 
 const ScreateTickers = () => {
-  const { handleSubmit } = useForm<IScreateBasicInput>();
+  const [searched, setSearched] = useState<Corporation[]>([]);
+  const [selected, setSelected] = useState<Corporation[]>([]);
+  const [strategyState, setStrategyState] = useRecoilState(atomStrategyState);
 
-  const data2 = [
-    { value: 0, company: "basketball", code: "00FF12DD" },
-    { value: 1, company: "football", code: "00FF12DD" },
-  ];
+  useEffect(() => {
+    setStrategyState((prev) => ({
+      ...prev,
+      formStateTickerSelected: selected,
+    }));
+    return () => {};
+  }, [selected, setStrategyState]);
 
   return (
     <SScreateTickers>
       <article className="articleCol searchCol">
-        <form
-          className="tickerSettingForm"
-          style={{ display: "flex", flexFlow: "column nowrap" }}
-          onSubmit={handleSubmit((data) => {
-            console.log(data);
-          })}
-        >
-          <input
-            className="tickerInput"
-            placeholder=" 코드, 기업명을 입력해주세요"
-          ></input>
-        </form>
+        <TickerSearch
+          onSuccess={(e) => {
+            // console.log("e.corporations", e.corporations);
+            setSearched(e && e.corporations);
+          }}
+        />
         <div className="flexRow">
           <Button className="btn">전체 선택</Button>
         </div>
         <List>
-          {data2.map((i) => (
-            <CheckboxItem key={i.value} onChange={() => {}}>
-              <span className="companyCode">{i.code}</span> {i.company}
+          {searched.map((e) => (
+            <CheckboxItem
+              key={"1" + e.corp_name}
+              onChange={(event: any) => {
+                if (event?.target?.checked) {
+                  setSelected((prev) => [...prev, e]);
+                } else {
+                  setSelected((prev) =>
+                    prev.filter((corp) => corp.corp_name !== e.corp_name)
+                  );
+                }
+              }}
+            >
+              <span className="companyCode">{e.ticker}</span> {e.corp_name}
             </CheckboxItem>
           ))}
         </List>
@@ -72,10 +79,11 @@ const ScreateTickers = () => {
         <div className="flexRow">
           <Button className="btn">전체 선택</Button>
         </div>
+        <div>*MVP - 가장 처음 종목 1개만 전략에 추가할 수 있습니다.</div>
         <List>
-          {data2.map((i) => (
-            <CheckboxItem key={i.value} onChange={() => {}}>
-              <span className="companyCode">{i.code}</span> {i.company}
+          {selected.map((e) => (
+            <CheckboxItem key={"2" + e.corp_name} onChange={() => {}}>
+              <span className="companyCode">{e.ticker}</span> {e.corp_name}
             </CheckboxItem>
           ))}
         </List>
@@ -97,7 +105,7 @@ const SScreateTickers = styled.div`
     width: 100%;
     display: flex;
     flex-flow: column nowrap;
-    justify-content: center;
+    /* justify-content: center; */
     .wrapper {
     }
   }

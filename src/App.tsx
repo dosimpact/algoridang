@@ -8,7 +8,6 @@ import { ApolloProvider } from "@apollo/client";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 import { apolloClient } from "states/apollo/apollo";
-import { DebugButton, DebugObserver } from "states/recoil/DebugObserver";
 
 // - styles
 // GlobalStyles ( reset css + global css )

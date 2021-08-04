@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { Corporation } from "states/interface/finance/entities";
 import useCorporation from "states/react-query/finance/useCorporation";
 import styled from "styled-components";
 
@@ -8,7 +9,11 @@ interface ITickerSearchInput {
 }
 
 interface ITickerSearch {
-  onSuccess?: (e: { ticker: string; corp_name: string }) => void;
+  onSuccess?: (e: {
+    ticker: string;
+    corp_name: string;
+    corporations: Corporation[];
+  }) => void;
 }
 
 // todo : refactor : 뒤로가기 누르면 왜 검색이 되느지?..
@@ -24,6 +29,7 @@ const TickerSearch: React.FC<ITickerSearch> = ({ onSuccess }) => {
       onSuccess({
         corp_name: corporations[0].corp_name,
         ticker: corporations[0].ticker,
+        corporations,
       });
     }
     return () => {};

@@ -72,12 +72,9 @@ const ScreateBasic = () => {
         className="basicSettingForm"
         style={{ display: "flex", flexFlow: "column nowrap" }}
         onSubmit={handleSubmit((data) => {
-          console.log(data);
-          setStrategyState((prev) => ({
-            ...prev,
-            formStateBasicSetting: data,
-          }));
-          console.log(strategyState);
+          setStrategyState((prev) => {
+            return { ...prev, formStateBasicSetting: data };
+          });
         })}
       >
         <div className="inputRow inputRowHeader">
@@ -117,14 +114,15 @@ const ScreateBasic = () => {
           </div>
           <div className="col remark">{mapNameToRemark["open_yes_no"]}</div>
         </div>
-        <Button
+        <button type="submit">완료</button>
+        {/* <Button
           type="primary"
           onClick={handleSubmit((data) => {
             console.log(data);
           })}
         >
           완료
-        </Button>
+        </Button> */}
       </form>
     </SScreateBasic>
   );

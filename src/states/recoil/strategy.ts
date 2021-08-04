@@ -2,12 +2,13 @@ import { atom } from "recoil";
 import { CreateMyStrategyInput } from "states/interface/strategy/dtos";
 import { AddUniversalInput } from "states/interface/trading/dtos";
 import { IformStateBasicSetting } from "pages/makers/strategy-create/section/screate-basic";
+import { Corporation } from "states/interface/finance/entities";
 
 interface IStrategyState {
   createMyStrategyInput: CreateMyStrategyInput;
   addUniversalInput?: AddUniversalInput[];
   formStateBasicSetting?: IformStateBasicSetting; //  1
-  formStateTickerSelected?: any; // 2
+  formStateTickerSelected?: Corporation[]; // 2
   formStateTradingSetting?: any; // 3
 }
 
