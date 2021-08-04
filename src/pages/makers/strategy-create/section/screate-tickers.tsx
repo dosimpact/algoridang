@@ -18,6 +18,8 @@ const CheckboxItem = Checkbox.CheckboxItem;
 // 3. selected 추가 및 삭제
 // 4. 뷰
 
+// todo:refactor fuse.js - 종목 검색 fuzzySearch 적용
+// https://medium.com/analytics-vidhya/how-to-create-a-fuzzy-search-in-react-js-using-fuse-js-859f80345657
 const ScreateTickers = () => {
   const [searched, setSearched] = useState<Corporation[]>([]);
   const [selected, setSelected] = useState<Corporation[]>([]);

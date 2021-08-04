@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { Button, List, Checkbox } from "antd-mobile";
+import useTrading from "states/react-query/useTrading";
 
 const CheckboxItem = Checkbox.CheckboxItem;
 
@@ -21,8 +22,15 @@ type IScreateBasicInput = {
 // 3. selected 추가 및 삭제
 // 4. 뷰
 
+// todo:refactor fuse.js - 매매전략 fuzzySearch 적용
 const ScreatePropterties = () => {
   const { handleSubmit } = useForm<IScreateBasicInput>();
+
+  const {
+    baseTradingStrategyList,
+    baseTradingStrategyListError,
+    baseTradingStrategyListLoading,
+  } = useTrading();
 
   const data2 = [
     { value: 0, company: "골든 크로스", code: "" },
@@ -44,12 +52,15 @@ const ScreatePropterties = () => {
             placeholder="매매 전략을 입력하시오"
           ></input>
         </form>
+        <div> {baseTradingStrategyListLoading && "loading..."} </div>
         <List>
-          {data2.map((i) => (
-            <CheckboxItem key={i.value} onChange={() => {}}>
-              <span className="companyCode">{i.code}</span> {i.company}
-            </CheckboxItem>
-          ))}
+          {baseTradingStrategyList &&
+            baseTradingStrategyList.map((i) => (
+              <CheckboxItem key={i.trading_strategy_code} onChange={() => {}}>
+                <span className="companyCode">{i.trading_strategy_code}</span>{" "}
+                {i.trading_strategy_name}
+              </CheckboxItem>
+            ))}
         </List>
       </article>
       <article className="articleCol selectedCol">

@@ -95,3 +95,15 @@ export const financeApi = {
   PATCH: {},
   DELETE: {},
 };
+
+// (4) trading api
+
+export const tradingApi = {
+  GET: {
+    getBaseTradingStrategy: () => axios.get(`trading/base/1`),
+    getBaseTradingStrategyList: () => axios.get(`trading/base`),
+  },
+  POST: {},
+  PATCH: {},
+  DELETE: {},
+};
