@@ -36,7 +36,7 @@ const dummyDatas3 = [
 const StrategyFeeds = () => {
   const history = useHistory();
   const { strategyListNew } = useStrategy();
-  console.log("strategyListNew", strategyListNew);
+  // console.log("strategyListNew", strategyListNew);
 
   return (
     <WingBlank style={{ margin: "15x" }} size="lg">
@@ -45,7 +45,7 @@ const StrategyFeeds = () => {
         title="투자 성향별 종목 검색"
         subTitle="나만의 성향에 맞는 전략 찾아봅니다."
         onClick={(e) => {
-          console.log("click", e.currentTarget);
+          // console.log("click", e.currentTarget);
           history.push("/takers/strategy-search/types");
         }}
       />
@@ -63,7 +63,7 @@ const StrategyFeeds = () => {
             CAGR={data.strategy_code}
             thumnail={data.image_url}
             onClick={(e) => {
-              console.log("click", e.currentTarget);
+              // console.log("click", e.currentTarget);
               history.push("/takers/strategy-search/details/1");
             }}
           />

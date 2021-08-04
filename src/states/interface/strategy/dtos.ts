@@ -1,3 +1,4 @@
+import { CreateInvestProfitInfoInput } from "../backtest/dtos";
 import { CoreOutput } from "../common/dtos";
 import { InvestType, MemberStrategy } from "./entities";
 
@@ -40,4 +41,23 @@ export interface GetMyStrategyByIdInput {
 }
 export interface GetMyStrategyByIdOutput extends CoreOutput {
   memberStrategyList?: MemberStrategy[];
+}
+
+//mutation
+
+// (POST) createMyStrategy	(1) 전략 만들기
+export interface CreateMyStrategyInput {
+  tags?: string[]; //해쉬 태그들
+  strategy_name: string;
+  invest_type?: InvestType;
+  strategy_explanation: string;
+  operation_yes_no?: boolean; // 전략 탐색
+  alarm_setting: boolean;
+  open_yes_no?: boolean;
+  image_url?: string;
+  investProfitInfo: CreateInvestProfitInfoInput;
+}
+
+export interface CreateMyStrategyOutput extends CoreOutput {
+  memberStrategy?: MemberStrategy;
 }
