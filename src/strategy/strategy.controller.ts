@@ -93,7 +93,7 @@ export class StrategyMutationController {
   // 전략에 종목 + 매매전략 추가하기
   @Roles(['Any'])
   @Version('1')
-  @Put('my/:strategy_code/universal')
+  @Post('my/:strategy_code/universal')
   async addUniversal(
     @AuthUser() m: MemberInfo,
     @Body() body: AddUniversalInput,

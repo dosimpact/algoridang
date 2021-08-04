@@ -38,7 +38,7 @@ export class CreateMyStrategyInput {
 
   @IsOptional()
   @IsBoolean()
-  alarm_setting: boolean;
+  alarm_setting?: boolean;
 
   @IsOptional()
   @IsBoolean()

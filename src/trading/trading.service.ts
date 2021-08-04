@@ -8,8 +8,6 @@ import {
   AddUniversalOutput,
   UpsertTradingStrategyInput,
   UpsertTradingStrategyOutput,
-  CopyBaseTradingStrategyInput,
-  CopyBaseTradingStrategyOutput,
   AddUniversalOnlyInput,
   AddUniversalOnlyOutput,
 } from './dto/mutation.dtos';
@@ -118,7 +116,7 @@ export class TradingService {
     return { ok: true, universal };
   }
   // (5) 전략에 매매전략 추가하기
-  async upsertTradingStrategy(
+  async __upsertTradingStrategy(
     email_id: string,
     {
       strategy_code,
@@ -165,7 +163,7 @@ export class TradingService {
       select_yes_no,
     });
     if (!res.ok) return res;
-    const { universal } = await this.upsertTradingStrategy(email_id, {
+    const { universal } = await this.__upsertTradingStrategy(email_id, {
       setting_json,
       strategy_code,
       trading_strategy_name,
