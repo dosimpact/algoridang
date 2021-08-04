@@ -1,6 +1,10 @@
 import axios from "axios";
 import { getLocalMemberInfo } from "states/local-state";
-import { GetDayilStocksInput } from "./interface/finance/dtos";
+import {
+  GetCorporationInput,
+  GetCorporationsWithTermInput,
+  GetDayilStocksInput,
+} from "./interface/finance/dtos";
 import { loginMemberInfoInput } from "./interface/member/dtos";
 
 // base setttings ,  interceptors
@@ -61,8 +65,14 @@ export const strategyApi = {
 // (3) finance api
 export const financeApi = {
   GET: {
-    dailystock: ({ term, skip, take, sort }: GetDayilStocksInput) => {
-      return axios.get(`finance/dailystock/${term}`, {
+    getCorporations: () => axios.get(`finance/corporations`),
+    getCorporationsWithTerm: ({ term }: GetCorporationsWithTermInput) =>
+      axios.get(`finance/corporations/${term}`),
+    getCorporation: ({ term }: GetCorporationInput) =>
+      axios.get(`finance/corporation/${term}`),
+    //
+    getDailyStocks: ({ term, skip, take, sort }: GetDayilStocksInput) => {
+      return axios.get(`finance/dailystocks/${term}`, {
         params: {
           skip,
           take,

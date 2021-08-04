@@ -13,11 +13,11 @@ const useDailyStock = (
     ["DailyStock", term, skip, take, sort],
     () => {
       // Axios 의 Promise를 리턴하는 부분
-      return financeApi.GET.dailystock({ term, skip, take, sort });
+      return financeApi.GET.getDailyStocks({ term, skip, take, sort });
     },
     {
-      staleTime: 5000,
-      cacheTime: 5000,
+      staleTime: 1 * 60 * 1000,
+      cacheTime: 5 * 60 * 1000,
       onSuccess: () => {}, // 성공시 처리 eg) 파싱 등
       onError: () => {}, // 실패시 애러 핸들링 eg) 400처리 401처리
     }
@@ -28,7 +28,7 @@ const useDailyStock = (
   return {
     dayilStocks: dayilStocks?.dailyStocks,
     isLoading,
-    error: error || dayilStocks?.error,
+    error: error,
   };
 };
 
