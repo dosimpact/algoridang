@@ -12,6 +12,9 @@ import { AuthUser, Roles } from 'src/auth/auth.decorator';
 import { HttpCacheInterceptor } from 'src/common/service/HttpCacheInterceptor';
 import { CreateMyStrategyInput } from './dto/mutation.dtos';
 import { MemberInfo } from 'src/member/entities';
+import { TradingService } from 'src/trading/trading.service';
+import { AddUniversalInput } from 'src/trading/dto/mutation.dtos';
+import { Put } from '@nestjs/common';
 
 @UseInterceptors(HttpCacheInterceptor)
 @Controller('/api/strategy/')
@@ -69,7 +72,10 @@ export class StrategyQueryController {
 
 @Controller('/api/strategy/')
 export class StrategyMutationController {
-  constructor(private readonly strategyService: StrategyService) {}
+  constructor(
+    private readonly strategyService: StrategyService,
+    private readonly tradingService: TradingService,
+  ) {}
 
   // (POST) createMyStrategy	(1) 나의 전략 만들기
   @Roles(['Any'])
@@ -83,6 +89,18 @@ export class StrategyMutationController {
       ...createMyStrategy,
     });
   }
+
+  // 전략에 종목 + 매매전략 추가하기
+  @Roles(['Any'])
+  @Version('1')
+  @Put('my/:strategy_code/universal')
+  async addUniversal(
+    @AuthUser() m: MemberInfo,
+    @Body() body: AddUniversalInput,
+  ) {
+    return this.tradingService.addUniversal(m.email_id, body);
+  }
+
   // (POST) updateMyStrategyById		(2) 나의 전략 업데이트
   async updateMyStrategyById() {}
   // (POST) deleteMyStrategyById	 	(3) 나의 전략 softdelete

@@ -211,6 +211,7 @@ export class StrategyService {
           'investProfitInfo',
           'backtestDetailInfo',
           'operationMemberList',
+          'universal',
         ],
       });
     return {
@@ -237,6 +238,7 @@ export class StrategyService {
         'investProfitInfo',
         'backtestDetailInfo',
         'operationMemberList',
+        'universal',
       ],
     });
     return {

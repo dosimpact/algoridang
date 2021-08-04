@@ -30,5 +30,6 @@ import { StrategyModule } from 'src/strategy/strategy.module';
   ],
   controllers: [TradingQueryController, TradingMutationController],
   providers: [TradingService, TradingResolver],
+  exports: [TradingService],
 })
 export class TradingModule {}

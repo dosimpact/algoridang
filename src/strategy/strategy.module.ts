@@ -1,4 +1,9 @@
-import { CacheModule, CacheStoreFactory, Module } from '@nestjs/common';
+import {
+  CacheModule,
+  CacheStoreFactory,
+  forwardRef,
+  Module,
+} from '@nestjs/common';
 import { StrategyService } from './strategy.service';
 import {
   StrategyMutationController,
@@ -11,6 +16,7 @@ import { InvestProfitInfo } from 'src/backtest/entities';
 import { ConfigModule } from '@nestjs/config';
 import * as redisStore from 'cache-manager-redis-store';
 import { StrategyHashService } from './strategy-hash.service';
+import { TradingModule } from 'src/trading/trading.module';
 
 @Module({
   imports: [
@@ -31,6 +37,7 @@ import { StrategyHashService } from './strategy-hash.service';
       // StockList,
       InvestProfitInfo,
     ]),
+    forwardRef(() => TradingModule),
   ],
   controllers: [StrategyMutationController, StrategyQueryController],
   providers: [StrategyService, StrategyHashService, StrategyResolver],

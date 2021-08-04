@@ -158,7 +158,7 @@ export class MemberStrategy {
 
   // (6) 전략은 유니버셜을 같는다. 1:N 튜플 매칭
   @OneToMany(() => Universal, (univ) => univ.memberStrategy)
-  universal: Universal;
+  universal: Universal[];
 
   // ------------------------------------------------------------
   // n:m 관계

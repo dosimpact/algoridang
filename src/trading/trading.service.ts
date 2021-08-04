@@ -10,8 +10,8 @@ import {
   UpsertTradingStrategyOutput,
   CopyBaseTradingStrategyInput,
   CopyBaseTradingStrategyOutput,
-  UpsertTickerWithTradingStrategyInput,
-  UpsertTickerWithTradingStrategyOutput,
+  AddUniversalOnlyInput,
+  AddUniversalOnlyOutput,
 } from './dto/mutation.dtos';
 
 import {
@@ -85,7 +85,7 @@ export class TradingService {
   // }
 
   //(4)  전략에 티커 추가하기
-  async addUniversal(
+  async addUniversalOnly(
     email_id: string,
     {
       strategy_code,
@@ -93,8 +93,8 @@ export class TradingService {
       end_date,
       start_date,
       select_yes_no,
-    }: AddUniversalInput,
-  ): Promise<AddUniversalOutput> {
+    }: AddUniversalOnlyInput,
+  ): Promise<AddUniversalOnlyOutput> {
     // 티커 및 전략 존재성
     await this.financeService.getCorporation({
       term: ticker,
@@ -145,7 +145,7 @@ export class TradingService {
     return { ok: true, universal };
   }
   //(6) 전략에 티커 + 매매전략 추가하기
-  async upsertTickerWithTradingStrategy(
+  async addUniversal(
     email_id,
     {
       setting_json,
@@ -155,9 +155,9 @@ export class TradingService {
       trading_strategy_name,
       end_date,
       select_yes_no,
-    }: UpsertTickerWithTradingStrategyInput,
-  ): Promise<UpsertTickerWithTradingStrategyOutput> {
-    const res = await this.addUniversal(email_id, {
+    }: AddUniversalInput,
+  ): Promise<AddUniversalOutput> {
+    const res = await this.addUniversalOnly(email_id, {
       strategy_code,
       ticker,
       end_date,

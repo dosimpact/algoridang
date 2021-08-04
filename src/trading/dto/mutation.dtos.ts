@@ -17,14 +17,14 @@ export class CopyBaseTradingStrategyOutput extends CoreOutput {
   // customTradingStrategy?: CustomTradingStrategy;
 }
 
-export class AddUniversalInput extends PickType(Universal, [
+export class AddUniversalOnlyInput extends PickType(Universal, [
   'strategy_code',
   'ticker',
   'start_date',
   'end_date',
   'select_yes_no',
 ]) {}
-export class AddUniversalOutput extends CoreOutput {
+export class AddUniversalOnlyOutput extends CoreOutput {
   universal?: Universal;
 }
 
@@ -46,10 +46,11 @@ export class UpsertTradingStrategyOutput extends CoreOutput {
   universal?: Universal;
 }
 
-export class UpsertTickerWithTradingStrategyInput extends IntersectionType(
-  AddUniversalInput,
+export class AddUniversalInput extends IntersectionType(
+  AddUniversalOnlyInput,
   OmitType(UpsertTradingStrategyInput, ['universal_code']),
 ) {}
-export class UpsertTickerWithTradingStrategyOutput extends CoreOutput {
+
+export class AddUniversalOutput extends CoreOutput {
   universal?: Universal;
 }

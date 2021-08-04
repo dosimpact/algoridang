@@ -46,7 +46,7 @@ git push heroku master
 ```ts
 typeorm @nestjs/typeorm pg chance 
 @nestjs/config cross-env joi jsonwebtoken bcrypt
-class-transformer class-validator
+class-transformer class-validator @nestjs/mapped-types
 aws-sdk 
 @nestjs/bull bull cache-manager cache-manager-redis-store
 @nestjs/passport passport passport-google-oauth20
@@ -57,7 +57,7 @@ ts-morph
 
 ```ts
 -@types/bcrypt @types/jsonwebtoken 
--@types/multer @nestjs/mapped-types
+-@types/multer 
 -@types/passport-google-oauth20 
 -@types/bull @types/cache-manager @types/cache-manager-redis-store
 ```
