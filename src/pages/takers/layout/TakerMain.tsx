@@ -93,7 +93,7 @@ const NavBarContainer = () => {
         console.log("onLeftClick");
       }}
       rightContent={[
-        <div>hello님</div>,
+        <div key="name">hello님</div>,
         <Icon
           key="0"
           type="search"

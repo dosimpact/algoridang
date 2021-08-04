@@ -6,6 +6,7 @@ import useDailyStock from "states/react-query/finance/useDailyStock";
 import { atomCorporationStatus } from "states/recoil/corporation";
 import styled from "styled-components";
 
+// todo:refator onSuccess등 콜백함수에 usecallback안써도 되도록 하기
 const TickerPrice = () => {
   const [corporation, setCorporation] = useRecoilState(atomCorporationStatus);
   // const [corporation, setCorporation] = useState<{ticker:string}>("005930");
@@ -27,13 +28,16 @@ const TickerPrice = () => {
   return (
     <TickerPriceS>
       <TickerSearch
-        onSuccess={(e) => {
-          // console.log("TickerSearch sucess", e.corp_name, e.ticker);
-          if (e.corp_name && e.ticker) {
-            const { corp_name, ticker } = e;
-            setCorporation({ corp_name, ticker });
-          }
-        }}
+        onSuccess={useCallback(
+          (e) => {
+            // console.log("TickerSearch sucess", e.corp_name, e.ticker);
+            if (e.corp_name && e.ticker) {
+              const { corp_name, ticker } = e;
+              setCorporation({ corp_name, ticker });
+            }
+          },
+          [setCorporation]
+        )}
       />
       <article className="chartLegend">
         <div className="tickerName">{corporation.corp_name}</div>
