@@ -34,13 +34,9 @@ const ScreatePropterties = () => {
   const { handleSubmit } = useForm<IScreateBasicInput>();
   const [strategyState, setStrategyState] = useRecoilState(atomStrategyState);
 
-  const {
-    baseTradingStrategyList,
-    baseTradingStrategyListError,
-    baseTradingStrategyListLoading,
-  } = useTrading();
+  const { baseTradingStrategyList, baseTradingStrategyListLoading } =
+    useTrading();
 
-  const [selected, setSelected] = useState<BaseTradingStrategy>();
   const [selectedNum, setSelectedNum] = useState<number>(0);
   // 전략 프로퍼티
   const [inputs, setInputs] = useState<Record<string, string>>();
@@ -59,10 +55,10 @@ const ScreatePropterties = () => {
     );
   }, [selectedNum, baseTradingStrategyList]);
 
-  const data2 = [
-    { value: 0, company: "골든 크로스", code: "" },
-    { value: 1, company: "블린저 밴드", code: "" },
-  ];
+  // const data2 = [
+  //   { value: 0, company: "골든 크로스", code: "" },
+  //   { value: 1, company: "블린저 밴드", code: "" },
+  // ];
 
   const handleInputs = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
@@ -80,7 +76,7 @@ const ScreatePropterties = () => {
 
   return (
     <SScreatePropterties>
-      {JSON.stringify(inputs, null, 2)}
+      {/* {JSON.stringify(inputs, null, 2)} */}
       <article className="articleCol searchCol">
         <form
           className="tickerSettingForm"
@@ -116,9 +112,11 @@ const ScreatePropterties = () => {
         <Button className="finish" type="primary">
           전략 생성 및 백테스팅
         </Button>
-        <div className="targetSettingName flexRow">골든크로스 세부 셋팅</div>
+        <div className="targetSettingName flexRow">
+          {trading_strategy_name} 세부 셋팅
+        </div>
         <List>
-          {setting_json && JSON.stringify(setting_json, null, 2)}
+          {/* {setting_json && JSON.stringify(setting_json, null, 2)} */}
           {setting_json &&
             Object.keys(setting_json).map((keyTradingName) => {
               // keyTradingName = keyTradingName as keyof StrategyValue;

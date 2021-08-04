@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom, selector } from "recoil";
 import { CreateMyStrategyInput } from "states/interface/strategy/dtos";
 import { AddUniversalInput } from "states/interface/trading/dtos";
 import { IformStateBasicSetting } from "pages/makers/strategy-create/section/screate-basic";
@@ -25,5 +25,56 @@ export const atomStrategyState = atom<IStrategyState>({
         process.env.REACT_APP_DEFAULT_IMG ||
         "https://algoridang.s3.ap-northeast-2.amazonaws.com/common/1627272499339d_thumb03.jpeg",
     },
+    addUniversalInput: [],
+    formStateBasicSetting: {
+      invest_principal: 0,
+      invest_start_date: "",
+      open_yes_no: "public",
+      securities_corp_fee: 0,
+      strategy_explanation: "",
+      strategy_name: "",
+      invest_end_date: "",
+    },
+    // formStateTickerSelected: {},
+    formStateTradingSetting: {},
+  },
+});
+
+export const parseCreateMyStrategy = selector({
+  key: "parseCreateMyStrategy",
+  get: ({ get }) => {
+    const strategyState = get(atomStrategyState);
+
+    const newCreateMyStrategyInput =
+      strategyState.createMyStrategyInput as CreateMyStrategyInput;
+    const newAddUniversalInput = strategyState.addUniversalInput;
+
+    const addUniversalInput = strategyState.addUniversalInput;
+    const createMyStrategyInput = strategyState.createMyStrategyInput;
+
+    if (strategyState.formStateBasicSetting) {
+      const {
+        invest_principal,
+        invest_start_date,
+        open_yes_no,
+        securities_corp_fee,
+        strategy_explanation,
+        strategy_name,
+        invest_end_date,
+        tags,
+      } = strategyState.formStateBasicSetting;
+    }
+
+    if (
+      strategyState.formStateTickerSelected &&
+      strategyState.formStateTickerSelected.length >= 1
+    ) {
+      const { ticker } = strategyState.formStateTickerSelected[0];
+    }
+
+    return {
+      addUniversalInput,
+      createMyStrategyInput,
+    };
   },
 });

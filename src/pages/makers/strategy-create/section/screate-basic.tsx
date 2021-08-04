@@ -5,16 +5,16 @@ import { Button } from "antd-mobile";
 import { useRecoilState } from "recoil";
 import { atomStrategyState } from "states/recoil/strategy";
 
-export type IformStateBasicSetting = {
+export interface IformStateBasicSetting {
   strategy_name: string;
   strategy_explanation: string;
-  tags: string;
+  tags?: string;
   invest_principal: number;
   invest_start_date: string;
-  invest_end_date: string;
+  invest_end_date?: string;
   securities_corp_fee: number;
   open_yes_no: "public" | "private";
-};
+}
 
 const inputNameList = [
   "strategy_name",
