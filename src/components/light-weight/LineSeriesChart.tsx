@@ -1,6 +1,5 @@
 import React, { useLayoutEffect, useRef, useEffect, useCallback } from "react";
 import { createChart, IChartApi, ISeriesApi } from "lightweight-charts";
-import * as LightweightCharts from "lightweight-charts";
 
 export interface ILineData {
   time: string;
@@ -64,7 +63,7 @@ const LineSeriesChart: React.FC<ILineSeriesChart> = ({
   useLayoutEffect(() => {
     if (charContainer.current) {
       //   console.log("createChart elements");
-      const width = 600;
+      // const width = 600;
       // const height = 300;
       const chart = createChart(charContainer.current, {
         height: 500,
@@ -131,13 +130,10 @@ const LineSeriesChart: React.FC<ILineSeriesChart> = ({
   }, [datas]);
 
   return (
-    <div>
-      <h2>LineSeriesChart</h2>
-      <div
-        className="chartContainer"
-        ref={(node) => handleContainerRef(node)}
-      ></div>
-    </div>
+    <div
+      className="chartContainer"
+      ref={(node) => handleContainerRef(node)}
+    ></div>
   );
 };
 

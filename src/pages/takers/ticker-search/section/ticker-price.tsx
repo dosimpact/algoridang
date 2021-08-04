@@ -1,25 +1,43 @@
+import TickerSearch from "components/inputs/TickerSearch";
 import LineSeriesChart from "components/light-weight/LineSeriesChart";
-import React, { useMemo, useState, useCallback } from "react";
+import React, { useMemo, useState, useCallback, useEffect } from "react";
+import { useRecoilState } from "recoil";
 import useDailyStock from "states/react-query/finance/useDailyStock";
+import { atomCorporationStatus } from "states/recoil/corporation";
 import styled from "styled-components";
 
 const TickerPrice = () => {
-  const { dayilStocks } = useDailyStock("005930", 365, 0, "ASC");
+  const [corporation, setCorporation] = useRecoilState(atomCorporationStatus);
+  // const [corporation, setCorporation] = useState<{ticker:string}>("005930");
+  const { dayilStocks } = useDailyStock(corporation.ticker, 365, 0, "ASC");
   const [price, setPrice] = useState(0);
-  const datas = useMemo(
-    () =>
-      dayilStocks?.map((daily) => ({
-        time: daily.stock_date,
-        value: Number(daily.close_price),
-      })),
-    [dayilStocks]
-  );
+
+  const datas = useMemo(() => {
+    return dayilStocks?.map((daily) => ({
+      time: daily.stock_date,
+      value: Number(daily.close_price),
+    }));
+  }, [dayilStocks]);
+
+  useEffect(() => {
+    if (datas) setPrice(datas[datas.length - 1].value);
+    return () => {};
+  }, [datas]);
+
   return (
     <TickerPriceS>
-      <article className="searchBar">searchBar</article>
+      <TickerSearch
+        onSuccess={(e) => {
+          // console.log("TickerSearch sucess", e.corp_name, e.ticker);
+          if (e.corp_name && e.ticker) {
+            const { corp_name, ticker } = e;
+            setCorporation({ corp_name, ticker });
+          }
+        }}
+      />
       <article className="chartLegend">
-        <div>005930</div>
-        <div>{price}</div>
+        <div className="tickerName">{corporation.corp_name}</div>
+        <div className="tickerPrice">{price} 원</div>
       </article>
       <article className="chartBox">
         <LineSeriesChart
@@ -38,4 +56,16 @@ const TickerPrice = () => {
 
 export default TickerPrice;
 
-const TickerPriceS = styled.section``;
+const TickerPriceS = styled.section`
+  padding: 0rem 1.5rem;
+  .chartLegend {
+    padding: 0rem 1.5rem;
+    font-size: 3.5rem;
+    font-weight: 500;
+    .tickerName {
+    }
+    .tickerPrice {
+      margin-top: 0.5rem;
+    }
+  }
+`;
