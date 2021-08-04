@@ -6,7 +6,7 @@ interface ICorporation {
   corp_name: string;
 }
 
-export const atomCorporationStatus = atom<ICorporation>({
+export const atomCorporationState = atom<ICorporation>({
   key: "CorporationStatus",
   default: {
     ticker: "005930",

@@ -47,15 +47,17 @@ export interface GetMyStrategyByIdOutput extends CoreOutput {
 
 // (POST) createMyStrategy	(1) 전략 만들기
 export interface CreateMyStrategyInput {
-  tags?: string[]; //해쉬 태그들
   strategy_name: string;
-  invest_type?: InvestType;
   strategy_explanation: string;
+  tags?: string[]; //해쉬 태그들
+
+  invest_type?: InvestType; // 투자 유형
   operation_yes_no?: boolean; // 전략 탐색
-  alarm_setting: boolean;
-  open_yes_no?: boolean;
-  image_url?: string;
+  open_yes_no?: boolean; // 공개 범위
+
   investProfitInfo: CreateInvestProfitInfoInput;
+  image_url?: string;
+  alarm_setting?: boolean;
 }
 
 export interface CreateMyStrategyOutput extends CoreOutput {

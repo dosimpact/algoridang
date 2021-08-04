@@ -7,6 +7,7 @@ import {
 } from "./interface/finance/dtos";
 import { loginMemberInfoInput } from "./interface/member/dtos";
 import { CreateMyStrategyInput } from "./interface/strategy/dtos";
+import { AddUniversalInput } from "./interface/trading/dtos";
 
 // base setttings ,  interceptors
 
@@ -49,20 +50,24 @@ export const strategyApi = {
       return axios.get("strategy/type");
     },
     getStrategyById: (strategy_code: string) => {
-      return axios.get(`strategy/strategy/${strategy_code}`);
+      return axios.get(`strategy/${strategy_code}`);
     },
     getMyStrategyList: () => {
-      return axios.get("strategy/strategy/my");
+      return axios.get("strategy/my");
     },
     getMyStrategyById: (strategy_code: string) => {
-      return axios.get(`strategy/strategy/my/${strategy_code}`);
+      return axios.get(`strategy/my/${strategy_code}`);
     },
   },
   POST: {
     createMyStrategy: (body: CreateMyStrategyInput) => {
-      return axios.post(`strategy/strategy/my/`, body);
+      return axios.post(`strategy/my`, body);
+    },
+    addUniversal: (strategy_code: string, body: AddUniversalInput) => {
+      return axios.post(`strategy/my/${strategy_code}/universal`, body);
     },
   },
+  PUT: {},
   PATCH: {},
   DELETE: {},
 };

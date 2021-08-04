@@ -2,64 +2,67 @@ import React, { useMemo } from "react";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { Button } from "antd-mobile";
+import { useRecoilState } from "recoil";
+import { atomStrategyState } from "states/recoil/strategy";
 
-type IScreateBasicInput = {
-  name: string;
-  description: string;
+export type IformStateBasicSetting = {
+  strategy_name: string;
+  strategy_explanation: string;
   tags: string;
-  startMoney: number;
-  backtestFrom: string;
-  backtestTo: string;
-  fees: number;
-  openRange: "public" | "private";
+  invest_principal: number;
+  invest_start_date: string;
+  invest_end_date: string;
+  securities_corp_fee: number;
+  open_yes_no: "public" | "private";
 };
 
 const inputNameList = [
-  "name",
-  "description",
+  "strategy_name",
+  "strategy_explanation",
   "tags",
-  "startMoney",
-  "backtestFrom",
-  "backtestTo",
-  "fees",
-  "openRange",
+  "invest_principal",
+  "invest_start_date",
+  "invest_end_date",
+  "securities_corp_fee",
+  "open_yes_no",
 ];
 
 const mapNameToDetail = {
-  name: "전략 이름",
-  description: "전략 설명",
+  strategy_name: "전략 이름",
+  strategy_explanation: "전략 설명",
   tags: "전략 테그",
-  startMoney: "운용 자금",
-  backtestFrom: "백테스트 시작",
-  backtestTo: "백테스트 종료",
-  fees: "수수료",
-  openRange: "공개범위",
+  invest_principal: "운용 자금",
+  invest_start_date: "백테스트 시작",
+  invest_end_date: "백테스트 종료",
+  securities_corp_fee: "수수료",
+  open_yes_no: "공개범위",
 } as Record<string, string>;
 
 const mapNameToPlaceholder = {
-  name: "전략 이름",
-  description: "전략 설명",
+  strategy_name: "전략 이름",
+  strategy_explanation: "전략 설명",
   tags: "전략 테그",
-  startMoney: "운용 자금",
-  backtestFrom: "백테스트 시작",
-  backtestTo: "백테스트 종료",
-  fees: "수수료",
-  openRange: "공개범위",
+  invest_principal: "운용 자금",
+  invest_start_date: "백테스트 시작",
+  invest_end_date: "백테스트 종료",
+  securities_corp_fee: "수수료",
+  open_yes_no: "공개범위",
 } as Record<string, string>;
 
 const mapNameToRemark = {
-  name: "",
-  description: "",
+  strategy_name: "",
+  strategy_explanation: "",
   tags: "",
-  startMoney: "만원",
-  backtestFrom: "년",
-  backtestTo: "%",
-  fees: "",
-  openRange: "",
+  invest_principal: "만원",
+  invest_start_date: "년",
+  invest_end_date: "%",
+  securities_corp_fee: "",
+  open_yes_no: "",
 } as Record<string, string>;
 
 const ScreateBasic = () => {
-  const { register, handleSubmit } = useForm<IScreateBasicInput>();
+  const { register, handleSubmit } = useForm<IformStateBasicSetting>();
+  const [strategyState, setStrategyState] = useRecoilState(atomStrategyState);
 
   const inputNameListM = useMemo<string[]>(() => inputNameList, []);
 
@@ -70,6 +73,11 @@ const ScreateBasic = () => {
         style={{ display: "flex", flexFlow: "column nowrap" }}
         onSubmit={handleSubmit((data) => {
           console.log(data);
+          setStrategyState((prev) => ({
+            ...prev,
+            formStateBasicSetting: data,
+          }));
+          console.log(strategyState);
         })}
       >
         <div className="inputRow inputRowHeader">
@@ -78,7 +86,7 @@ const ScreateBasic = () => {
           <div className="col remark">단위</div>
         </div>
         {inputNameListM
-          .filter((name) => name !== "openRange")
+          .filter((name) => name !== "open_yes_no")
           .map((name, key) => {
             return (
               <div className="inputRow" key={key}>
@@ -87,7 +95,7 @@ const ScreateBasic = () => {
                   <input
                     type="text"
                     placeholder={mapNameToPlaceholder[name]}
-                    {...register(name as keyof IScreateBasicInput, {
+                    {...register(name as keyof IformStateBasicSetting, {
                       // required: true,
                     })}
                   ></input>
@@ -97,9 +105,9 @@ const ScreateBasic = () => {
             );
           })}
         <div className="inputRow">
-          <div className="col detail">{mapNameToDetail["openRange"]}</div>
+          <div className="col detail">{mapNameToDetail["open_yes_no"]}</div>
           <div className="col inputField">
-            <select {...register("openRange")}>
+            <select {...register("open_yes_no")}>
               {["public", "private"].map((value) => (
                 <option key={value} value={value}>
                   {value}
@@ -107,7 +115,7 @@ const ScreateBasic = () => {
               ))}
             </select>
           </div>
-          <div className="col remark">{mapNameToRemark["openRange"]}</div>
+          <div className="col remark">{mapNameToRemark["open_yes_no"]}</div>
         </div>
         <Button
           type="primary"
