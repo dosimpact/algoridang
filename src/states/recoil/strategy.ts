@@ -9,7 +9,7 @@ interface IStrategyState {
   addUniversalInput?: AddUniversalInput[];
   formStateBasicSetting?: IformStateBasicSetting; //  1
   formStateTickerSelected?: Corporation[]; // 2
-  formStateTradingSetting?: any; // 3
+  formStateTradingSetting?: Object; // 3
 }
 
 export const atomStrategyState = atom<IStrategyState>({
