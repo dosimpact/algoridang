@@ -22,7 +22,7 @@ export class BacktestQueue {
 
   @IsString()
   @Column({ type: 'varchar', length: 15 })
-  word_info: string;
+  work_info: string;
 
   // (1) 백테스트 큐에 연동된 투자 전략
   @Column()
