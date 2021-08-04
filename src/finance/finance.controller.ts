@@ -32,14 +32,16 @@ export class FinanceController {
     return this.financeService.getCorporationsWithTerm({ term });
   }
 
+  // refactor 필요한가?
   // (3) 기업 리스트 출력 (검색어 기능 )
   @Version('1')
-  @Get('corporations/:term')
+  @Get('corporation/:term')
   async getCorporation(@Param('term') term: string) {
     return this.financeService.getCorporation({ term });
   }
 
   // daily-stock --- api
+  // (4) 일간 가격 데이터 출력
   @Version('1')
   @Get('dailystocks/:term')
   async getDailyStocks(

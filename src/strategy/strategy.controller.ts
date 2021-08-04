@@ -5,6 +5,7 @@ import {
   Param,
   Post,
   UseInterceptors,
+  Version,
 } from '@nestjs/common';
 import { StrategyService } from './strategy.service';
 import { AuthUser, Roles } from 'src/auth/auth.decorator';
@@ -17,28 +18,28 @@ import { MemberInfo } from 'src/member/entities';
 export class StrategyQueryController {
   constructor(private readonly strategyService: StrategyService) {}
   // (GET) getStrategyListNew	(1) 신규 투자 전략 API
-  @Get('getStrategyListNew')
+  @Version('1')
+  @Get('new')
   async getStrategyListNew() {
     return this.strategyService.getStrategyListNew({});
   }
   // (GET) getStrategyListHighView (2) 조회수 높은 투자 전략 API
-  @Get('getStrategyListHighView')
+  @Version('1')
+  @Get('high_view')
   async getStrategyListHighView() {
     return this.strategyService.getStrategyListHighView({});
   }
   // (GET) getStrategyListType(3) 위험추구/중립형/수익안정형 API
-  @Get('getStrategyListType')
+  @Version('1')
+  @Get('type')
   async getStrategyListType() {
     return this.strategyService.getStrategyListType({});
   }
-  // (GET) getStrategyById	(4)특정 Id로 전략 조회
-  @Get('getStrategyById/:strategy_code')
-  async getStrategyById(@Param('strategy_code') strategy_code) {
-    return this.strategyService.getStrategyById({ strategy_code });
-  }
-  // (GET) getMyStrategyListById(5) 나의 전략 조회(리스트)
+
+  // (GET) getMyStrategyListById (5) 나의 전략 조회(리스트)
   @Roles(['Any'])
-  @Get('getMyStrategyList')
+  @Version('1')
+  @Get('my')
   async getMyStrategyList(@AuthUser() MemberInfo) {
     return this.strategyService.getMyStrategyList({
       email_id: MemberInfo.email_id,
@@ -46,7 +47,8 @@ export class StrategyQueryController {
   }
   // (GET) getMyStrategyById(6) 나의 전략 조회
   @Roles(['Any'])
-  @Get('getMyStrategyById/:strategy_code')
+  @Version('1')
+  @Get('my/:strategy_code')
   async getMyStrategyById(
     @AuthUser() MemberInfo,
     @Param('strategy_code') strategy_code,
@@ -56,15 +58,23 @@ export class StrategyQueryController {
       email_id: MemberInfo.email_id,
     });
   }
+
+  // (GET) getStrategyById	(4)특정 Id로 전략 조회
+  @Version('1')
+  @Get(':strategy_code')
+  async getStrategyById(@Param('strategy_code') strategy_code) {
+    return this.strategyService.getStrategyById({ strategy_code });
+  }
 }
 
 @Controller('/api/strategy/')
 export class StrategyMutationController {
   constructor(private readonly strategyService: StrategyService) {}
 
-  // (POST) createMyStrategy	(1) 전략 만들기
+  // (POST) createMyStrategy	(1) 나의 전략 만들기
   @Roles(['Any'])
-  @Post('createMyStrategy')
+  @Version('1')
+  @Post('my')
   async createMyStrategy(
     @AuthUser() member: MemberInfo,
     @Body() createMyStrategy: CreateMyStrategyInput,
