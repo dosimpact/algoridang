@@ -1,6 +1,6 @@
 import TickerSearch from "components/inputs/TickerSearch";
 import LineSeriesChart from "components/light-weight/LineSeriesChart";
-import React, { useMemo, useState, useCallback } from "react";
+import React, { useMemo, useState, useCallback, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import useDailyStock from "states/react-query/finance/useDailyStock";
 import { atomCorporationStatus } from "states/recoil/corporation";
@@ -11,14 +11,19 @@ const TickerPrice = () => {
   // const [corporation, setCorporation] = useState<{ticker:string}>("005930");
   const { dayilStocks } = useDailyStock(corporation.ticker, 365, 0, "ASC");
   const [price, setPrice] = useState(0);
-  const datas = useMemo(
-    () =>
-      dayilStocks?.map((daily) => ({
-        time: daily.stock_date,
-        value: Number(daily.close_price),
-      })),
-    [dayilStocks]
-  );
+
+  const datas = useMemo(() => {
+    return dayilStocks?.map((daily) => ({
+      time: daily.stock_date,
+      value: Number(daily.close_price),
+    }));
+  }, [dayilStocks]);
+
+  useEffect(() => {
+    if (datas) setPrice(datas[datas.length - 1].value);
+    return () => {};
+  }, [datas]);
+
   return (
     <TickerPriceS>
       <TickerSearch
