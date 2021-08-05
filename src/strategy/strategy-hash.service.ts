@@ -72,7 +72,7 @@ export class StrategyHashService {
     }
   }
   // 해쉬 태그 매핑 테이블 생성
-  async __upsertHashList(tagIdList: number[], strategy_code: number) {
+  async __upsertHashList(tagIdList: number[], strategy_code: string) {
     return await Promise.all(
       tagIdList.map(async (tagId) => {
         if (tagId === -1) return;

@@ -62,9 +62,9 @@ export type MemberStrategyFullRelation = Array<
 
 @Entity({ name: 'member_strategy' })
 export class MemberStrategy {
-  @IsNumber()
+  @IsString()
   @PrimaryGeneratedColumn({ type: 'bigint' })
-  strategy_code: number;
+  strategy_code: string;
 
   @IsString()
   @Column({ type: 'varchar', length: 30 })

@@ -59,9 +59,9 @@ export class Universal {
 
   // 1:N
   // (1) 유니버셜 튜블은 1개의 전략을 부모로 가진다.
-  @IsNumber()
+  @IsString()
   @Column()
-  strategy_code: number;
+  strategy_code: string;
   @ManyToOne(() => MemberStrategy, (st) => st.universal)
   @JoinColumn({ name: 'strategy_code' })
   memberStrategy: MemberStrategy;

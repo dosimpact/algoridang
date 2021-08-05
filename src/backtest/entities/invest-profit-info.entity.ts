@@ -54,7 +54,7 @@ export class InvestProfitInfo {
   // 1:N
   // (1) 대상 전략의 수익
   @Column()
-  strategy_code: number;
+  strategy_code: string;
 
   @OneToOne(() => MemberStrategy, (ms) => ms.investProfitInfo, {
     onDelete: 'CASCADE',

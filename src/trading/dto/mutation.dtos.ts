@@ -1,5 +1,5 @@
 import { PickType } from '@nestjs/mapped-types';
-import { IsEnum, IsNumber, IsObject } from 'class-validator';
+import { IsEnum, IsNumber, IsObject, IsString } from 'class-validator';
 import { CoreOutput } from 'src/common/dtos/output.dto';
 import { SettingJSON, StrategyName } from '../constant/strategy-setting';
 import { Universal } from '../entities';
@@ -18,8 +18,8 @@ export class AddUniversalOnlyOutput extends CoreOutput {
 
 // server only
 export class UpsertTradingStrategyInput {
-  @IsNumber()
-  strategy_code: number;
+  @IsString()
+  strategy_code: string;
   @IsNumber()
   universal_code: number;
 
@@ -37,8 +37,8 @@ export class UpsertTradingStrategyOutput extends CoreOutput {
 
 //
 export class AddUniversalInput extends AddUniversalOnlyInput {
-  @IsNumber()
-  strategy_code: number;
+  @IsString()
+  strategy_code: string;
 
   @IsEnum(StrategyName)
   trading_strategy_name: StrategyName;
