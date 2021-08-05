@@ -15,7 +15,7 @@ export interface MemberInfo {
 }
 
 export interface LookupMemberList {
-  strategy_code: number;
+  strategy_code: string;
   strategy: MemberStrategy;
   lookup_customer_id: string;
   lookup_customer: MemberInfo;
@@ -25,7 +25,7 @@ export interface LookupMemberList {
 // 전략은 origin과 fork 전략이 같은 table에 공존하고 있음
 // 특정 전략을 fork 하면, fork한 사람들을 매핑해주는 매핑 테이블을 만든다.
 export interface OperationMemberList {
-  strategy_code: number;
+  strategy_code: string;
   strategy: MemberStrategy;
   operation_customer_id: string;
   operation_customer: MemberInfo;

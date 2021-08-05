@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { Button, List, Radio } from "antd-mobile";
 import useTrading from "states/react-query/useTrading";
-import { StrategyValue } from "states/interface/trading/entities";
+import { StrategyName, StrategyValue } from "states/interface/trading/entities";
 import { useRecoilState, useRecoilValue } from "recoil";
 import {
   atomStrategyState,
@@ -41,7 +41,7 @@ const ScreatePropterties = () => {
 
   const [selectedNum, setSelectedNum] = useState<number>(0);
   // 전략 프로퍼티
-  const [inputs, setInputs] = useState<Record<string, string>>();
+  const [inputs, setInputs] = useState<Record<string, number>>();
 
   const setting_json = useMemo(() => {
     return (
@@ -61,7 +61,7 @@ const ScreatePropterties = () => {
     const { value, name } = e.target;
     setInputs({
       ...inputs,
-      [name]: value,
+      [name]: Number(value),
     });
     setStrategyState((prev) => ({
       ...prev,
@@ -74,18 +74,51 @@ const ScreatePropterties = () => {
     useCreateStrategy();
   // const parsedCreateMyStrategy = useRecoilValue(parseCreateMyStrategy);
   const handleFinalSubmit = async () => {
+    const createMyStrategyMutationRes =
+      await createMyStrategyMutation.mutateAsync(
+        strategyState.createMyStrategyInput
+      );
+    console.log(createMyStrategyMutation.error);
+    console.log(createMyStrategyMutation.error?.message);
+    console.log("createMyStrategyMutationRes", createMyStrategyMutationRes);
+
+    const strategy_code =
+      createMyStrategyMutationRes.data.memberStrategy?.strategy_code;
+    console.log("strategy_code", strategy_code);
+
     // console.log("parsedCreateMyStrategy", parsedCreateMyStrategy);
-    // const crops = strategyState.formStateTickerSelected;
-    // const addUniversalInput = [] as Partial<AddUniversalInput>[];
-    // // addUniversalInput 파싱
-    // addUniversalInput.push({
-    //   ticker: crops && crops[0] && crops[0]?.ticker,
-    //   setting_json: strategyState.formStateTradingSetting,
-    // });
-    // return {
-    //   addUniversalInput: addUniversalInput,
-    //   createMyStrategyInput: strategyState.createMyStrategyInput,
-    // };
+    const crops = strategyState.formStateTickerSelected;
+    const addUniversalInput = [] as Partial<AddUniversalInput>[];
+    // addUniversalInput 파싱
+    addUniversalInput.push({
+      ticker: crops && crops[0] && crops[0]?.ticker,
+      trading_strategy_name: Object.keys(
+        strategyState.formStateTradingSetting || { None: "" }
+      )[0] as StrategyName,
+      start_date:
+        createMyStrategyMutationRes.data.memberStrategy?.investProfitInfo
+          .invest_start_date,
+      end_date:
+        createMyStrategyMutationRes.data.memberStrategy?.investProfitInfo
+          .invest_end_date,
+      setting_json: strategyState.formStateTradingSetting,
+      strategy_code,
+    });
+    console.log("addUniversalInput", addUniversalInput);
+
+    if (strategy_code) {
+      const addUniversalMutationRes = await addUniversalMutation.mutateAsync({
+        body: addUniversalInput[0] as AddUniversalInput,
+        strategy_code: String(strategy_code),
+      });
+      console.log("addUniversalMutationRes", addUniversalMutationRes);
+    }
+
+    return {
+      addUniversalInput: addUniversalInput,
+      createMyStrategyInput: strategyState.createMyStrategyInput,
+    };
+
     // let res = await testMutation.mutateAsync({ name: "dodo1" });
     // console.log(res);
     // res = await testMutation.mutateAsync({ name: "dodo2" });

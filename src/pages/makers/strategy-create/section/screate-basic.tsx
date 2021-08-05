@@ -30,10 +30,15 @@ const ScreateBasic = () => {
         style={{ display: "flex", flexFlow: "column nowrap" }}
         onSubmit={handleSubmit((data) => {
           console.log("basicSettingForm", data);
+
           const tags = data?.tags?.split(" ");
+          const open_yes_no = data.open_yes_no === "private" ? false : true;
+
           const createMyStrategyInput =
             data as unknown as CreateMyStrategyInput;
+
           createMyStrategyInput.tags = tags;
+          createMyStrategyInput.open_yes_no = open_yes_no;
           setStrategyState((prev) => {
             return {
               ...prev,
@@ -90,11 +95,8 @@ const ScreateBasic = () => {
           <div className="col detail">공개범위</div>
           <div className="col inputField">
             <select {...register("open_yes_no")}>
-              {["public", "private"].map((value) => (
-                <option key={value} value={value}>
-                  {value}
-                </option>
-              ))}
+              <option value={"false"}>public</option>
+              <option value={"true"}>private</option>
             </select>
           </div>
         </div>
@@ -133,6 +135,7 @@ const ScreateBasic = () => {
               placeholder={"Ex) 10000000"}
               {...register("investProfitInfo.invest_principal", {
                 // required: true,
+                valueAsNumber: true,
               })}
             ></input>
           </div>
@@ -146,6 +149,7 @@ const ScreateBasic = () => {
               placeholder={"Ex) 0.1"}
               {...register("investProfitInfo.securities_corp_fee", {
                 // required: true,
+                valueAsNumber: true,
               })}
             ></input>
           </div>

@@ -21,7 +21,7 @@ export interface GetStrategyListTypeOutput extends CoreOutput {
 
 // (GET) getStrategyById	(4)특정 Id로 전략 조회
 export interface GetStrategyByIdInput {
-  strategy_code: number;
+  strategy_code: string;
 }
 export interface GetStrategyByIdOutput extends CoreOutput {
   memberStrategy?: MemberStrategy;
@@ -37,7 +37,7 @@ export interface GetMyStrategyListOutput extends CoreOutput {
 // (GET) getMyStrategyById(6) 나의 전략 조회
 export interface GetMyStrategyByIdInput {
   email_id: string;
-  strategy_code: number;
+  strategy_code: string;
 }
 export interface GetMyStrategyByIdOutput extends CoreOutput {
   memberStrategyList?: MemberStrategy[];

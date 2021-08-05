@@ -22,7 +22,7 @@ export enum InvestType {
 }
 
 export interface MemberStrategy {
-  strategy_code: number;
+  strategy_code: string;
   strategy_name: string;
   invest_type: InvestType;
   strategy_explanation: string;
@@ -73,7 +73,7 @@ export interface MemberStrategy {
 
 // NM : 전략 - 해쉬 매핑 테이블
 export interface HashList {
-  strategy_code: number;
+  strategy_code: string;
 
   strategy: MemberStrategy;
 
@@ -92,12 +92,12 @@ export interface Hash {
 // (1) 어떤 전략 (2) 어떤 종목에 (3) 어떤 매매전략을 적용
 export interface StockList {
   //(1) 어떤 전략
-  strategy_code: number;
+  strategy_code: string;
   strategy: MemberStrategy;
   //(2) 어떤 종목에
   ticker: string;
   corporation: Corporation;
   //(3) 어떤 매매전략을 적용
-  trading_strategy_code: number;
+  trading_strategy_code: string;
   trading_strategy: CustomTradingStrategy;
 }

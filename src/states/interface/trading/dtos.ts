@@ -8,7 +8,7 @@ import {
 
 // query DTOs
 export interface getBaseTradingStrategyInput {
-  trading_strategy_code: number;
+  trading_strategy_code: string;
 }
 export interface getBaseTradingStrategyOutput extends CoreOutput {
   baseTradingStrategy?: BaseTradingStrategy;
@@ -22,7 +22,7 @@ export interface getBaseTradingStrategyListOutput extends CoreOutput {
 // mutation DTOs
 
 export interface AddUniversalOnlyInput {
-  strategy_code: number;
+  strategy_code: string;
   ticker: string;
   start_date: Date;
   end_date: Date;
@@ -34,7 +34,7 @@ export interface AddUniversalOnlyOutput extends CoreOutput {
 }
 
 export interface AddUniversalInput extends AddUniversalOnlyInput {
-  strategy_code: number;
+  strategy_code: string;
   trading_strategy_name: StrategyName;
   setting_json: SettingJSON;
 }

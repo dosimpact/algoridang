@@ -52,7 +52,7 @@ const StrategyTypes = () => {
             subTitle={toTagsString(
               data.hashList?.map((e) => e?.hash?.hash_contents)
             )}
-            CAGR={data.strategy_code}
+            CAGR={Number(data.strategy_code)}
             thumnail={data.image_url}
             onClick={(e) => {
               history.push("/takers/strategy-search/details/1");
@@ -70,7 +70,7 @@ const StrategyTypes = () => {
             subTitle={toTagsString(
               data.hashList?.map((e) => e?.hash?.hash_contents)
             )}
-            CAGR={data.strategy_code}
+            CAGR={Number(data.strategy_code)}
             thumnail={data.image_url}
             onClick={(e) => {
               history.push("/takers/strategy-search/details/1");
@@ -87,7 +87,7 @@ const StrategyTypes = () => {
             subTitle={toTagsString(
               data.hashList?.map((e) => e?.hash?.hash_contents)
             )}
-            CAGR={data.strategy_code}
+            CAGR={Number(data.strategy_code)}
             thumnail={data.image_url}
             onClick={(e) => {
               history.push("/takers/strategy-search/details/1");

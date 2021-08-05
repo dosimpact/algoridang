@@ -2,13 +2,13 @@ import { Corporation } from "../finance/entities";
 import { MemberStrategy, StockList } from "../strategy/entities";
 
 export interface BaseTradingStrategy {
-  trading_strategy_code: number;
+  trading_strategy_code: string;
   trading_strategy_name: StrategyName;
   setting_json: SettingJSON;
 }
 
 export interface CustomTradingStrategy {
-  trading_strategy_code: number;
+  trading_strategy_code: string;
   trading_strategy_name: StrategyName;
   setting_json: SettingJSON;
 
@@ -64,7 +64,7 @@ export interface Universal {
 
   // todo:refator - 언제 eager인지 아닌지...
   simpleBacktest?: SimpleBacktest;
-  strategy_code: number;
+  strategy_code: string;
   memberStrategy?: MemberStrategy;
   ticker: string;
   corporation?: Corporation;

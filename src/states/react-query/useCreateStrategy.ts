@@ -30,6 +30,7 @@ const useCreateStrategy = () => {
   const testMutation = useMutation<AxiosResponse, AxiosError, Object>((data) =>
     strategyApi.POST.test(data)
   );
+  console.log(createMyStrategyMutation.error);
 
   return {
     createMyStrategyMutation,
