@@ -18,6 +18,7 @@ import {
 } from './backtest.controller';
 import * as redisStore from 'cache-manager-redis-store';
 import { ConfigModule } from '@nestjs/config';
+import { FlaskService } from './flask.service';
 
 @Module({
   imports: [
@@ -43,6 +44,6 @@ import { ConfigModule } from '@nestjs/config';
     }),
   ],
   controllers: [BacktestQueryController, BacktestMutationController],
-  providers: [BacktestService, BacktestResolver],
+  providers: [BacktestService, BacktestResolver, FlaskService],
 })
 export class BacktestModule {}
