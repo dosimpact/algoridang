@@ -10,6 +10,7 @@ import {
   parseCreateMyStrategy,
 } from "states/recoil/strategy";
 import { AddUniversalInput } from "states/interface/trading/dtos";
+import useCreateStrategy from "states/react-query/useCreateStrategy";
 
 const RadioItem = Radio.RadioItem;
 
@@ -69,23 +70,32 @@ const ScreatePropterties = () => {
       },
     }));
   };
-
+  const { createMyStrategyMutation, addUniversalMutation, testMutation } =
+    useCreateStrategy();
   // const parsedCreateMyStrategy = useRecoilValue(parseCreateMyStrategy);
   const handleFinalSubmit = async () => {
     // console.log("parsedCreateMyStrategy", parsedCreateMyStrategy);
-
-    const crops = strategyState.formStateTickerSelected;
-
-    const addUniversalInput = [] as Partial<AddUniversalInput>[];
-    // addUniversalInput 파싱
-    addUniversalInput.push({
-      ticker: crops && crops[0] && crops[0]?.ticker,
-      setting_json: strategyState.formStateTradingSetting,
-    });
-    return {
-      addUniversalInput: addUniversalInput,
-      createMyStrategyInput: strategyState.createMyStrategyInput,
-    };
+    // const crops = strategyState.formStateTickerSelected;
+    // const addUniversalInput = [] as Partial<AddUniversalInput>[];
+    // // addUniversalInput 파싱
+    // addUniversalInput.push({
+    //   ticker: crops && crops[0] && crops[0]?.ticker,
+    //   setting_json: strategyState.formStateTradingSetting,
+    // });
+    // return {
+    //   addUniversalInput: addUniversalInput,
+    //   createMyStrategyInput: strategyState.createMyStrategyInput,
+    // };
+    // let res = await testMutation.mutateAsync({ name: "dodo1" });
+    // console.log(res);
+    // res = await testMutation.mutateAsync({ name: "dodo2" });
+    // console.log(res);
+    // res = await testMutation.mutateAsync({ name: "dodo3" });
+    // console.log(res);
+    // res = await testMutation.mutateAsync({ name: "dodo4" });
+    // console.log(res);
+    // res = await testMutation.mutateAsync({ name: "dodo5" });
+    // console.log(res);
   };
 
   return (

@@ -66,6 +66,7 @@ export const strategyApi = {
     addUniversal: (strategy_code: string, body: AddUniversalInput) => {
       return axios.post(`strategy/my/${strategy_code}/universal`, body);
     },
+    test: (data: any) => axios.post(``, data),
   },
   PUT: {},
   PATCH: {},
