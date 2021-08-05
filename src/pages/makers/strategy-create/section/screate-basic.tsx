@@ -1,67 +1,27 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { Button } from "antd-mobile";
+import { useRecoilState } from "recoil";
+import { atomStrategyState } from "states/recoil/strategy";
+import { CreateMyStrategyInput } from "states/interface/strategy/dtos";
 
-type IScreateBasicInput = {
-  name: string;
-  description: string;
-  tags: string;
-  startMoney: number;
-  backtestFrom: string;
-  backtestTo: string;
-  fees: number;
-  openRange: "public" | "private";
-};
+// 폼 인터페이스
+export interface IformStateBasicSetting {
+  strategy_name: string;
+  strategy_explanation: string;
+  tags?: string;
+  open_yes_no: "public" | "private";
 
-const inputNameList = [
-  "name",
-  "description",
-  "tags",
-  "startMoney",
-  "backtestFrom",
-  "backtestTo",
-  "fees",
-  "openRange",
-];
+  "investProfitInfo.invest_principal": number;
+  "investProfitInfo.invest_start_date": string;
+  "investProfitInfo.invest_end_date"?: string;
+  "investProfitInfo.securities_corp_fee": number;
+}
 
-const mapNameToDetail = {
-  name: "전략 이름",
-  description: "전략 설명",
-  tags: "전략 테그",
-  startMoney: "운용 자금",
-  backtestFrom: "백테스트 시작",
-  backtestTo: "백테스트 종료",
-  fees: "수수료",
-  openRange: "공개범위",
-} as Record<string, string>;
-
-const mapNameToPlaceholder = {
-  name: "전략 이름",
-  description: "전략 설명",
-  tags: "전략 테그",
-  startMoney: "운용 자금",
-  backtestFrom: "백테스트 시작",
-  backtestTo: "백테스트 종료",
-  fees: "수수료",
-  openRange: "공개범위",
-} as Record<string, string>;
-
-const mapNameToRemark = {
-  name: "",
-  description: "",
-  tags: "",
-  startMoney: "만원",
-  backtestFrom: "년",
-  backtestTo: "%",
-  fees: "",
-  openRange: "",
-} as Record<string, string>;
-
+// todo:refactor : 유효성 검사
 const ScreateBasic = () => {
-  const { register, handleSubmit } = useForm<IScreateBasicInput>();
-
-  const inputNameListM = useMemo<string[]>(() => inputNameList, []);
+  const { register, handleSubmit } = useForm<IformStateBasicSetting>();
+  const [_, setStrategyState] = useRecoilState(atomStrategyState);
 
   return (
     <SScreateBasic>
@@ -69,54 +29,133 @@ const ScreateBasic = () => {
         className="basicSettingForm"
         style={{ display: "flex", flexFlow: "column nowrap" }}
         onSubmit={handleSubmit((data) => {
-          console.log(data);
+          console.log("basicSettingForm", data);
+
+          const tags = data?.tags?.split(" ");
+          const open_yes_no = data.open_yes_no === "private" ? false : true;
+
+          const createMyStrategyInput =
+            data as unknown as CreateMyStrategyInput;
+
+          createMyStrategyInput.tags = tags;
+          createMyStrategyInput.open_yes_no = open_yes_no;
+          setStrategyState((prev) => {
+            return {
+              ...prev,
+              createMyStrategyInput,
+            };
+          });
         })}
       >
         <div className="inputRow inputRowHeader">
           <div className="col detail">항목</div>
           <div className="col inputField">입력</div>
-          <div className="col remark">단위</div>
         </div>
-        {inputNameListM
-          .filter((name) => name !== "openRange")
-          .map((name, key) => {
-            return (
-              <div className="inputRow" key={key}>
-                <div className="col detail">{mapNameToDetail[name]}</div>
-                <div className="col inputField">
-                  <input
-                    type="text"
-                    placeholder={mapNameToPlaceholder[name]}
-                    {...register(name as keyof IScreateBasicInput, {
-                      // required: true,
-                    })}
-                  ></input>
-                </div>
-                <div className="col remark">{mapNameToRemark[name]}</div>
-              </div>
-            );
-          })}
+        {/* 1. */}
         <div className="inputRow">
-          <div className="col detail">{mapNameToDetail["openRange"]}</div>
+          <div className="col detail">전략 이름</div>
           <div className="col inputField">
-            <select {...register("openRange")}>
-              {["public", "private"].map((value) => (
-                <option key={value} value={value}>
-                  {value}
-                </option>
-              ))}
+            <input
+              type="text"
+              placeholder={"전략 이름"}
+              {...register("strategy_name", {
+                // required: true,
+              })}
+            ></input>
+          </div>
+        </div>
+
+        <div className="inputRow">
+          <div className="col detail">전략 설명</div>
+          <div className="col inputField">
+            <input
+              type="text"
+              placeholder={"전략 설명"}
+              {...register("strategy_explanation", {
+                // required: true,
+              })}
+            ></input>
+          </div>
+        </div>
+
+        <div className="inputRow">
+          <div className="col detail">Tags(공백 구분)</div>
+          <div className="col inputField">
+            <input
+              type="text"
+              placeholder={"태그 입력"}
+              {...register("tags", {
+                // required: true,
+              })}
+            ></input>
+          </div>
+        </div>
+
+        <div className="inputRow">
+          <div className="col detail">공개범위</div>
+          <div className="col inputField">
+            <select {...register("open_yes_no")}>
+              <option value={"false"}>public</option>
+              <option value={"true"}>private</option>
             </select>
           </div>
-          <div className="col remark">{mapNameToRemark["openRange"]}</div>
         </div>
-        <Button
-          type="primary"
-          onClick={handleSubmit((data) => {
-            console.log(data);
-          })}
-        >
-          완료
-        </Button>
+
+        <div className="inputRow">
+          <div className="col detail">백테스트 시작</div>
+          <div className="col inputField">
+            <input
+              type="date"
+              placeholder={"태그 입력"}
+              {...register("investProfitInfo.invest_start_date", {
+                required: true,
+              })}
+            ></input>
+          </div>
+        </div>
+
+        <div className="inputRow">
+          <div className="col detail">백테스트 종료</div>
+          <div className="col inputField">
+            <input
+              type="date"
+              placeholder={"태그 입력"}
+              {...register("investProfitInfo.invest_end_date", {
+                // required: true,
+              })}
+            ></input>
+          </div>
+        </div>
+
+        <div className="inputRow">
+          <div className="col detail">운용 자금 (원)</div>
+          <div className="col inputField">
+            <input
+              type="text"
+              placeholder={"Ex) 10000000"}
+              {...register("investProfitInfo.invest_principal", {
+                // required: true,
+                valueAsNumber: true,
+              })}
+            ></input>
+          </div>
+        </div>
+
+        <div className="inputRow">
+          <div className="col detail">수수료 (%)</div>
+          <div className="col inputField">
+            <input
+              type="text"
+              placeholder={"Ex) 0.1"}
+              {...register("investProfitInfo.securities_corp_fee", {
+                // required: true,
+                valueAsNumber: true,
+              })}
+            ></input>
+          </div>
+        </div>
+
+        <button type="submit">완료</button>
       </form>
     </SScreateBasic>
   );
@@ -145,7 +184,7 @@ const SScreateBasic = styled.div`
       height: 5rem;
       width: 100%;
       display: grid;
-      grid-template-columns: 1fr 1fr 0.3fr;
+      grid-template-columns: 1fr 1fr;
       padding: 0.5rem 0rem;
       justify-items: center;
       align-items: center;
@@ -161,8 +200,6 @@ const SScreateBasic = styled.div`
         }
         .inputField {
           width: 100%;
-        }
-        .remark {
         }
       }
     }

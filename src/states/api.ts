@@ -6,6 +6,8 @@ import {
   GetDayilStocksInput,
 } from "./interface/finance/dtos";
 import { loginMemberInfoInput } from "./interface/member/dtos";
+import { CreateMyStrategyInput } from "./interface/strategy/dtos";
+import { AddUniversalInput } from "./interface/trading/dtos";
 
 // base setttings ,  interceptors
 
@@ -39,25 +41,34 @@ export const memberApi = {
 export const strategyApi = {
   GET: {
     getStrategyListNew: () => {
-      return axios.get("strategy/getStrategyListNew");
+      return axios.get("strategy/new");
     },
     getStrategyListHighView: () => {
-      return axios.get("strategy/getStrategyListHighView");
+      return axios.get("strategy/high_view");
     },
     getStrategyListType: () => {
-      return axios.get("strategy/getStrategyListType");
+      return axios.get("strategy/type");
     },
     getStrategyById: (strategy_code: string) => {
-      return axios.get(`strategy/getStrategyById/${strategy_code}`);
+      return axios.get(`strategy/${strategy_code}`);
     },
     getMyStrategyList: () => {
-      return axios.get("strategy/getMyStrategyList");
+      return axios.get("strategy/my");
     },
     getMyStrategyById: (strategy_code: string) => {
-      return axios.get(`strategy/getMyStrategyById/${strategy_code}`);
+      return axios.get(`strategy/my/${strategy_code}`);
     },
   },
-  POST: {},
+  POST: {
+    createMyStrategy: (body: CreateMyStrategyInput) => {
+      return axios.post(`strategy/my`, body);
+    },
+    addUniversal: (strategy_code: string, body: AddUniversalInput) => {
+      return axios.post(`strategy/my/${strategy_code}/universal`, body);
+    },
+    test: (data: any) => axios.post(``, data),
+  },
+  PUT: {},
   PATCH: {},
   DELETE: {},
 };
@@ -80,6 +91,18 @@ export const financeApi = {
         },
       });
     },
+  },
+  POST: {},
+  PATCH: {},
+  DELETE: {},
+};
+
+// (4) trading api
+
+export const tradingApi = {
+  GET: {
+    getBaseTradingStrategy: () => axios.get(`trading/base/1`),
+    getBaseTradingStrategyList: () => axios.get(`trading/base`),
   },
   POST: {},
   PATCH: {},

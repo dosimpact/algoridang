@@ -26,17 +26,19 @@ const Title: React.FC<{ title: string }> = ({ title }) => {
 //     CAGR: 12.82,
 //   },
 // ];
-const dummyDatas3 = [
-  {
-    title: "골드 기업 종합 점수 Top20 ",
-    subTitle: ["F-Score", "골든 크로스"],
-    CAGR: 22.22,
-  },
-];
+// const dummyDatas3 = [
+//   {
+//     title: "골드 기업 종합 점수 Top20 ",
+//     subTitle: ["F-Score", "골든 크로스"],
+//     CAGR: 22.22,
+//   },
+// ];
+
+// todo:refactor CAGR 부분 DB Relation eager 처리 및 undefined 핸들링
 const StrategyFeeds = () => {
   const history = useHistory();
-  const { strategyListNew } = useStrategy();
-  console.log("strategyListNew", strategyListNew);
+  const { strategyListNew, strategyListHighView } = useStrategy();
+  // console.log("strategyListNew", strategyListNew);
 
   return (
     <WingBlank style={{ margin: "15x" }} size="lg">
@@ -45,7 +47,7 @@ const StrategyFeeds = () => {
         title="투자 성향별 종목 검색"
         subTitle="나만의 성향에 맞는 전략 찾아봅니다."
         onClick={(e) => {
-          console.log("click", e.currentTarget);
+          // console.log("click", e.currentTarget);
           history.push("/takers/strategy-search/types");
         }}
       />
@@ -60,10 +62,9 @@ const StrategyFeeds = () => {
             subTitle={toTagsString(
               data.hashList?.map((e) => e?.hash?.hash_contents)
             )}
-            CAGR={data.strategy_code}
+            CAGR={Number(data.strategy_code)}
             thumnail={data.image_url}
             onClick={(e) => {
-              console.log("click", e.currentTarget);
               history.push("/takers/strategy-search/details/1");
             }}
           />
@@ -71,14 +72,20 @@ const StrategyFeeds = () => {
       <WhiteSpace size="xl" />
       <Title title={"조회수 높은 투자 전략"} />
       <WhiteSpace size="xl" />
-      {dummyDatas3.map((data, key) => (
-        <StrategyCard
-          key={key}
-          title={data.title}
-          subTitle={toTagsString(data.subTitle)}
-          CAGR={data.CAGR}
-        />
-      ))}
+      {strategyListHighView &&
+        strategyListHighView.map((data, key) => (
+          <StrategyCard
+            key={key}
+            title={data.strategy_name}
+            subTitle={toTagsString(
+              data.hashList?.map((e) => e?.hash?.hash_contents)
+            )}
+            CAGR={Number(data.strategy_code)}
+            onClick={(e) => {
+              history.push("/takers/strategy-search/types");
+            }}
+          />
+        ))}
     </WingBlank>
   );
 };
