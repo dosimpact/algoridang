@@ -1,70 +1,27 @@
 import React, { useMemo } from "react";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { Button } from "antd-mobile";
 import { useRecoilState } from "recoil";
 import { atomStrategyState } from "states/recoil/strategy";
+import { CreateMyStrategyInput } from "states/interface/strategy/dtos";
 
+// 폼 인터페이스
 export interface IformStateBasicSetting {
   strategy_name: string;
   strategy_explanation: string;
   tags?: string;
-  invest_principal: number;
-  invest_start_date: string;
-  invest_end_date?: string;
-  securities_corp_fee: number;
   open_yes_no: "public" | "private";
+
+  "investProfitInfo.invest_principal": number;
+  "investProfitInfo.invest_start_date": string;
+  "investProfitInfo.invest_end_date"?: string;
+  "investProfitInfo.securities_corp_fee": number;
 }
 
-const inputNameList = [
-  "strategy_name",
-  "strategy_explanation",
-  "tags",
-  "invest_principal",
-  "invest_start_date",
-  "invest_end_date",
-  "securities_corp_fee",
-  "open_yes_no",
-];
-
-const mapNameToDetail = {
-  strategy_name: "전략 이름",
-  strategy_explanation: "전략 설명",
-  tags: "전략 테그",
-  invest_principal: "운용 자금",
-  invest_start_date: "백테스트 시작",
-  invest_end_date: "백테스트 종료",
-  securities_corp_fee: "수수료",
-  open_yes_no: "공개범위",
-} as Record<string, string>;
-
-const mapNameToPlaceholder = {
-  strategy_name: "전략 이름",
-  strategy_explanation: "전략 설명",
-  tags: "전략 테그",
-  invest_principal: "운용 자금",
-  invest_start_date: "백테스트 시작",
-  invest_end_date: "백테스트 종료",
-  securities_corp_fee: "수수료",
-  open_yes_no: "공개범위",
-} as Record<string, string>;
-
-const mapNameToRemark = {
-  strategy_name: "",
-  strategy_explanation: "",
-  tags: "",
-  invest_principal: "만원",
-  invest_start_date: "년",
-  invest_end_date: "%",
-  securities_corp_fee: "",
-  open_yes_no: "",
-} as Record<string, string>;
-
+// todo:refactor : 유효성 검사
 const ScreateBasic = () => {
   const { register, handleSubmit } = useForm<IformStateBasicSetting>();
-  const [strategyState, setStrategyState] = useRecoilState(atomStrategyState);
-
-  const inputNameListM = useMemo<string[]>(() => inputNameList, []);
+  const [_, setStrategyState] = useRecoilState(atomStrategyState);
 
   return (
     <SScreateBasic>
@@ -72,37 +29,65 @@ const ScreateBasic = () => {
         className="basicSettingForm"
         style={{ display: "flex", flexFlow: "column nowrap" }}
         onSubmit={handleSubmit((data) => {
+          console.log("basicSettingForm", data);
+          const tags = data?.tags?.split(" ");
+          const createMyStrategyInput =
+            data as unknown as CreateMyStrategyInput;
+          createMyStrategyInput.tags = tags;
           setStrategyState((prev) => {
-            return { ...prev, formStateBasicSetting: data };
+            return {
+              ...prev,
+              createMyStrategyInput,
+            };
           });
         })}
       >
         <div className="inputRow inputRowHeader">
           <div className="col detail">항목</div>
           <div className="col inputField">입력</div>
-          <div className="col remark">단위</div>
         </div>
-        {inputNameListM
-          .filter((name) => name !== "open_yes_no")
-          .map((name, key) => {
-            return (
-              <div className="inputRow" key={key}>
-                <div className="col detail">{mapNameToDetail[name]}</div>
-                <div className="col inputField">
-                  <input
-                    type="text"
-                    placeholder={mapNameToPlaceholder[name]}
-                    {...register(name as keyof IformStateBasicSetting, {
-                      // required: true,
-                    })}
-                  ></input>
-                </div>
-                <div className="col remark">{mapNameToRemark[name]}</div>
-              </div>
-            );
-          })}
+        {/* 1. */}
         <div className="inputRow">
-          <div className="col detail">{mapNameToDetail["open_yes_no"]}</div>
+          <div className="col detail">전략 이름</div>
+          <div className="col inputField">
+            <input
+              type="text"
+              placeholder={"전략 이름"}
+              {...register("strategy_name", {
+                // required: true,
+              })}
+            ></input>
+          </div>
+        </div>
+
+        <div className="inputRow">
+          <div className="col detail">전략 설명</div>
+          <div className="col inputField">
+            <input
+              type="text"
+              placeholder={"전략 설명"}
+              {...register("strategy_explanation", {
+                // required: true,
+              })}
+            ></input>
+          </div>
+        </div>
+
+        <div className="inputRow">
+          <div className="col detail">Tags(공백 구분)</div>
+          <div className="col inputField">
+            <input
+              type="text"
+              placeholder={"태그 입력"}
+              {...register("tags", {
+                // required: true,
+              })}
+            ></input>
+          </div>
+        </div>
+
+        <div className="inputRow">
+          <div className="col detail">공개범위</div>
           <div className="col inputField">
             <select {...register("open_yes_no")}>
               {["public", "private"].map((value) => (
@@ -112,17 +97,61 @@ const ScreateBasic = () => {
               ))}
             </select>
           </div>
-          <div className="col remark">{mapNameToRemark["open_yes_no"]}</div>
         </div>
+
+        <div className="inputRow">
+          <div className="col detail">백테스트 시작</div>
+          <div className="col inputField">
+            <input
+              type="date"
+              placeholder={"태그 입력"}
+              {...register("investProfitInfo.invest_start_date", {
+                required: true,
+              })}
+            ></input>
+          </div>
+        </div>
+
+        <div className="inputRow">
+          <div className="col detail">백테스트 종료</div>
+          <div className="col inputField">
+            <input
+              type="date"
+              placeholder={"태그 입력"}
+              {...register("investProfitInfo.invest_end_date", {
+                // required: true,
+              })}
+            ></input>
+          </div>
+        </div>
+
+        <div className="inputRow">
+          <div className="col detail">운용 자금 (원)</div>
+          <div className="col inputField">
+            <input
+              type="text"
+              placeholder={"Ex) 10000000"}
+              {...register("investProfitInfo.invest_principal", {
+                // required: true,
+              })}
+            ></input>
+          </div>
+        </div>
+
+        <div className="inputRow">
+          <div className="col detail">수수료 (%)</div>
+          <div className="col inputField">
+            <input
+              type="text"
+              placeholder={"Ex) 0.1"}
+              {...register("investProfitInfo.securities_corp_fee", {
+                // required: true,
+              })}
+            ></input>
+          </div>
+        </div>
+
         <button type="submit">완료</button>
-        {/* <Button
-          type="primary"
-          onClick={handleSubmit((data) => {
-            console.log(data);
-          })}
-        >
-          완료
-        </Button> */}
       </form>
     </SScreateBasic>
   );
@@ -151,7 +180,7 @@ const SScreateBasic = styled.div`
       height: 5rem;
       width: 100%;
       display: grid;
-      grid-template-columns: 1fr 1fr 0.3fr;
+      grid-template-columns: 1fr 1fr;
       padding: 0.5rem 0rem;
       justify-items: center;
       align-items: center;
@@ -167,8 +196,6 @@ const SScreateBasic = styled.div`
         }
         .inputField {
           width: 100%;
-        }
-        .remark {
         }
       }
     }

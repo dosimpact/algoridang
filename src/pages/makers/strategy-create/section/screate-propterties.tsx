@@ -1,16 +1,16 @@
 import React, { useMemo, useState } from "react";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
-import { Button, List, Checkbox, Radio } from "antd-mobile";
+import { Button, List, Radio } from "antd-mobile";
 import useTrading from "states/react-query/useTrading";
+import { StrategyValue } from "states/interface/trading/entities";
+import { useRecoilState, useRecoilValue } from "recoil";
 import {
-  BaseTradingStrategy,
-  StrategyValue,
-} from "states/interface/trading/entities";
-import { useRecoilState } from "recoil";
-import { atomStrategyState } from "states/recoil/strategy";
+  atomStrategyState,
+  parseCreateMyStrategy,
+} from "states/recoil/strategy";
+import { AddUniversalInput } from "states/interface/trading/dtos";
 
-const CheckboxItem = Checkbox.CheckboxItem;
 const RadioItem = Radio.RadioItem;
 
 type IScreateBasicInput = {
@@ -30,6 +30,7 @@ type IScreateBasicInput = {
 // 4. 뷰
 
 // todo:refactor fuse.js - 매매전략 fuzzySearch 적용
+// todo:refactor - 유효성 검사
 const ScreatePropterties = () => {
   const { handleSubmit } = useForm<IScreateBasicInput>();
   const [strategyState, setStrategyState] = useRecoilState(atomStrategyState);
@@ -55,11 +56,6 @@ const ScreatePropterties = () => {
     );
   }, [selectedNum, baseTradingStrategyList]);
 
-  // const data2 = [
-  //   { value: 0, company: "골든 크로스", code: "" },
-  //   { value: 1, company: "블린저 밴드", code: "" },
-  // ];
-
   const handleInputs = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setInputs({
@@ -72,6 +68,24 @@ const ScreatePropterties = () => {
         [trading_strategy_name as string]: inputs,
       },
     }));
+  };
+
+  // const parsedCreateMyStrategy = useRecoilValue(parseCreateMyStrategy);
+  const handleFinalSubmit = async () => {
+    // console.log("parsedCreateMyStrategy", parsedCreateMyStrategy);
+
+    const crops = strategyState.formStateTickerSelected;
+
+    const addUniversalInput = [] as Partial<AddUniversalInput>[];
+    // addUniversalInput 파싱
+    addUniversalInput.push({
+      ticker: crops && crops[0] && crops[0]?.ticker,
+      setting_json: strategyState.formStateTradingSetting,
+    });
+    return {
+      addUniversalInput: addUniversalInput,
+      createMyStrategyInput: strategyState.createMyStrategyInput,
+    };
   };
 
   return (
@@ -109,7 +123,7 @@ const ScreatePropterties = () => {
         </List>
       </article>
       <article className="articleCol selectedCol">
-        <Button className="finish" type="primary">
+        <Button className="finish" type="primary" onClick={handleFinalSubmit}>
           전략 생성 및 백테스팅
         </Button>
         <div className="targetSettingName flexRow">

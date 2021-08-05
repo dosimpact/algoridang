@@ -23,9 +23,10 @@ const CheckboxItem = Checkbox.CheckboxItem;
 const ScreateTickers = () => {
   const [searched, setSearched] = useState<Corporation[]>([]);
   const [selected, setSelected] = useState<Corporation[]>([]);
-  const [strategyState, setStrategyState] = useRecoilState(atomStrategyState);
+  const [_, setStrategyState] = useRecoilState(atomStrategyState);
 
   useEffect(() => {
+    console.log(selected);
     setStrategyState((prev) => ({
       ...prev,
       formStateTickerSelected: selected,
