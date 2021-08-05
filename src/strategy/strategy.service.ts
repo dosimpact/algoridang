@@ -239,6 +239,10 @@ export class StrategyService {
         'backtestDetailInfo',
         'operationMemberList',
         'universal',
+        'backtestWinRatio',
+        'backtestMontlyProfitRateChart',
+        'backtestDailyProfitRateChart',
+        'histories',
       ],
     });
     return {

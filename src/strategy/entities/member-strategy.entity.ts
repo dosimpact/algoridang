@@ -8,6 +8,7 @@ import {
 } from 'class-validator';
 import {
   AccumulateProfitRateChart,
+  BacktestDailyProfitRateChart,
   BacktestDetailInfo,
   BacktestMontlyProfitRateChart,
   BacktestQueue,
@@ -150,7 +151,11 @@ export class MemberStrategy {
 
   // (4) 월간수익률 차트 데이터
   @OneToMany(() => BacktestMontlyProfitRateChart, (chart) => chart.strategy)
-  backtestMontlyProfitRateChart: BacktestMontlyProfitRateChart;
+  backtestMontlyProfitRateChart: BacktestMontlyProfitRateChart[];
+
+  // (4) 일간 수익률 차트 데이터
+  @OneToMany(() => BacktestDailyProfitRateChart, (chart) => chart.strategy)
+  backtestDailyProfitRateChart: BacktestDailyProfitRateChart[];
 
   // (5) (deprecated) 전략에 셋팅된 매매전략(셋팅포함)
   // @OneToMany(() => CustomTradingStrategy, (cts) => cts.stragety)
