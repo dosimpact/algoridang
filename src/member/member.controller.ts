@@ -3,10 +3,10 @@ import {
   Get,
   Post,
   Body,
-  Inject,
   Request,
   Param,
   Query,
+  Version,
 } from '@nestjs/common';
 import { AuthUser, Roles } from 'src/auth/auth.decorator';
 import {
@@ -23,6 +23,7 @@ import { MemberService } from './member.service';
 export class MemberQueryController {
   constructor(private readonly memberService: MemberService) {}
 
+  @Version('1')
   @Get('me')
   async me(@Request() req, @AuthUser() MemberInfo) {
     // console.log('MemberInfo', req['MemberInfo']);
@@ -30,18 +31,20 @@ export class MemberQueryController {
     return MemberInfo;
     // return this.MemberInfoService.me();
   }
-
+  @Version('1')
   @Get('getMemberInfo/:email_id')
   async getMemberInfo(@Param('email_id') email_id: string) {
     return this.memberService.getMemberInfo({ email_id });
   }
   // @Roles(["Admin"])
+  @Version('1')
   @Get('getMemberInfoList')
   async getMemberInfoList(@Query('take') take, @Query('skip') skip) {
     return this.memberService.getMemberInfoList({ skip, take });
   }
 
   // 조회회원 매핑 테이블을 찾는다.
+  @Version('1')
   @Get('getLookupMemberList/:strategy_code')
   async getLookupMemberList(
     @AuthUser() m: MemberInfo,
@@ -53,6 +56,7 @@ export class MemberQueryController {
     });
   }
   // 전략 가동 중인 맴버 리턴 (매핑 테이블을 찾는다.)
+  @Version('1')
   @Get('getOperationMemberList/:strategy_code')
   async getOperationMemberList(
     @AuthUser() m: MemberInfo,
@@ -69,16 +73,18 @@ export class MemberQueryController {
 export class MemberMutationController {
   constructor(private readonly memberService: MemberService) {}
 
+  @Version('1')
   @Post('loginMemberInfo')
   async loginMemberInfo(@Body() loginMemberInfoInput: LoginMemberInfoInput) {
     return this.memberService.loginMemberInfo(loginMemberInfoInput);
   }
 
+  @Version('1')
   @Post('createMemberInfo')
   async createMemberInfo(@Body() createMemberInfoInput: CreateMemberInfoInput) {
     return this.memberService.createMemberInfo(createMemberInfoInput);
   }
-
+  @Version('1')
   @Post('updateMemberInfo')
   async updateMemberInfo(@Body() updateMemberInfo: UpdateMemberInfoInput) {
     return this.memberService.updateMemberInfo(updateMemberInfo);
