@@ -10,6 +10,13 @@ CORS(app)
 
 
 
+@app.route("/check/<string:task_id>", methods=["GET"])
+def checkQ_plus(task_id):
+    print("task_id", task_id)
+    res = state.get_add_progress(task_id)
+    return jsonify({"ok": True, "task_id": task_id, "res": res})
+
+
 @app.route("/plus", methods=["GET"])
 def pushQ_plus():
     a = request.args.get('a')
@@ -25,28 +32,10 @@ def pushQ_plus():
     return jsonify({"ok": True, "task_id": task.id})
 
 
-@app.route("/check/<string:task_id>", methods=["GET"])
-def checkQ_plus(task_id):
-    print("task_id", task_id)
-    res = state.get_add_progress(task_id)
-    return jsonify({"ok": True, "task_id": task_id, "res": res})
-
 
 @app.route("/")
 def hello():
 	return "This is the main page"
-
-@app.route("/SetDBStockCodeAll")
-def SetDBStockCodeAll():
-    data = CPricePykrx()
-    test = data.setDBAllStock()
-    return str(test)
-
-
-@app.route("/DBdisconection")
-def DBdisconection():
-    db = DB.psql()
-    return db.getDBStatus()
 
 @app.route("/user",methods=['GET', 'POST'])
 def post():
@@ -68,12 +57,11 @@ def post():
 def backTestAPI():
     data = {}
     if request.method == 'POST':
-        dstrategyCode = request.form["strategyCode"]
-
-        if not dstrategyCode  :
+        inputdata = request.get_json(silent=True)
+        strategyCode = inputdata["strategyCode"]
+        if not strategyCode or  strategyCode == '':
             return  jsonify({"ok": False, "error": "some required data is missing!"})
-        
-        task = processor.backtestTaskCall.apply_async([dstrategyCode])
+        task = processor.backtestTaskCall.apply_async([strategyCode])
 
         if not task.id:
             return jsonify({"ok": False, "error": "celery is down"})

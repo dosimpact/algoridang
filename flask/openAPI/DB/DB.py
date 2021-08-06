@@ -51,7 +51,7 @@ class databasepool(object):
             ps_cursor.execute(query)
             ps_cursor.close()
             
-    def upDateData(self, ps_connection, query):
+    def updateData(self, ps_connection, query):
         
         if (ps_connection):
             ps_cursor = ps_connection.cursor()

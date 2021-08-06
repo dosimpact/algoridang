@@ -243,14 +243,14 @@ class CBackTtrader(object):
                     query += " where strategy_code = " + str(strategyCode)
                     query += " and ticker = \'" + str(tradehitory[i][3]) + "\'"
                     query += " and history_date = \'"+str(tradehitory[i][0]) + "\';"
-                    DBClass.upDateData(conn,query)
+                    DBClass.updateData(conn,query)
                 else :
                     query = "update history set "
                     query += " buy_sale_price = " + str(tradehitory[i][1]) 
                     query += " where strategy_code = " + str(strategyCode)
                     query += " and ticker =  \'" + str(tradehitory[i][3]) + "\'"
                     query += " and history_date = \'"+str(tradehitory[i][0]) + "\';"
-                    DBClass.upDateData(conn,query)
+                    DBClass.updateData(conn,query)
                 
             else :
                 if tradehitory[i][2] != None :
@@ -283,7 +283,7 @@ class CBackTtrader(object):
                 query += "  \"profit_rate\" = " + str(value)
                 query += "  where strategy_code = "+str(strategyCode)
                 query += "  and chart_month = " + "\'" + str(idx) + "\';"
-                DBClass.upDateData(conn,query)
+                DBClass.updateData(conn,query)
 
             else :
                 query = "insert into backtest_daily_profit_rate_chart(\"chart_month\",\"profit_rate\",\"strategy_code\")"
@@ -313,7 +313,7 @@ class CBackTtrader(object):
                 query += "  \"profit_rate\" = " + str(monthlyProfitRatioChartData[i][1])
                 query += "  where strategy_code = "+str(strategyCode)
                 query += "  and chart_month = " + "\'" + str(monthlyProfitRatioChartData[i][0]) + "\';"
-                DBClass.upDateData(conn,query)
+                DBClass.updateData(conn,query)
 
             else :
                 query = "insert into backtest_monthly_profit_rate_chart(\"chart_month\",\"profit_rate\",\"strategy_code\")"
@@ -333,7 +333,7 @@ class CBackTtrader(object):
             query += " \"win_count\" = " + str(win) + ","
             query += " \"loss_count\" = " + str(lose)
             query += " where strategy_code = "+str(strategyCode)+";"
-            DBClass.upDateData(conn,query)
+            DBClass.updateData(conn,query)
 
         else:
             query = "insert into backtest_win_ratio(\"win_count\",\"loss_count\",\"strategy_code\")"
@@ -360,7 +360,7 @@ class CBackTtrader(object):
             query += " \"month_avg_profit_rate\" = " + str(backtestDetailInfo[4])+ ","
             query += " \"monthly_volatility\" = " + str(backtestDetailInfo[5])
             query += " where strategy_code = " +str(strategyCode)+";"
-            DBClass.upDateData(conn,query)
+            DBClass.updateData(conn,query)
         else :
             query = "insert into backtest_detail_info(\"year_avg_profit_rate\", \"mdd\", \"trading_month_count\", \"rising_month_count\", \"month_avg_profit_rate\", \"monthly_volatility\", \"strategy_code\")"
             query+= "values(" + str(backtestDetailInfo[0])+"," + str(backtestDetailInfo[1]) + "," + str(backtestDetailInfo[2]) +"," + str(backtestDetailInfo[3]) + "," + str(backtestDetailInfo[4]) + "," + str(backtestDetailInfo[5]) + ","+ str(strategyCode)+ ");"
@@ -380,7 +380,7 @@ class CBackTtrader(object):
         query += " profit_rate = " +str(investProfitInfo[3])
         query += " where strategy_code = " +str(strategyCode)+";"
 
-        DBClass.upDateData(conn,query)
+        DBClass.updateData(conn,query)
         conn.commit()
         DBClass.putConn(conn)
 
@@ -392,12 +392,12 @@ class CBackTtrader(object):
             query = "select * from accumulate_profit_rate_chart where strategy_code = " + str(strategyCode)
             query += " and chart_date = \'" + str(idx)+"\';"
             
-            if len(DBClass.selectData(conn,query)) == 1:
+            if len(DBClass.selectData(conn, query)) == 1:
                 query  = "update accumulate_profit_rate_chart set"
                 query += " profit_rate = " + str(row[1])
                 query += " where strategy_code = " + str(strategyCode)
                 query += " and chart_date = \'" + str(idx) + "\';"
-                DBClass.upDateData(conn,query)
+                DBClass.updateData(conn, query)
             else :
                 query  = "insert into accumulate_profit_rate_chart(\"profit_rate\",\"chart_date\",\"strategy_code\")"
                 query += " values("+ str(row[1]) + ",\'" + str(idx) + "\'," + str(strategyCode)+")"
@@ -452,7 +452,7 @@ class CBackTtrader(object):
             query += " state_info = \'" + str(state) + "\',"
             query += " work_info = \'" + str(info) + "\'"
             query += " where queue_code = \'" + str(id) + "\';"
-            DBClass.upDateData(conn,query)
+            DBClass.updateData(conn,query)
         else:
             query = "insert into backtest_queue(\"queue_code\",\"state_info\",\"work_info\",\"strategy_code\")"
             query += " values(\'" + str(id) + "\',\'"+ str(state) +"\',\'" + str(info)+ "\'," + str(strategyCode) + ")"
@@ -500,11 +500,9 @@ class CBackTtrader(object):
 
             #####################################################################################
             ### 일간 수익 로그
-            bar_data_res = strat.analyzers.bar_data.get_analysis()
-            dailydata = pd.DataFrame(bar_data_res)
-            dailydata = self.__setDailyAccumulate(dailydata,data['investPrice'])
-            dailydata.to_csv('saleLog.txt', sep = '\t')
+            dailydata = self.daily_profit(data, strat)
 
+            ### 일간 수익률 
             portfolio_stats = strat.analyzers.getbyname('PyFolio')
             returns, positions, transactions, gross_lev = portfolio_stats.get_pf_items()
             returns.index = returns.index.tz_convert(None)
@@ -550,24 +548,24 @@ class CBackTtrader(object):
                             monthlyProfitRatioRiseMonth = RiseMonth
                         RiseMonth = 0
 
-            #print(monthlyProfitRatioChartData)
+            print("monthlyProfitRatioChartData = ",monthlyProfitRatioChartData)
 
             # 투자 수익 정보
             investProfitInfo = [total, int(data['investPrice']), total- int(data['investPrice']), round(total / int(data['investPrice']),2)-1]
 
             #백테스트 상세정보
             backtestDetailInfo = [metrics.loc['CAGR%']['Strategy'], metrics.loc['Max Drawdown ']['Strategy'],math.ceil(delta.days/30), monthlyProfitRatioRiseMonth ,monthlyCAGR , monthlyVolatility]
-            #print(backtestDetailInfo)
+            print("backtestDetailInfo = ", backtestDetailInfo)
 
 
             # 승수 출력
             winCnt, loseCnt = strat.analyzers.bar_data.get_winloseCnt()
-            #print(winCnt,loseCnt)
+            print(winCnt,loseCnt)
 
 
             # 히스토리 출력하기
             tradehitory = strat.analyzers.bar_data.get_tradehistory()
-            #print(tradehitory)
+            print("tradehitory = ",tradehitory)
 
             # 데이터 저장하기
             self.__saveHistoryTable(tradehitory,data["strategyCode"])
@@ -586,6 +584,13 @@ class CBackTtrader(object):
 
         self.__initQueue(id, "Success", "Queue" , strategyCode)
         return total
+
+    def daily_profit(self, data, strat):
+        bar_data_res = strat.analyzers.bar_data.get_analysis()
+        dailydata = pd.DataFrame(bar_data_res)
+        dailydata = self.__setDailyAccumulate(dailydata,data['investPrice'])
+        dailydata.to_csv('saleLog.txt', sep = '\t')
+        return dailydata
 
 
 
