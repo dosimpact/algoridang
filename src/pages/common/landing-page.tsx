@@ -5,7 +5,7 @@ import useMember from "states/react-query/useMember";
 
 // todo : makers, takers 선택 저장하기
 const LandingPage = () => {
-  const { logIn } = useMember();
+  const { logIn, me } = useMember();
   return (
     <WingBlank>
       <Button
@@ -19,7 +19,12 @@ const LandingPage = () => {
         login
       </Button>
       <WhiteSpace />
-      <h1 style={{ fontSize: "20px" }}>알고리당에 오신것을 환영합니다.</h1>
+      <h1 style={{ fontSize: "20px" }}>
+        알고리당에 오신것을 환영합니다.
+        <br />
+        {!me.isLoading && me?.data?.data.member_name} 님 ({" "}
+        {!me.isLoading && me?.data?.data.email_id})
+      </h1>
       <WhiteSpace />
       <nav>
         <ul>

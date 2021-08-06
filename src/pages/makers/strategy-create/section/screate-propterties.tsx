@@ -70,7 +70,7 @@ const ScreatePropterties = () => {
       },
     }));
   };
-  const { createMyStrategyMutation, addUniversalMutation, testMutation } =
+  const { createMyStrategyMutation, addUniversalMutation } =
     useCreateStrategy();
   // const parsedCreateMyStrategy = useRecoilValue(parseCreateMyStrategy);
   const handleFinalSubmit = async () => {

@@ -4,6 +4,7 @@ import MockInvest from "../mock-invest/mock-investC";
 import StrategySearch from "../strategy-search/strategy-searchC";
 import TickerSearch from "../ticker-search/ticker-searchC";
 import { useHistory, useLocation } from "react-router-dom";
+import useMember from "states/react-query/useMember";
 
 const tabs = [
   { title: <Badge>종목 탐색</Badge> },
@@ -75,6 +76,7 @@ const TabNavigationContainer = () => {
 
 const NavBarContainer = () => {
   const history = useHistory();
+  const { me } = useMember();
 
   return (
     <NavBar
@@ -86,22 +88,16 @@ const NavBarContainer = () => {
             history.push("/takers");
           }}
         >
-          알고리당 🥞
+          알고
+          <br />
+          리당
         </div>
       }
       onLeftClick={() => {
         console.log("onLeftClick");
       }}
       rightContent={[
-        <div key="name">hello님</div>,
-        <Icon
-          key="0"
-          type="search"
-          style={{ marginRight: "16px" }}
-          onClick={() => {
-            console.log("search click");
-          }}
-        />,
+        <div key="name">{!me.isLoading && me?.data?.data?.email_id}</div>,
         <Icon
           key="1"
           type="ellipsis"

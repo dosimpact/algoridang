@@ -5,7 +5,7 @@ import {
   GetCorporationsWithTermInput,
   GetDayilStocksInput,
 } from "./interface/finance/dtos";
-import { loginMemberInfoInput } from "./interface/member/dtos";
+import { LoginMemberInfoInput } from "./interface/member/dtos";
 import { CreateMyStrategyInput } from "./interface/strategy/dtos";
 import { AddUniversalInput } from "./interface/trading/dtos";
 
@@ -29,8 +29,8 @@ export const memberApi = {
     me: () => axios.get("member/me"),
   },
   POST: {
-    loginMemberInfo: (body: loginMemberInfoInput) =>
-      axios.post("member/login-member-info", body),
+    loginMemberInfo: (body: LoginMemberInfoInput) =>
+      axios.post("member/loginMemberInfo", body),
   },
   PATCH: {},
   DELETE: {},

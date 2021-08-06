@@ -27,15 +27,9 @@ const useCreateStrategy = () => {
     }
   >((data) => strategyApi.POST.addUniversal(data.strategy_code, data.body));
 
-  const testMutation = useMutation<AxiosResponse, AxiosError, Object>((data) =>
-    strategyApi.POST.test(data)
-  );
-  console.log(createMyStrategyMutation.error);
-
   return {
     createMyStrategyMutation,
     addUniversalMutation,
-    testMutation,
   };
 };
 

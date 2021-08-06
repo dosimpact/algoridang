@@ -1,13 +1,13 @@
 import { MemberInfo } from "./entities";
 
 // member dtos
-export interface meOutput extends MemberInfo {}
+export interface MeOutput extends MemberInfo {}
 
-export interface loginMemberInfoInput {
+export interface LoginMemberInfoInput {
   email_id: string;
   password: string;
 }
 
-export interface loginMemberInfoOutput {
+export interface LoginMemberInfoOutput {
   token?: string;
 }
