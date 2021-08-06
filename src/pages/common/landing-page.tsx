@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button, WhiteSpace, WingBlank } from "antd-mobile";
 import useMember from "states/react-query/useMember";
+
 // todo : makers, takers 선택 저장하기
 const LandingPage = () => {
   const { logIn } = useMember();
