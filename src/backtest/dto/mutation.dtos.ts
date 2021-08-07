@@ -5,17 +5,19 @@ import {
   IsInt,
   IsNumber,
   IsOptional,
+  IsString,
 } from 'class-validator';
 import { CoreOutput } from 'src/common/dtos/output.dto';
 import { History } from '../entities';
 
 export class CreateInvestProfitInfoInput {
-  @IsNumber()
+  @IsString()
   @IsOptional()
-  invest_principal?: number; // 투자 원금
-  @IsNumber()
+  invest_principal?: string; // 투자 원금
+
+  @IsString()
   @IsOptional()
-  securities_corp_fee?: number;
+  securities_corp_fee?: string;
 
   @IsDateString()
   invest_start_date: Date;

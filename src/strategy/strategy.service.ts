@@ -185,6 +185,12 @@ export class StrategyService {
         'investProfitInfo',
         'backtestDetailInfo',
         'operationMemberList',
+        // // 'universal',
+        'backtestWinRatio',
+        'histories',
+        'backtestMontlyProfitRateChart',
+        // 'accumulateProfitRateChart',     // 일일 누적 - join 없이
+        // 'backtestDailyProfitRateChart', // 일일 수익실현 - join 없이
       ],
     });
     return {
@@ -238,12 +244,12 @@ export class StrategyService {
         'investProfitInfo',
         'backtestDetailInfo',
         'operationMemberList',
-        'universal',
+        // // 'universal',
         'backtestWinRatio',
-        'accumulateProfitRateChart',
         'histories',
         'backtestMontlyProfitRateChart',
-        // 'backtestDailyProfitRateChart',
+        // 'accumulateProfitRateChart',     // 일일 누적 - join 없이
+        // 'backtestDailyProfitRateChart', // 일일 수익실현 - join 없이
       ],
     });
     return {

@@ -14,7 +14,6 @@ import { CreateMyStrategyInput } from './dto/mutation.dtos';
 import { MemberInfo } from 'src/member/entities';
 import { TradingService } from 'src/trading/trading.service';
 import { AddUniversalInput } from 'src/trading/dto/mutation.dtos';
-import { Put } from '@nestjs/common';
 
 @UseInterceptors(HttpCacheInterceptor)
 @Controller('/api/strategy/')
