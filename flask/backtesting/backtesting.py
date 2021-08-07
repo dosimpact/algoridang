@@ -523,7 +523,7 @@ class CBackTtrader(object):
             #print(delta.days)
 
             # 월평균 수익률
-            monthlyCAGR = quantstats.stats.cagr(returns, monthly=True)
+            monthlyCAGR = quantstats.stats.cagr(returns)
             monthlyCAGR = round(monthlyCAGR,2)
 
 
