@@ -10,7 +10,6 @@ import DetailSummary from "components/strategy-report/DetailSummary";
 import CumulativeReturn from "components/strategy-report/CumulativeReturn";
 import MonthlyReturn from "components/strategy-report/MonthlyReturn";
 import WinRatio from "components/strategy-report/WinRatio";
-import TradingHistoryToday from "components/strategy-report/TradingHistoryToday";
 
 const dummyDatasReport = {
   header: ["항목", "결과값"],
@@ -121,12 +120,16 @@ const StrategyReport = () => {
         />
         <TradingPoints />
         <TradingHistory
+          title="히스토리"
           body={dummyDatasHistory.body}
           header={dummyDatasHistory.header}
+          keyMap={dummyDatasHistory.header}
         />
-        <TradingHistoryToday
+        <TradingHistory
+          title="오늘의 종목"
           body={dummyDatasHistory.body}
           header={dummyDatasHistory.header}
+          keyMap={dummyDatasHistory.header}
         />
         {/* 4. 상세 리포트 DetailSummary.tsx  */}
         <DetailSummary

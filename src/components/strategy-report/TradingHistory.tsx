@@ -2,21 +2,25 @@ import { SubTitle } from "components/data-display/Typo";
 import React from "react";
 import HistoryTable from "../data-display/HistoryTable";
 
-interface Indexable {
-  [idx: string]: string;
-}
 interface ITradingHistory {
-  body: Indexable[];
+  title: string;
+  body: Record<string, string>[];
+  keyMap: string[];
   header: string[];
 }
 
-const TradingHistory: React.FC<ITradingHistory> = ({ body, header }) => {
+const TradingHistory: React.FC<ITradingHistory> = ({
+  title,
+  body,
+  keyMap,
+  header,
+}) => {
   return (
     <article className="articleHistory" style={{ marginBottom: "100px" }}>
       <div className="flexRow" style={{ marginTop: "50px" }}>
-        <SubTitle title="히스토리" style={{ margin: "20px 0px" }} />
+        <SubTitle title={title} style={{ margin: "20px 0px" }} />
       </div>
-      <HistoryTable body={body} header={header} />
+      <HistoryTable body={body} keyMap={keyMap} header={header} />
     </article>
   );
 };

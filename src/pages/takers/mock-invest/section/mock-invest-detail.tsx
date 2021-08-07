@@ -112,8 +112,10 @@ const MockInvestDetail = () => {
         />
         <TradingPoints />
         <TradingHistory
-          body={dummyDatasHistory.body}
+          title="오늘의 종목"
           header={dummyDatasHistory.header}
+          keyMap={dummyDatasHistory.header}
+          body={dummyDatasHistory.body}
         />
       </WingBlank>
     </StrategyDetailP>

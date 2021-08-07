@@ -4,6 +4,7 @@ import {
   BacktestMontlyProfitRateChart,
   BacktestQueue,
   BacktestWinRatio,
+  History,
   InvestProfitInfo,
 } from "../backtest/entities";
 import { Corporation } from "../finance/entities";

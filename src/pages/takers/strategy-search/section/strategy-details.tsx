@@ -71,8 +71,14 @@ const StrategyDetails = () => {
     () => strategyDetailQuery?.data?.memberStrategy?.investProfitInfo,
     [strategyDetailQuery?.data]
   );
-  console.log("investProfitInfo", investProfitInfo);
 
+  const histories = useMemo(
+    () => strategyDetailQuery?.data?.memberStrategy?.histories,
+    [strategyDetailQuery?.data]
+  );
+  console.log("histories", histories);
+
+  console.log("investProfitInfo", investProfitInfo);
   return (
     <StrategyDetailP>
       <WingBlank style={{ margin: "15x" }} size="lg">
@@ -156,10 +162,19 @@ const StrategyDetails = () => {
         {/* 2. 매매 시점 TradingPoints.tsx */}
         <TradingPoints />
         {/* 3. 트레이딩 히스토리 */}
-        <TradingHistory
-          body={dummyDatasHistory.body}
-          header={dummyDatasHistory.header}
-        />
+        {histories && (
+          <TradingHistory
+            title="히스토리"
+            header={["날짜", "매수/매도", "가격", "수익/손실"]}
+            keyMap={[
+              "history_date",
+              "ticker",
+              "buy_sale_price",
+              "profit_loss_rate",
+            ]}
+            body={histories as any as Record<string, string>[]}
+          />
+        )}
       </WingBlank>
     </StrategyDetailP>
   );

@@ -1,26 +1,28 @@
 import React from "react";
 import styled from "styled-components";
 
-interface Indexable {
-  [idx: string]: string;
-}
-
 const HistoryTable: React.FC<{
   header: string[];
-  body: Indexable[];
+  body: Record<string, string>[];
+  keyMap: string[];
   style?: React.CSSProperties;
   props?: any;
-}> = ({ header, body, style, ...props }) => {
+}> = ({ header, keyMap, body, style, ...props }) => {
+  console.log("header", header);
   return (
     <HistoryTableS style={{ ...style }} {...props}>
       <div className="historyTable">
-        {header.map((el, key) => (
-          <div key={key + el} className="header">
-            {el}
-          </div>
-        ))}
+        {header &&
+          Array.isArray(header) &&
+          header.length >= 1 &&
+          header.map((el, key) => (
+            <div key={key + el} className="header">
+              {el}
+            </div>
+          ))}
+
         {body.map((el, key) =>
-          header.map((hkey) => (
+          keyMap.map((hkey) => (
             <div className="body" key={key + hkey + el[hkey]}>
               {el[hkey]}
             </div>
