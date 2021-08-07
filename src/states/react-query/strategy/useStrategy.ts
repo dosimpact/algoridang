@@ -18,6 +18,8 @@ const useStrategy = () => {
       return strategyApi.GET.getStrategyListNew();
     },
     {
+      staleTime: 1 * 60 * 1000,
+      cacheTime: 5 * 60 * 1000,
       onError: (e) => {
         if (e.response) {
           // 서버 애러 응답 받은 경우
@@ -41,6 +43,8 @@ const useStrategy = () => {
       return strategyApi.GET.getStrategyListHighView();
     },
     {
+      staleTime: 1 * 60 * 1000,
+      cacheTime: 5 * 60 * 1000,
       onError: (e) => {
         if (e.response) {
           // 서버 애러 응답 받은 경우
@@ -64,6 +68,8 @@ const useStrategy = () => {
       return strategyApi.GET.getStrategyListType();
     },
     {
+      staleTime: 1 * 60 * 1000,
+      cacheTime: 5 * 60 * 1000,
       onError: (e) => {
         if (e.response) {
           // 서버 애러 응답 받은 경우

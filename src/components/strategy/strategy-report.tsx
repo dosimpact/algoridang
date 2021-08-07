@@ -112,7 +112,13 @@ const StrategyReport = () => {
           CAGR={dummyDatas.CAGR}
         />
 
-        <ReturnsStatus title="모의 투자 수익 현황" />
+        <ReturnsStatus
+          title="모의 투자 수익 현황"
+          profit_rate="0.0"
+          invest_price="0"
+          invest_principal="0"
+          total_profit_price="0"
+        />
         <TradingPoints />
         <TradingHistory
           body={dummyDatasHistory.body}

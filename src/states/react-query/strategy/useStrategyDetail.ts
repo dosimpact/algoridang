@@ -1,14 +1,7 @@
 import { AxiosError, AxiosResponse } from "axios";
 import { useQuery } from "react-query";
 import { strategyApi } from "states/api";
-import {
-  GetStrategyByIdInput,
-  GetStrategyByIdOutput,
-  GetStrategyListHighViewOutput,
-  GetStrategyListNewOutput,
-  GetStrategyListTypeOutput,
-} from "states/interface/strategy/dtos";
-import { MemberStrategy } from "states/interface/strategy/entities";
+import { GetStrategyByIdOutput } from "states/interface/strategy/dtos";
 
 const useStrategyDetail = (strategy_code: string) => {
   // 타이핑

@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import StrategyFeeds from "./section/strategy-feeds";
 import StrategyTypes from "./section/strategy-types";
 import StrategyDetails from "./section/strategy-details";
@@ -15,7 +15,6 @@ const StrategySearchC = () => {
         component={StrategyFeeds}
       />
       <Route
-        exact
         path={process.env.PUBLIC_URL + "/takers/strategy-search/details/:id"}
         component={StrategyDetails}
       />
@@ -29,6 +28,7 @@ const StrategySearchC = () => {
         path={process.env.PUBLIC_URL + "/takers/strategy-search/types"}
         component={StrategyTypes}
       />
+      <Redirect from="*" to="/takers/" push={true} />
     </Switch>
   );
 };

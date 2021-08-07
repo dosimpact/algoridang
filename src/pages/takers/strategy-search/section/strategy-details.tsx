@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { WingBlank, WhiteSpace, Button } from "antd-mobile";
 import { Title, SubTitle } from "components/data-display/Typo";
 import StrategyCard from "components/strategy/StrategyCard";
@@ -10,6 +10,7 @@ import TradingHistory from "components/strategy-report/TradingHistory";
 import TradingPoints from "components/strategy-report/TradingPoints";
 import ReturnsStatus from "components/strategy-report/ReturnsStatus";
 import Description from "components/strategy-report/Description";
+import useStrategyDetail from "states/react-query/strategy/useStrategyDetail";
 
 const dummyDatas = {
   title: "삼성전자 황금 신호",
@@ -51,21 +52,57 @@ const StrategyDetails = () => {
   const Back = useBackButton();
   const history = useHistory();
   const params = useParams() as { id: string };
-  console.log(params);
+  const strategy_code = params?.id || 0;
+  if (strategy_code === 0) {
+    history.push("/");
+  }
+  const { strategyDetailQuery } = useStrategyDetail(strategy_code + "");
+
+  const memberStrategy = useMemo(
+    () => strategyDetailQuery?.data?.memberStrategy,
+    [strategyDetailQuery?.data]
+  );
+  const backtestDetailInfo = useMemo(
+    () => strategyDetailQuery?.data?.memberStrategy?.backtestDetailInfo,
+    [strategyDetailQuery?.data]
+  );
+
+  const investProfitInfo = useMemo(
+    () => strategyDetailQuery?.data?.memberStrategy?.investProfitInfo,
+    [strategyDetailQuery?.data]
+  );
+  console.log("investProfitInfo", investProfitInfo);
+
   return (
     <StrategyDetailP>
       <WingBlank style={{ margin: "15x" }} size="lg">
         <WhiteSpace size="xl" />
+        {strategyDetailQuery.isLoading && "loading..."}
         <div className="flexRow">
           {Back()}
           <Title title={"투자 전략 리포트"} />
         </div>
         <WhiteSpace size="xl" />
-        <StrategyCard
-          title={dummyDatas.title}
-          subTitle={toTagsString(dummyDatas.subTitle)}
-          CAGR={dummyDatas.CAGR}
-        />
+
+        {memberStrategy && (
+          <StrategyCard
+            title={memberStrategy.strategy_name}
+            subTitle={toTagsString(
+              memberStrategy.hashList?.map((e) => e?.hash?.hash_contents)
+            )}
+            CAGR={
+              memberStrategy?.backtestDetailInfo?.year_avg_profit_rate &&
+              Number(memberStrategy?.backtestDetailInfo?.year_avg_profit_rate)
+            }
+            thumnail={memberStrategy.image_url}
+            onClick={() => {
+              history.push(
+                `/takers/strategy-search/details/${memberStrategy.strategy_code}`
+              );
+            }}
+          />
+        )}
+
         <div className="flexRowSBt">
           <SubTitle
             title="모의 투자"
@@ -103,9 +140,19 @@ const StrategyDetails = () => {
           </Button>
         </div>
         {/* 0. 전략 메이커 설명 Description.tsx */}
-        <Description description="국민 주식 삼성전자에 가장 어울리는 매매전략인 골든 크로스로 제작" />
+        {memberStrategy && (
+          <Description description={memberStrategy.strategy_explanation} />
+        )}
         {/* 1. 투자 수익 현황 ReturnsStatus.tsx */}
-        <ReturnsStatus title=" 투자 수익 현황" />
+        {investProfitInfo && (
+          <ReturnsStatus
+            title="투자 수익 현황"
+            profit_rate={investProfitInfo?.profit_rate}
+            invest_price={investProfitInfo?.invest_price}
+            invest_principal={investProfitInfo?.invest_principal}
+            total_profit_price={investProfitInfo?.total_profit_price}
+          />
+        )}
         {/* 2. 매매 시점 TradingPoints.tsx */}
         <TradingPoints />
         {/* 3. 트레이딩 히스토리 */}
