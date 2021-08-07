@@ -2,7 +2,7 @@ import { WingBlank, WhiteSpace } from "antd-mobile";
 import StrategyCard from "components/strategy/StrategyCard";
 import React from "react";
 import { useHistory } from "react-router-dom";
-import useStrategy from "states/react-query/useStrategy";
+import useStrategy from "states/react-query/strategy/useStrategy";
 import { toTagsString } from "utils/parse";
 
 const Title: React.FC<{ title: string }> = ({ title }) => {
@@ -62,10 +62,15 @@ const StrategyFeeds = () => {
             subTitle={toTagsString(
               data.hashList?.map((e) => e?.hash?.hash_contents)
             )}
-            CAGR={Number(data.strategy_code)}
+            CAGR={
+              data?.backtestDetailInfo?.year_avg_profit_rate &&
+              Number(data?.backtestDetailInfo?.year_avg_profit_rate)
+            }
             thumnail={data.image_url}
-            onClick={(e) => {
-              history.push("/takers/strategy-search/details/1");
+            onClick={() => {
+              history.push(
+                `/takers/strategy-search/details/${data.strategy_code}`
+              );
             }}
           />
         ))}
@@ -80,9 +85,14 @@ const StrategyFeeds = () => {
             subTitle={toTagsString(
               data.hashList?.map((e) => e?.hash?.hash_contents)
             )}
-            CAGR={Number(data.strategy_code)}
-            onClick={(e) => {
-              history.push("/takers/strategy-search/types");
+            CAGR={
+              data?.backtestDetailInfo?.year_avg_profit_rate &&
+              Number(data?.backtestDetailInfo?.year_avg_profit_rate)
+            }
+            onClick={() => {
+              history.push(
+                `/takers/strategy-search/details/${data.strategy_code}`
+              );
             }}
           />
         ))}

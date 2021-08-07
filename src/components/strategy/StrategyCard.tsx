@@ -35,11 +35,9 @@ const StrategyCard: React.FC<IStrategyCard> = ({
         <article className="mid">
           <div className="title">{title}</div>
           {subTitle && <div className="subTitle">{subTitle}</div>}
-          {CAGR && (
-            <div className="CAGR">
-              연수익 <FNumber val={CAGR} hasPercentage={true} />
-            </div>
-          )}
+          <div className="CAGR">
+            연수익 {CAGR ? <FNumber val={CAGR} hasPercentage={true} /> : "-"}
+          </div>
         </article>
         <article className="right">
           {StrategyState && (

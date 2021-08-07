@@ -37,7 +37,6 @@ export const memberApi = {
 };
 
 // (2) strategy api
-
 export const strategyApi = {
   GET: {
     getStrategyListNew: () => {
