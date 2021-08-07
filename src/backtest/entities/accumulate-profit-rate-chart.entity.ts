@@ -1,6 +1,12 @@
 import { IsDateString, IsNumber } from 'class-validator';
 import { MemberStrategy } from 'src/strategy/entities';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'accumulate_profit_rate_chart' })
 export class AccumulateProfitRateChart {
@@ -19,9 +25,12 @@ export class AccumulateProfitRateChart {
   // 1:N 관계
   // (1) 차트에 대한 원본 전략 매핑
   @IsNumber()
-  @Column()
+  @Column({ nullable: true })
   strategy_code: number;
 
-  @ManyToOne(() => MemberStrategy, (ms) => ms.accumulateProfitRateChart)
+  @ManyToOne(() => MemberStrategy, (ms) => ms.accumulateProfitRateChart, {
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({ name: 'strategy_code' })
   strategy: MemberStrategy;
 }

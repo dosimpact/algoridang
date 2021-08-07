@@ -1,6 +1,12 @@
-import { IsDate, IsDateString, IsNumber } from 'class-validator';
+import { IsDate, IsDateString, IsNumber, IsString } from 'class-validator';
 import { MemberStrategy } from 'src/strategy/entities';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'backtest_daily_profit_rate_chart' })
 export class BacktestDailyProfitRateChart {
@@ -17,11 +23,12 @@ export class BacktestDailyProfitRateChart {
   profit_rate: number;
 
   // 1:N
-  // 월간수익률-전략매핑
-  @IsNumber()
+  // 일간수익률-전략매핑
+  @IsString()
   @Column({ type: 'bigint' })
-  strategy_code: number;
+  strategy_code: string;
 
-  @ManyToOne(() => MemberStrategy, (ms) => ms.backtestMontlyProfitRateChart)
+  @ManyToOne(() => MemberStrategy, (ms) => ms.backtestDailyProfitRateChart)
+  @JoinColumn({ name: 'strategy_code' })
   strategy: MemberStrategy;
 }

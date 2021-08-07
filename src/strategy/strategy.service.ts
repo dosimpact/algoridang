@@ -240,9 +240,10 @@ export class StrategyService {
         'operationMemberList',
         'universal',
         'backtestWinRatio',
-        'backtestMontlyProfitRateChart',
-        'backtestDailyProfitRateChart',
+        'accumulateProfitRateChart',
         'histories',
+        'backtestMontlyProfitRateChart',
+        // 'backtestDailyProfitRateChart',
       ],
     });
     return {
