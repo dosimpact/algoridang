@@ -1,17 +1,30 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { integer } from 'aws-sdk/clients/cloudfront';
 import axios from 'axios';
-let dataServerUrl= 'http://3.34.123.79:5000'
+
 @Injectable()
 export class FlaskService {
-  constructor() {
+  private readonly dataServerUrl: string;
+  constructor(private readonly configService: ConfigService) {
+    this.dataServerUrl = this.configService.get('DATA_SERVER_URL');
   }
-
+  // (0) health Check
+  async healthCheck() {
+    try {
+      const { status } = await axios.get(`${this.dataServerUrl}`);
+      if (status === 200) return true;
+      return false;
+    } catch (error) {
+      return false;
+    }
+  }
+  // (1) ??
   async setCorporationDBData() {
     try {
       // sido / sigungu 정보 써서 서버로 쏘면 됨
       const { data } = await axios.get(
-        `${dataServerUrl}/DBinit/Corporation`,
+        `${this.dataServerUrl}/DBinit/Corporation`,
       );
       return data;
     } catch (e) {
@@ -19,34 +32,31 @@ export class FlaskService {
       return e;
     }
   }
-  
-  async setBackTest(strategyCodedata: integer) {
+  // (2) backtest 실행, - strategyCode 입력
+  async setBackTest(strategyCode: integer) {
     try {
-      const { data , request} = await axios({
+      const { data, request } = await axios({
         method: 'post',
-        url: `${dataServerUrl}/backtest`,
+        url: `${this.dataServerUrl}/backtest`,
         data: {
-          "strategyCode" : strategyCodedata
+          strategyCode,
         },
-        headers: {  
+        headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'}
+          'Access-Control-Allow-Origin': '*',
+        },
       });
-
-
       return data;
     } catch (e) {
       console.error('[FAIL] GET test', e);
       return e;
     }
   }
-
-  async check(id: string) {
-    
+  // (3) 작업 상태 점검 - task_id 입력
+  async check(task_id: string) {
     try {
-      
       const { data } = await axios.get(
-        `${dataServerUrl}/check/${id}`,
+        `${this.dataServerUrl}/check/${task_id}`,
       );
       return data;
     } catch (e) {
@@ -54,6 +64,4 @@ export class FlaskService {
       return e;
     }
   }
-
-  
 }
