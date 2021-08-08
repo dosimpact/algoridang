@@ -135,7 +135,7 @@ const ScreateBasic = () => {
               placeholder={"Ex) 10000000"}
               {...register("investProfitInfo.invest_principal", {
                 // required: true,
-                valueAsNumber: true,
+                // valueAsNumber: true,
               })}
             ></input>
           </div>
@@ -149,7 +149,7 @@ const ScreateBasic = () => {
               placeholder={"Ex) 0.1"}
               {...register("investProfitInfo.securities_corp_fee", {
                 // required: true,
-                valueAsNumber: true,
+                // valueAsNumber: true,
               })}
             ></input>
           </div>
