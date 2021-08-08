@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import { useMutation } from "react-query";
 import { strategyApi } from "states/api";
 import {

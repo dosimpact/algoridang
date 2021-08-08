@@ -12,41 +12,41 @@ import ReturnsStatus from "components/strategy-report/ReturnsStatus";
 import Description from "components/strategy-report/Description";
 import useStrategyDetail from "states/react-query/strategy/useStrategyDetail";
 
-const dummyDatas = {
-  title: "삼성전자 황금 신호",
-  subTitle: ["단일 종목", "골든 크로스"],
-  CAGR: 22.22,
-};
+// const dummyDatas = {
+//   title: "삼성전자 황금 신호",
+//   subTitle: ["단일 종목", "골든 크로스"],
+//   CAGR: 22.22,
+// };
 
-const dummyDatasHistory = {
-  header: ["날짜", "매수/매도", "가격", "수익/손실"],
-  body: [
-    {
-      날짜: "20-06-15",
-      "매수/매도": "삼성전자",
-      가격: "99,000",
-      "수익/손실": "12.7",
-    },
-    {
-      날짜: "20-06-10",
-      "매수/매도": "삼성전자",
-      가격: "88,000",
-      "수익/손실": "",
-    },
-    {
-      날짜: "20-06-05",
-      "매수/매도": "삼성전자",
-      가격: "88,900",
-      "수익/손실": "12.7",
-    },
-    {
-      날짜: "20-05-13",
-      "매수/매도": "삼성전자",
-      가격: "89,500",
-      "수익/손실": "",
-    },
-  ],
-};
+// const dummyDatasHistory = {
+//   header: ["날짜", "매수/매도", "가격", "수익/손실"],
+//   body: [
+//     {
+//       날짜: "20-06-15",
+//       "매수/매도": "삼성전자",
+//       가격: "99,000",
+//       "수익/손실": "12.7",
+//     },
+//     {
+//       날짜: "20-06-10",
+//       "매수/매도": "삼성전자",
+//       가격: "88,000",
+//       "수익/손실": "",
+//     },
+//     {
+//       날짜: "20-06-05",
+//       "매수/매도": "삼성전자",
+//       가격: "88,900",
+//       "수익/손실": "12.7",
+//     },
+//     {
+//       날짜: "20-05-13",
+//       "매수/매도": "삼성전자",
+//       가격: "89,500",
+//       "수익/손실": "",
+//     },
+//   ],
+// };
 
 const StrategyDetails = () => {
   const Back = useBackButton();
@@ -62,10 +62,10 @@ const StrategyDetails = () => {
     () => strategyDetailQuery?.data?.memberStrategy,
     [strategyDetailQuery?.data]
   );
-  const backtestDetailInfo = useMemo(
-    () => strategyDetailQuery?.data?.memberStrategy?.backtestDetailInfo,
-    [strategyDetailQuery?.data]
-  );
+  // const backtestDetailInfo = useMemo(
+  //   () => strategyDetailQuery?.data?.memberStrategy?.backtestDetailInfo,
+  //   [strategyDetailQuery?.data]
+  // );
 
   const investProfitInfo = useMemo(
     () => strategyDetailQuery?.data?.memberStrategy?.investProfitInfo,
@@ -73,12 +73,16 @@ const StrategyDetails = () => {
   );
 
   const histories = useMemo(
-    () => strategyDetailQuery?.data?.memberStrategy?.histories,
+    () =>
+      strategyDetailQuery?.data?.memberStrategy?.histories.map((history) => ({
+        ...history,
+        history_date: String(history.history_date).substr(0, 10),
+      })),
     [strategyDetailQuery?.data]
   );
   console.log("histories", histories);
-
   console.log("investProfitInfo", investProfitInfo);
+
   return (
     <StrategyDetailP>
       <WingBlank style={{ margin: "15x" }} size="lg">

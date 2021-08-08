@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
 import { useRecoilState } from "recoil";
@@ -21,7 +21,7 @@ export interface IformStateBasicSetting {
 // todo:refactor : 유효성 검사
 const ScreateBasic = () => {
   const { register, handleSubmit } = useForm<IformStateBasicSetting>();
-  const [_, setStrategyState] = useRecoilState(atomStrategyState);
+  const [, setStrategyState] = useRecoilState(atomStrategyState);
 
   return (
     <SScreateBasic>

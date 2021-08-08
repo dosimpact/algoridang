@@ -4,11 +4,8 @@ import { useForm } from "react-hook-form";
 import { Button, List, Radio } from "antd-mobile";
 import useTrading from "states/react-query/useTrading";
 import { StrategyName, StrategyValue } from "states/interface/trading/entities";
-import { useRecoilState, useRecoilValue } from "recoil";
-import {
-  atomStrategyState,
-  parseCreateMyStrategy,
-} from "states/recoil/strategy";
+import { useRecoilState } from "recoil";
+import { atomStrategyState } from "states/recoil/strategy";
 import { AddUniversalInput } from "states/interface/trading/dtos";
 import useCreateStrategy from "states/react-query/useCreateStrategy";
 
@@ -181,8 +178,8 @@ const ScreatePropterties = () => {
               //   setting_json &&
               //   keyTradingName &&
               //   (setting_json[keyTradingName] as Record<string, string>);
-              const resa = setting_json?.GoldenCross;
-              const resb = setting_json?.["GoldenCross"];
+              // const resa = setting_json?.GoldenCross;
+              // const resb = setting_json?.["GoldenCross"];
               const resc = setting_json?.[
                 keyTradingName as keyof StrategyValue
               ] as Object;

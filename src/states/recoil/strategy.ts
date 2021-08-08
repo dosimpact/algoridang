@@ -1,7 +1,6 @@
 import { atom, selector } from "recoil";
 import { CreateMyStrategyInput } from "states/interface/strategy/dtos";
 import { AddUniversalInput } from "states/interface/trading/dtos";
-import { IformStateBasicSetting } from "pages/makers/strategy-create/section/screate-basic";
 import { Corporation } from "states/interface/finance/entities";
 
 interface IStrategyState {
