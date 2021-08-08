@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { integer } from 'aws-sdk/clients/cloudfront';
 import axios from 'axios';
 
 @Injectable()
@@ -33,7 +32,7 @@ export class FlaskService {
     }
   }
   // (2) backtest 실행, - strategyCode 입력
-  async setBackTest(strategyCode: integer) {
+  async setBackTest(strategyCode: number) {
     try {
       const { data, request } = await axios({
         method: 'post',
