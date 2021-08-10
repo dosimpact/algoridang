@@ -10,7 +10,7 @@ export class HashList {
   @PrimaryColumn()
   strategy_code: string;
 
-  @ManyToOne(() => MemberStrategy, (ms) => ms.hashList)
+  @ManyToOne(() => MemberStrategy, (ms) => ms.hashList, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'strategy_code' })
   strategy: MemberStrategy;
 
@@ -18,7 +18,7 @@ export class HashList {
   @PrimaryColumn()
   hash_code: number;
 
-  @ManyToOne(() => Hash, (hash) => hash.strategyList)
+  @ManyToOne(() => Hash, (hash) => hash.strategyList, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'hash_code' })
   hash: Hash;
 }

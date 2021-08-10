@@ -35,7 +35,9 @@ export class History {
   @Column()
   strategy_code: number; // 전략 코드
 
-  @ManyToOne(() => MemberStrategy, (ms) => ms.histories)
+  @ManyToOne(() => MemberStrategy, (ms) => ms.histories, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'strategy_code' })
   strategy: MemberStrategy;
 

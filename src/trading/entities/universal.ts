@@ -62,7 +62,9 @@ export class Universal {
   @IsString()
   @Column()
   strategy_code: string;
-  @ManyToOne(() => MemberStrategy, (st) => st.universal)
+  @ManyToOne(() => MemberStrategy, (st) => st.universal, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'strategy_code' })
   memberStrategy: MemberStrategy;
 

@@ -28,7 +28,9 @@ export class BacktestDailyProfitRateChart {
   @Column({ type: 'bigint' })
   strategy_code: string;
 
-  @ManyToOne(() => MemberStrategy, (ms) => ms.backtestDailyProfitRateChart)
+  @ManyToOne(() => MemberStrategy, (ms) => ms.backtestDailyProfitRateChart, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'strategy_code' })
   strategy: MemberStrategy;
 }

@@ -9,7 +9,9 @@ export class SimpleBacktest {
   @PrimaryColumn()
   universal_code: number;
 
-  @OneToOne(() => Universal, (univ) => univ.simpleBacktest)
+  @OneToOne(() => Universal, (univ) => univ.simpleBacktest, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'universal_code' })
   universal: Universal;
 
