@@ -8,6 +8,7 @@ import { useRecoilState } from "recoil";
 import { atomStrategyState } from "states/recoil/strategy";
 import { AddUniversalInput } from "states/interface/trading/dtos";
 import useCreateStrategy from "states/react-query/useCreateStrategy";
+import useBackTestMutation from "states/react-query/backtest/useCreateStrategy";
 
 const RadioItem = Radio.RadioItem;
 
@@ -69,6 +70,7 @@ const ScreatePropterties = () => {
   };
   const { createMyStrategyMutation, addUniversalMutation } =
     useCreateStrategy();
+  const { pushBackTestQMutation } = useBackTestMutation();
   // const parsedCreateMyStrategy = useRecoilValue(parseCreateMyStrategy);
   const handleFinalSubmit = async () => {
     const createMyStrategyMutationRes =
@@ -109,6 +111,10 @@ const ScreatePropterties = () => {
         strategy_code: String(strategy_code),
       });
       console.log("addUniversalMutationRes", addUniversalMutationRes);
+    }
+    if (strategy_code) {
+      const res = await pushBackTestQMutation.mutateAsync({ strategy_code });
+      console.log("pushBackTestQMutationRes", res);
     }
 
     return {

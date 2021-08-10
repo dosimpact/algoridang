@@ -110,7 +110,7 @@ const MockInvestDetail = () => {
           invest_principal="0"
           total_profit_price="0"
         />
-        <TradingPoints />
+        {/* <TradingPoints /> */}
         <TradingHistory
           title="오늘의 종목"
           header={dummyDatasHistory.header}

@@ -1,5 +1,6 @@
 import { WingBlank, WhiteSpace } from "antd-mobile";
 import StrategyCard from "components/strategy/StrategyCard";
+import StrategyCardInfo from "components/strategy/StrategyCardInfo";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import useStrategy from "states/react-query/strategy/useStrategy";
@@ -43,7 +44,7 @@ const StrategyFeeds = () => {
   return (
     <WingBlank style={{ margin: "15x" }} size="lg">
       <WhiteSpace size="xl" />
-      <StrategyCard
+      <StrategyCardInfo
         title="투자 성향별 종목 검색"
         subTitle="나만의 성향에 맞는 전략 찾아봅니다."
         onClick={(e) => {

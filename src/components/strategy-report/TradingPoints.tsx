@@ -1,18 +1,39 @@
 import ChartCumulativeReturn from "components/data-display/ChartCumulativeReturn";
 import { SubTitle } from "components/data-display/Typo";
-import React from "react";
+import LineSeriesChartPointing from "components/light-weight/LineSeriesChartPointing";
+import React, { useMemo } from "react";
+import useDailyStock from "states/react-query/finance/useDailyStock";
 import styled from "styled-components";
 
+const ChartBuySelPoint: React.FC<{ ticker: string }> = ({ ticker }) => {
+  const { dayilStocks } = useDailyStock(ticker, 365, 0, "ASC");
+
+  const datas = useMemo(() => {
+    return dayilStocks?.map((daily) => ({
+      time: daily.stock_date,
+      value: Number(daily.close_price),
+    }));
+  }, [dayilStocks]);
+
+  return <LineSeriesChartPointing datas={datas} />;
+};
+
 interface ITradingPoints {
+  title?: string;
+  ticker: string;
   props?: any;
 }
-const TradingPoints: React.FC<ITradingPoints> = ({ ...props }) => {
+const TradingPoints: React.FC<ITradingPoints> = ({
+  title,
+  ticker,
+  ...props
+}) => {
   return (
     <STradingPoints {...props}>
       <div className="flexRow" style={{ marginTop: "50px" }}>
-        <SubTitle title="매매 시점" style={{ marginTop: "20px" }} />
+        <SubTitle title={title || "매매 시점"} style={{ margin: "20px 0px" }} />
       </div>
-      <ChartCumulativeReturn />
+      <ChartBuySelPoint ticker={ticker} />
     </STradingPoints>
   );
 };

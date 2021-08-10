@@ -2,11 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import FNumber from "components/data-display/FNumber";
 
-interface IStrategyCard {
+interface IStrategyCardInfo {
   thumnail?: string;
   title: string;
   subTitle?: string;
-  CAGR?: number;
   onClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
   StrategyState?: string;
 }
@@ -24,8 +23,7 @@ const mapToDefaultThunmnail = (title: string) => {
   return "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg";
 };
 
-const StrategyCard: React.FC<IStrategyCard> = ({
-  CAGR,
+const StrategyCardInfo: React.FC<IStrategyCardInfo> = ({
   subTitle = "",
   thumnail = "",
   title = "Error",
@@ -41,20 +39,28 @@ const StrategyCard: React.FC<IStrategyCard> = ({
         }}
       >
         <article className="left">
-          <img className="thumnail" src={thumnail} alt="thumnail"></img>
+          <img
+            className="thumnail"
+            src={mapToDefaultThunmnail(title)}
+            alt="thumnail"
+          ></img>
+          <img
+            className="thumnail"
+            src={mapToDefaultThunmnail(title + "1")}
+            alt="thumnail"
+          ></img>
+          <img
+            className="thumnail"
+            src={mapToDefaultThunmnail(title + "111")}
+            alt="thumnail"
+          ></img>
         </article>
         <article className="mid">
           <div className="title">{title}</div>
           {subTitle && <div className="subTitle">{subTitle}</div>}
-          <div className="CAGR">
-            연수익{" "}
-            {CAGR ? (
-              <FNumber val={CAGR} hasPercentage={true} />
-            ) : (
-              "- 백테스팅 대기중"
-            )}
-          </div>
+          <div>-</div>
         </article>
+
         <article className="right">
           {StrategyState && (
             <div className="strategyState">{StrategyState}</div>
@@ -95,12 +101,29 @@ const Card = styled.section`
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
+    .thumnail {
+      position: absolute;
+    }
+    .thumnail:nth-child(1) {
+      left: 1rem;
+      z-index: 1;
+    }
+    .thumnail:nth-child(2) {
+      left: 2rem;
+      z-index: 2;
+    }
+    .thumnail:nth-child(3) {
+      left: 3rem;
+      z-index: 3;
+    }
   }
   .mid {
     width: auto;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    margin-left: 3rem;
     .title {
       font-size: ${(props) => props.theme.FontSizeLg};
     }
@@ -125,4 +148,4 @@ const Card = styled.section`
   }
 `;
 
-export default StrategyCard;
+export default StrategyCardInfo;

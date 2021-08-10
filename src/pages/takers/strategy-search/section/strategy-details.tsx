@@ -169,7 +169,12 @@ const StrategyDetails = () => {
           />
         )}
         {/* 2. 매매 시점 TradingPoints.tsx */}
-        <TradingPoints />
+        {firstUniversal && firstUniversal.universal_code && (
+          <TradingPoints
+            ticker={firstUniversal.ticker}
+            title={`매매시점 - ${firstUniversal.ticker} | ${firstUniversal.trading_strategy_name}`}
+          />
+        )}
         {/* 3. 트레이딩 히스토리 */}
         {histories && (
           <TradingHistory

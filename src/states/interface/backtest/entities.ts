@@ -1,3 +1,4 @@
+import { CoreOutput } from "../common/dtos";
 import { Corporation } from "../finance/entities";
 import { MemberStrategy } from "../strategy/entities";
 
@@ -80,4 +81,15 @@ export interface AccumulateProfitRateChart {
   // (1) 차트에 대한 원본 전략 매핑
   strategy_code: string;
   strategy: MemberStrategy;
+}
+
+export interface SetBackTestOutput extends CoreOutput {
+  task_id?: string;
+}
+
+export interface PushBackTestQInput {
+  strategy_code: string;
+}
+export interface PushBackTestQOutput extends CoreOutput {
+  task_id?: string;
 }

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getLocalMemberInfo } from "states/local-state";
+import { PushBackTestQInput } from "./interface/backtest/entities";
 import {
   GetCorporationInput,
   GetCorporationsWithTermInput,
@@ -104,6 +105,19 @@ export const tradingApi = {
     getBaseTradingStrategyList: () => axios.get(`trading/base`),
   },
   POST: {},
+  PATCH: {},
+  DELETE: {},
+};
+
+// (4) backtest api
+
+export const backtestApi = {
+  GET: {},
+  POST: {
+    pushBackTestQ: (body: PushBackTestQInput) => {
+      return axios.post(`backtest/backtest-q`, body);
+    },
+  },
   PATCH: {},
   DELETE: {},
 };

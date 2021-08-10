@@ -118,7 +118,7 @@ const StrategyReport = () => {
           invest_principal="0"
           total_profit_price="0"
         />
-        <TradingPoints />
+        {/* <TradingPoints /> */}
         <TradingHistory
           title="히스토리"
           body={dummyDatasHistory.body}
