@@ -8,7 +8,7 @@ const FNumber: React.FC<{
 }> = ({ val, hasPercentage = false, ...props }) => {
   return (
     <FNumberS num={val} {...props}>
-      {val * 100}
+      {Math.round(val * 100)}
       {hasPercentage ? "%" : ""}
     </FNumberS>
   );
