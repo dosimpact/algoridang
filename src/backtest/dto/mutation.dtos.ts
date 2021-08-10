@@ -52,3 +52,15 @@ export class UpdateHistoryInput extends PartialType(AddHistoryInput) {
 export class UpdateHistoryOutput extends CoreOutput {
   history?: History;
 }
+
+export class SetBackTestOutput extends CoreOutput {
+  task_id?: string;
+}
+
+export class PushBackTestQInput {
+  @IsString()
+  strategy_code: string;
+}
+export class PushBackTestQOutput extends CoreOutput {
+  task_id?: string;
+}

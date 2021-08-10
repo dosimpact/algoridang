@@ -1,4 +1,9 @@
-import { CacheModule, CacheStoreFactory, Module } from '@nestjs/common';
+import {
+  CacheModule,
+  CacheStoreFactory,
+  forwardRef,
+  Module,
+} from '@nestjs/common';
 import { BacktestService } from './backtest.service';
 import { BacktestResolver } from './backtest.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -19,6 +24,7 @@ import {
 import * as redisStore from 'cache-manager-redis-store';
 import { ConfigModule } from '@nestjs/config';
 import { FlaskService } from './flask.service';
+import { StrategyModule } from 'src/strategy/strategy.module';
 
 @Module({
   imports: [
@@ -42,6 +48,7 @@ import { FlaskService } from './flask.service';
       ttl: +process.env.REDIS_API_CACHE_TTL, // 10초 캐슁
       // max: 3, // 3개의 key값 유지
     }),
+    forwardRef(() => StrategyModule),
   ],
   controllers: [BacktestQueryController, BacktestMutationController],
   providers: [BacktestService, BacktestResolver, FlaskService],

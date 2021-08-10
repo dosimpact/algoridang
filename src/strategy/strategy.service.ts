@@ -180,15 +180,16 @@ export class StrategyService {
         open_yes_no: true,
       },
       relations: [
-        'hashList',
+        'hashList', // 기본 ----
         'hashList.hash',
         'investProfitInfo',
         'backtestDetailInfo',
         'operationMemberList',
-        // // 'universal',
-        'backtestWinRatio',
-        'histories',
-        'backtestMontlyProfitRateChart',
+        'universal',
+        'queueList',
+        'histories', // 디테일 -- eager
+        // 'backtestWinRatio',  // lazy --
+        // 'backtestMontlyProfitRateChart',
         // 'accumulateProfitRateChart',     // 일일 누적 - join 없이
         // 'backtestDailyProfitRateChart', // 일일 수익실현 - join 없이
       ],
@@ -219,6 +220,9 @@ export class StrategyService {
           'operationMemberList',
           'universal',
         ],
+        order: {
+          create_date: 'DESC',
+        },
       });
     return {
       ok: true,
@@ -239,15 +243,16 @@ export class StrategyService {
         strategy_code,
       },
       relations: [
-        'hashList',
+        'hashList', // 기본 ----
         'hashList.hash',
         'investProfitInfo',
         'backtestDetailInfo',
         'operationMemberList',
-        // // 'universal',
-        'backtestWinRatio',
-        'histories',
-        'backtestMontlyProfitRateChart',
+        'universal',
+        'queueList',
+        'histories', // 디테일 -- eager
+        // 'backtestWinRatio',  // lazy --
+        // 'backtestMontlyProfitRateChart',
         // 'accumulateProfitRateChart',     // 일일 누적 - join 없이
         // 'backtestDailyProfitRateChart', // 일일 수익실현 - join 없이
       ],

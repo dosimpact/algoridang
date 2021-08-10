@@ -1,11 +1,20 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
+import { StrategyService } from 'src/strategy/strategy.service';
+import {
+  PushBackTestQInput,
+  PushBackTestQOutput,
+  SetBackTestOutput,
+} from './dto/mutation.dtos';
 
 @Injectable()
 export class FlaskService {
   private readonly dataServerUrl: string;
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly strategyService: StrategyService,
+  ) {
     this.dataServerUrl = this.configService.get('DATA_SERVER_URL');
   }
   // (0) health Check
@@ -32,7 +41,7 @@ export class FlaskService {
     }
   }
   // (2) backtest 실행, - strategyCode 입력
-  async setBackTest(strategyCode: number) {
+  async __setBackTest(strategyCode: number): Promise<SetBackTestOutput> {
     try {
       const { data, request } = await axios({
         method: 'post',
@@ -45,10 +54,28 @@ export class FlaskService {
           'Access-Control-Allow-Origin': '*',
         },
       });
+      if (request?.statusCode !== 200) {
+        return { ok: false, ...data };
+      }
       return data;
     } catch (e) {
       console.error('[FAIL] GET test', e);
-      return e;
+      throw e;
+    }
+  }
+  // (2) backtest 큐 넣기
+  async pushBackTestQ(
+    email_id: string,
+    { strategy_code }: PushBackTestQInput,
+  ): Promise<PushBackTestQOutput> {
+    const res = await this.strategyService.__checkMyStrategy({
+      email_id,
+      strategy_code,
+    });
+    if (res.ok) {
+      return this.__setBackTest(Number(strategy_code));
+    } else {
+      throw new UnauthorizedException('cannot access strategy');
     }
   }
   // (3) 작업 상태 점검 - task_id 입력

@@ -29,7 +29,7 @@ export class BacktestQueue {
   strategy_code: number;
 
   @ManyToOne(() => MemberStrategy, (ms) => ms.queueList, {
-    onDelete: 'SET NULL',
+    onDelete: 'CASCADE',
   })
   @JoinColumn({ name: 'strategy_code' })
   strategy: MemberStrategy;
