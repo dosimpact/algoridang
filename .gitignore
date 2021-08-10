@@ -1,6 +1,5 @@
 .env
 .vscode
 __pycache__
-flask/crawling/DB/identification.py
-flask/openAPI/DB/identification.py
-dataserver/openAPI/DB/identification.py
+identification.py
+_TEST/
