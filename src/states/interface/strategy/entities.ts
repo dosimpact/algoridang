@@ -13,7 +13,7 @@ import {
   MemberInfo,
   OperationMemberList,
 } from "../member/entities";
-import { CustomTradingStrategy } from "../trading/entities";
+import { CustomTradingStrategy, Universal } from "../trading/entities";
 
 export enum InvestType {
   Unclassified = "Unclassified", // 0 - 미분류
@@ -69,7 +69,7 @@ export interface MemberStrategy {
   histories: History[];
 
   // (5) 전략의 유니버셜 매핑
-  stockList: StockList[];
+  universal: Universal[];
 }
 
 // NM : 전략 - 해쉬 매핑 테이블

@@ -31,7 +31,9 @@ const ReturnsStatus: React.FC<IReturnsStatus> = ({
           <div className="name">연수익률</div>
         </div>
         <div className="flexRowSBt" style={{ marginBottom: "15px" }}>
-          <div className="value returnsValue">{profit_rate}%</div>
+          <div className="value returnsValue">
+            {Math.round(Number(profit_rate) * 100)}%
+          </div>
         </div>
         <div className="flexRowSBt" style={{ margin: "15px 0px" }}>
           <div className="name">투자 원금</div>

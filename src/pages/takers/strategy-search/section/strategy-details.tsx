@@ -67,6 +67,15 @@ const StrategyDetails = () => {
   //   [strategyDetailQuery?.data]
   // );
 
+  const firstUniversal = useMemo(
+    () =>
+      strategyDetailQuery?.data?.memberStrategy &&
+      strategyDetailQuery?.data?.memberStrategy.universal &&
+      strategyDetailQuery?.data?.memberStrategy?.universal.length >= 1 &&
+      strategyDetailQuery?.data?.memberStrategy?.universal[0],
+    [strategyDetailQuery?.data]
+  );
+
   const investProfitInfo = useMemo(
     () => strategyDetailQuery?.data?.memberStrategy?.investProfitInfo,
     [strategyDetailQuery?.data]
@@ -82,6 +91,7 @@ const StrategyDetails = () => {
   );
   console.log("histories", histories);
   console.log("investProfitInfo", investProfitInfo);
+  console.log("firstUniversal", firstUniversal);
 
   return (
     <StrategyDetailP>
@@ -105,11 +115,6 @@ const StrategyDetails = () => {
               Number(memberStrategy?.backtestDetailInfo?.year_avg_profit_rate)
             }
             thumnail={memberStrategy.image_url}
-            onClick={() => {
-              history.push(
-                `/takers/strategy-search/details/${memberStrategy.strategy_code}`
-              );
-            }}
           />
         )}
 

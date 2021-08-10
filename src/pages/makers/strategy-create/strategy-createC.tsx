@@ -44,7 +44,7 @@ const StrategyCreateC = () => {
         {tab === SegmentedControlValues[1] && <ScreateTickers />}
         {tab === SegmentedControlValues[2] && <ScreatePropterties />}
       </WingBlank>
-      <div>
+      {/* <div>
         <button
           onClick={() => {
             console.log("[recoil]strategyState", strategyState);
@@ -52,7 +52,7 @@ const StrategyCreateC = () => {
         >
           getState
         </button>
-      </div>
+      </div> */}
     </SStrategyCreateC>
   );
 };
