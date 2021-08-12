@@ -5,7 +5,7 @@
 
 ## NestJS 비즈니스 서버 
 
-![IMG](https://algoridang.s3.ap-northeast-2.amazonaws.com/common/1627272503198d_thumb04.png)
+<!-- ![IMG](https://algoridang.s3.ap-northeast-2.amazonaws.com/common/1627272503198d_thumb04.png) -->
 
 > 알고리당 서비스의 코드와 문서를 정리한 깃 레포 입니다.     
 
@@ -17,160 +17,89 @@
 
 
 <!-- ABOUT THE PROJECT -->
-## About The Project
+## 알고리당 프로젝트 소개
 
-주린이들을 위한 8.8% 이상의 투자수익을 가져갈 수 있는  
-투자 전략 매매 플렛폼   
+> 퀀트 전략 설계를 통해 개인투자자들에게 일관적 투자성향을 제공하는 SW플랫폼  
+  
+<br/>
 
-Feature1 핵심 기능:
-* 나만의 투자 전략 생성 
-* 종목 선별 및 매매 전략 선택
-* 백테스팅 기능
-* 투자 현황 및 리포트 기능   
+"주식, 퀀트로 달콤해지다"
+낮은 금융 지식이 요구되는 방식으로 누구나 퀀트 전략을 수립   
+전략을 백테스트를 통해 검증하고, 자만의 퀀트 전략을 기반으로 알림 제공    
+수익이 나는 자신만의 전략을 공유 및 판매를 할 수 있는 SW 플랫폼을 제공     
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have have contributed to expanding this template!
+|종목탐색|전략탐색|
+|---|---|
+|<img src="./docs/img/demo-1.gif"> |  <img src="./docs/img/demo-2.gif">|  
+<br/>
 
-A list of commonly used resources that I find helpful are listed in the acknowledgements.
+## 주요 기능
 
-### Built With
+- 투자전략 생성 : 종목 (유니버스)에 투자 매매 전략 적용 시켜 `나만의 투자 알고리즘 생성`  
+- 투자전략 테스트 : 알고리즘 `백테스트` 기능 ( 과거 데이터로 매매 시뮬레이션 )  
+- 투자전략 리포트 : 백테스트 결과 `리포트` 처리  
+- 투자전략 `판매` : 선정된 종목과 매매전략 자체를 수요자한테 팔 수 있는 기능  
+- 투자전략 `구매` : 수요자는 투자 전략을 탐색하고 구매할 수 있는 기능  
+- 구매한 전략 `모의투자` 기능 : 구매한 시점부터 현재까지 시뮬레이션 배치 기능  
+- 투자종목 발굴 기능 : `재무정보 기반`의 종목 발굴 기능  
 
-This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-* [Bootstrap](https://getbootstrap.com)
-* [JQuery](https://jquery.com)
-* [Laravel](https://laravel.com)
 
+## 주요 기술 과제
 
+- [ TypeScript ] TS 기반의 `CBD` 기반의 리액트 클라이언트 및 DI 패턴의 비즈니스 `서버 아키텍처 설계`  
+- [ TypeScript ] Client 사이드에서 `Server 코드의 재사용` ( 예) Entity,DTO 부분 )  
+- [BE] 투자 전략 시뮬레이션 처리 안정성을 위해,  데이터 서버간 `Redis 메시지 큐` 도입  
+- [BE] 쿼리 지역성을 고려한 '가격 데이터 호출 부분' `Redis API Cache 적용`  
+- [BE] JWT 토큰 미들웨어 기반의 `Authentication` 및 Auth 데코레이터 기반의 `Authorization`   
+- [FE] `Recoil` 기반의 `중앙집중식 애러핸들링` 구현    
+- [FE] `React-Query` 기반의 `ServerState 캐시 관리` 및 `Hooks 모듈화`  
+- [FE] `Headless Components 구조` 도입으로, 구현층은 hook 및 표현층은 Presenter 컴포넌트로 분리 
+- [FE] `styled-components` 도입, 글로벌 CSS, 글로벌 Theming 변수  
+- [FE] 리랜더링 최소화 ( `메모이제이션` 및 `SSR` )   
+- [CI/CD] TestServer (Heroku, Netlify), ProdServer ( pipeline 구축 , TestCode, Docker 베포 ) 
 
-<!-- GETTING STARTED -->
-## Getting Started
+## 기술 블로그
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-
-### Installation
-
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/your_username_/Project-Name.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```JS
-   const API_KEY = 'ENTER YOUR API';
-   ```
+https://velog.io/@ypd03008/series/%EC%95%8C%EA%B3%A0%EB%A6%AC%EB%8B%B9  
+[![algebraic data types](https://img.shields.io/badge/BLOG%20POST%20LINK-663399?style=flat-square&logo=blog&logoColor=white)](https://velog.io/@ypd03008/series/%EC%95%8C%EA%B3%A0%EB%A6%AC%EB%8B%B9)                 
 
 
 
-<!-- USAGE EXAMPLES -->
-## Usage
+## 프로젝트 산출물
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-
-
-<!-- ROADMAP -->
-## Roadmap
-
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a list of proposed features (and known issues).
-
-
-
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
-
-<!-- CONTACT -->
-## Contact
-
-김도영 Kim Do Young - ypd03008@gmail.com
-
-
-
-
-
-----
-
-<div align="center">
-
-
-### 표 테스트
-
-|H1|H2|H3|
+|항목|설명|링크|
 |--|--|--|
-|1|2|[:link:](URL)|  
-|awefawef|[![NestBadge](https://img.shields.io/badge/BLOG%20POST%20LINK-hello-F3BC2F?style=flat-squre&logo=nestjs&logoColor=red)](https://naver.com)|6|
+|API 문서| https://documenter.getpostman.com/view/11513933/TzsYPpy6 |[:link:](https://documenter.getpostman.com/view/11513933/TzsYPpy6)|  
+|서버 정책| https://www.notion.so/06fa737b61934c1fac0efe5a11138950 |[:link:](https://www.notion.so/06fa737b61934c1fac0efe5a11138950)|
+|단위 설계| https://www.notion.so/feat01-91fd79e0c9054fe0bd5c2b576cfdb424 |[:link:](https://www.notion.so/feat01-91fd79e0c9054fe0bd5c2b576cfdb424)
+
+
+<!-- |awefawef|[![NestBadge](https://img.shields.io/badge/BLOG%20POST%20LINK-hello-F3BC2F?style=flat-squre&logo=nestjs&logoColor=red)](https://naver.com)|6|
 
  
   [![algebraic data types](https://img.shields.io/badge/CODE%20LINK-white?style=flat-square&logo=typescript)](#)    
   
-  [![algebraic data types](https://img.shields.io/badge/BLOG%20POST%20LINK-663399?style=flat-square&logo=gatsby&logoColor=white)](#)                    
-</div>
+  [![algebraic data types](https://img.shields.io/badge/BLOG%20POST%20LINK-663399?style=flat-square&logo=gatsby&logoColor=white)](#)    -->
+
+
+<!-- GETTING STARTED -->
+
+<!-- Prerequisites -->
+
+<!-- Installation -->
+
+<!-- USAGE EXAMPLES -->
+
+<!-- ROADMAP -->
+
+<!-- LICENSE -->
+<!-- ## License -->
+<!-- Distributed under the MIT License. See `LICENSE` for more information. -->
 
 
 
 
-[![NestBadge](https://img.shields.io/badge/BLOG%20POST%20LINK-hello-F3BC2F?style=for-the-badge&logo=nestjs&logoColor=red)](https://naver.com)
-
-[![NestBadge](https://img.shields.io/badge/BLOG%20POST%20LINK-hello-F3BC2F?style=flat-squre&logo=nestjs&logoColor=red)](https://naver.com)
-
-
-## Git 커밋규칙
-
-```jsx
-feat : 새로운 기능에 대한 커밋
-fix : 버그 수정에 대한 커밋
-build : 빌드 관련 파일 수정에 대한 커밋
-chore : 그 외 자잘한 수정에 대한 커밋
-ci : CI관련 설정 수정에 대한 커밋
-docs : 문서 수정에 대한 커밋
-style : 코드 스타일 혹은 포맷 등에 관한 커밋
-refactor :  코드 리팩토링에 대한 커밋
-test : 테스트 코드 수정에 대한 커밋
-```
-
-[[Git] 좋은 커밋 메세지 작성하기위한 규칙들](https://beomseok95.tistory.com/328)
-
-
-### 빌드 및 베포
-- TestServer  
-```
-git remote add heroku https://git.heroku.com/algoridang.git
-git push heroku master
-```
-### Service Naming 규칙  
-
-|이름|내용|비고|
-|------|---|---|
-|get<엔터티이름>[List]By[인자]  |:get   |CRUD
-|create<엔터티이름>[List]       |:create|CRUD
-|update<엔터티이름>             |:update|CRUD
-|upsert<엔터티이름>             |:create+update|CRUD
-|delete<엔터티이름>	            |:softDelete|CRUD
-|hardDelete<엔터티이름>         |:hardDelete|CRUD
-|recover<엔터티이름>            |:              |CRUD
-
-|addHistory<엔터티이름>         |:1:N 추가할때+(Upsert기능도)|
-|notice<엔터티이름>	            |:알림          |
-|copy<엔터티이름>		        |:복사          |
-
-
-### Installed Packaged
+## Installed Packaged  
 
 - package  
 ```ts
@@ -191,7 +120,8 @@ ts-morph
 -@types/passport-google-oauth20 
 -@types/bull @types/cache-manager @types/cache-manager-redis-store
 ```
-### 커밋 규칙 
+
+### 커밋 규칙   
 |규칙|설명|
 |---|---|
 |feat     | 새로운 기능에 대한 커밋          |
@@ -204,7 +134,7 @@ ts-morph
 |refactor | 코드 리팩토링에 대한 커밋           |
 |test     | 테스트 코드 수정에 대한 커밋           |
 
-### 이슈 Label 규칙 
+### 이슈 Label 규칙   
 |접두어|내용|
 |---|---|
 |type | todo💚|
@@ -214,3 +144,8 @@ ts-morph
 |type | bug🐞|
 |type | discussion🔥|
 |type | refactor🧬|
+
+
+## Contact
+
+김도영 Kim Do Young - ypd03008@gmail.com
