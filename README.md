@@ -1,246 +1,85 @@
-# python + flask + celery
+<div align="center">
 
-## ✔
+# Welcome 알고리당 👏  
 
-## 01 base
+## 데이터 분석 서버
 
-- 1. redis 설치하기
-- 2. pip install celery, pip install redis 설치하기
+<!-- ![IMG](https://algoridang.s3.ap-northeast-2.amazonaws.com/common/1627272503198d_thumb04.png) -->
 
-- 3.1 celeryconfig.py 작성
-- 설정 파일이다.
+> 알고리당 서비스의 코드와 문서를 정리한 깃 레포 입니다.     
 
-- 바로 접속하기
-- 'redis://133.186.xxx.00:6379/0'
+[![Badge](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=Python&logoColor=red)](#)
+[![Badge](https://img.shields.io/badge/pandas-150458?style=for-the-badge&logo=pandas&logoColor=red)](#)
+[![Badge](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=Flask&logoColor=red)](#)
+[![Badge](https://img.shields.io/badge/Celery-MQ-37814A?style=for-the-badge&logo=Celery&logoColor=red)](#)
+[![Badge](https://img.shields.io/badge/redis-MQ-DC382D?style=for-the-badge&logo=redis&logoColor=red)](#)
+[![Badge](https://img.shields.io/badge/PostgreSQL-DB-4169E1?style=for-the-badge&logo=PostgreSQL&logoColor=red)](#)
 
-- 비번만 있는 경우
-- 'redis://:dosimpact@133.186.xxx.00:6379/0'
+</div>
 
-```py
-broker_url = 'redis://:dosimpact@xxx.xxx.xxx.72:6379/0'
-result_backend = 'redis://:dosimpact@xxx.xxx.xxx.72:6379/0'
 
-task_serializer = 'json'
-result_serializer = 'json'
-accept_content = ['json']
-timezone = 'Asia/Seoul'
-enable_utc = True
 
-# # 오작동 한 작업을 전용 대기열로 라우팅하는 설정
-# task_routes = {
-#     'tasks.add': 'low-priority'
-# }
+<!-- ABOUT THE PROJECT -->
+## 알고리당 프로젝트 소개
 
-# # 작업 속도를 제한하는 설정
-# task_annotations = {
-#     'tasks.add': {'rate_limit': '10/m'
-# }
+> 퀀트 전략 설계를 통해 개인투자자들에게 일관적 투자성향을 제공하는 SW플랫폼  
+  
+<br/>
 
-```
+"주식, 퀀트로 달콤해지다"
+낮은 금융 지식이 요구되는 방식으로 누구나 퀀트 전략을 수립   
+전략을 백테스트를 통해 검증하고, 자만의 퀀트 전략을 기반으로 알림 제공    
+수익이 나는 자신만의 전략을 공유 및 판매를 할 수 있는 SW 플랫폼을 제공     
 
-- 3.2 processor.py 작성
-- 긴 작업이 걸리는 entry points
-- window10 에서는 애러가 나서 os.environ.setdefault('FORKED_BY_MULTIPROCESSING', '1') 추가
+|종목탐색|전략탐색|
+|---|---|
+|<img src="./docs/img/demo-1.gif"> |  <img src="./docs/img/demo-2.gif">|  
+<br/>
 
-```py
-# processor.py
-from celery import Celery
-import time
-import os
 
-# in window env Error, https://github.com/celery/celery/pull/4078
-os.environ.setdefault('FORKED_BY_MULTIPROCESSING', '1')
-# dosimpact
-# BROKER_URL = 'redis://:dosimpact@133.186.xxx.00:6379/0'
-# CELERY_RESULT_BACKEND = 'redis://dosimpact@133.186.xxx.00:6379/0'
-celery = Celery('tasks')
-celery.config_from_object('celeryconfig')
+## 주요 기능
 
+- 투자전략 생성 : 종목 (유니버스)에 투자 매매 전략 적용 시켜 `나만의 투자 알고리즘 생성`  
+- 투자전략 테스트 : 알고리즘 `백테스트` 기능 ( 과거 데이터로 매매 시뮬레이션 )  
+- 투자전략 리포트 : 백테스트 결과 `리포트` 처리  
+- 투자전략 `판매` : 선정된 종목과 매매전략 자체를 수요자한테 팔 수 있는 기능  
+- 투자전략 `구매` : 수요자는 투자 전략을 탐색하고 구매할 수 있는 기능  
+- 구매한 전략 `모의투자` 기능 : 구매한 시점부터 현재까지 시뮬레이션 배치 기능  
+- 투자종목 발굴 기능 : `재무정보 기반`의 종목 발굴 기능  
 
-# celery -A processor worker --loglevel=info
 
+## 주요 기술 과제
 
-@celery.task
-def add( x, y):
-    return x + y
+- [ TypeScript ] TS 기반의 `CBD` 기반의 리액트 클라이언트 및 DI 패턴의 비즈니스 `서버 아키텍처 설계`  
+- [ TypeScript ] Client 사이드에서 `Server 코드의 재사용` ( 예) Entity,DTO 부분 )  
+- [BE] 투자 전략 시뮬레이션 처리 안정성을 위해,  데이터 서버간 `Redis 메시지 큐` 도입  
+- [BE] 쿼리 지역성을 고려한 '가격 데이터 호출 부분' `Redis API Cache 적용`  
+- [BE] JWT 토큰 미들웨어 기반의 `Authentication` 및 Auth 데코레이터 기반의 `Authorization`   
+- [FE] `Recoil` 기반의 `중앙집중식 애러핸들링` 구현    
+- [FE] `React-Query` 기반의 `ServerState 캐시 관리` 및 `Hooks 모듈화`  
+- [FE] `Headless Components 구조` 도입으로, 구현층은 hook 및 표현층은 Presenter 컴포넌트로 분리 
+- [FE] `styled-components` 도입, 글로벌 CSS, 글로벌 Theming 변수  
+- [FE] 리랜더링 최소화 ( `메모이제이션` 및 `SSR` )   
+- [CI/CD] TestServer (Heroku, Netlify), ProdServer ( pipeline 구축 , TestCode, Docker 베포 ) 
+- [DA] Flask OLAP MSA 설계 
+- [DA] 퀀트 투자 백테스트 시뮬레이션 메시지 큐
+- [DA] 퀀트 투자 리포트 제너레이터 메시지 큐
 
-```
+## 기술 블로그
 
-- 3.3 작업을 주는 pub.py 작성
-- celery의 데코레이터가 붙은 함수는 delay를 가지고 이를 호출하여 작업 큐에 넣는다.
-- 반환은 resultAsync 객체이고, ready()를 통해 id가 발급되고
-- id로 작업여부를 확인 가능
+https://velog.io/@ypd03008/series/%EC%95%8C%EA%B3%A0%EB%A6%AC%EB%8B%B9  
+[![algebraic data types](https://img.shields.io/badge/BLOG%20POST%20LINK-663399?style=flat-square&logo=blog&logoColor=white)](https://velog.io/@ypd03008/series/%EC%95%8C%EA%B3%A0%EB%A6%AC%EB%8B%B9)                 
 
-```py
-from processor import add
-from time import sleep
-# task pub
-for i in range(1):
-    result = add.delay(1, 2)
-    print(f"result : {result} {result.ready()}")
-```
 
-## 02 state check, event
 
-🚀 python + celery + redis MSA 스택
+## 주요 프로젝트 산출물
 
-✔ 큐에 작업을 주기  
-✔ 특정 큐 id의 현재의 작업 상태는 ?  
-✔ 특정 큐 id의 작업 끝나면 말해줘 ( celery workers -> evernts )
+|항목|설명|링크|
+|--|--|--|
+|DB 설계 업무 플로우| https://www.notion.so/DB-63d9d2a228224bb2acb6e55fbf0c4429 |[:link:](https://www.notion.so/DB-63d9d2a228224bb2acb6e55fbf0c4429)
+|ERD| https://www.erdcloud.com/d/wDaNNLi4fhT8Tvibc |[:link:](https://www.erdcloud.com/d/wDaNNLi4fhT8Tvibc)
+|DataServer 단위 설계| https://www.notion.so/DataServer-6358e451ddbc48e79ca92772cf138da6 |[:link:](https://www.notion.so/DataServer-6358e451ddbc48e79ca92772cf138da6)|  
+|cerebro_cheat_on_open | https://www.notion.so/cerebro_cheat_on_open-68462fe26ee746f8ba332a3bf2e8fa27 |[:link:](https://www.notion.so/cerebro_cheat_on_open-68462fe26ee746f8ba332a3bf2e8fa27)|
+|quantstats| https://www.notion.so/quantstats-688150a8cadb437daae941bd03e09a2b |[:link:](https://www.notion.so/quantstats-688150a8cadb437daae941bd03e09a2b)
+|Celery-ubuntu| https://www.notion.so/Celery-ubuntu-e2eb6df00bc54f88bcb01075643e01cf |[:link:](https://www.notion.so/Celery-ubuntu-e2eb6df00bc54f88bcb01075643e01cf)
 
----
-
-- 1. redis 설치
-- 도커를 통해서 설치 했다.
-- password가 포함된 url는 다음과 같다.
-- 'redis://:dosimpact@133.186.xxx.00:6379/0'
-
-- 2. pip install redis, pip install celery
-- celery 는 설치 경로에 exe 파일이 있다.
-
-- 3. celeryconfig.py
-- redis를 메시지 브로커 백앤드로 사용한다.
-
-```py
-broker_url = 'redis://:dosimpact@133.186.229.72:6379/0'
-result_backend = 'redis://:dosimpact@133.186.229.72:6379/0'
-
-task_serializer = 'json'
-result_serializer = 'json'
-accept_content = ['json']
-timezone = 'Asia/Seoul'
-enable_utc = True
-
-# # 오작동 한 작업을 전용 대기열로 라우팅하는 설정
-# task_routes = {
-#     'tasks.add': 'low-priority'
-# }
-
-# # 작업 속도를 제한하는 설정
-# task_annotations = {
-#     'tasks.add': {'rate_limit': '10/m'
-# }
-```
-
-- 4. processor.py
-- 작업큐를 받는 시작점이다.
-- celery 클라이언트라고도 볼 수 있다.
-
-```py
-# processor.py
-# from celery import Celery
-import celery
-from celery.events.snapshot import Polaroid
-import time
-import os
-from pprint import pformat
-
-# 윈도우 환경에서는 다음 셋팅을 해야 인수전달이 제대로 된다.
-# in window env Error, https://github.com/celery/celery/pull/4078
-os.environ.setdefault('FORKED_BY_MULTIPROCESSING', '1')
-
-
-# celery 설정 및 인스턴스
-# BROKER_URL = 'redis://:dosimpact@133.186.229.72:6379/0'
-# CELERY_RESULT_BACKEND = 'redis://dosimpact@133.186.229.72:6379/0'
-process = celery.Celery('tasks')
-process.config_from_object('celeryconfig')
-
-# celery 실행 명령어
-# celery -A processor worker --loglevel=info
-# 최소 3개 ~ 10개의 워커가 작동
-# celery -A processor worker --loglevel=info --autoscale=3,3
-
-
-# celery 이벤트 실행시 기본 함수
-# Event-driven
-
-
-class CoreTask(celery.Task):
-    def on_failure(self, exc, task_id, args, kwargs, einfo):
-        print(f'{task_id} on_failure: {exc}')
-
-    def on_success(self, retval, task_id, args, kwargs):
-        print(f'{task_id} on_success')
-
-    def on_retry(self, exc, task_id, args, kwargs, einfo):
-        print(f'{task_id} on_retry: {exc}')
-
-
-# bind 옵션을 통해 self, 를 사용
-# base 옵션을 통해 onEvent를 처리
-@process.task(bind=True, base=CoreTask)
-def add(self, x, y):
-    total = 3
-    for idx in range(total):
-        time.sleep(1)
-        print(f"progress ({idx}/{total})")
-        # 현재 작업중인 task를 업데이트, update_state
-        self.update_state(state='PROGRESS', meta={
-                          'current': idx, 'total': total})
-
-    # 현재 작업중인 id
-    print(f"done task {self.request.id}")
-    return x + y
-
-```
-
-- 5. pub.py
-- 작업큐를 주는 곳
-- flask와 연결이 된다.
-
-```py
-from processor import add
-from time import sleep
-
-
-# task pub
-for i in range(1):
-    result = add.apply_async([1, 2])
-    print(f"result : {result} {result.ready()}")
-
-# result = add.apply_async([(2, 2), (3, 3), (4, 4)])
-# print(f"result : {result.ready()}")
-
-```
-
-- 6. state.py
-- 작업id를 통해서 현재 진행 중인 작업을 관찰
-
-```py
-
-from processor import add
-from time import sleep
-
-
-def get_progress(task_id: str):
-    task = add.AsyncResult(task_id)
-    print(task, task.state)
-    if task.state == 'PENDING':
-        response = {'state': task.state, 'current': 0, 'total': 1}
-    elif task.state == "SUCCESS":
-        response = {'state': task.state, 'current': 1, 'total': 1}
-    elif task.state != 'FAILURE':
-        response = {'state': task.state, 'current': task.info.get(
-            'current', 0), 'total': task.info.get('total', 1)}
-    return (response)
-
-
-res = get_progress("ee900e77-896f-48d6-beb8-8b5d5633a2b2")
-print(res)
-
-```
-
-### Ref
-
-[https://core-research-team.github.io/2020-03-01/Celery-Flask-30e28a8974974f6cb55ed0c07d042671](https://core-research-team.github.io/2020-03-01/Celery-Flask-30e28a8974974f6cb55ed0c07d042671)
-
-[https://heodolf.tistory.com/73](https://heodolf.tistory.com/73)
-
-[https://docs.celeryproject.org/en/stable/userguide/tasks.html#task-result-backends](https://docs.celeryproject.org/en/stable/userguide/tasks.html#task-result-backends)
-
-## 03 python + flask + celery
-
-```
-
-```
