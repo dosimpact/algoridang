@@ -41,7 +41,9 @@ const TickerPrice = () => {
       />
       <article className="chartLegend">
         <div className="tickerName">{corporation.corp_name}</div>
-        <div className="tickerPrice">{price} 원</div>
+        <div className="tickerPrice">
+          <span>{price}</span> 원
+        </div>
       </article>
       <article className="chartBox">
         <LineSeriesChart
@@ -70,6 +72,12 @@ const TickerPriceS = styled.section`
     }
     .tickerPrice {
       margin-top: 0.5rem;
+      span {
+        color: #f3bc2f;
+      }
     }
+  }
+  .chartBox {
+    margin-top: 1rem;
   }
 `;

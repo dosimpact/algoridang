@@ -87,9 +87,9 @@ const LineSeriesChart: React.FC<ILineSeriesChart> = ({
       });
       charApi.current = chart;
       SeriesApiArea.current = chart.addAreaSeries({
-        topColor: "rgba(76, 175, 80, 0.5)",
-        lineColor: "rgba(76, 175, 80, 1)",
-        bottomColor: "rgba(76, 175, 80, 0)",
+        lineColor: "rgb(243, 188, 47)",
+        topColor: "rgb(243, 188, 47,0.5)",
+        bottomColor: "rgb(243, 188, 47,0)",
         lineWidth: 2,
       });
       if (datas) {
