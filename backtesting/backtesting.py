@@ -477,12 +477,11 @@ class CBackTtrader(object):
             cerebro = bt.Cerebro()
             cerebro.params.tradehistory = True
             for i in range(len(stg.param)):
-                stg.param[i] = setting[i]
+                SMACross.param[i] = setting[i]
 
             cerebro.broker.setcash(int(data['investPrice']))
-            
             cerebro.broker.set_coc(True) # 구매 신청시 무조건 최대 금액으로 살 수 있음.
-            cerebro.addstrategy(stg)
+            cerebro.addstrategy(SMACross)
             cerebro.addanalyzer(bt.analyzers.PyFolio, _name = 'PyFolio')
             BarAnalysis.ticker = ticker
             cerebro.addanalyzer(BarAnalysis, _name="bar_data")
