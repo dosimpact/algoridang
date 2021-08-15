@@ -462,7 +462,7 @@ class CBackTtrader(object):
         DBClass.putConn(conn)
 
 
-
+#해당클래스 가장위로
     def requestBacktestOneStock(self,id, strategyCode):
         data = self.__setInitData(strategyCode)
         self.__initQueue(id, "Running", "Queue" , strategyCode)
@@ -473,9 +473,12 @@ class CBackTtrader(object):
 
         total = 0
 
+#ticker , stg, setting , wgt줄임말 없이 사용
         for ticker , stg, setting, wgt in case:
             cerebro = bt.Cerebro()
             cerebro.params.tradehistory = True
+
+            #loop 변수만 짧게 나머지는 길게
             for i in range(len(stg.param)):
                 SMACross.param[i] = setting[i]
 
