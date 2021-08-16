@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button, WhiteSpace, WingBlank } from "antd-mobile";
 import useMember from "states/react-query/useMember";
+import SampleMarker from "components/light-weight/SampleMarker";
 
 // todo : makers, takers 선택 저장하기
 const LandingPage = () => {
@@ -43,6 +44,7 @@ const LandingPage = () => {
         </ul>
       </nav>
       <div>Landing page</div>
+      <SampleMarker />
     </WingBlank>
   );
 };
