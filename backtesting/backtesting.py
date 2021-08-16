@@ -535,6 +535,7 @@ class CBackTtrader(object):
             monthlyVolatility = round(monthlyVolatility,2)
 
             #월간 수익률 차트 데이터 
+            # 최대 상승 개월수 -> 상승개월수 
             monthlyProfitRatioChartDataMeta = quantstats.stats.monthly_returns(returns)
             monthlyProfitRatioChartData = []
             monthlyProfitRatioRiseMonth = 0
