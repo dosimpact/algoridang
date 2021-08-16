@@ -109,13 +109,29 @@ export const tradingApi = {
   DELETE: {},
 };
 
-// (4) backtest api
+// (5) backtest api
 
 export const backtestApi = {
-  GET: {},
+  GET: {
+    getHistories: (strategy_code: string) => {
+      return axios.get(`backtests/${strategy_code}/histories`);
+    },
+    getAccumulateProfitRate: (strategy_code: string) => {
+      return axios.get(`backtests/${strategy_code}/accumulate-profit-rate`);
+    },
+    getMontlyProfitRate: (strategy_code: string) => {
+      return axios.get(`backtests/${strategy_code}/montly-profit-rate`);
+    },
+    getDailyProfitRate: (strategy_code: string) => {
+      return axios.get(`backtests/${strategy_code}/daily-profit-rate`);
+    },
+    getWinRatio: (strategy_code: string) => {
+      return axios.get(`backtests/${strategy_code}/win-ratio`);
+    },
+  },
   POST: {
     pushBackTestQ: (body: PushBackTestQInput) => {
-      return axios.post(`backtest/backtest-q`, body);
+      return axios.post(`backtests/backtest-q`, body);
     },
   },
   PATCH: {},
