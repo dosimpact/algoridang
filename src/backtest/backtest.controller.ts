@@ -20,21 +20,49 @@ import {
 import { FlaskService } from './flask.service';
 
 @UseInterceptors(HttpCacheInterceptor)
-@Controller('/api/backtest/')
+@Controller('/api/backtests/')
 export class BacktestQueryController {
-  constructor(
-    private readonly backtestService: BacktestService,
-    private readonly flaskService: FlaskService,
-  ) {}
+  constructor(private readonly backtestService: BacktestService) {}
 
-  // (1) 히스토리 조회
-  @Get('getHistoryList/:strategy_code')
-  async getHistoryList(@Param() strategy_code: number) {
+  @Roles(['Any'])
+  @Version('1')
+  @Get(':strategy_code/histories')
+  async getHistories(@Param() strategy_code: string) {
     return this.backtestService.getHistoryList({ strategy_code });
+  }
+
+  @Roles(['Any'])
+  @Version('1')
+  @Get(':strategy_code/accumulate-profit-rate')
+  async getAccumulateProfitRate(@Param() strategy_code: string) {
+    return this.backtestService.getAccumulateProfitRateChartList({
+      strategy_code,
+    });
+  }
+
+  @Roles(['Any'])
+  @Version('1')
+  @Get(':strategy_code/montly-profit-rate')
+  async getMontlyProfitRate(@Param() strategy_code: string) {
+    return this.backtestService.getMontlyProfitRateChartList({ strategy_code });
+  }
+
+  @Roles(['Any'])
+  @Version('1')
+  @Get(':strategy_code/daily-profit-rate')
+  async getDailyProfitRate(@Param() strategy_code: string) {
+    return this.backtestService.getDailyProfitRateChartList({ strategy_code });
+  }
+
+  @Roles(['Any'])
+  @Version('1')
+  @Get(':strategy_code/win-ratio')
+  async getWinRatio(@Param() strategy_code: string) {
+    return this.backtestService.getBacktestWinRatio({ strategy_code });
   }
 }
 
-@Controller('/api/backtest/')
+@Controller('/api/backtests/')
 export class BacktestMutationController {
   constructor(
     private readonly backtestService: BacktestService,
