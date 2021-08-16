@@ -3,3 +3,5 @@ export const toTagsString = (tags: string[]) =>
 
 export const toAddComma = (str: string) =>
   str && str.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+
+export const UTCtoDate = (str: string) => str.slice(0, 10);

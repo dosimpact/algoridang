@@ -52,11 +52,11 @@ const StrategyDetails = () => {
   const Back = useBackButton();
   const history = useHistory();
   const params = useParams() as { id: string };
-  const strategy_code = params?.id || 0;
-  if (strategy_code === 0) {
+  const strategyCode = params?.id || 0;
+  if (strategyCode === 0) {
     history.push("/");
   }
-  const { strategyDetailQuery } = useStrategyDetail(strategy_code + "");
+  const { strategyDetailQuery } = useStrategyDetail(strategyCode + "");
 
   const memberStrategy = useMemo(
     () => strategyDetailQuery?.data?.memberStrategy,
@@ -171,6 +171,7 @@ const StrategyDetails = () => {
         {/* 2. 매매 시점 TradingPoints.tsx */}
         {firstUniversal && firstUniversal.universal_code && (
           <TradingPoints
+            strategyCode={String(strategyCode)}
             ticker={firstUniversal.ticker}
             title={`매매시점 - ${firstUniversal.ticker} | ${firstUniversal.trading_strategy_name}`}
           />

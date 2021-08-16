@@ -1,5 +1,11 @@
 import React, { useLayoutEffect, useRef, useEffect, useCallback } from "react";
-import { createChart, IChartApi, ISeriesApi } from "lightweight-charts";
+import {
+  createChart,
+  IChartApi,
+  ISeriesApi,
+  SeriesMarker,
+  Time,
+} from "lightweight-charts";
 
 export interface ILineData {
   time: string;
@@ -8,8 +14,10 @@ export interface ILineData {
 export interface IonCrossHairChange {
   price: number;
 }
+
 interface ILineSeriesChartPointing {
   datas?: ILineData[];
+  markerDatas?: SeriesMarker<Time>[];
   onCrossHairChange?: (e: IonCrossHairChange) => void;
 }
 
@@ -21,6 +29,7 @@ interface ILineSeriesChartPointing {
 
 const LineSeriesChartPointing: React.FC<ILineSeriesChartPointing> = ({
   datas,
+  markerDatas,
   onCrossHairChange,
 }) => {
   // onCrossHairChange = useMemo(() => onCrossHairChange, [onCrossHairChange]);
@@ -84,6 +93,9 @@ const LineSeriesChartPointing: React.FC<ILineSeriesChartPointing> = ({
       if (datas) {
         SeriesApiArea.current?.setData(datas as ILineData[]);
       }
+      if (markerDatas && SeriesApiArea.current) {
+        SeriesApiArea.current.setMarkers(markerDatas);
+      }
       chart.subscribeCrosshairMove(function (param) {
         if (onCrossHairChange) {
           const price = param.seriesPrices.get(SeriesApiArea.current!);
@@ -100,7 +112,7 @@ const LineSeriesChartPointing: React.FC<ILineSeriesChartPointing> = ({
       charApi.current = undefined;
       SeriesApiArea.current = undefined;
     };
-  }, [charContainer, onCrossHairChange, datas]);
+  }, [charContainer, onCrossHairChange, datas, markerDatas]);
 
   const setLineData = (data?: ILineData[]) => {
     if (SeriesApiArea.current && data) {

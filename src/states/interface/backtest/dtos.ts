@@ -8,6 +8,7 @@ import {
   BacktestDailyProfitRateChart,
   BacktestMontlyProfitRateChart,
   BacktestWinRatio,
+  History,
 } from "./entities";
 
 // 전략에 대한 히스토리 획득

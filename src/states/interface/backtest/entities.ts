@@ -19,16 +19,16 @@ export interface InvestProfitInfo {
 
 export interface History {
   history_code: number;
-  history_date: Date;
+  history_date: string;
   buy_sale_price: number;
   profit_loss_rate: number;
   // 1:N
   // (1) 어떤 전략의 히스토리? 연결
   strategy_code: string; // 전략 코드
-  strategy: MemberStrategy;
+  // strategy: MemberStrategy;
   // (2) 어떤 회사의 히스토리인지
   ticker: string; // 티커
-  corporation: Corporation;
+  // corporation: Corporation;
 }
 export interface BacktestWinRatio {
   strategy_code: string;
