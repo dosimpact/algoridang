@@ -89,9 +89,9 @@ const StrategyDetails = () => {
       })),
     [strategyDetailQuery?.data]
   );
-  console.log("histories", histories);
-  console.log("investProfitInfo", investProfitInfo);
-  console.log("firstUniversal", firstUniversal);
+  // console.log("histories", histories);
+  // console.log("investProfitInfo", investProfitInfo);
+  // console.log("firstUniversal", firstUniversal);
 
   return (
     <StrategyDetailP>

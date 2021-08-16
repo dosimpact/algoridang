@@ -76,6 +76,8 @@ export interface BacktestDetailInfo {
   rising_month_count: number;
   month_avg_profit_rate: number;
   monthly_volatility: number;
+  sharp: number;
+  yearly_volatility: number;
   strategy_code: string;
   strategy: MemberStrategy;
 }

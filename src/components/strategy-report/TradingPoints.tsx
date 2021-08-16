@@ -90,7 +90,6 @@ const ChartBuySelPoint: React.FC<{ ticker: string; strategyCode: string }> = ({
           setMarkerId(markerId);
         }, [])}
       />
-      ;
     </div>
   );
 };
