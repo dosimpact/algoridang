@@ -1,7 +1,8 @@
 import { SubTitle } from "components/data-display/Typo";
 import LineSeriesChartPointing from "components/light-weight/LineSeriesChartPointing";
 import { SeriesMarker, Time } from "lightweight-charts";
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
+import { History } from "states/interface/backtest/entities";
 import useBackTestHistory from "states/react-query/backtest/useBackTestHistory";
 import useDailyStock from "states/react-query/finance/useDailyStock";
 import styled from "styled-components";
@@ -14,7 +15,7 @@ const ChartBuySelPoint: React.FC<{ ticker: string; strategyCode: string }> = ({
 }) => {
   const { dayilStocks } = useDailyStock(ticker, 3650, 0, "ASC");
   const { historiesQuery } = useBackTestHistory(strategyCode);
-  console.log("historiesQuery", historiesQuery);
+  const [currentMarkerId, setMarkerId] = useState<null | number>(null);
 
   const datas = useMemo(() => {
     return dayilStocks?.map((daily) => ({
@@ -52,9 +53,46 @@ const ChartBuySelPoint: React.FC<{ ticker: string; strategyCode: string }> = ({
       }) as SeriesMarker<Time>[];
     }
   }, [historiesQuery]);
-  console.log("datas", datas, "markerDatas", markerDatas);
 
-  return <LineSeriesChartPointing datas={datas} markerDatas={markerDatas} />;
+  const currnetHistory = useMemo(() => {
+    if (historiesQuery.isLoading) {
+      return null;
+    } else if (!historiesQuery.isLoading && !historiesQuery.isError) {
+      if (historiesQuery.data?.historyList) {
+        for (let i = 0; i < historiesQuery.data?.historyList?.length; i++) {
+          // return historiesQuery.data?.historyList?.map((h) => {});
+          if (
+            historiesQuery.data?.historyList[i].history_code === currentMarkerId
+          ) {
+            return historiesQuery.data?.historyList[i] as History;
+          }
+        }
+      }
+      return null;
+    }
+  }, [historiesQuery, currentMarkerId]);
+
+  return (
+    <div>
+      <div>
+        {currnetHistory &&
+          `${currnetHistory.history_date.slice(0, 10)} |   
+          ${currnetHistory.ticker} |
+          ${currnetHistory.buy_sale_price} | 
+          ${currnetHistory.profit_loss_rate}`}
+      </div>
+      <LineSeriesChartPointing
+        datas={datas}
+        markerDatas={markerDatas}
+        onHoverMarker={useCallback((e) => {
+          // console.log(e.markerId);
+          const markerId = Number(e.markerId);
+          setMarkerId(markerId);
+        }, [])}
+      />
+      ;
+    </div>
+  );
 };
 
 // 매매시점 컴포넌트

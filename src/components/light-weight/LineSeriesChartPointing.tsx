@@ -14,11 +14,14 @@ export interface ILineData {
 export interface IonCrossHairChange {
   price: number;
 }
-
+export interface IonHoverMarker {
+  markerId: string;
+}
 interface ILineSeriesChartPointing {
   datas?: ILineData[];
   markerDatas?: SeriesMarker<Time>[];
   onCrossHairChange?: (e: IonCrossHairChange) => void;
+  onHoverMarker?: (e: IonHoverMarker) => void;
 }
 
 // todo
@@ -31,6 +34,7 @@ const LineSeriesChartPointing: React.FC<ILineSeriesChartPointing> = ({
   datas,
   markerDatas,
   onCrossHairChange,
+  onHoverMarker,
 }) => {
   // onCrossHairChange = useMemo(() => onCrossHairChange, [onCrossHairChange]);
   // onCrossHairChange = useCallback(() => onCrossHairChange, []);
@@ -90,20 +94,16 @@ const LineSeriesChartPointing: React.FC<ILineSeriesChartPointing> = ({
         bottomColor: "rgb(243, 188, 47,0)",
         lineWidth: 2,
       });
-      if (datas) {
-        SeriesApiArea.current?.setData(datas as ILineData[]);
-      }
-      if (markerDatas && SeriesApiArea.current) {
-        SeriesApiArea.current.setMarkers(markerDatas);
-      }
       chart.subscribeCrosshairMove(function (param) {
         if (onCrossHairChange) {
           const price = param.seriesPrices.get(SeriesApiArea.current!);
           onCrossHairChange({ price: Number(price) });
         }
+        if (onHoverMarker && param.hoveredMarkerId) {
+          onHoverMarker({ markerId: param.hoveredMarkerId });
+        }
       });
     }
-
     return () => {
       // clear useEffect
       if (charContainer.current) {
@@ -112,7 +112,21 @@ const LineSeriesChartPointing: React.FC<ILineSeriesChartPointing> = ({
       charApi.current = undefined;
       SeriesApiArea.current = undefined;
     };
-  }, [charContainer, onCrossHairChange, datas, markerDatas]);
+  }, [charContainer, onCrossHairChange, onHoverMarker]);
+
+  useEffect(() => {
+    if (datas && SeriesApiArea.current) {
+      SeriesApiArea.current?.setData(datas as ILineData[]);
+    }
+    return () => {};
+  }, [datas]);
+
+  useEffect(() => {
+    if (markerDatas && SeriesApiArea.current) {
+      SeriesApiArea.current.setMarkers(markerDatas);
+    }
+    return () => {};
+  }, [markerDatas]);
 
   const setLineData = (data?: ILineData[]) => {
     if (SeriesApiArea.current && data) {

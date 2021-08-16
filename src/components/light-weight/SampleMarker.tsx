@@ -83,9 +83,9 @@ const SampleMarker = () => {
           size: 1,
         },
       ]);
-      // chart.subscribeCrosshairMove((param) => {
-      //   console.log(param.hoveredMarkerId);
-      // });
+      chart.subscribeCrosshairMove((param) => {
+        console.log(param.hoveredMarkerId);
+      });
 
       chart.subscribeClick((param) => {
         console.log(param);
