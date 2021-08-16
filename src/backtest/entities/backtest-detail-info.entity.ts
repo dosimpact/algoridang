@@ -35,8 +35,16 @@ export class BacktestDetailInfo {
   month_avg_profit_rate: number;
 
   @IsNumber()
-  @Column({ type: 'decimal', precision: 10, scale: 2 })
-  monthly_volatility: number;
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+  monthly_volatility?: number;
+
+  @IsNumber()
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+  sharp?: number;
+
+  @IsNumber()
+  @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
+  yearly_volatility?: number;
 
   @IsNumber()
   strategy_code: number;
