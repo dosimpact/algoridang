@@ -56,11 +56,18 @@ export interface BacktestMontlyProfitRateChart {
   backtest_monthly_profit_rate_chart_code: number;
   chart_month: Date;
   profit_rate: number;
-  // 1:N
-  // 월간수익률-전략매핑
   strategy_code: string;
   strategy: MemberStrategy;
 }
+
+export interface BacktestDailyProfitRateChart {
+  backtest_daily_profit_rate_chart_code: number;
+  chart_month: Date;
+  profit_rate: number;
+  strategy_code: string;
+  strategy: MemberStrategy;
+}
+
 export interface BacktestDetailInfo {
   backtest_code: number;
   year_avg_profit_rate: number;
