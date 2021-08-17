@@ -62,7 +62,9 @@ const CumulativeReturnChart: React.FC<ICumulativeReturnChart> = ({
       const chart = createChart(charContainer.current, {
         height: 500,
         layout: {
-          fontSize: 11,
+          fontSize: 12,
+          backgroundColor: "#F5F5F9",
+          textColor: "#333",
         },
         rightPriceScale: {
           visible: true,
@@ -72,10 +74,10 @@ const CumulativeReturnChart: React.FC<ICumulativeReturnChart> = ({
         },
         grid: {
           horzLines: {
-            color: "#ebebeb",
+            color: "#ffffff",
           },
           vertLines: {
-            color: "#ebebeb",
+            color: "#ffffff",
           },
         },
       });

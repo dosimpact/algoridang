@@ -80,7 +80,7 @@ const LineSeriesChartPointing: React.FC<ILineSeriesChartPointing> = ({
         },
         grid: {
           horzLines: {
-            color: "#eee",
+            color: "#ffffff",
           },
           vertLines: {
             color: "#ffffff",

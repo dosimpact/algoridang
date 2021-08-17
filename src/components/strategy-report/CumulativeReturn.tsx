@@ -17,7 +17,6 @@ const CumulativeReturn: React.FC<ICumulativeReturn> = ({
   props,
 }) => {
   const { accumulateProfitRateQuery } = useBackTestReport(strategyCode);
-  console.log("accumulateProfitRateQuery", accumulateProfitRateQuery);
 
   const lineDatas = useMemo(() => {
     if (

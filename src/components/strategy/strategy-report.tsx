@@ -139,7 +139,7 @@ const StrategyReport = () => {
         {/* 5. 백테스팅 누적 수익률 CumulativeReturn.tsx */}
         <CumulativeReturn strategyCode="10" />
         {/* 6. 백테스팅 월간 수익률 */}
-        <MonthlyReturn />
+        <MonthlyReturn strategyCode="10" />
         {/* 7. 승률 */}
         <WinRatio />
       </WingBlank>

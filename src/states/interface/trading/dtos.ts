@@ -24,8 +24,8 @@ export interface getBaseTradingStrategyListOutput extends CoreOutput {
 export interface AddUniversalOnlyInput {
   strategy_code: string;
   ticker: string;
-  start_date: Date;
-  end_date: Date;
+  start_date: string;
+  end_date: string;
   select_yes_no?: boolean;
 }
 

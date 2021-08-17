@@ -9,8 +9,8 @@ export interface InvestProfitInfo {
   total_profit_price: string; //  총 수익금
   profit_rate: string;
   securities_corp_fee: string;
-  invest_start_date: Date;
-  invest_end_date: Date;
+  invest_start_date: string;
+  invest_end_date: string;
   // 1:N
   // (1) 대상 전략의 수익
   strategy_code: string;
@@ -54,7 +54,7 @@ export interface BacktestQueue {
 }
 export interface BacktestMontlyProfitRateChart {
   backtest_monthly_profit_rate_chart_code: number;
-  chart_month: Date;
+  chart_month: string;
   profit_rate: number;
   strategy_code: string;
   strategy: MemberStrategy;
@@ -62,7 +62,7 @@ export interface BacktestMontlyProfitRateChart {
 
 export interface BacktestDailyProfitRateChart {
   backtest_daily_profit_rate_chart_code: number;
-  chart_month: Date;
+  chart_month: string;
   profit_rate: number;
   strategy_code: string;
   strategy: MemberStrategy;

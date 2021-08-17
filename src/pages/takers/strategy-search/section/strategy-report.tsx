@@ -13,62 +13,6 @@ import BackNav from "components/takers/BackNav";
 import useStrategyDetail from "states/react-query/strategy/useStrategyDetail";
 import useBackTestReport from "states/react-query/backtest/useBackTestReport";
 
-const dummyDatas = {
-  title: "삼성전자 황금 신호",
-  subTitle: ["단일 종목", "골든 크로스"],
-  CAGR: 22.22,
-};
-
-const dummyDatasReport = {
-  header: ["항목", "결과값"],
-  body: [
-    {
-      항목: "운용기간",
-      결과값: "⚛",
-    },
-    {
-      항목: "수수료",
-      결과값: "⚛",
-    },
-    {
-      항목: "누적수익율",
-      결과값: "⚛",
-    },
-    {
-      항목: "연평균수익율",
-      결과값: "⚛",
-    },
-    {
-      항목: "MDD",
-      결과값: "⚛",
-    },
-    {
-      항목: "거래 개월수",
-      결과값: "⚛",
-    },
-    {
-      항목: "상승 개월수",
-      결과값: "⚛",
-    },
-    {
-      항목: "승률",
-      결과값: "⚛",
-    },
-    {
-      항목: "전체 거래종목수",
-      결과값: "⚛",
-    },
-    {
-      항목: "월평균수익률",
-      결과값: "⚛",
-    },
-    {
-      항목: "월간변동성(샤프)",
-      결과값: "⚛",
-    },
-  ],
-};
-
 const StrategyReport = () => {
   const history = useHistory();
   const params = useParams() as { id: string };
@@ -213,11 +157,11 @@ const StrategyReport = () => {
           </div>
         </>
         {/* 4. 상세 리포트 DetailSummary.tsx  */}
-        <DetailSummary body={reportBody} header={dummyDatasReport.header} />
+        <DetailSummary body={reportBody} header={["항목", "결과값"]} />
         {/* 5. 백테스팅 누적 수익률 CumulativeReturn.tsx */}
         <CumulativeReturn strategyCode={"" + strategyCode} />
         {/* 6. 백테스팅 월간 수익률 */}
-        <MonthlyReturn />
+        <MonthlyReturn strategyCode={"" + strategyCode} />
         {/* 7. 승률 */}
         <WinRatio />
       </WingBlank>
