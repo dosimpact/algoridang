@@ -12,7 +12,7 @@ interface IMonthlyReturn {
 
 const MonthlyReturn: React.FC<IMonthlyReturn> = ({ strategyCode, props }) => {
   const { montlyProfitRateQuery } = useBackTestReport(strategyCode + "");
-  console.log("montlyProfitRateQuery", montlyProfitRateQuery);
+  // console.log("montlyProfitRateQuery", montlyProfitRateQuery);
 
   const data = useMemo(() => {
     if (montlyProfitRateQuery?.data?.montlyProfitRateChartList) {

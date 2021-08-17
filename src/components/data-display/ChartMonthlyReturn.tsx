@@ -1,8 +1,10 @@
 import React from "react";
 import { Bar } from "react-chartjs-2";
+
 const options = {
   responsive: true,
   maintainAspectRatio: true,
+  aspectRatio: 2,
   tooltips: {
     enabled: true,
     mode: "nearest",
@@ -82,7 +84,10 @@ const ChartMonthlyReturn: React.FC<IChartMonthlyReturn> = ({
       <Bar
         data={makeChartMonthlyReturn(labels, data)}
         type="bar"
-        options={options}
+        options={{
+          maintainAspectRatio: true,
+          aspectRatio: 1,
+        }}
         style={{ height: "300px" }}
       ></Bar>
     </>
