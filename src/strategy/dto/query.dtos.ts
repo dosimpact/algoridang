@@ -20,6 +20,13 @@ export class GetStrategyListTypeOutput extends CorePaginationOutput {
   memberStrategyRecordList?: Record<InvestType, MemberStrategy[]>;
 }
 
+export class GetStrategyListInvestTypeInput extends CorePaginationInput {
+  investType: InvestType;
+}
+export class GetStrategyListInvestTypeOutput extends CorePaginationOutput {
+  memberStrategyList?: MemberStrategy[];
+}
+
 // (GET) getStrategyById	(4)특정 Id로 전략 조회
 export class GetStrategyByIdInput {
   strategy_code: number;

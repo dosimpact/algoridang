@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Post,
+  Query,
   UseInterceptors,
   Version,
 } from '@nestjs/common';
@@ -14,28 +15,38 @@ import { CreateMyStrategyInput } from './dto/mutation.dtos';
 import { MemberInfo } from 'src/member/entities';
 import { TradingService } from 'src/trading/trading.service';
 import { AddUniversalInput } from 'src/trading/dto/mutation.dtos';
+import { InvestType } from './entities/member-strategy.entity';
 
 @UseInterceptors(HttpCacheInterceptor)
-@Controller('/api/strategy/')
+@Controller('/api/strategies/')
 export class StrategyQueryController {
   constructor(private readonly strategyService: StrategyService) {}
-  // (GET) getStrategyListNew	(1) 신규 투자 전략 API
+
   @Version('1')
-  @Get('new')
-  async getStrategyListNew() {
+  @Get('/')
+  async getStrategies(@Query('type') type: string) {
+    if (type === 'new') return this.strategyService.getStrategyListNew({});
+    if (type === 'high-view')
+      return this.strategyService.getStrategyListHighView({});
+    if (type === 'stable-income')
+      return this.strategyService.getStrategyListInvestType({
+        investType: InvestType.StableIncome,
+      });
+    if (type === 'risk-taking')
+      return this.strategyService.getStrategyListInvestType({
+        investType: InvestType.RiskTaking,
+      });
+    if (type === 'neutral')
+      return this.strategyService.getStrategyListInvestType({
+        investType: InvestType.Neutral,
+      });
     return this.strategyService.getStrategyListNew({});
   }
-  // (GET) getStrategyListHighView (2) 조회수 높은 투자 전략 API
+  // (GET) getStrategyListAllType(3) 위험추구/중립형/수익안정형 API
   @Version('1')
-  @Get('high_view')
-  async getStrategyListHighView() {
-    return this.strategyService.getStrategyListHighView({});
-  }
-  // (GET) getStrategyListType(3) 위험추구/중립형/수익안정형 API
-  @Version('1')
-  @Get('type')
-  async getStrategyListType() {
-    return this.strategyService.getStrategyListType({});
+  @Get('invest-type')
+  async getStrategyListAllType() {
+    return this.strategyService.getStrategyListAllType({});
   }
 
   // (GET) getMyStrategyListById (5) 나의 전략 조회(리스트)
@@ -69,7 +80,7 @@ export class StrategyQueryController {
   }
 }
 
-@Controller('/api/strategy/')
+@Controller('/api/strategies/')
 export class StrategyMutationController {
   constructor(
     private readonly strategyService: StrategyService,

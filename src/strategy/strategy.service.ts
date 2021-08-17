@@ -10,6 +10,8 @@ import {
   GetStrategyByIdOutput,
   GetStrategyListHighViewInput,
   GetStrategyListHighViewOutput,
+  GetStrategyListInvestTypeInput,
+  GetStrategyListInvestTypeOutput,
   GetStrategyListNewInput,
   GetStrategyListNewOutput,
   GetStrategyListTypeInput,
@@ -134,7 +136,7 @@ export class StrategyService {
     ;
   */
   // (GET) getStrategyListType(3) 위험추구/중립형/수익안정형 API
-  async getStrategyListType(
+  async getStrategyListAllType(
     getStrategyListType: GetStrategyListTypeInput,
   ): Promise<GetStrategyListTypeOutput> {
     const [Unclassified, StableIncome, Neutral, RiskTaking] = await Promise.all(
@@ -169,6 +171,33 @@ export class StrategyService {
       },
     };
   }
+
+  async getStrategyListInvestType({
+    investType,
+    skip,
+    take,
+  }: GetStrategyListInvestTypeInput): Promise<GetStrategyListInvestTypeOutput> {
+    const memberStrategyList = await this.MemberStrategyRepo.find({
+      order: {
+        create_date: 'DESC',
+      },
+      where: {
+        invest_type: investType,
+      },
+      relations: [
+        'hashList',
+        'hashList.hash',
+        'investProfitInfo',
+        'backtestDetailInfo',
+        'operationMemberList',
+      ],
+    });
+    return {
+      ok: true,
+      memberStrategyList,
+    };
+  }
+
   // (GET) getStrategyById	(4)특정 Id로 전략 조회
   // 공개전략만 조회 가능
   async getStrategyById({
