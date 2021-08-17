@@ -464,8 +464,15 @@ class CBackTtrader(object):
 
 #해당클래스 가장위로
     def requestBacktestOneStock(self,id, strategyCode):
+        
+        print("[",id,"] request strategyCode",strategyCode)
+        print("[",id,"] Start Backtest")
+        
         data = self.__setInitData(strategyCode)
         self.__initQueue(id, "Running", "Queue" , strategyCode)
+
+        
+        print("[",id,"] apply Strategy from DB...")
         case = (self.__setStrategy(data["strategyCode"]))
         if len(case) == 0 :
             print("DB dose'not have any data in this field...")
@@ -493,9 +500,8 @@ class CBackTtrader(object):
             cerebro.adddata(bt.feeds.PandasData(dataname = self.getDBData(ticker,data['startTime'],data['endTime'])),name=ticker)
             
 
-            print('Starting Portfolio Value: %.2f' % cerebro.broker.getvalue())
+            print("[",id,"] Start backtest")
             results = cerebro.run()
-            print('Final Portfolio Value: %.2f' % cerebro.broker.getvalue())
             #cerebro.plot()
             strat = results[0]
             total+= cerebro.broker.getvalue()
@@ -513,7 +519,7 @@ class CBackTtrader(object):
             #    print(idx, data)
             metrics = quantstats.reports.metrics(returns, mode='full', display=False)
             #print(metrics)
-            print ("%%%%"*5)
+            #print ("%%%%"*5)
             #print(dailydata)
 
             
@@ -551,25 +557,26 @@ class CBackTtrader(object):
                             monthlyProfitRatioRiseMonth = RiseMonth
                         RiseMonth = 0
 
-            print("monthlyProfitRatioChartData = ",monthlyProfitRatioChartData)
+            #print("monthlyProfitRatioChartData = ",monthlyProfitRatioChartData)
 
             # 투자 수익 정보
             investProfitInfo = [total, int(data['investPrice']), total- int(data['investPrice']), round(total / int(data['investPrice']),2)-1]
 
             #백테스트 상세정보
             backtestDetailInfo = [metrics.loc['CAGR%']['Strategy'], metrics.loc['Max Drawdown ']['Strategy'],math.ceil(delta.days/30), monthlyProfitRatioRiseMonth ,monthlyCAGR , monthlyVolatility]
-            print("backtestDetailInfo = ", backtestDetailInfo)
+            #print("backtestDetailInfo = ", backtestDetailInfo)
 
 
             # 승수 출력
             winCnt, loseCnt = strat.analyzers.bar_data.get_winloseCnt()
-            print(winCnt,loseCnt)
+            #print(winCnt,loseCnt)
 
 
             # 히스토리 출력하기
             tradehitory = strat.analyzers.bar_data.get_tradehistory()
-            print("tradehitory = ",tradehitory)
+            #print("tradehitory = ",tradehitory)
 
+            print("[",id,"] Start data saving...")
             # 데이터 저장하기
             self.__saveHistoryTable(tradehitory,data["strategyCode"])
             self.__saveBacktestMonthlyProfitRateChartTable(monthlyProfitRatioChartData,data["strategyCode"])
@@ -579,7 +586,7 @@ class CBackTtrader(object):
             self.__saveBacktestDailyProfitRateChartTable(returns, data["strategyCode"])
             self.__saveAccumulateProfitRateChartTable(dailydata,data["strategyCode"])
 
-            print ("%%%%"*5)
+            print("[",id,"] Complete data saving!")
             
             break
 
