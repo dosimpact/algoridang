@@ -137,7 +137,7 @@ const StrategyReport = () => {
           header={dummyDatasReport.header}
         />
         {/* 5. 백테스팅 누적 수익률 CumulativeReturn.tsx */}
-        <CumulativeReturn />
+        <CumulativeReturn strategyCode="10" />
         {/* 6. 백테스팅 월간 수익률 */}
         <MonthlyReturn />
         {/* 7. 승률 */}

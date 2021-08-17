@@ -11,7 +11,7 @@ const MonthlyReturn: React.FC<IMonthlyReturn> = ({ props }) => {
   return (
     <SMonthlyReturn {...props}>
       <div className="flexRow" style={{ marginTop: "50px" }}>
-        <SubTitle title="백테스팅 월간 수익률" style={{ marginTop: "20px" }} />
+        <SubTitle title="백테스팅 월간 수익률" style={{ margin: "20px 0px" }} />
       </div>
       <ChartMonthlyReturn />
     </SMonthlyReturn>

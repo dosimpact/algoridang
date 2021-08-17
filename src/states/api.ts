@@ -41,22 +41,22 @@ export const memberApi = {
 export const strategyApi = {
   GET: {
     getStrategyListNew: () => {
-      return axios.get("strategy/new");
+      return axios.get("strategies?type=new");
     },
     getStrategyListHighView: () => {
-      return axios.get("strategy/high_view");
+      return axios.get("strategies?type=high-view");
     },
     getStrategyListType: () => {
-      return axios.get("strategy/type");
+      return axios.get("strategies/invest-type");
     },
     getStrategyById: (strategy_code: string) => {
-      return axios.get(`strategy/${strategy_code}`);
+      return axios.get(`strategies/${strategy_code}`);
     },
     getMyStrategyList: () => {
-      return axios.get("strategy/my");
+      return axios.get("strategies/my");
     },
     getMyStrategyById: (strategy_code: string) => {
-      return axios.get(`strategy/my/${strategy_code}`);
+      return axios.get(`strategies/my/${strategy_code}`);
     },
   },
   POST: {

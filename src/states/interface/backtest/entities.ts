@@ -85,7 +85,7 @@ export interface BacktestDetailInfo {
 export interface AccumulateProfitRateChart {
   accumulate_profit_rate_chart_code: number;
   profit_rate: number;
-  chart_rate: Date;
+  chart_date: string;
   // 1:N 관계
   // (1) 차트에 대한 원본 전략 매핑
   strategy_code: string;

@@ -93,11 +93,11 @@ const StrategyReport = () => {
     [strategyDetailQuery?.data]
   );
 
-  console.log("memberStrategy", memberStrategy);
+  // console.log("memberStrategy", memberStrategy);
   // console.log("backtestDetailInfo", backtestDetailInfo);
   // console.log("accumulateProfitRateQuery", accumulateProfitRateQuery);
   // console.log("montlyProfitRateQuery", montlyProfitRateQuery);
-  console.log("winRatioQuery", winRatioQuery);
+  // console.log("winRatioQuery", winRatioQuery);
   const winRatio = useMemo(() => {
     if (winRatioQuery.data?.ok && winRatioQuery.data.backtestWinRatio) {
       const { loss_count, win_count } = winRatioQuery.data.backtestWinRatio;
@@ -215,7 +215,7 @@ const StrategyReport = () => {
         {/* 4. 상세 리포트 DetailSummary.tsx  */}
         <DetailSummary body={reportBody} header={dummyDatasReport.header} />
         {/* 5. 백테스팅 누적 수익률 CumulativeReturn.tsx */}
-        <CumulativeReturn />
+        <CumulativeReturn strategyCode={"" + strategyCode} />
         {/* 6. 백테스팅 월간 수익률 */}
         <MonthlyReturn />
         {/* 7. 승률 */}
