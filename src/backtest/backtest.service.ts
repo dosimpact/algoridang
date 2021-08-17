@@ -42,10 +42,10 @@ export class BacktestService {
     @InjectRepository(BacktestDetailInfo)
     private readonly DetailRepo: Repository<BacktestDetailInfo>,
     @InjectRepository(BacktestMontlyProfitRateChart)
-    private readonly MontlyProfitRateRepo: Repository<BacktestMontlyProfitRateChart>,
+    private readonly montlyProfitRateRepo: Repository<BacktestMontlyProfitRateChart>,
 
     @InjectRepository(BacktestDailyProfitRateChart)
-    private readonly DailyProfitRateRepo: Repository<BacktestDailyProfitRateChart>,
+    private readonly dailyProfitRateRepo: Repository<BacktestDailyProfitRateChart>,
 
     @InjectRepository(BacktestQueue)
     private readonly backtestQueueRepo: Repository<BacktestQueue>,
@@ -57,7 +57,7 @@ export class BacktestService {
     private readonly historyRepo: Repository<History>,
 
     @InjectRepository(InvestProfitInfo)
-    private readonly investInfoRepo: Repository<InvestProfitInfo>,
+    private readonly investProfitInfoRepo: Repository<InvestProfitInfo>,
   ) {
     const test = async () => {
       // await this.historyRepo.save(
@@ -126,7 +126,7 @@ export class BacktestService {
     strategy_code,
   }: GetMontlyProfitRateChartListInput): Promise<GetMontlyProfitRateChartListOutput> {
     try {
-      const montlyProfitRateChartList = await this.MontlyProfitRateRepo.find({
+      const montlyProfitRateChartList = await this.montlyProfitRateRepo.find({
         where: { strategy_code },
       });
       return {
@@ -148,7 +148,7 @@ export class BacktestService {
     strategy_code,
   }: GetDailyProfitRateChartListInput): Promise<GetDailyProfitRateChartListOutput> {
     try {
-      const dailyProfitRateChartList = await this.DailyProfitRateRepo.find({
+      const dailyProfitRateChartList = await this.dailyProfitRateRepo.find({
         where: { strategy_code },
       });
       return { dailyProfitRateChartList, ok: true };
@@ -229,5 +229,20 @@ export class BacktestService {
       this.logger.error(error);
       return { ok: false };
     }
+  }
+
+  // ------------- server - invest profit info -------------
+  async getHighProfitRateStrategyCodes(): Promise<string[]> {
+    const res = await this.investProfitInfoRepo.find({
+      order: {
+        profit_rate: 'ASC',
+      },
+      select: ['strategy_code'],
+      take: 20,
+    });
+    if (!res) {
+      return [];
+    }
+    return res.map((r) => r.strategy_code);
   }
 }

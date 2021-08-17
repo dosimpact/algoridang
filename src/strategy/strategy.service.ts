@@ -8,6 +8,8 @@ import {
   GetMyStrategyListOutput,
   GetStrategyByIdInput,
   GetStrategyByIdOutput,
+  GetStrategyListHighProfitInput,
+  GetStrategyListHighProfitOutput,
   GetStrategyListHighViewInput,
   GetStrategyListHighViewOutput,
   GetStrategyListInvestTypeInput,
@@ -37,10 +39,18 @@ import { Logger } from '@nestjs/common';
 import { InvestProfitInfo } from 'src/backtest/entities';
 import { StrategyHashService } from './strategy-hash.service';
 import { async } from 'rxjs';
+import { BacktestService } from 'src/backtest/backtest.service';
 
 @Injectable()
 export class StrategyService {
   private readonly logger = new Logger(StrategyService.name);
+  private readonly strategyListRelation = [
+    'hashList',
+    'hashList.hash',
+    'investProfitInfo',
+    'backtestDetailInfo',
+    'operationMemberList',
+  ];
   constructor(
     @InjectRepository(Hash)
     private readonly HashRepo: Repository<Hash>,
@@ -53,18 +63,8 @@ export class StrategyService {
     @InjectRepository(InvestProfitInfo)
     private readonly investProfitInfoRepo: Repository<InvestProfitInfo>,
     private readonly HashService: StrategyHashService,
-  ) {
-    const test = async () => {
-      const res = this.MemberStrategyRepo.findOne({
-        where: {
-          strategy_code: 23,
-        },
-        relations: ['hashList'],
-      });
-      // console.log(res);
-    };
-    test();
-  }
+    private readonly backtestService: BacktestService,
+  ) {}
 
   // 1. query
   // (GET) getStrategyListNew	(1) 신규 투자 전략 API
@@ -77,12 +77,7 @@ export class StrategyService {
         order: {
           create_date: 'DESC',
         },
-        relations: [
-          'hashList',
-          'hashList.hash',
-          'investProfitInfo',
-          'backtestDetailInfo',
-        ],
+        relations: this.strategyListRelation,
         skip,
         take,
       });
@@ -103,13 +98,7 @@ export class StrategyService {
         order: {
           create_date: 'DESC',
         },
-        relations: [
-          'hashList',
-          'hashList.hash',
-          'investProfitInfo',
-          'backtestDetailInfo',
-          'operationMemberList',
-        ],
+        relations: this.strategyListRelation,
         // join: { innerJoin: ['operationMemberList'] },
       });
     memberStrategyList.sort(
@@ -135,6 +124,37 @@ export class StrategyService {
     group by A.strategy_code
     ;
   */
+  //
+  async getStrategyListHighProfit({
+    skip = 0,
+    take = 10,
+  }: GetStrategyListHighProfitInput): Promise<GetStrategyListHighProfitOutput> {
+    const strategyCodes =
+      await this.backtestService.getHighProfitRateStrategyCodes();
+    console.log('strategyCodes', strategyCodes);
+
+    const memberStrategyList = await this.MemberStrategyRepo.createQueryBuilder(
+      'member_strategy',
+    )
+      .whereInIds(strategyCodes)
+      .orderBy('create_date', 'DESC')
+      .leftJoinAndSelect('member_strategy.hashList', 'hashList')
+      .leftJoinAndSelect('hashList.hash', 'hash')
+      .leftJoinAndSelect('member_strategy.investProfitInfo', 'investProfitInfo')
+      .leftJoinAndSelect(
+        'member_strategy.backtestDetailInfo',
+        'backtestDetailInfo',
+      )
+      .leftJoinAndSelect(
+        'member_strategy.operationMemberList',
+        'operationMemberList',
+      )
+      .getMany();
+    return {
+      ok: true,
+      memberStrategyList,
+    };
+  }
   // (GET) getStrategyListType(3) 위험추구/중립형/수익안정형 API
   async getStrategyListAllType(
     getStrategyListType: GetStrategyListTypeInput,
@@ -148,13 +168,7 @@ export class StrategyService {
           where: {
             invest_type: InvestType[type],
           },
-          relations: [
-            'hashList',
-            'hashList.hash',
-            'investProfitInfo',
-            'backtestDetailInfo',
-            'operationMemberList',
-          ],
+          relations: this.strategyListRelation,
         });
         // console.log(JSON.stringify(memberStrategyList, null, 4));
         return memberStrategyList;
@@ -184,13 +198,7 @@ export class StrategyService {
       where: {
         invest_type: investType,
       },
-      relations: [
-        'hashList',
-        'hashList.hash',
-        'investProfitInfo',
-        'backtestDetailInfo',
-        'operationMemberList',
-      ],
+      relations: this.strategyListRelation,
     });
     return {
       ok: true,

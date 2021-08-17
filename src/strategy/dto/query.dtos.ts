@@ -8,6 +8,12 @@ export class GetStrategyListNewInput extends CorePaginationInput {}
 export class GetStrategyListNewOutput extends CorePaginationOutput {
   memberStrategyList?: MemberStrategy[];
 }
+
+export class GetStrategyListHighProfitInput extends CorePaginationInput {}
+export class GetStrategyListHighProfitOutput extends CorePaginationOutput {
+  memberStrategyList?: MemberStrategy[];
+}
+
 // (GET) getStrategyListHighView (2) 조회수 높은 투자 전략 API
 export class GetStrategyListHighViewInput extends CorePaginationInput {}
 export class GetStrategyListHighViewOutput extends CorePaginationOutput {
