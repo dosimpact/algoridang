@@ -36,38 +36,8 @@ elif platform == "win32":
 # celery 설정 및 인스턴스
 # BROKER_URL = 'redis://:dosimpact@133.186.229.72:6379/0'
 # CELERY_RESULT_BACKEND = 'redis://dosimpact@133.186.229.72:6379/0'
-# process = Celery.Celery('tasks')
-# process.config_from_object('celeryconfig')
-
-dotenv_path = join(dirname(__file__), '.env')
-load_dotenv(dotenv_path)
-CELERY_RESULT_BACKEND = os.getenv('result_backend')
-CELERY_BROKER_URL = os.getenv('broker_url')
-print(".env = ",CELERY_RESULT_BACKEND," \\and\\ ",CELERY_BROKER_URL)
-process = celery.Celery(
-    'tasks',
-    backend = str(CELERY_RESULT_BACKEND),
-    broker = str(CELERY_BROKER_URL)
-
-)
-process.conf.update(
-    task_serializer = 'json',
-    result_serializer = 'json',
-    accept_content = ['json'],
-    timezone = 'Asia/Seoul',
-    enable_utc = True
-)
-
-
-# celery 실행 명령어
-# celery -A pycelery.processor.process worker --loglevel=info
-# 최소 3개 ~ 10개의 워커가 작동
-# celery -A processor.process worker --loglevel=info --autoscale=3,3
-
-
-# celery 이벤트 실행시 기본 함수
-# Event-driven
-
+process = celery.Celery('tasks')
+process.config_from_object('celeryconfig')
 
 class CoreTask(celery.Task):
     def on_failure(self, exc, task_id, args, kwargs, einfo):
@@ -139,6 +109,31 @@ def initDB_DailyStock(self):
             print(f"progress ({idx}/{total})")
             self.update_state(state='PROGRESS', meta={'current': idx, 'total': total})
         return res
+
+
+
+
+@process.task(bind=True, base=CoreTask)
+def initDB_DailyStock_queue(self,tickers):
+    with app.app_context():
+        idx = 0
+        print(tickers)
+        pykrx = pricePykrx.CPricePykrx()
+        updateData = []
+        total = len(tickers)
+        print(total)
+        for ticker,name in tickers:
+            idx += 1
+            df = pykrx.getKRStockDaily(ticker,"20110101")
+            res = pykrx.sendKRStockDaily(ticker,df)
+
+            if res != "":
+                updateData.append((ticker,name))
+            
+            print(f"progress ({idx}/{total})")
+            self.update_state(state='PROGRESS', meta={'current': idx, 'total': total})
+            #break
+        return updateData
 
 
 @process.task(bind=True, base=CoreTask)
