@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from openAPI.DB import DB
+
 from openAPI.pricePykrx import CPricePykrx
 
 from pycelery import processor, state

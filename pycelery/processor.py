@@ -18,7 +18,8 @@ from backtesting import backtesting
 
 from openAPI import pricePykrx
 
-
+# celery -A pycelery.processor.process worker --loglevel=info
+# celery -A processor.process worker --loglevel=info --autoscale=3,3
 # 윈도우 환경에서는 다음 셋팅을 해야 인수전달이 제대로 된다.
 # in window env Error, https://github.com/celery/celery/pull/4078
 from sys import platform
@@ -117,7 +118,7 @@ def initDB_DailyStock(self):
 def initDB_DailyStock_queue(self,tickers):
     with app.app_context():
         idx = 0
-        print(tickers)
+        #print(tickers)
         pykrx = pricePykrx.CPricePykrx()
         updateData = []
         total = len(tickers)

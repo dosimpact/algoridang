@@ -1,5 +1,5 @@
 from pykrx import stock
-from .DB.DB import databasepool
+from openAPI.DB.DB import databasepool
 from datetime import datetime, timedelta
 
 
