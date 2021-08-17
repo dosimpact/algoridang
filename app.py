@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from openAPI.DB import DB
+
 from openAPI.pricePykrx import CPricePykrx
 
 from pycelery import processor, state
@@ -89,6 +89,32 @@ def DBinitDailyStock():
 
     return jsonify({"ok": True, "task_id": task.id})
 
+
+#4개 queue 를 통한 데이터 입력 
+@app.route("/DBinit/Daily-stock/thread", methods=["GET"])
+def DBinitDailyStockMulti():
+    
+    if(request.method =='GET'):
+        worker = request.args.get('worker')
+        worker = int(worker)
+        pykrx = CPricePykrx()
+        tickers = pykrx.getAllTickerFromDB()
+        length = int(len(tickers)/worker) + 1
+        #print(tickers)
+        tasks= []
+        for i in range(worker):
+            if length*(i+1) > len(tickers):
+                task = processor.initDB_DailyStock_queue.apply_async([tickers[length*i:]])
+            else:
+                task = processor.initDB_DailyStock_queue.apply_async([tickers[length*i:length*(i+1)]])
+            tasks.append(task.id)
+
+            if not task.id:
+                return jsonify({"ok": False, "error": "celery is down"})
+
+        return jsonify({"ok": True, "task_id": tasks})
+
+    return jsonify("need GET request")
 
 
 if __name__ == "__main__":

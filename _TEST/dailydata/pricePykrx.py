@@ -1,5 +1,5 @@
 from pykrx import stock
-from openAPI.DB.DB import databasepool
+from DB import databasepool
 from datetime import datetime, timedelta
 
 
@@ -55,7 +55,7 @@ class CPricePykrx(object):
         if _to == None:
             _to = str(datetime.today().strftime("%Y%m%d"))
         if _from == None:
-            before30Day = datetime.today() - timedelta(30)
+            before30Day = datetime.today() - timedelta(2)
             _from = str(before30Day.strftime("%Y%m%d"))
 
         df = stock.get_market_ohlcv_by_date(_from, _to, ticker)
@@ -92,8 +92,47 @@ class CPricePykrx(object):
         return res
 
 
+def getAllStock(): 
+    res = ""
 
+    pykrx = CPricePykrx()
+    tickers = pykrx.getKRStockCodeAll()
     
+    total = len(tickers)
+    for idx in range(total):
+        
+        print(f"progress ({idx}/{total})")
+        
+        res += pykrx.sendKRStockCodeAll(tickers[idx])
+    
+    print("Done")
+    print(res)
+
+
+
+def getdailyStock():
+    pykrx = CPricePykrx()
+    res = pykrx.getAllTickerFromDB()
+    updateData = []
+    total = len(res)
+    idx = 0
+
+    for ticker,name in res:
+        idx += 1
+        df = pykrx.getKRStockDaily(ticker)
+        res = pykrx.sendKRStockDaily(ticker,df)
+
+        if res != "":
+            updateData.append((ticker,name))
+        
+        print(f"progress ({idx}/{total})")
+        if idx > 30:
+            break
+    return res
+
+if __name__ == "__main__" :
+    getdailyStock()
+   
 
 
     

@@ -1,7 +1,7 @@
 import psycopg2
 from psycopg2 import Error
 from psycopg2 import pool
-from . import identification
+import identification
 
 import pandas.io.sql as pandsql
 
@@ -39,14 +39,12 @@ class databasepool(object):
             print("Error while connecting to PostgreSQL", error)
             return ("Error")
 
-    #getConnection
     def getConn(self):
         return self.__postgreSQLpool.getconn()
-    #putConnection
+
     def putConn(self, ps_connection):
         self.__postgreSQLpool.putconn(ps_connection)
     #teststock 에 태스트 수행 할 것
-    #dbconnction으로 분리할것
     def insertIntoData(self, ps_connection, query):
         
         if (ps_connection):
@@ -91,17 +89,5 @@ class databasepool(object):
 
             return df
         return "error"
-
 dbinit = databasepool()
 
-
-if __name__ == "__main__":
-    t = databasepool()
-    print("test")
-
-    key = t.getConn()
-    t.insertIntoData(key,"insert into teststock(ticker, corp_name) values(\'066570\',\'LG전자\');")
-    t.insertIntoData(key,"insert into teststock(ticker, corp_name) values(\'005930\',\'삼성전자\');")
-    print(t.selectData(key, "select * from teststock"))
-    key.commit()
-    t.putConn(key)
