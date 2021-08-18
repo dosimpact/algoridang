@@ -7,7 +7,7 @@ import { StrategyName, StrategyValue } from "states/interface/trading/entities";
 import { useRecoilState } from "recoil";
 import { atomStrategyState } from "states/recoil/strategy";
 import { AddUniversalInput } from "states/interface/trading/dtos";
-import useCreateStrategy from "states/react-query/useCreateStrategy";
+import useCreateStrategy from "states/react-query/strategy/useCreateStrategy";
 import useBackTestMutation from "states/react-query/backtest/useBackTestMutation";
 
 const RadioItem = Radio.RadioItem;
