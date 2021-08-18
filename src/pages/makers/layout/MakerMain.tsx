@@ -12,13 +12,14 @@ const NavigationContainer = () => {
       <WhiteSpace size="xl" />
       <WhiteSpace size="xl" />
       <SHeader>
-        <WingBlank className="hwrapper">
-          {/* <div className="icon">🥞</div> */}
-          <Link to="/makers/strategy-create">
-            <div className="headerName">알고리당</div>
+        <Link to="/makers/strategy-create">
+          <WingBlank className="hwrapper">
+            {/* <div className="icon">🥞</div> */}
+            <div className="headerName">알고</div>
+            <div className="headerName">리당</div>
             <div className="headerSubName">Makers</div>
-          </Link>
-        </WingBlank>
+          </WingBlank>
+        </Link>
       </SHeader>
       <WhiteSpace size="xl" />
       <SNav>
@@ -38,6 +39,7 @@ const NavigationContainer = () => {
 const SHeader = styled.header`
   .hwrapper {
     display: flex;
+    flex-flow: column nowrap;
     align-items: center;
     justify-content: space-between;
     text-align: center;
