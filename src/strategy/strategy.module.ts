@@ -17,6 +17,7 @@ import { ConfigModule } from '@nestjs/config';
 import * as redisStore from 'cache-manager-redis-store';
 import { StrategyHashService } from './strategy-hash.service';
 import { TradingModule } from 'src/trading/trading.module';
+import { BacktestModule } from 'src/backtest/backtest.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { TradingModule } from 'src/trading/trading.module';
       InvestProfitInfo,
     ]),
     forwardRef(() => TradingModule),
+    forwardRef(() => BacktestModule),
   ],
   controllers: [StrategyMutationController, StrategyQueryController],
   providers: [StrategyService, StrategyHashService, StrategyResolver],

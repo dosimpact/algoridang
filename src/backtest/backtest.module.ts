@@ -52,5 +52,6 @@ import { StrategyModule } from 'src/strategy/strategy.module';
   ],
   controllers: [BacktestQueryController, BacktestMutationController],
   providers: [BacktestService, BacktestResolver, FlaskService],
+  exports: [BacktestService],
 })
 export class BacktestModule {}

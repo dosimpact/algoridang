@@ -9,7 +9,18 @@ import {
   UpdateHistoryInput,
   UpdateHistoryOutput,
 } from './dto/mutation.dtos';
-import { GetHistoryListInput, GetHistoryListOutput } from './dto/query.dtos';
+import {
+  GetAccumulateProfitRateChartListInput,
+  GetAccumulateProfitRateChartListOutput,
+  GetBacktestWinRatioInput,
+  GetBacktestWinRatioOutput,
+  GetDailyProfitRateChartListInput,
+  GetDailyProfitRateChartListOutput,
+  GetHistoryListInput,
+  GetHistoryListOutput,
+  GetMontlyProfitRateChartListInput,
+  GetMontlyProfitRateChartListOutput,
+} from './dto/query.dtos';
 import {
   AccumulateProfitRateChart,
   BacktestDetailInfo,
@@ -18,6 +29,7 @@ import {
   BacktestWinRatio,
   InvestProfitInfo,
   History,
+  BacktestDailyProfitRateChart,
 } from './entities';
 
 @Injectable()
@@ -25,19 +37,27 @@ export class BacktestService {
   private readonly logger = new Logger(BacktestService.name);
   constructor(
     @InjectRepository(AccumulateProfitRateChart)
-    private readonly accumulateProfitsRepo: Repository<AccumulateProfitRateChart>,
+    private readonly accumulateProfitRepo: Repository<AccumulateProfitRateChart>,
+
     @InjectRepository(BacktestDetailInfo)
-    private readonly backtestDetailRepo: Repository<BacktestDetailInfo>,
+    private readonly DetailRepo: Repository<BacktestDetailInfo>,
     @InjectRepository(BacktestMontlyProfitRateChart)
-    private readonly backtestMontlyProfitsRepo: Repository<BacktestMontlyProfitRateChart>,
+    private readonly montlyProfitRateRepo: Repository<BacktestMontlyProfitRateChart>,
+
+    @InjectRepository(BacktestDailyProfitRateChart)
+    private readonly dailyProfitRateRepo: Repository<BacktestDailyProfitRateChart>,
+
     @InjectRepository(BacktestQueue)
     private readonly backtestQueueRepo: Repository<BacktestQueue>,
+
     @InjectRepository(BacktestWinRatio)
     private readonly backtestWinRatioRepo: Repository<BacktestWinRatio>,
+
     @InjectRepository(History)
     private readonly historyRepo: Repository<History>,
+
     @InjectRepository(InvestProfitInfo)
-    private readonly investInfoRepo: Repository<InvestProfitInfo>,
+    private readonly investProfitInfoRepo: Repository<InvestProfitInfo>,
   ) {
     const test = async () => {
       // await this.historyRepo.save(
@@ -52,7 +72,11 @@ export class BacktestService {
     test();
   }
 
-  // 전략에 대한 히스토리 획득
+  /**
+   * 1 전략에 대한 히스토리 요청
+   * @param strategy_code
+   * @returns historyList
+   */
   async getHistoryList({
     strategy_code,
   }: GetHistoryListInput): Promise<GetHistoryListOutput> {
@@ -66,9 +90,89 @@ export class BacktestService {
       };
     } catch (error) {
       this.logger.error(error);
-      return { ok: false };
+      throw error;
     }
   }
+
+  /**
+   * 2 전략에 대한 차트 - 누적 수익률
+   * @param strategy_code
+   * @returns AccumulateProfitRateChart[]
+   */
+  async getAccumulateProfitRateChartList({
+    strategy_code,
+  }: GetAccumulateProfitRateChartListInput): Promise<GetAccumulateProfitRateChartListOutput> {
+    try {
+      const accumulateProfitRateChartList =
+        await this.accumulateProfitRepo.find({
+          where: { strategy_code },
+        });
+      return {
+        accumulateProfitRateChartList,
+        ok: true,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
+    }
+  }
+
+  /**
+   * 3 전략에 대한 차트 - 월간 수익률
+   * @param strategy_code
+   * @returns MontlyProfitRateChart[]
+   */
+  async getMontlyProfitRateChartList({
+    strategy_code,
+  }: GetMontlyProfitRateChartListInput): Promise<GetMontlyProfitRateChartListOutput> {
+    try {
+      const montlyProfitRateChartList = await this.montlyProfitRateRepo.find({
+        where: { strategy_code },
+      });
+      return {
+        montlyProfitRateChartList,
+        ok: true,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
+    }
+  }
+
+  /**
+   * 4 전략에 대한 차트 - 일간 수익률
+   * @param strategy_code
+   * @returns DailyProfitRateChart[]
+   */
+  async getDailyProfitRateChartList({
+    strategy_code,
+  }: GetDailyProfitRateChartListInput): Promise<GetDailyProfitRateChartListOutput> {
+    try {
+      const dailyProfitRateChartList = await this.dailyProfitRateRepo.find({
+        where: { strategy_code },
+      });
+      return { dailyProfitRateChartList, ok: true };
+    } catch (error) {
+      this.logger.error(error);
+      throw error;
+    }
+  }
+
+  /**
+   * 5 전략에 대한 차트 - 승률
+   * @param strategy_code
+   * @returns BacktestWinRatio
+   */
+  async getBacktestWinRatio({
+    strategy_code,
+  }: GetBacktestWinRatioInput): Promise<GetBacktestWinRatioOutput> {
+    const backtestWinRatio = await this.backtestWinRatioRepo.findOneOrFail({
+      where: { strategy_code },
+    });
+    return { backtestWinRatio, ok: true };
+  }
+
+  // -------------mutation-------------
   //전략에 대한 히스토리 append | concat
   async addHistory(historyInput: AddHistoryInput): Promise<AddHistoryOutput> {
     try {
@@ -125,5 +229,20 @@ export class BacktestService {
       this.logger.error(error);
       return { ok: false };
     }
+  }
+
+  // ------------- server - invest profit info -------------
+  async getHighProfitRateStrategyCodes(): Promise<string[]> {
+    const res = await this.investProfitInfoRepo.find({
+      order: {
+        profit_rate: 'ASC',
+      },
+      select: ['strategy_code'],
+      take: 20,
+    });
+    if (!res) {
+      return [];
+    }
+    return res.map((r) => r.strategy_code);
   }
 }
