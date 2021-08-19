@@ -1,3 +1,10 @@
+import { HashList } from "states/interface/strategy/entities";
+
+export const hashListToString = (hashs: HashList[]) => {
+  return hashs
+    .map((h) => (h?.hash?.hash_contents ? `#${h?.hash?.hash_contents}` : ""))
+    .join(" ");
+};
 export const toTagsString = (tags: string[]) =>
   tags.map((e) => "#" + e).join(" ");
 

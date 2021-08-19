@@ -25,7 +25,7 @@ const DetailSummary: React.FC<IDetailSummary> = ({
       style={{ marginBottom: "100px" }}
     >
       <div className="flexRow" style={{ marginTop: "50px" }}>
-        <SubTitle title="상세 리포트" style={{ margin: "20px 0px" }} />
+        <SubTitle title="상세 투자 정보" style={{ margin: "20px 0px" }} />
       </div>
       <ReportTable body={body} header={header} />
     </SDetailSummary>

@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { randomDefaultThunmnail } from "utils/default-values";
 
 interface IStrategyCardImg {
   thumnail?: string; // 썸네일 이미지 url
@@ -10,12 +11,13 @@ interface IStrategyCardImg {
 }
 
 const StrategyCardImg: React.FC<IStrategyCardImg> = ({
-  thumnail = "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
+  thumnail,
   title = "Error",
   subTitle = "",
   bottomText = "",
   onClick,
 }) => {
+  thumnail = thumnail || randomDefaultThunmnail(title);
   return (
     <>
       <Card
@@ -52,7 +54,7 @@ const Card = styled.section`
   .imgSection {
     .thumbnail {
       width: 100%;
-      height: auto;
+      height: 17rem;
     }
   }
   .mainTextSection {

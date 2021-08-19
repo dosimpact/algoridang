@@ -11,6 +11,7 @@ const ReportTable: React.FC<{
   style?: React.CSSProperties;
   props?: any;
 }> = ({ header, body, style, ...props }) => {
+  console.log("header", header, body);
   return (
     <ReportTableS style={{ ...style }} {...props}>
       <div className="ReportTable">

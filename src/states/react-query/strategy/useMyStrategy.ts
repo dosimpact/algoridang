@@ -3,6 +3,7 @@ import { useQuery } from "react-query";
 import { strategyApi } from "states/api";
 import { GetMyStrategyListOutput } from "states/interface/strategy/dtos";
 
+// todo : 고민 : select로 골라서 줄것인가, 각자의 컴포넌트에서 알아서 memo(select)를 하도록 할것인가
 export const useMyStrategy = (strategy_code?: string) => {
   const getMyStrategyListQuery = useQuery<
     AxiosResponse<GetMyStrategyListOutput>,
@@ -26,6 +27,7 @@ export const useMyStrategy = (strategy_code?: string) => {
     },
     {
       select: (data) => data.data,
+      retry: 0,
     }
   );
 
