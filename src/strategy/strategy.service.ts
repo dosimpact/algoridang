@@ -35,7 +35,7 @@ import { Logger } from '@nestjs/common';
 import { InvestProfitInfo } from 'src/backtest/entities';
 import { StrategyHashService } from './strategy-hash.service';
 import { async } from 'rxjs';
-
+// todo : 맴버필드 -> 소문자
 @Injectable()
 export class StrategyService {
   private readonly logger = new Logger(StrategyService.name);
@@ -281,11 +281,17 @@ export class StrategyService {
 
   // 2. mutation
   // (POST) createMyStrategy	(1) 전략 만들기
+  // todo : addStrategy 이름 변경 (레코드 추가)
+  // todo : My라는 용어는 뺴고 , User정도
   async createMyStrategy(
     email_id: string,
     strategy: CreateMyStrategyInput,
   ): Promise<CreateMyStrategyOutput> {
-    // (1) 전략 생성
+    // todo : 일부만 데이터가 CREATE 상황 에선 ..
+    // 트랜젝션 하나로 만들어서, Rollback 할 수 있도록
+    // 상용화 코드로 -> 프로시져 -> 원하는 시점에 커밋
+    // 아니면, 각각 create 애러시 , 삭제를 하도록
+    // (1) 전략 생성 , todo : new,check라는 변수는 다른 이름으로 고려
     const newStrategy = await this.MemberStrategyRepo.save(
       this.MemberStrategyRepo.create({
         ...strategy,
@@ -294,14 +300,22 @@ export class StrategyService {
       }),
     );
     // (2) 투자 수익 정보 생성
+    // newInvestInfo -> addedInvestInfo |
+    // todo : create , save 라인 나누기 | eg investProfitInfo -> setInvestProfitInfo
+    const createdInvestInfo = this.investProfitInfoRepo.create({
+      strategy_code: newStrategy.strategy_code,
+      ...strategy.investProfitInfo,
+    });
     const newInvestInfo = await this.investProfitInfoRepo.save(
-      this.investProfitInfoRepo.create({
-        strategy_code: newStrategy.strategy_code,
-        ...strategy.investProfitInfo,
-      }),
+      createdInvestInfo,
     );
+    // 이런식의 의존성 주입은 - 동사로 ( 메소드, 생성자 )
+    // 불변성 원칙 ,,, setmethod 불변성 원칙 깨진다.
+    // 새로운 변수를 만들어서 다른 변수로 만들어라
     newStrategy.investProfitInfo = newInvestInfo;
     // (3) 해쉬 태그 리스트 생성
+    // todo : upsert 라는 용어 -> put
+    // todo : __ 언더바 두개, | export 가 public 표현 |
     const tagIdList = await this.HashService.__upsertHashTags(strategy?.tags);
     // 해쉬 태그 매핑 테이블 생성
     await this.HashService.__upsertHashList(
