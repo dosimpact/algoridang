@@ -89,33 +89,8 @@ def initDB_Corporation(self):
         print("Done")
         return res
 
-
 @process.task(bind=True, base=CoreTask)
-def initDB_DailyStock(self):
-    with app.app_context():
-        pykrx = pricePykrx.CPricePykrx()
-        res = pykrx.getAllTickerFromDB()
-        updateData = []
-        total = len(res)
-        idx = 0
-
-        for ticker,name in res:
-            idx += 1
-            df = pykrx.getKRStockDaily(ticker)
-            res = pykrx.sendKRStockDaily(ticker,df)
-
-            if res != "":
-                updateData.append((ticker,name))
-            
-            print(f"progress ({idx}/{total})")
-            self.update_state(state='PROGRESS', meta={'current': idx, 'total': total})
-        return res
-
-
-
-
-@process.task(bind=True, base=CoreTask)
-def initDB_DailyStock_queue(self,tickers):
+def initDB_DailyStock_queue(self,tickers,startDate):
     with app.app_context():
         idx = 0
         #print(tickers)
@@ -125,7 +100,7 @@ def initDB_DailyStock_queue(self,tickers):
         print(total)
         for ticker,name in tickers:
             idx += 1
-            df = pykrx.getKRStockDaily(ticker,"20110101")
+            df = pykrx.getKRStockDaily(ticker,startDate)
             res = pykrx.sendKRStockDaily(ticker,df)
 
             if res != "":
