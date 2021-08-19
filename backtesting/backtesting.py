@@ -29,18 +29,19 @@ class CBackTtrader(backTestQuery):
         super().__init__()
 
 
-#해당클래스 가장위로
     def requestBacktestOneStock(self,id, strategyCode):
         
-        print("[",id,"] request strategyCode",strategyCode)
-        print("[",id,"] Start Backtest")
+        print("["+str(id)+"] request strategyCode  "+str(strategyCode))
+        print("["+str(id)+"] Start Backtest")
         
         data = self._setInitData(strategyCode)
         if id != None:
             self._initQueue(id, "Running", "Queue" , strategyCode)
 
         
-        print("[",id,"] apply Strategy from DB...")
+        
+        print("["+str(id)+"] apply Strategy from DB...")
+
         case = (self._setStrategy(data["strategyCode"]))
         if len(case) == 0 :
             print("DB dose'not have any data in this field...")
@@ -66,9 +67,9 @@ class CBackTtrader(backTestQuery):
        
             #pandas data inpute
             cerebro.adddata(bt.feeds.PandasData(dataname = self._getDBData(ticker,data['startTime'],data['endTime'])),name=ticker)
-            
 
-            print("[",id,"] Start backtest")
+            print("["+str(id)+"] Start cerebro")
+        
             results = cerebro.run()
             #cerebro.plot()
             strat = results[0]
@@ -128,7 +129,7 @@ class CBackTtrader(backTestQuery):
 
             #백테스트 상세정보
             backtestDetailInfo = [metrics.loc['CAGR%']['Strategy'], metrics.loc['Max Drawdown ']['Strategy'],math.ceil(delta.days/30), monthlyProfitRatioRiseMonth ,monthlyCAGR , yearlyVolatility,metrics.loc['Sharpe']['Strategy']]
-            print("backtestDetailInfo = ", backtestDetailInfo)
+            #print("backtestDetailInfo = ", backtestDetailInfo)
 
 
             # 승수 출력
@@ -140,7 +141,7 @@ class CBackTtrader(backTestQuery):
             tradehitory = strat.analyzers.bar_data.get_tradehistory()
             #print("tradehitory = ",tradehitory)
 
-            print("[",id,"] Start data saving...")
+            print("["+str(id)+"] Start data saving...")
             # 데이터 저장하기
             
             self._saveHistoryTable(tradehitory,data["strategyCode"])
@@ -151,7 +152,7 @@ class CBackTtrader(backTestQuery):
             self._saveBacktestDailyProfitRateChartTable(returns, data["strategyCode"])
             self._saveAccumulateProfitRateChartTable(dailydata,data["strategyCode"])
 
-            print("[",id,"] Complete data saving!")
+            print("["+str(id)+"] Complete data saving!")
             
             break
 
