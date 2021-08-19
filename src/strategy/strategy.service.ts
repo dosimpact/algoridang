@@ -64,7 +64,9 @@ export class StrategyService {
     private readonly investProfitInfoRepo: Repository<InvestProfitInfo>,
     private readonly HashService: StrategyHashService,
     private readonly backtestService: BacktestService,
-  ) {}
+  ) {
+    (async () => {})();
+  }
 
   // 1. query
   // (GET) getStrategyListNew	(1) 신규 투자 전략 API

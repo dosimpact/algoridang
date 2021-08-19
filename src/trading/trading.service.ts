@@ -82,7 +82,7 @@ export class TradingService {
   //   }
   // }
 
-  //(4)  전략에 티커 추가하기
+  //(4) 전략에 티커 추가하기
   async addUniversalOnly(
     email_id: string,
     {
