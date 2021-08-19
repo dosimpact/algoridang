@@ -147,6 +147,6 @@ def backtestTaskCall(self,strategyCode):
 
 def Test___backtestTestCode(strategyCode):
     bk = backtesting.CBackTtrader()
-    res = bk.requestBacktestOneStock(strategyCode)
+    res = bk.requestBacktestOneStock(None,strategyCode)
     return res
 

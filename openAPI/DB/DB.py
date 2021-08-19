@@ -24,7 +24,7 @@ class databasepool(object):
     def __initDB(self):
         try:
             print("DB connecting...")
-            mode = 1
+            mode = 0
             self.__postgreSQLpool = psycopg2.pool.SimpleConnectionPool(1, 20, user=identification.ID.user[mode],
                                                             password=identification.ID.password[mode],
                                                             host=identification.ID.host[mode],

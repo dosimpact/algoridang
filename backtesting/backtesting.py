@@ -358,12 +358,14 @@ class CBackTtrader(object):
             query += " \"trading_month_count\" = " + str(backtestDetailInfo[2])+ ","
             query += " \"rising_month_count\" = " + str(backtestDetailInfo[3])+ ","
             query += " \"month_avg_profit_rate\" = " + str(backtestDetailInfo[4])+ ","
-            query += " \"monthly_volatility\" = " + str(backtestDetailInfo[5])
+            query += " \"yearly_volatility\" = " + str(backtestDetailInfo[5])+ ","
+            query += " \"sharp\" = " + str(backtestDetailInfo[6])+ ","
+            query += " \"monthly_volatility\" = " + '0'
             query += " where strategy_code = " +str(strategyCode)+";"
             DBClass.updateData(conn,query)
         else :
-            query = "insert into backtest_detail_info(\"year_avg_profit_rate\", \"mdd\", \"trading_month_count\", \"rising_month_count\", \"month_avg_profit_rate\", \"monthly_volatility\", \"strategy_code\")"
-            query+= "values(" + str(backtestDetailInfo[0])+"," + str(backtestDetailInfo[1]) + "," + str(backtestDetailInfo[2]) +"," + str(backtestDetailInfo[3]) + "," + str(backtestDetailInfo[4]) + "," + str(backtestDetailInfo[5]) + ","+ str(strategyCode)+ ");"
+            query = "insert into backtest_detail_info(\"year_avg_profit_rate\", \"mdd\", \"trading_month_count\", \"rising_month_count\", \"month_avg_profit_rate\", \"yearly_volatility\", \"strategy_code\", \"sharp\")"
+            query+= "values(" + str(backtestDetailInfo[0])+"," + str(backtestDetailInfo[1]) + "," + str(backtestDetailInfo[2]) +"," + str(backtestDetailInfo[3]) + "," + str(backtestDetailInfo[4]) + "," + str(backtestDetailInfo[5]) + ","+ str(strategyCode)+ ""+ str(backtestDetailInfo[6])+ ");"
             DBClass.insertIntoData(conn,query)
         conn.commit()
         DBClass.putConn(conn)
@@ -469,7 +471,8 @@ class CBackTtrader(object):
         print("[",id,"] Start Backtest")
         
         data = self.__setInitData(strategyCode)
-        self.__initQueue(id, "Running", "Queue" , strategyCode)
+        if id != None:
+            self.__initQueue(id, "Running", "Queue" , strategyCode)
 
         
         print("[",id,"] apply Strategy from DB...")
@@ -537,8 +540,8 @@ class CBackTtrader(object):
 
             # 월간 변동성
             
-            monthlyVolatility = quantstats.stats.volatility(returns ,periods= delta.days)
-            monthlyVolatility = round(monthlyVolatility,2)
+            yearlyVolatility = quantstats.stats.volatility(returns)
+            yearlyVolatility = round(yearlyVolatility,2)
 
             #월간 수익률 차트 데이터 
             # 최대 상승 개월수 -> 상승개월수 
@@ -551,11 +554,7 @@ class CBackTtrader(object):
                     monthlydata = [str(idx)+str(i+1).zfill(2)+"01",round(row[i],2)]
                     monthlyProfitRatioChartData.append(monthlydata)
                     if monthlydata[1] > 0:
-                        RiseMonth += 1
-                    else :
-                        if monthlyProfitRatioRiseMonth < RiseMonth:
-                            monthlyProfitRatioRiseMonth = RiseMonth
-                        RiseMonth = 0
+                        monthlyProfitRatioRiseMonth += 1
 
             #print("monthlyProfitRatioChartData = ",monthlyProfitRatioChartData)
 
@@ -563,8 +562,8 @@ class CBackTtrader(object):
             investProfitInfo = [total, int(data['investPrice']), total- int(data['investPrice']), round(total / int(data['investPrice']),2)-1]
 
             #백테스트 상세정보
-            backtestDetailInfo = [metrics.loc['CAGR%']['Strategy'], metrics.loc['Max Drawdown ']['Strategy'],math.ceil(delta.days/30), monthlyProfitRatioRiseMonth ,monthlyCAGR , monthlyVolatility]
-            #print("backtestDetailInfo = ", backtestDetailInfo)
+            backtestDetailInfo = [metrics.loc['CAGR%']['Strategy'], metrics.loc['Max Drawdown ']['Strategy'],math.ceil(delta.days/30), monthlyProfitRatioRiseMonth ,monthlyCAGR , yearlyVolatility,metrics.loc['Sharpe']['Strategy']]
+            print("backtestDetailInfo = ", backtestDetailInfo)
 
 
             # 승수 출력
@@ -578,6 +577,7 @@ class CBackTtrader(object):
 
             print("[",id,"] Start data saving...")
             # 데이터 저장하기
+            
             self.__saveHistoryTable(tradehitory,data["strategyCode"])
             self.__saveBacktestMonthlyProfitRateChartTable(monthlyProfitRatioChartData,data["strategyCode"])
             self.__saveBacktestWinRatioTable(winCnt, loseCnt, data["strategyCode"])
@@ -591,8 +591,8 @@ class CBackTtrader(object):
             break
 
 
-
-        self.__initQueue(id, "Success", "Queue" , strategyCode)
+        if id != None:
+            self.__initQueue(id, "Success", "Queue" , strategyCode)
         return total
 
     def daily_profit(self, data, strat):
