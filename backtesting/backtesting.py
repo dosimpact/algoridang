@@ -145,11 +145,17 @@ class CBackTtrader(backTestQuery):
             # 데이터 저장하기
             
             self._saveHistoryTable(tradehitory,data["strategyCode"])
+            print("["+str(id)+"] Start data saving...1")
             self._saveBacktestMonthlyProfitRateChartTable(monthlyProfitRatioChartData,data["strategyCode"])
+            print("["+str(id)+"] Start data saving...2")
             self._saveBacktestWinRatioTable(winCnt, loseCnt, data["strategyCode"])
+            print("["+str(id)+"] Start data saving...3")
             self._saveBacktestDetailInfoTable(backtestDetailInfo,data["strategyCode"])
+            print("["+str(id)+"] Start data saving...4")
             self._saveInvestProfitInfoTable(investProfitInfo , data["strategyCode"])
+            print("["+str(id)+"] Start data saving...5")
             self._saveBacktestDailyProfitRateChartTable(returns, data["strategyCode"])
+            print("["+str(id)+"] Start data saving...6")
             self._saveAccumulateProfitRateChartTable(dailydata,data["strategyCode"])
 
             print("["+str(id)+"] Complete data saving!")
