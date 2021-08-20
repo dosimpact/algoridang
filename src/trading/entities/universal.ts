@@ -33,12 +33,12 @@ export class Universal {
   // 시작 날짜와 끝 날짜
   @IsDateString()
   @Column({ type: 'timestamptz' })
-  start_date: Date;
+  start_date: string;
 
   @IsDateString()
   @IsOptional()
   @Column({ type: 'timestamptz', nullable: true })
-  end_date?: Date;
+  end_date?: string;
   // 해당 종목을 돌릴 전략이름과 셋팅
   @IsEnum(StrategyName)
   @Column({

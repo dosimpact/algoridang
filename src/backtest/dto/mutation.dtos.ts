@@ -20,11 +20,11 @@ export class CreateInvestProfitInfoInput {
   securities_corp_fee?: string;
 
   @IsDateString()
-  invest_start_date: Date;
+  invest_start_date: string;
 
   @IsDateString()
   @IsOptional()
-  invest_end_date?: Date;
+  invest_end_date?: string;
 }
 
 export class AddHistoryInput extends PickType(History, [
