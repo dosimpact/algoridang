@@ -45,7 +45,7 @@ export class UploadService {
   }
   // (1) (common) 폴더 업로드
   async uploadS3(file: Express.Multer.File, folder?: string) {
-    const Key = `${Date.now()}${file.originalname}`;
+    const Key = `${Date.now()}${file.originalname.replace(/\s/g, '')}`;
     folder = folder ? folder : 'common';
     // console.log(`${this.buketName}/${folder}`);
     const result = await this.S3.putObject({

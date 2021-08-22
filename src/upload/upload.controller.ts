@@ -3,6 +3,7 @@ import {
   Post,
   UploadedFile,
   UseInterceptors,
+  Version,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Roles } from 'src/auth/auth.decorator';
@@ -12,6 +13,7 @@ import { UploadService } from './upload.service';
 export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
   // (1) common 폴더 업로드
+  @Version('1')
   @Roles(['Any'])
   @Post('')
   @UseInterceptors(FileInterceptor('file'))
@@ -19,6 +21,7 @@ export class UploadController {
     return this.uploadService.uploadS3(file);
   }
   // (2) icon 폴더 업로드
+  @Version('1')
   @Roles(['Any'])
   @Post('banner')
   @UseInterceptors(FileInterceptor('file'))
@@ -26,6 +29,7 @@ export class UploadController {
     return this.uploadService.uploadS3Banner(file);
   }
   // (3) 배너 폴더 업로드
+  @Version('1')
   @Roles(['Any'])
   @Post('icon')
   @UseInterceptors(FileInterceptor('file'))
