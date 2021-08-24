@@ -5,6 +5,8 @@ import * as AWS from 'aws-sdk';
 import { EntityNotFoundError, Repository } from 'typeorm';
 import { GetUploadedObjectsOutput } from './dto/query.dtos';
 import { UploadedObject } from './entities/uploaded-object.entity';
+import * as bcrypt from 'bcrypt';
+
 @Injectable()
 export class UploadService {
   private readonly S3: AWS.S3;
@@ -69,6 +71,29 @@ export class UploadService {
     };
   }
 
+  async uploadTickerS3(file: Express.Multer.File, folder?: string) {
+    let Key = `${file.originalname.replace(/\s/g, '')}`;
+    folder = folder ? folder : 'common';
+    // console.log(`${this.buketName}/${folder}`);
+    const result = await this.S3.putObject({
+      Bucket: `${this.buketName}/${folder}`,
+      ACL: this.ACL,
+      Key,
+      Body: file.buffer,
+    }).promise();
+
+    const uploaded = await this.uploadedObjectRepo.save(
+      this.uploadedObjectRepo.create({
+        ETag: result.ETag,
+        Key,
+        url: this.__makePublicUrl(`${folder}/${Key}`),
+      }),
+    );
+    return {
+      ok: true,
+      ...uploaded,
+    };
+  }
   // (2) icon 폴더 업로드
   async uploadS3Icon(file: Express.Multer.File) {
     const folder = 'icon';

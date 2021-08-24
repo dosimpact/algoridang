@@ -14,7 +14,7 @@ export class UploadController {
   constructor(private readonly uploadService: UploadService) {}
   // (1) common 폴더 업로드
   @Version('1')
-  @Roles(['Any'])
+  @Roles(['Admin', 'DAServer'])
   @Post('')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(@UploadedFile() file: Express.Multer.File) {
@@ -22,7 +22,7 @@ export class UploadController {
   }
   // (2) icon 폴더 업로드
   @Version('1')
-  @Roles(['Any'])
+  @Roles(['Admin', 'DAServer'])
   @Post('banner')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFileBanner(@UploadedFile() file: Express.Multer.File) {
@@ -30,10 +30,19 @@ export class UploadController {
   }
   // (3) 배너 폴더 업로드
   @Version('1')
-  @Roles(['Any'])
+  @Roles(['Admin', 'DAServer'])
   @Post('icon')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFileIcon(@UploadedFile() file: Express.Multer.File) {
     return this.uploadService.uploadS3Icon(file);
+  }
+
+  // (3) 티커 폴더 업로드
+  @Version('1')
+  @Roles(['Admin', 'DAServer'])
+  @Post('ticker')
+  @UseInterceptors(FileInterceptor('file'))
+  async uploadFileTicker(@UploadedFile() file: Express.Multer.File) {
+    return this.uploadService.uploadTickerS3(file, 'ticker');
   }
 }
