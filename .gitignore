@@ -6,3 +6,5 @@ identification.py
 algoridang/
 _TEST/
 celeryconfig.py
+logo/
+testenv/
