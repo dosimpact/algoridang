@@ -1,10 +1,11 @@
 .env
 .vscode
 __pycache__
+
 identification.py
+celeryconfig.py
 
 algoridang/
-_TEST/
-celeryconfig.py
 logo/
 testenv/
+_Test/opendartAPIkey.py
