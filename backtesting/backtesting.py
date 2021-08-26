@@ -49,7 +49,7 @@ class CBackTtrader(backTestQuery):
 
         total = 0
 
-        for ticker , strategy, setting, weight in case:
+        for ticker , strategy, setting, weight ,minDate in case:
             cerebro = bt.Cerebro()
             cerebro.params.tradehistory = True
 
@@ -66,7 +66,7 @@ class CBackTtrader(backTestQuery):
             cerebro.addanalyzer(BarAnalysis, _name="bar_data")
        
             #pandas data inpute
-            cerebro.adddata(bt.feeds.PandasData(dataname = self._getDBData(ticker,data['startTime'],data['endTime'])),name=ticker)
+            cerebro.adddata(bt.feeds.PandasData(dataname = self._getDBData(ticker,minDate,data['startTime'],data['endTime'])),name=ticker)
 
             print("["+str(id)+"] Start cerebro")
         
@@ -128,7 +128,8 @@ class CBackTtrader(backTestQuery):
             investProfitInfo = [total, int(data['investPrice']), total- int(data['investPrice']), round(total / int(data['investPrice']),2)-1]
 
             #백테스트 상세정보
-            backtestDetailInfo = [metrics.loc['CAGR%']['Strategy'], metrics.loc['Max Drawdown ']['Strategy'],math.ceil(delta.days/30), monthlyProfitRatioRiseMonth ,monthlyCAGR , yearlyVolatility,metrics.loc['Sharpe']['Strategy']]
+            backtestDetailInfo = self._makeBackTestInfo(metrics,delta, monthlyProfitRatioRiseMonth,monthlyCAGR,yearlyVolatility)
+            #backtestDetailInfo = [metrics.loc['CAGR%']['Strategy'], metrics.loc['Max Drawdown ']['Strategy'],math.ceil(delta.days/30), monthlyProfitRatioRiseMonth ,monthlyCAGR , yearlyVolatility,metrics.loc['Sharpe']['Strategy']]
             #print("backtestDetailInfo = ", backtestDetailInfo)
 
 
@@ -167,6 +168,22 @@ class CBackTtrader(backTestQuery):
         return total
 
 
+    def _makeBackTestInfo(self, metrics,delta, monthlyProfitRatioRiseMonth,monthlyCAGR,yearlyVolatility):
+        CAGR = metrics.loc['CAGR%']['Strategy']
+        if CAGR == None or CAGR == ''or math.isnan(CAGR) :
+            CAGR = 0
+
+        MDD = metrics.loc['Max Drawdown ']['Strategy']
+        if MDD == None or MDD == '' or math.isnan(MDD) :
+            MDD = 0
+
+        SHARP = metrics.loc['Sharpe']['Strategy']
+        if SHARP == None or SHARP == '' or math.isnan(SHARP) :
+            SHARP = 0
+        
+        backtestDetailInfo = [CAGR, MDD ,math.ceil(delta.days/30), monthlyProfitRatioRiseMonth ,monthlyCAGR , yearlyVolatility,SHARP]
+
+        return backtestDetailInfo
 #data startbackTest
     def startbackTest(self,tickerList, cash, startTime, endTime= None):
         if type(tickerList) is list:   
