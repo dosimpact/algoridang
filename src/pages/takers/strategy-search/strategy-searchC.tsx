@@ -11,7 +11,7 @@ const StrategySearchC = () => {
       {/* default strategy-search page section */}
       <Route
         exact
-        path={process.env.PUBLIC_URL + "/takers/"}
+        path={process.env.PUBLIC_URL + "/takers/strategy-search"}
         component={StrategyFeeds}
       />
       <Route
@@ -28,7 +28,6 @@ const StrategySearchC = () => {
         path={process.env.PUBLIC_URL + "/takers/strategy-search/types"}
         component={StrategyTypes}
       />
-      <Redirect from="*" to="/takers/" push={true} />
     </Switch>
   );
 };

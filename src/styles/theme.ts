@@ -11,16 +11,21 @@ const hoverBox = css`
 const CSSTheme = { hoverBox };
 
 const Theme = {
+  // MainColor&
+  ColorMainWhite: "#FFFFFF",
+  ColorMainLightGray: "#ECECEC",
+  ColorMainDarkGray: "#87847D",
+  ColorMainYellow: "#F3BC2F",
   // Color*
   ColorMain: "gray",
   ColorDark: "#263238",
   ColorWhite: "#ffffff",
-  ColorGrayL1: "#ECEFF1",
+  ColorGrayL1: "#ECECEC",
   ColorGray: "#546E7A",
-  ColorGrayD1: "#546E7A",
+  ColorGrayD1: "#87847D",
   ColorRed: "#FF5151",
   ColorBlue: "#5193FF",
-  ColorYellow: "#F39C12",
+  ColorYellow: "#F3BC2F",
   // fontSize*
   FontSizeSm: "1.3rem",
   FontSizeMd: "1.4rem",

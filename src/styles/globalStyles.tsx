@@ -7,6 +7,11 @@ export default createGlobalStyle`
     ${reset};
     html{
         font-size:62.5%;
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+    }
+    html::-webkit-scrollbar {
+       display: none; /* Chrome, Safari, Opera*/
     }
     a{
         text-decoration:none;
@@ -18,6 +23,7 @@ export default createGlobalStyle`
     body{
         font-family:-apple-system, Noto Sans KR, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         font-size:1.6rem;
+        background-color: #fff;
     }
     input{
         border:unset;

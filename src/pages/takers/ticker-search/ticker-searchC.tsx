@@ -4,16 +4,16 @@ import TickerPrice from "./section/ticker-price";
 
 const TickerSearchC = () => {
   return (
-    <div>
+    <>
       <Switch>
         {/* default mock-invest page section */}
         <Route
           exact
-          path={process.env.PUBLIC_URL + "/takers/"}
+          path={process.env.PUBLIC_URL + "/takers/ticker-search"}
           component={TickerPrice}
         />
       </Switch>
-    </div>
+    </>
   );
 };
 

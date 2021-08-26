@@ -19,12 +19,12 @@ const MockInvestC = () => {
   // 3. 모의투자데이터가 있어서 바로 보여주면 되는 경우
 
   return (
-    <div>
+    <>
       <Switch>
         {/* default mock-invest page section */}
         <Route
           exact
-          path={process.env.PUBLIC_URL + "/takers/"}
+          path={process.env.PUBLIC_URL + "/takers/mock-invest"}
           component={MockInvestList}
         />
         <Route
@@ -48,7 +48,7 @@ const MockInvestC = () => {
           component={MockInvestUpdate}
         />
       </Switch>
-    </div>
+    </>
   );
 };
 

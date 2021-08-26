@@ -30,7 +30,7 @@ const LandingPage = () => {
       <nav>
         <ul>
           <Button type="ghost">
-            <Link to="takers">
+            <Link to="takers/ticker-search">
               <li>전략 탐색 하기</li>
             </Link>
           </Button>
