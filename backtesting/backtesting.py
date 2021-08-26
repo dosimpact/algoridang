@@ -1,8 +1,5 @@
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
 
-import json
-import requests
+import sys
 
 from backtrader import strategy
 import pandas as pd
@@ -14,7 +11,6 @@ from pandas import json_normalize
 import numpy as _np
 
 # 거래 개월수
-from dateutil.relativedelta import relativedelta
 import datetime
 import math
 
@@ -30,142 +26,153 @@ class CBackTtrader(backTestQuery):
 
 
     def requestBacktestOneStock(self,id, strategyCode):
-        
-        print("["+str(id)+"] request strategyCode  "+str(strategyCode))
-        print("["+str(id)+"] Start Backtest")
-        
-        data = self._setInitData(strategyCode)
-        if id != None:
-            self._initQueue(id, "Running", "Queue" , strategyCode)
-
-        
-        
-        print("["+str(id)+"] apply Strategy from DB...")
-
-        case = (self._setStrategy(data["strategyCode"]))
-        if len(case) == 0 :
-            print("DB dose'not have any data in this field...")
-            return "error"
-
-        total = 0
-
-        for ticker , strategy, setting, weight ,minDate in case:
-            cerebro = bt.Cerebro()
-            cerebro.params.tradehistory = True
-
-            #loop 변수만 짧게 나머지는 길게
-            for i in range(len(strategy.param)):
-                strategy.param[i] = setting[i]
-
-            cerebro.broker.setcash(int(data['investPrice']))
-            cerebro.broker.set_coc(True) # 구매 신청시 무조건 최대 금액으로 살 수 있음.
-
-            cerebro.addstrategy(strategy)
-            cerebro.addanalyzer(bt.analyzers.PyFolio, _name = 'PyFolio')
-            BarAnalysis.ticker = ticker
-            cerebro.addanalyzer(BarAnalysis, _name="bar_data")
-       
-            #pandas data inpute
-            cerebro.adddata(bt.feeds.PandasData(dataname = self._getDBData(ticker,minDate,data['startTime'],data['endTime'])),name=ticker)
-
-            print("["+str(id)+"] Start cerebro")
-        
-            results = cerebro.run()
-            #cerebro.plot()
-            strat = results[0]
-            total+= cerebro.broker.getvalue()
-
-            #####################################################################################
-            ### 일간 수익 로그
-            dailydata = self.daily_profit(data, strat)
-
-            ### 일간 수익률 
-            portfolio_stats = strat.analyzers.getbyname('PyFolio')
-            returns, positions, transactions, gross_lev = portfolio_stats.get_pf_items()
-            returns.index = returns.index.tz_convert(None)
+        try:
+            print("["+str(id)+"] request strategyCode  "+str(strategyCode))
+            print("["+str(id)+"] Start Backtest")
             
-            #for idx, data in returns.items():
-            #    print(idx, data)
-            metrics = quantstats.reports.metrics(returns, mode='full', display=False)
-            #print(metrics)
-            #print ("%%%%"*5)
-            #print(dailydata)
+            data = self._setInitData(strategyCode)
+            if id != None:
+                self._initQueue(id, "Running", "Queue" , strategyCode)
 
             
-            # 거래 일수
-            if data['endTime'] != '':
-                delta = datetime.datetime.strptime(data['endTime'],"%Y%m%d") - datetime.datetime.strptime(data['startTime'],"%Y%m%d")  # 두 날짜의 차이 구하기
-            else :
-                delta = datetime.datetime.now() - datetime.datetime.strptime(data['startTime'],"%Y%m%d")  # 두 날짜의 차이 구하기
-            #print(delta.days)
-
-            # 월평균 수익률
-            monthlyCAGR = quantstats.stats.cagr(returns)
-            monthlyCAGR = round(monthlyCAGR,2)
-
-
-            # 월간 변동성
             
-            yearlyVolatility = quantstats.stats.volatility(returns)
-            yearlyVolatility = round(yearlyVolatility,2)
+            print("["+str(id)+"] apply Strategy from DB...")
 
-            #월간 수익률 차트 데이터 
-            # 최대 상승 개월수 -> 상승개월수 
-            monthlyProfitRatioChartDataMeta = quantstats.stats.monthly_returns(returns)
-            monthlyProfitRatioChartData = []
-            monthlyProfitRatioRiseMonth = 0
-            RiseMonth = 0
-            for idx ,row in monthlyProfitRatioChartDataMeta.iterrows():
-                for i in range(12):
-                    monthlydata = [str(idx)+str(i+1).zfill(2)+"01",round(row[i],2)]
-                    monthlyProfitRatioChartData.append(monthlydata)
-                    if monthlydata[1] > 0:
-                        monthlyProfitRatioRiseMonth += 1
+            case = (self._setStrategy(data["strategyCode"]))
+            if len(case) == 0 :
+                print("DB dose'not have any data in this field...")
+                return "error"
 
-            #print("monthlyProfitRatioChartData = ",monthlyProfitRatioChartData)
+            total = 0
 
-            # 투자 수익 정보
-            investProfitInfo = [total, int(data['investPrice']), total- int(data['investPrice']), round(total / int(data['investPrice']),2)-1]
+            for ticker , strategy, setting, weight ,minDate in case:
+                cerebro = bt.Cerebro()
+                cerebro.params.tradehistory = True
 
-            #백테스트 상세정보
-            backtestDetailInfo = self._makeBackTestInfo(metrics,delta, monthlyProfitRatioRiseMonth,monthlyCAGR,yearlyVolatility)
-            #backtestDetailInfo = [metrics.loc['CAGR%']['Strategy'], metrics.loc['Max Drawdown ']['Strategy'],math.ceil(delta.days/30), monthlyProfitRatioRiseMonth ,monthlyCAGR , yearlyVolatility,metrics.loc['Sharpe']['Strategy']]
-            #print("backtestDetailInfo = ", backtestDetailInfo)
+                #loop 변수만 짧게 나머지는 길게
+                for i in range(len(strategy.param)):
+                    strategy.param[i] = setting[i]
 
+                cerebro.broker.setcash(int(data['investPrice']))
+                cerebro.broker.set_coc(True) # 구매 신청시 무조건 최대 금액으로 살 수 있음.
 
-            # 승수 출력
-            winCnt, loseCnt = strat.analyzers.bar_data.get_winloseCnt()
-            #print(winCnt,loseCnt)
+                cerebro.addstrategy(strategy)
+                cerebro.addanalyzer(bt.analyzers.PyFolio, _name = 'PyFolio')
+                BarAnalysis.ticker = ticker
+                cerebro.addanalyzer(BarAnalysis, _name="bar_data")
+        
+                #pandas data inpute
+                cerebro.adddata(bt.feeds.PandasData(dataname = self._getDBData(ticker,minDate,data['startTime'],data['endTime'])),name=ticker)
 
-
-            # 히스토리 출력하기
-            tradehitory = strat.analyzers.bar_data.get_tradehistory()
-            #print("tradehitory = ",tradehitory)
-
-            print("["+str(id)+"] Start data saving...")
-            # 데이터 저장하기
+                print("["+str(id)+"] Start cerebro")
             
-            self._saveHistoryTable(tradehitory,data["strategyCode"])
-            print("["+str(id)+"] Start data saving...1")
-            self._saveBacktestMonthlyProfitRateChartTable(monthlyProfitRatioChartData,data["strategyCode"])
-            print("["+str(id)+"] Start data saving...2")
-            self._saveBacktestWinRatioTable(winCnt, loseCnt, data["strategyCode"])
-            print("["+str(id)+"] Start data saving...3")
-            self._saveBacktestDetailInfoTable(backtestDetailInfo,data["strategyCode"])
-            print("["+str(id)+"] Start data saving...4")
-            self._saveInvestProfitInfoTable(investProfitInfo , data["strategyCode"])
-            print("["+str(id)+"] Start data saving...5")
-            self._saveBacktestDailyProfitRateChartTable(returns, data["strategyCode"])
-            print("["+str(id)+"] Start data saving...6")
-            self._saveAccumulateProfitRateChartTable(dailydata,data["strategyCode"])
+                results = cerebro.run()
+                #cerebro.plot()
+                strat = results[0]
+                total+= cerebro.broker.getvalue()
 
-            print("["+str(id)+"] Complete data saving!")
+                #####################################################################################
+                ### 일간 수익 로그
+                dailydata = self.daily_profit(data, strat)
+
+                ### 일간 수익률 
+                portfolio_stats = strat.analyzers.getbyname('PyFolio')
+                returns, positions, transactions, gross_lev = portfolio_stats.get_pf_items()
+                returns.index = returns.index.tz_convert(None)
+                
+                #for idx, data in returns.items():
+                #    print(idx, data)
+                metrics = quantstats.reports.metrics(returns, mode='full', display=False)
+                #print(metrics)
+                #print ("%%%%"*5)
+                #print(dailydata)
+
+                
+                # 거래 일수
+                if data['endTime'] != '':
+                    delta = datetime.datetime.strptime(data['endTime'],"%Y%m%d") - datetime.datetime.strptime(data['startTime'],"%Y%m%d")  # 두 날짜의 차이 구하기
+                else :
+                    delta = datetime.datetime.now() - datetime.datetime.strptime(data['startTime'],"%Y%m%d")  # 두 날짜의 차이 구하기
+                #print(delta.days)
+
+                # 월평균 수익률
+                monthlyCAGR = quantstats.stats.cagr(returns)
+                monthlyCAGR = round(monthlyCAGR,2)
+
+
+                # 월간 변동성
+                
+                yearlyVolatility = quantstats.stats.volatility(returns)
+                yearlyVolatility = round(yearlyVolatility,2)
+
+                #월간 수익률 차트 데이터 
+                # 최대 상승 개월수 -> 상승개월수 
+                monthlyProfitRatioChartDataMeta = quantstats.stats.monthly_returns(returns)
+                monthlyProfitRatioChartData = []
+                monthlyProfitRatioRiseMonth = 0
+                RiseMonth = 0
+                for idx ,row in monthlyProfitRatioChartDataMeta.iterrows():
+                    for i in range(12):
+                        monthlydata = [str(idx)+str(i+1).zfill(2)+"01",round(row[i],2)]
+                        monthlyProfitRatioChartData.append(monthlydata)
+                        if monthlydata[1] > 0:
+                            monthlyProfitRatioRiseMonth += 1
+
+                #print("monthlyProfitRatioChartData = ",monthlyProfitRatioChartData)
+
+                # 투자 수익 정보
+                investProfitInfo = [total, int(data['investPrice']), total- int(data['investPrice']), round(total / int(data['investPrice']),2)-1]
+
+                #백테스트 상세정보
+                backtestDetailInfo = self._makeBackTestInfo(metrics,delta, monthlyProfitRatioRiseMonth,monthlyCAGR,yearlyVolatility)
+                #backtestDetailInfo = [metrics.loc['CAGR%']['Strategy'], metrics.loc['Max Drawdown ']['Strategy'],math.ceil(delta.days/30), monthlyProfitRatioRiseMonth ,monthlyCAGR , yearlyVolatility,metrics.loc['Sharpe']['Strategy']]
+                #print("backtestDetailInfo = ", backtestDetailInfo)
+
+
+                # 승수 출력
+                winCnt, loseCnt = strat.analyzers.bar_data.get_winloseCnt()
+                #print(winCnt,loseCnt)
+
+
+                # 히스토리 출력하기
+                tradehitory = strat.analyzers.bar_data.get_tradehistory()
+                #print("tradehitory = ",tradehitory)
+
+                print("["+str(id)+"] Start data saving...")
+                # 데이터 저장하기
+                
+                self._saveHistoryTable(tradehitory,data["strategyCode"])
+                print("["+str(id)+"] Start data saving...1")
+                self._saveBacktestMonthlyProfitRateChartTable(monthlyProfitRatioChartData,data["strategyCode"])
+                print("["+str(id)+"] Start data saving...2")
+                self._saveBacktestWinRatioTable(winCnt, loseCnt, data["strategyCode"])
+                print("["+str(id)+"] Start data saving...3")
+                self._saveBacktestDetailInfoTable(backtestDetailInfo,data["strategyCode"])
+                print("["+str(id)+"] Start data saving...4")
+                self._saveInvestProfitInfoTable(investProfitInfo , data["strategyCode"])
+                print("["+str(id)+"] Start data saving...5")
+                self._saveBacktestDailyProfitRateChartTable(returns, data["strategyCode"])
+                print("["+str(id)+"] Start data saving...6")
+                self._saveAccumulateProfitRateChartTable(dailydata,data["strategyCode"])
+
+                print("["+str(id)+"] Complete data saving!")
+                
+                break
+
+            if id != None:
+                self._initQueue(id, "Success", "Queue" , strategyCode)
             
-            break
-
-        if id != None:
-            self._initQueue(id, "Success", "Queue" , strategyCode)
-        return total
+        
+        except IndexError as e :
+            if id != None:
+                self._initQueue(id, "Error", "cerebroRun" , strategyCode)
+            print("cerebro run error ",e) 
+        except :
+            if id != None:
+                self._initQueue(id, "Error", "DBError" , strategyCode)
+            print("Unexpected error:", sys.exc_info()[0])
+        finally:
+            return total
 
 
     def _makeBackTestInfo(self, metrics,delta, monthlyProfitRatioRiseMonth,monthlyCAGR,yearlyVolatility):
