@@ -27,6 +27,7 @@ class CBackTtrader(backTestQuery):
 
     def requestBacktestOneStock(self,id, strategyCode):
         try:
+            total = 0
             print("["+str(id)+"] request strategyCode  "+str(strategyCode))
             print("["+str(id)+"] Start Backtest")
             
@@ -43,7 +44,6 @@ class CBackTtrader(backTestQuery):
                 print("DB dose'not have any data in this field...")
                 return "error"
 
-            total = 0
 
             for ticker , strategy, setting, weight ,minDate in case:
                 cerebro = bt.Cerebro()

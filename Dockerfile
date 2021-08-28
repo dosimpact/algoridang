@@ -5,6 +5,8 @@ COPY . ./Workspace
 
 RUN pip install -r ./Workspace/requirements.txt
 
+WORKDIR /Workspace
+
 RUN nohup celery -A pycelery.processor.process worker --loglevel=info > log.celery &
 
 EXPOSE 5000
