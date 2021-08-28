@@ -12,7 +12,7 @@ RUN nohup celery -A pycelery.processor.process worker --loglevel=info > log.cele
 EXPOSE 5000
 
 
-CMD ["python","./Workspace/app.py"]
+CMD ["python","./app.py > log.flask "]
 
 
 # 뒷자리 숫자를 변경할 것
