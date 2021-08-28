@@ -48,11 +48,11 @@ class backTestQuery(object):
             alllen = len(df)
             backtestlen =  len(df[str(pd.to_datetime(start, format='%Y-%m-%d')) : ])
             getDataPosStr = alllen - backtestlen - mindatalen
-            getDataPosEnd = len(df[  :str(pd.to_datetime(end, format='%Y-%m-%d')) ])
             if getDataPosStr > 0:
                 if end == None or end == '':
                     res = df[getDataPosStr : ]
                 else:
+                    getDataPosEnd = len(df[  :str(pd.to_datetime(end, format='%Y-%m-%d')) ])
                     res = df[ getDataPosStr :getDataPosEnd ]
 
             else:

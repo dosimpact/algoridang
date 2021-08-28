@@ -119,7 +119,7 @@ def backtestTaskCall(self,strategyCode):
     return res
 
 
-def Test___backtestTestCode(strategyCode):
+def Test___backtestTestCode(id,strategyCode):
     bk = backtesting.CBackTtrader()
     res = bk.requestBacktestOneStock(None,strategyCode)
     return res

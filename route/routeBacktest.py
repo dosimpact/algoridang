@@ -55,4 +55,39 @@ class BackTestPost(Resource):
         }, 201
 
 
+@BackTest.route('/Test')
+@BackTest.doc(params={'strategyCode': 'Database strategyCode'})
+class BackTestPost(Resource):
+    @BackTest.expect(backTestFields)
+    @BackTest.response(201, 'Success', backTestFieldsWithId)
+    def post(self):
+        """strategyCode 를 바탕으로 백테스트를 수행합니다. """
+        if request.method == 'POST':
+            inputdata = request.get_json(silent=True)
+            strategyCode = inputdata["strategyCode"]
+            QueueID = inputdata["ID"]
+            if not strategyCode or  strategyCode == '':
+                
+                return {
+                    'status' : "error : Some required data is missing!"
+                }, 400
+            task = processor.Test___backtestTestCode(QueueID,strategyCode)
+           
+            if not QueueID:
+                return {
+                    'status' : "error : Celery Server is down"
+                }, 503
+
+            
+
+        
+        return {
+            'BacktestId': strategyCode,
+            'data': "[ "+str(QueueID) +" ]  Request Celery Server ",
+            'status' : "done"
+        }, 201
+
+
+
+
 
