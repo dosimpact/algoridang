@@ -1,3 +1,5 @@
+from __future__ import (absolute_import, division, print_function,
+                        unicode_literals)
 
 import sys
 
@@ -10,40 +12,43 @@ from pandas import json_normalize
 
 import numpy as _np
 
-# 거래 개월수
 import datetime
 import math
-
+# 거래 개월수
+from dateutil.relativedelta import relativedelta
 
 from backtesting.BarAnalysis import BarAnalysis
 from backtesting.SMACross import SMACross
 from backtesting.backTestQuery import backTestQuery
 
 
-class CBackTtrader(backTestQuery):
+
+class MockInvest(backTestQuery):
     def __init__(self) -> None:
         super().__init__()
 
 
-    def requestBacktestOneStock(self,id, strategyCode):
+    def requestMockInvestStock(self,id):
+        data = {}
         try:
-            total = 0
-            print("["+str(id)+"] request strategyCode  "+str(strategyCode))
+            print("["+str(id)+"] request strategyCode  ")
             print("["+str(id)+"] Start Backtest")
-            
-            data = self._setInitData(strategyCode)
-            if id != None:
-                self._initQueue(id, "Running", "Queue" , strategyCode)
-
-            
-            
             print("["+str(id)+"] apply Strategy from DB...")
 
-            case = (self._setStrategy(data["strategyCode"]))
+            case = [("005930", SMACross, [5,20], 1, 20),("005380", SMACross, [5,20], 1, 20)]
+
+            #error case : cerebro error
+            case = [("005930", SMACross, [5,20], 1, 0),("005380", SMACross, [5,20], 1, 20)]
             if len(case) == 0 :
                 print("DB dose'not have any data in this field...")
                 return "error"
 
+            total = 0
+
+
+            data['investPrice'] = 100000
+            data['startTime'] = '20200801'
+            data['endTime'] = '20200815'
 
             for ticker , strategy, setting, weight ,minDate in case:
                 cerebro = bt.Cerebro()
@@ -118,7 +123,7 @@ class CBackTtrader(backTestQuery):
                         if monthlydata[1] > 0:
                             monthlyProfitRatioRiseMonth += 1
 
-                #print("monthlyProfitRatioChartData = ",monthlyProfitRatioChartData)
+                print("monthlyProfitRatioChartData = ",monthlyProfitRatioChartData)
 
                 # 투자 수익 정보
                 investProfitInfo = [total, int(data['investPrice']), total- int(data['investPrice']), round(total / int(data['investPrice']),2)-1]
@@ -126,53 +131,27 @@ class CBackTtrader(backTestQuery):
                 #백테스트 상세정보
                 backtestDetailInfo = self._makeBackTestInfo(metrics,delta, monthlyProfitRatioRiseMonth,monthlyCAGR,yearlyVolatility)
                 #backtestDetailInfo = [metrics.loc['CAGR%']['Strategy'], metrics.loc['Max Drawdown ']['Strategy'],math.ceil(delta.days/30), monthlyProfitRatioRiseMonth ,monthlyCAGR , yearlyVolatility,metrics.loc['Sharpe']['Strategy']]
-                #print("backtestDetailInfo = ", backtestDetailInfo)
+                print("backtestDetailInfo = ", backtestDetailInfo)
 
 
                 # 승수 출력
                 winCnt, loseCnt = strat.analyzers.bar_data.get_winloseCnt()
-                #print(winCnt,loseCnt)
+                print(winCnt,loseCnt)
 
 
                 # 히스토리 출력하기
                 tradehitory = strat.analyzers.bar_data.get_tradehistory()
-                #print("tradehitory = ",tradehitory)
+                print("tradehitory = ",tradehitory)
 
-                print("["+str(id)+"] Start data saving...")
-                # 데이터 저장하기
-                
-                self._saveHistoryTable(tradehitory,data["strategyCode"])
-                print("["+str(id)+"] Start data saving...1")
-                self._saveBacktestMonthlyProfitRateChartTable(monthlyProfitRatioChartData,data["strategyCode"])
-                print("["+str(id)+"] Start data saving...2")
-                self._saveBacktestWinRatioTable(winCnt, loseCnt, data["strategyCode"])
-                print("["+str(id)+"] Start data saving...3")
-                self._saveBacktestDetailInfoTable(backtestDetailInfo,data["strategyCode"])
-                print("["+str(id)+"] Start data saving...4")
-                self._saveInvestProfitInfoTable(investProfitInfo , data["strategyCode"])
-                print("["+str(id)+"] Start data saving...5")
-                self._saveBacktestDailyProfitRateChartTable(returns, data["strategyCode"])
-                print("["+str(id)+"] Start data saving...6")
-                self._saveAccumulateProfitRateChartTable(dailydata,data["strategyCode"])
-
-                print("["+str(id)+"] Complete data saving!")
-                
                 break
-
-            if id != None:
-                self._initQueue(id, "Success", "Queue" , strategyCode)
-            
-        
-        except IndexError as e :
-            if id != None:
-                self._initQueue(id, "Error", "cerebroRun" , strategyCode)
-            print("cerebro run error ",e) 
-        except :
-            if id != None:
-                self._initQueue(id, "Error", "DBError" , strategyCode)
-            print("Unexpected error:", sys.exc_info()[0])
-        finally:
             return total
+        except IndexError as e :
+            print("cerebro run error ",e) 
+            
+
+        except :
+            print("Unexpected error:", sys.exc_info()[0])
+            
 
 
     def _makeBackTestInfo(self, metrics,delta, monthlyProfitRatioRiseMonth,monthlyCAGR,yearlyVolatility):
@@ -191,6 +170,7 @@ class CBackTtrader(backTestQuery):
         backtestDetailInfo = [CAGR, MDD ,math.ceil(delta.days/30), monthlyProfitRatioRiseMonth ,monthlyCAGR , yearlyVolatility,SHARP]
 
         return backtestDetailInfo
+
 #data startbackTest
     def startbackTest(self,tickerList, cash, startTime, endTime= None):
         if type(tickerList) is list:   

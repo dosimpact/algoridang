@@ -17,14 +17,14 @@ class backTestQuery(object):
             for index, row in df.iterrows():
                 if  row[2]== 'GoldenCross':
                     setting = [row[3]['GoldenCross']['pfast'],row[3]['GoldenCross']['pslow']]
-                    setting = [5,20]
-                    strategyList.append(( row[1] , SMACross ,setting, 1)) 
+                    minDate = row[3]['GoldenCross']['pslow']
+                    strategyList.append(( row[1] , SMACross ,setting, 1, minDate)) 
 
         return strategyList
         #(ticker, strategy, setting , weigth)
     
 
-    def _getDBData(self,ticker, start, end = None):
+    def _getDBData(self,ticker,mindatalen, start, end = None):
         DBClass = databasepool()
         conn = DBClass.getConn()
         if DBClass:
@@ -43,12 +43,20 @@ class backTestQuery(object):
                 "close_price":'Close'	,
                 "volume":"Volume"
             },inplace = True)
-
+            
             res = []
-            if end == None or end == '':
-                res = df[str(pd.to_datetime(start, format='%Y-%m-%d')) : ]
+            alllen = len(df)
+            backtestlen =  len(df[str(pd.to_datetime(start, format='%Y-%m-%d')) : ])
+            getDataPosStr = alllen - backtestlen - mindatalen
+            if getDataPosStr > 0:
+                if end == None or end == '':
+                    res = df[getDataPosStr : ]
+                else:
+                    getDataPosEnd = len(df[  :str(pd.to_datetime(end, format='%Y-%m-%d')) ])
+                    res = df[ getDataPosStr :getDataPosEnd ]
+
             else:
-                res = df[str(pd.to_datetime(start, format='%Y-%m-%d')) :str(pd.to_datetime(end, format='%Y-%m-%d')) ]
+                return "error"        
 
             DBClass.putConn(conn)
 

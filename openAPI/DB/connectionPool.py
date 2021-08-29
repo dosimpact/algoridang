@@ -8,7 +8,6 @@ from openAPI.DB.query import dbQuery
 
 class databasepool(dbQuery):
     __postgreSQLpool = []
-    Mode = 0
     def __new__(cls, *args, **kwargs):
         if not hasattr(cls, "_instance"):         # Foo 클래스 객체에 _instance 속성이 없다면
             #print("__new__ is called\n")
@@ -50,7 +49,7 @@ class databasepool(dbQuery):
 
 
 
-dbinit = databasepool(0)
+dbinit = databasepool(1)
 
 
 if __name__ == "__main__":
