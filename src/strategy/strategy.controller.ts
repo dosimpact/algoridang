@@ -24,31 +24,42 @@ export class StrategyQueryController {
 
   @Version('1')
   @Get('/')
-  async getStrategies(@Query('type') type: string) {
-    if (type === 'new') return this.strategyService.getStrategyListNew({});
+  async getStrategies(
+    @Query('type') type: string,
+    @Query('take') take: number,
+    @Query('skip') skip: number,
+  ) {
+    if (type === 'new')
+      return this.strategyService.getStrategyListNew({ take, skip });
 
     if (type === 'high-view')
-      return this.strategyService.getStrategyListHighView({});
+      return this.strategyService.getStrategyListHighView({ skip, take });
 
     if (type === 'stable-income')
       return this.strategyService.getStrategyListInvestType({
         investType: InvestType.StableIncome,
+        skip,
+        take,
       });
 
     if (type === 'risk-taking')
       return this.strategyService.getStrategyListInvestType({
         investType: InvestType.RiskTaking,
+        skip,
+        take,
       });
 
     if (type === 'neutral')
       return this.strategyService.getStrategyListInvestType({
         investType: InvestType.Neutral,
+        skip,
+        take,
       });
 
     if (type === 'high-profit')
-      return this.strategyService.getStrategyListHighProfit({});
+      return this.strategyService.getStrategyListHighProfit({ skip, take });
 
-    return this.strategyService.getStrategyListNew({});
+    return this.strategyService.getStrategyListNew({ skip, take });
   }
   // (GET) getStrategyListAllType(3) 위험추구/중립형/수익안정형 API
   @Version('1')

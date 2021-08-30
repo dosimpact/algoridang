@@ -71,9 +71,11 @@ export class StrategyService {
   // 1. query
   // (GET) getStrategyListNew	(1) 신규 투자 전략 API
   async getStrategyListNew({
-    skip = 0,
-    take = 10,
+    skip,
+    take,
   }: GetStrategyListNewInput): Promise<GetStrategyListNewOutput> {
+    skip = skip || 0;
+    take = skip || 7;
     const [memberStrategyList, totalResult] =
       await this.MemberStrategyRepo.findAndCount({
         order: {
@@ -93,9 +95,11 @@ export class StrategyService {
   // (GET) getStrategyListHighView (2) 조회수 높은 투자 전략 API
   async getStrategyListHighView({
     skip = 0,
-    take = 5,
+    take = 7,
   }: GetStrategyListHighViewInput): Promise<GetStrategyListHighViewOutput> {
-    const [memberStrategyList, totalResult] =
+    skip = skip || 0;
+    take = skip || 7;
+    let [memberStrategyList, totalResult] =
       await this.MemberStrategyRepo.findAndCount({
         order: {
           create_date: 'DESC',
@@ -106,7 +110,7 @@ export class StrategyService {
     memberStrategyList.sort(
       (a, b) => b.operationMemberList.length - a.operationMemberList.length,
     );
-    memberStrategyList.slice(skip, skip + take);
+    memberStrategyList = memberStrategyList.slice(skip, skip + take);
     return {
       ok: true,
       memberStrategyList,
@@ -127,19 +131,17 @@ export class StrategyService {
     ;
   */
   //
-  async getStrategyListHighProfit({
-    skip = 0,
-    take = 10,
-  }: GetStrategyListHighProfitInput): Promise<GetStrategyListHighProfitOutput> {
+  async getStrategyListHighProfit({}: GetStrategyListHighProfitInput): Promise<GetStrategyListHighProfitOutput> {
+    // 높은 수익률의 전략 코드 리스트를 가져옴
     const strategyCodes =
       await this.backtestService.getHighProfitRateStrategyCodes();
-    console.log('strategyCodes', strategyCodes);
+    // console.log('strategyCodes', strategyCodes);
 
+    // 가져온 전략코드들로 Join테이블 생성
     const memberStrategyList = await this.MemberStrategyRepo.createQueryBuilder(
       'member_strategy',
     )
       .whereInIds(strategyCodes)
-      .orderBy('create_date', 'DESC')
       .leftJoinAndSelect('member_strategy.hashList', 'hashList')
       .leftJoinAndSelect('hashList.hash', 'hash')
       .leftJoinAndSelect('member_strategy.investProfitInfo', 'investProfitInfo')
@@ -151,10 +153,15 @@ export class StrategyService {
         'member_strategy.operationMemberList',
         'operationMemberList',
       )
+      .orderBy({
+        'member_strategy.create_date': 'DESC',
+      })
       .getMany();
     return {
       ok: true,
       memberStrategyList,
+      totalPage: Math.ceil(memberStrategyList.length / 20),
+      totalResult: memberStrategyList.length,
     };
   }
   // (GET) getStrategyListType(3) 위험추구/중립형/수익안정형 API

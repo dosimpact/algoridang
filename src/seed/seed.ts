@@ -22,7 +22,7 @@ async function bootstrap() {
   if (getCorporations.corporations) {
     getCorporations.corporations.map(async (corp) => {
       const { ticker, corp_name } = corp;
-      console.log(ticker, corp_name);
+      console.log('start...', ticker, corp_name);
       // 전략 만들기
       const newStrategy = await strategyService.createMyStrategy(
         'ypd03008@gmail.com',
@@ -51,6 +51,7 @@ async function bootstrap() {
       await flaskService.pushBackTestQ('ypd03008@gmail.com', {
         strategy_code: newStrategy.memberStrategy.strategy_code,
       });
+      console.log('✔', ticker, corp_name);
     });
   }
 }
