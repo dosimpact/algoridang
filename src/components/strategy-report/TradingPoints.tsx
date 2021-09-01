@@ -1,4 +1,4 @@
-import { SubTitle } from "components/data-display/Typo";
+import { SubTitle } from "components/_atoms/Typo";
 import LineSeriesChartPointing from "components/light-weight/LineSeriesChartPointing";
 import { SeriesMarker, Time } from "lightweight-charts";
 import React, { useCallback, useMemo, useState } from "react";

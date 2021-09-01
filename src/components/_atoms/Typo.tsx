@@ -6,7 +6,7 @@ export const Title: React.FC<{
   props?: any;
 }> = ({ title, style, ...props }) => {
   return (
-    <h1 style={{ fontSize: "20px", fontWeight: 700, ...style }} {...props}>
+    <h1 style={{ fontSize: "1.45rem", fontWeight: 700, ...style }} {...props}>
       {title}
     </h1>
   );

@@ -1,4 +1,4 @@
-import { SubTitle } from "components/data-display/Typo";
+import { SubTitle } from "components/_atoms/Typo";
 import React from "react";
 import styled from "styled-components";
 import { toAddComma } from "utils/parse";

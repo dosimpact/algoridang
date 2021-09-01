@@ -1,5 +1,5 @@
 import ChartWinRatio from "components/data-display/ChartWinRatio";
-import { SubTitle } from "components/data-display/Typo";
+import { SubTitle } from "components/_atoms/Typo";
 import React from "react";
 import { useParams } from "react-router-dom";
 import useBackTestReport from "states/react-query/backtest/useBackTestReport";

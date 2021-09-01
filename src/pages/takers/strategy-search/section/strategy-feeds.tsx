@@ -1,6 +1,6 @@
 import { WhiteSpace } from "antd-mobile";
 import StrategyCard from "components/strategy/StrategyCard";
-import StrategyCardInfo from "components/strategy/StrategyCardInfo";
+import StrategyCardInfo from "components/_modecules/StrategyCardInfo";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import useStrategy from "states/react-query/strategy/useStrategy";
@@ -9,35 +9,8 @@ import WingBlank from "components/_atoms/WingBlank";
 import PageGuide from "components/_modecules/PageGuide";
 
 import { IconSearchStrategy } from "assets/icons";
-
-const Title: React.FC<{ title: string }> = ({ title }) => {
-  return <h1 style={{ fontSize: "20px", fontWeight: 700 }}>{title}</h1>;
-};
-
-// const dummyDatas2 = [
-//   {
-//     title: "삼성전자 황금 신호",
-//     subTitle: ["단일 종목", "골든 크로스"],
-//     CAGR: 22.22,
-//   },
-//   {
-//     title: "싸질만큼 싸진 바이오 제약주 Top10",
-//     subTitle: ["바이오 섹터", "블린저 매매"],
-//     CAGR: 10.91,
-//   },
-//   {
-//     title: "조엘 그린블라트의 마법공식 Top20",
-//     subTitle: ["저평가", "고수익"],
-//     CAGR: 12.82,
-//   },
-// ];
-// const dummyDatas3 = [
-//   {
-//     title: "골드 기업 종합 점수 Top20 ",
-//     subTitle: ["F-Score", "골든 크로스"],
-//     CAGR: 22.22,
-//   },
-// ];
+import { Title } from "components/_atoms/Typo";
+import SectionTitle from "components/_modecules/SectionTitle";
 
 // todo:refactor CAGR 부분 DB Relation eager 처리 및 undefined 핸들링
 const StrategyFeeds = () => {
@@ -62,7 +35,7 @@ const StrategyFeeds = () => {
         }}
       />
       <WhiteSpace size="xl" />
-      <Title title={"신규 투자 전략"} />
+      <SectionTitle title="신규 투자 전략" linkTo="/" />
       <WhiteSpace size="xl" />
       {strategyListNew &&
         strategyListNew.map((data, key) => (

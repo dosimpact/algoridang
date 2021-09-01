@@ -35,6 +35,7 @@ const SPageGuide = styled.section`
     font-size: 1.4rem;
     line-height: 1.6rem;
     color: #000000;
+    font-weight: bold;
   }
   .subTitle {
     margin-top: 1rem;

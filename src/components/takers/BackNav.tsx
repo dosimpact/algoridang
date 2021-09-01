@@ -1,5 +1,5 @@
 import { WhiteSpace } from "antd-mobile";
-import { Title } from "components/data-display/Typo";
+import { Title } from "components/_atoms/Typo";
 import useBackButton from "hooks/useBackButton";
 import React from "react";
 

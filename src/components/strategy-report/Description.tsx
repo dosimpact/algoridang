@@ -1,5 +1,5 @@
 import React from "react";
-import { SubTitle } from "components/data-display/Typo";
+import { SubTitle } from "components/_atoms/Typo";
 import styled from "styled-components";
 
 interface IDescription {
