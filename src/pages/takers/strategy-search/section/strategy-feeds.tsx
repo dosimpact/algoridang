@@ -1,4 +1,3 @@
-import { WhiteSpace } from "antd-mobile";
 import StrategyCard from "components/strategy/StrategyCard";
 import StrategyCardInfo from "components/_modecules/StrategyCardInfo";
 import React from "react";
@@ -11,6 +10,7 @@ import PageGuide from "components/_modecules/PageGuide";
 import { IconSearchStrategy } from "assets/icons";
 import { Title } from "components/_atoms/Typo";
 import SectionTitle from "components/_modecules/SectionTitle";
+import WhiteSpace from "components/_atoms/WhiteSpace";
 
 // todo:refactor CAGR 부분 DB Relation eager 처리 및 undefined 핸들링
 const StrategyFeeds = () => {
@@ -25,7 +25,7 @@ const StrategyFeeds = () => {
         title="전략 탐색"
         subTitle="수익률을 확인하고 전략으로 모의투자를 시작해 보세요."
       />
-      <WhiteSpace size="xl" />
+      <WhiteSpace />
       <StrategyCardInfo
         title="투자 성향별 종목 검색"
         subTitle="나만의 성향에 맞는 전략 찾아봅니다."
@@ -34,9 +34,9 @@ const StrategyFeeds = () => {
           history.push("/takers/strategy-search/types");
         }}
       />
-      <WhiteSpace size="xl" />
+      <WhiteSpace />
       <SectionTitle title="신규 투자 전략" linkTo="/" />
-      <WhiteSpace size="xl" />
+      <WhiteSpace />
       {strategyListNew &&
         strategyListNew.map((data, key) => (
           <StrategyCard
@@ -57,9 +57,9 @@ const StrategyFeeds = () => {
             }}
           />
         ))}
-      <WhiteSpace size="xl" />
+      <WhiteSpace />
       <Title title={"조회수 높은 투자 전략"} />
-      <WhiteSpace size="xl" />
+      <WhiteSpace />
       {strategyListHighView &&
         strategyListHighView.map((data, key) => (
           <StrategyCard

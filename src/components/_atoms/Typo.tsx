@@ -2,11 +2,20 @@ import React from "react";
 
 export const Title: React.FC<{
   title: string;
+  className?: string;
   style?: React.CSSProperties;
   props?: any;
 }> = ({ title, style, ...props }) => {
   return (
-    <h1 style={{ fontSize: "1.45rem", fontWeight: 700, ...style }} {...props}>
+    <h1
+      style={{
+        fontSize: "1.45rem",
+        fontWeight: 700,
+        marginLeft: "1.7rem",
+        ...style,
+      }}
+      {...props}
+    >
       {title}
     </h1>
   );

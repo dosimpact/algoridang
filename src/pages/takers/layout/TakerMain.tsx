@@ -13,6 +13,7 @@ import {
   IconSearchTicker,
 } from "assets/icons";
 import Helmet from "react-helmet";
+import useMobileSetting from "hooks/useMobileSetting";
 
 const tabs = [
   { title: <Badge>종목 탐색</Badge> },
@@ -272,6 +273,7 @@ const TakerMainSection = () => {
   );
 };
 const TakerConfig = () => {
+  useMobileSetting();
   return (
     <>
       <Helmet>
