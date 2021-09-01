@@ -24,6 +24,9 @@ export default createGlobalStyle`
         font-family:-apple-system, Noto Sans KR, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         font-size:1.6rem;
         background-color: #fff;
+        min-height:100vh;
+        /* background: linear-gradient(0deg, #fff2d2 0%, rgba(255, 255, 255, 0) 100%); */
+      );
     }
     input{
         border:unset;

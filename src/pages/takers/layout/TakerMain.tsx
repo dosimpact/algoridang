@@ -106,17 +106,12 @@ const NavBarContainer = () => {
       }}
       rightContent={[
         <div key="name">{!me.isLoading && me?.data?.data?.email_id}</div>,
-        <Icon
-          key="1"
-          type="ellipsis"
-          onClick={() => {
-            console.log("ellipsis click");
-          }}
-        />,
+        <IconPerson />,
       ]}
     ></NavBar>
   );
 };
+
 export const URLList = {
   tickerSearch: {
     url: "/takers/ticker-search",
@@ -191,6 +186,31 @@ const BottomNavigation = () => {
     </SBottomNavigation>
   );
 };
+
+const BottomGradient = () => {
+  return (
+    <SBottomGradient>
+      <div className="yellowGradient"></div>
+    </SBottomGradient>
+  );
+};
+
+const SBottomGradient = styled.div`
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  .yellowGradient {
+    width: 100%;
+    height: 40vh;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: -100;
+    background: linear-gradient(0deg, #fff2d2 0%, rgba(255, 255, 255, 0) 100%);
+  }
+`;
 
 const SBottomNavigation = styled.section`
   position: fixed;
@@ -272,6 +292,7 @@ const TakerMainContainer = () => {
       {/* <TabNavigationContainer /> */}
       <TakerMainSection />
       <BottomNavigation />
+      <BottomGradient />
     </section>
   );
 };

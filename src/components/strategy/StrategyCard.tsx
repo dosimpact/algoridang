@@ -55,6 +55,7 @@ const StrategyCard: React.FC<IStrategyCard> = ({
 
 const Card = styled.section`
   /* box-shadow: 0 4px 12px 0px rgba(0, 0, 0, 0.25); */
+  background-color: white;
   box-shadow: 0 4px 12px 0px rgba(0, 0, 0, 0.25);
   transition: box-shadow 0.2s ease-in-out;
   :hover {

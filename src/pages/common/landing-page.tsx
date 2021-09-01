@@ -43,8 +43,6 @@ const LandingPage = () => {
           <WhiteSpace />
         </ul>
       </nav>
-      <div>Landing page</div>
-      <SampleMarker />
     </WingBlank>
   );
 };
