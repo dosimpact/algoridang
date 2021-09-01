@@ -21,12 +21,14 @@ const Theme = {
   // MainColor&
   ColorMainWhite: "#FFFFFF",
   ColorMainLightGray: "#ECECEC",
+  ColorMainGray: "#7A7A7A",
   ColorMainDarkGray: "#87847D",
   ColorMainYellow: "#F3BC2F",
   ColorMainBlue: "#079CFF",
   ColorMainLightBlue: " rgba(7, 156, 255, 0.14)",
   ColorMainRed: "#FF0000",
   ColorMainLightRed: "#FFF3F3",
+
   // Color*
   ColorMain: "gray",
   ColorDark: "#263238",

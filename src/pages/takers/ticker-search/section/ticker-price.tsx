@@ -1,6 +1,6 @@
+import React, { useMemo, useState, useCallback, useEffect } from "react";
 import TickerSearch from "components/_atoms/TickerSearch";
 import LineSeriesChart from "components/light-weight/LineSeriesChart";
-import React, { useMemo, useState, useCallback, useEffect } from "react";
 import { useRecoilState } from "recoil";
 import useDailyStock from "states/react-query/finance/useDailyStock";
 import { atomCorporationState } from "states/recoil/corporation";

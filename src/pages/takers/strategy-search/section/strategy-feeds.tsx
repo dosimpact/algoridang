@@ -1,10 +1,14 @@
-import { WingBlank, WhiteSpace } from "antd-mobile";
+import { WhiteSpace } from "antd-mobile";
 import StrategyCard from "components/strategy/StrategyCard";
 import StrategyCardInfo from "components/strategy/StrategyCardInfo";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import useStrategy from "states/react-query/strategy/useStrategy";
 import { toTagsString } from "utils/parse";
+import WingBlank from "components/_atoms/WingBlank";
+import PageGuide from "components/_modecules/PageGuide";
+
+import { IconSearchStrategy } from "assets/icons";
 
 const Title: React.FC<{ title: string }> = ({ title }) => {
   return <h1 style={{ fontSize: "20px", fontWeight: 700 }}>{title}</h1>;
@@ -42,7 +46,12 @@ const StrategyFeeds = () => {
   // console.log("strategyListNew", strategyListNew);
 
   return (
-    <WingBlank style={{ margin: "15x" }} size="lg">
+    <WingBlank>
+      <PageGuide
+        icon={<IconSearchStrategy />}
+        title="전략 탐색"
+        subTitle="수익률을 확인하고 전략으로 모의투자를 시작해 보세요."
+      />
       <WhiteSpace size="xl" />
       <StrategyCardInfo
         title="투자 성향별 종목 검색"
