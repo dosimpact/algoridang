@@ -258,7 +258,7 @@ const SNavItem = styled.li<{ selected?: boolean }>`
 
 const TakerMainSection = () => {
   return (
-    <>
+    <section style={{ marginBottom: "7.8rem" }}>
       <section>
         <TickerSearch />
       </section>
@@ -268,7 +268,7 @@ const TakerMainSection = () => {
       <section>
         <MockInvest />
       </section>
-    </>
+    </section>
   );
 };
 const TakerConfig = () => {
