@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import FNumber from "components/data-display/FNumber";
+import FNumber from "components/_atoms/FNumber";
 import { randomDefaultThunmnail } from "utils/default-values";
+import BadgeCAGR from "components/_atoms/BadgeCAGR";
 
 /**
  * 박스형 전략탐색 카드
@@ -39,12 +40,13 @@ const StrategyCardBox: React.FC<IStrategyCardBox> = ({
           <div className="title">{title}</div>
           {subTitle && <div className="subTitle">{subTitle}</div>}
           <div className="CAGR">
-            연수익{" "}
+            <BadgeCAGR val={CAGR} hasPercentage={true} />
+            {/* 연수익{" "}
             {CAGR ? (
-              <FNumber val={CAGR} hasPercentage={true} />
+              <BadgeCAGR val={CAGR} hasPercentage={true} />
             ) : (
               "- 백테스팅 대기중"
-            )}
+            )} */}
           </div>
         </article>
       </Card>

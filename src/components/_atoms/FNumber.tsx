@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
+// 수익률에 따라서 빨/회/파 의 색상을 가진다.
 const FNumber: React.FC<{
   val: number;
   props?: any;

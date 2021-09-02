@@ -44,7 +44,7 @@ const SBadgePriceDelta = styled.div<{ isPositive: boolean }>`
   border-radius: 1.1rem;
   padding: 0.5rem 1.1rem;
   min-width: 7rem;
-  min-height: 2.2rem;
+  min-height: 2.3rem;
   display: inline-block;
   span {
     color: ${(props) =>

@@ -1,8 +1,8 @@
+import BadgeCAGR from "components/_atoms/BadgeCAGR";
 import React from "react";
 import styled from "styled-components";
-import FNumber from "components/data-display/FNumber";
+// import FNumber from "components/_atoms/FNumber";
 import { randomDefaultThunmnail } from "utils/default-values";
-
 interface IStrategyCard {
   thumnail?: string;
   title: string;
@@ -35,12 +35,13 @@ const StrategyCard: React.FC<IStrategyCard> = ({
           <div className="title">{title}</div>
           {subTitle && <div className="subTitle">{subTitle}</div>}
           <div className="CAGR">
-            연수익{" "}
+            <BadgeCAGR val={CAGR} hasPercentage={true} />
+            {/* 연수익{" "}
             {CAGR ? (
-              <FNumber val={CAGR} hasPercentage={true} />
+              <BadgeCAGR val={CAGR} hasPercentage={true} />
             ) : (
               "- 백테스팅 대기중"
-            )}
+            )} */}
           </div>
         </article>
         <article className="right">
