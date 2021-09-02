@@ -67,12 +67,14 @@ const STopNavigation = styled.header`
   }
   .logo {
     white-space: pre-wrap;
+    cursor: pointer;
   }
   .authInfo {
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
     justify-content: flex-end;
+    cursor: pointer;
     .email {
       margin-right: 1.5rem;
     }
@@ -245,7 +247,14 @@ const TakerMainContainer = () => {
     <section>
       <TakerConfig />
       <TopNavigation />
-      <TakerMainSection />
+      <div
+        style={{
+          paddingTop: "4.5rem",
+          paddingBottom: "8rem",
+        }}
+      >
+        <TakerMainSection />
+      </div>
       <BottomNavigation />
       <BottomGradient />
     </section>
