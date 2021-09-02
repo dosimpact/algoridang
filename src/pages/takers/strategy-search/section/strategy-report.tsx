@@ -106,7 +106,7 @@ const StrategyReport = () => {
         name: "거래 개월수",
         val: `${
           backtestDetailInfo?.trading_month_count
-            ? toPercentage(backtestDetailInfo?.trading_month_count)
+            ? backtestDetailInfo?.trading_month_count
             : "-"
         }`,
       },
@@ -114,7 +114,7 @@ const StrategyReport = () => {
         name: "상승 개월수",
         val: `${
           backtestDetailInfo?.rising_month_count
-            ? toPercentage(backtestDetailInfo?.rising_month_count)
+            ? backtestDetailInfo?.rising_month_count
             : "-"
         }`,
       },
@@ -126,7 +126,7 @@ const StrategyReport = () => {
         name: "월평균수익률",
         val: `${
           backtestDetailInfo?.month_avg_profit_rate
-            ? toPercentage(backtestDetailInfo?.month_avg_profit_rate)
+            ? `${toPercentage(backtestDetailInfo?.month_avg_profit_rate)} %`
             : "-"
         }`,
       },

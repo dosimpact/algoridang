@@ -63,8 +63,8 @@ const CumulativeReturnChart: React.FC<ICumulativeReturnChart> = ({
         height: 500,
         layout: {
           fontSize: 12,
-          backgroundColor: "#F5F5F9",
-          textColor: "#333",
+          // backgroundColor: "#F5F5F9",
+          // textColor: "#333",
         },
         rightPriceScale: {
           visible: true,
