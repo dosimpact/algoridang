@@ -53,7 +53,7 @@ const TradingHistory: React.FC<ITradingHistory> = ({
         <SubTitle title={title} style={{ margin: "20px 0px" }} />
         <Box
           type="normal"
-          style={{ width: "10rem" }}
+          style={{ width: "10rem", fontSize: "1.2rem" }}
           onClick={handleToogleTake}
         >
           {take} 개씩보기
@@ -91,7 +91,7 @@ export default TradingHistory;
 const STradingHistory = styled.article`
   .pagination {
     display: grid;
-    grid-template-columns: repeat(10, 1fr);
+    grid-template-columns: repeat(auto-fill, 30px); //repeat(10, 1fr);
     grid-gap: 1rem;
   }
 `;

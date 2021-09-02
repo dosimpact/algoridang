@@ -59,15 +59,13 @@ const Card = styled.section`
 
   min-height: 10rem;
   height: 10rem;
-  min-width: 300px;
+  /* min-width: 300px; */
   width: 100%;
 
   display: grid;
   grid-template-columns: 10rem 1fr;
   margin-bottom: 20px;
-
   cursor: pointer;
-
   .left {
     border-top-left-radius: 7px;
     border-bottom-left-radius: 7px;
@@ -87,7 +85,7 @@ const Card = styled.section`
   }
   .right {
     width: 100%;
-    margin-left: 3.4rem;
+    padding-left: 3.4rem;
     padding-top: 1.9rem;
     .title {
       font-size: 1.3rem;

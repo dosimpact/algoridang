@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { WingBlank, WhiteSpace, Button } from "antd-mobile";
+import { Button } from "antd-mobile";
 import { SubTitle } from "components/_atoms/Typos";
 import StrategyCard from "components/lagacy/StrategyCard";
 import { useHistory, useParams } from "react-router-dom";
@@ -12,6 +12,9 @@ import WinRatio from "components/_molecules/report/WinRatio";
 import BackNav from "components/takers/BackNav";
 import useStrategyDetail from "states/react-query/strategy/useStrategyDetail";
 import useBackTestReport from "states/react-query/backtest/useBackTestReport";
+import NavHeaderDetail from "components/_molecules/NavHeaderDetail";
+import WingBlank from "components/_atoms/WingBlank";
+import WhiteSpace from "components/_atoms/WhiteSpace";
 
 const StrategyReport = () => {
   const history = useHistory();
@@ -144,9 +147,16 @@ const StrategyReport = () => {
   }, [investProfitInfo, backtestDetailInfo, winRatio]);
 
   return (
-    <StrategyDetailP>
-      <WingBlank style={{ margin: "15x" }} size="lg">
-        <WhiteSpace size="xl" />
+    <PStrategyDetail>
+      <NavHeaderDetail
+        linkTo={
+          process.env.PUBLIC_URL +
+          `/takers/strategy-search/details/${strategyCode}`
+        }
+        headerTitle="상세 전략 리포트"
+      />
+      <WingBlank>
+        <WhiteSpace />
         <BackNav title={"투자 전략 리포트"} />
         {memberStrategy && (
           <StrategyCard
@@ -181,13 +191,13 @@ const StrategyReport = () => {
         {/* 7. 승률 */}
         <WinRatio />
       </WingBlank>
-    </StrategyDetailP>
+    </PStrategyDetail>
   );
 };
 
 export default StrategyReport;
 
-const StrategyDetailP = styled.section`
+const PStrategyDetail = styled.section`
   margin-bottom: 120px;
   overflow: hidden;
 `;

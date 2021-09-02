@@ -76,6 +76,8 @@ const HistoryTableS = styled.div`
       text-align: center;
       background: rgba(196, 196, 196, 0.09);
       height: 4.5rem;
+      white-space: pre-wrap;
+      font-size: 1.2rem;
     }
   }
   .historyTableBody {
@@ -85,6 +87,7 @@ const HistoryTableS = styled.div`
       text-align: center;
       border-bottom: 1px solid #e4e4e4;
       height: 5rem;
+      font-size: 1.2rem;
     }
     .buy {
       color: ${(props) => props.theme.ColorMainGray};

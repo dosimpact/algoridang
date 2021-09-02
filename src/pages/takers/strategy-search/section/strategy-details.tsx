@@ -62,7 +62,7 @@ const StrategyDetails = () => {
     <PStrategyDetail>
       <NavHeaderDetail
         linkTo={process.env.PUBLIC_URL + "/takers/strategy-search"}
-        headerTitle="투자 전략 리포트"
+        headerTitle="투자 전략 상세"
       />
       <WingBlank>
         {strategyDetailQuery.isLoading && "loading..."}
@@ -141,7 +141,7 @@ const StrategyDetails = () => {
         {histories && (
           <TradingHistory
             title="히스토리"
-            header={["날짜", "종목(코드)", "가격(원)", "수익/손실(%)"]}
+            header={["날짜", `종목\n(코드)`, "가격\n(원)", "수익/손실\n(%)"]}
             keyMap={[
               "history_date",
               "ticker",
