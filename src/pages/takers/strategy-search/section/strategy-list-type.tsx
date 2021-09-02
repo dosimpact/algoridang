@@ -1,9 +1,9 @@
 import StrategyCard from "components/lagacy/StrategyCard";
 import WhiteSpace from "components/_atoms/WhiteSpace";
 import WingBlank from "components/_atoms/WingBlank";
-import NavHeaderDetail from "components/_modecules/NavHeaderDetail";
-import SectionTitle from "components/_modecules/SectionTitle";
-import StrategyCardBox from "components/_modecules/StrategyCardBox";
+import NavHeaderDetail from "components/_molecules/NavHeaderDetail";
+import SectionTitle from "components/_molecules/SectionTitle";
+import StrategyCardBox from "components/_molecules/StrategyCardBox";
 import useBackButton from "components/lagacy/useBackButton";
 import React from "react";
 import { useHistory, useParams } from "react-router-dom";

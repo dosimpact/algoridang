@@ -3,7 +3,7 @@ import StrategyCard from "components/lagacy/StrategyCard";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { toTagsString } from "utils/parse";
-import PageGuide from "components/_modecules/PageGuide";
+import PageGuide from "components/_molecules/PageGuide";
 import { IconMockInvest } from "assets/icons";
 import WingBlank from "components/_atoms/WingBlank";
 

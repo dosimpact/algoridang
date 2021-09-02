@@ -1,6 +1,6 @@
 import { SubTitle } from "components/_atoms/Typos";
 import React from "react";
-import HistoryTable from "../data-display/HistoryTable";
+import HistoryTable from "../../data-display/HistoryTable";
 
 interface ITradingHistory {
   title: string;
