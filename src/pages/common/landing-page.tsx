@@ -23,8 +23,8 @@ const LandingPage = () => {
       <h1 style={{ fontSize: "20px" }}>
         알고리당에 오신것을 환영합니다.
         <br />
-        {!me.isLoading && me?.data?.data.member_name} 님 ({" "}
-        {!me.isLoading && me?.data?.data.email_id})
+        {!me.isLoading && me?.data?.email_id} 님 ({" "}
+        {!me.isLoading && me?.data?.email_id})
       </h1>
       <WhiteSpace />
       <nav>

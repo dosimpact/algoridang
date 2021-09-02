@@ -1,5 +1,5 @@
 import { AxiosError, AxiosResponse } from "axios";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { memberApi } from "states/api";
 import {
   LoginMemberInfoInput,
@@ -16,9 +16,21 @@ import { setLocalMemberInfo } from "states/local-state";
 //
 //
 const useMember = () => {
-  const me = useQuery<{}, AxiosError, AxiosResponse<MeOutput>>("me", () => {
-    return memberApi.GET.me();
-  });
+  const queryClient = useQueryClient();
+  const refresh = () => {
+    queryClient.invalidateQueries("me");
+  };
+  const me = useQuery<AxiosResponse<MeOutput>, AxiosError, MeOutput>(
+    "me",
+    () => {
+      return memberApi.GET.me();
+    },
+    {
+      select: (data) => {
+        return data.data;
+      },
+    }
+  );
 
   //LoginMemberInfoOutput
   // AxiosError
@@ -33,6 +45,7 @@ const useMember = () => {
         console.log("onSuccess", result);
         const data = result.data as LoginMemberInfoOutput;
         setLocalMemberInfo({ token: data.token });
+        refresh();
       },
       onError: (error: any) => {
         if (error?.response) {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Badge } from "antd-mobile";
 import MockInvest from "../mock-invest/mock-investC";
 import StrategySearch from "../strategy-search/strategy-searchC";
@@ -29,7 +29,19 @@ export const URLList = {
 
 const TopNavigation = () => {
   const history = useHistory();
-  const { me } = useMember();
+  const { logIn, me } = useMember();
+  const email = useMemo(() => {
+    return me.data?.email_id;
+  }, [me]);
+
+  // TODO TEST
+  const mockUpUserLogin = () => {
+    logIn({
+      email_id: "ypd03008@gmail.com",
+      password: "ypd03008",
+    });
+  };
+
   return (
     <STopNavigation>
       <div
@@ -42,9 +54,11 @@ const TopNavigation = () => {
       </div>
       <div className="authInfo">
         <span className="email">
-          {!me.isLoading && me?.data?.data?.email_id}
+          {email ? email : <span onClick={mockUpUserLogin}>Login</span>}
         </span>
-        <IconPerson />
+        <span onClick={mockUpUserLogin}>
+          <IconPerson />
+        </span>
       </div>
     </STopNavigation>
   );
