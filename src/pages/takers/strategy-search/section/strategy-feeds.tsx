@@ -1,5 +1,4 @@
 import React from "react";
-import StrategyCardInfo from "components/_modecules/StrategyCardInfo";
 import { useHistory } from "react-router-dom";
 import useStrategy from "states/react-query/strategy/useStrategy";
 import { toTagsString } from "utils/parse";
@@ -29,16 +28,6 @@ const StrategyFeeds = () => {
         title="전략 탐색"
         subTitle="수익률을 확인하고 전략으로 모의투자를 시작해 보세요."
       />
-      <WhiteSpace />
-      <StrategyCardInfo
-        title="투자 성향별 종목 검색"
-        subTitle="나만의 성향에 맞는 전략 찾아봅니다."
-        onClick={(e) => {
-          // console.log("click", e.currentTarget);
-          history.push("/takers/strategy-search/types");
-        }}
-      />
-      <WhiteSpace />
       <SectionTitle
         title="신규 투자 전략"
         linkTo={process.env.PUBLIC_URL + "/takers/strategy-search/list/new"}

@@ -1,5 +1,5 @@
 import ChartMonthlyReturn from "components/data-display/ChartMonthlyReturn";
-import { SubTitle } from "components/_atoms/Typo";
+import { SubTitle } from "components/_atoms/Typos";
 import React, { useMemo } from "react";
 import useBackTestReport from "states/react-query/backtest/useBackTestReport";
 import styled from "styled-components";

@@ -1,4 +1,4 @@
-import { SubTitle } from "components/_atoms/Typo";
+import { SubTitle } from "components/_atoms/Typos";
 import React from "react";
 import HistoryTable from "../data-display/HistoryTable";
 

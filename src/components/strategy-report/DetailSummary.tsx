@@ -1,5 +1,5 @@
 import ReportTable from "components/data-display/ReportTable";
-import { SubTitle } from "components/_atoms/Typo";
+import { SubTitle } from "components/_atoms/Typos";
 import React from "react";
 import styled from "styled-components";
 

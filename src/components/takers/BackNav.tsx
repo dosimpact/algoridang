@@ -1,5 +1,5 @@
 import { WhiteSpace } from "antd-mobile";
-import { Title } from "components/_atoms/Typo";
+import { Title } from "components/_atoms/Typos";
 import useBackButton from "components/lagacy/useBackButton";
 import React from "react";
 

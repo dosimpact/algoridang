@@ -1,12 +1,12 @@
 import React, { useMemo } from "react";
 import { WingBlank, WhiteSpace, Button } from "antd-mobile";
-import { SubTitle } from "components/_atoms/Typo";
+import { SubTitle } from "components/_atoms/Typos";
 import StrategyCard from "components/lagacy/StrategyCard";
 import { useHistory, useParams } from "react-router-dom";
 import { toPercentage, toRatio, toTagsString } from "utils/parse";
 import styled from "styled-components";
 import DetailSummary from "components/strategy-report/DetailSummary";
-import CumulativeReturn from "components/strategy-report/CumulativeReturn";
+import CumulativeReturn from "components/_modecules/report/CumulativeReturn";
 import MonthlyReturn from "components/strategy-report/MonthlyReturn";
 import WinRatio from "components/strategy-report/WinRatio";
 import BackNav from "components/takers/BackNav";

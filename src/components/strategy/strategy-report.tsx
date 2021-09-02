@@ -7,7 +7,7 @@ import ReturnsStatus from "components/strategy-report/ReturnsStatus";
 import TradingPoints from "components/strategy-report/TradingPoints";
 import TradingHistory from "components/strategy-report/TradingHistory";
 import DetailSummary from "components/strategy-report/DetailSummary";
-import CumulativeReturn from "components/strategy-report/CumulativeReturn";
+import CumulativeReturn from "components/_modecules/report/CumulativeReturn";
 import MonthlyReturn from "components/strategy-report/MonthlyReturn";
 import WinRatio from "components/strategy-report/WinRatio";
 

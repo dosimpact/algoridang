@@ -1,4 +1,5 @@
-import { SubTitle } from "components/_atoms/Typo";
+import FNumber from "components/_atoms/FNumber";
+import { SubTitle } from "components/_atoms/Typos";
 import React from "react";
 import styled from "styled-components";
 import { toAddComma } from "utils/parse";
@@ -29,12 +30,11 @@ const ReturnsStatus: React.FC<IReturnsStatus> = ({
       <div className="returnsStatus" style={{ margin: "15px 0px" }}>
         <div className="flexRowSBt" style={{ margin: "5px 0px" }}>
           <div className="name">연수익률</div>
-        </div>
-        <div className="flexRowSBt" style={{ marginBottom: "15px" }}>
           <div className="value returnsValue">
-            {Math.round(Number(profit_rate) * 100)}%
+            <FNumber val={Number(profit_rate)} hasPercentage={true} />
           </div>
         </div>
+
         <div className="flexRowSBt" style={{ margin: "15px 0px" }}>
           <div className="name">투자 원금</div>
           <div className="value">{toAddComma(invest_principal)}원</div>
@@ -56,8 +56,11 @@ const ReturnsStatus: React.FC<IReturnsStatus> = ({
 export default ReturnsStatus;
 
 const SReturnsStatus = styled.article`
+  font-style: normal;
+  font-weight: normal;
+  font-size: 1.4rem;
+  line-height: 1.6rem;
   .name {
-    color: ${(props) => props.theme.ColorGray};
   }
   .value {
     color: ${(props) => props.theme.ColorYellow};

@@ -11,7 +11,7 @@ export const Title: React.FC<{
       style={{
         fontSize: "1.7rem",
         fontWeight: 700,
-        marginLeft: "1.7rem",
+
         ...style,
       }}
       {...props}

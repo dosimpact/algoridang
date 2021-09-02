@@ -1,6 +1,6 @@
 import React from "react";
 import { WingBlank, WhiteSpace, Button } from "antd-mobile";
-import { SubTitle } from "components/_atoms/Typo";
+import { SubTitle } from "components/_atoms/Typos";
 import StrategyCard from "components/lagacy/StrategyCard";
 import { useHistory, useParams } from "react-router-dom";
 import { toTagsString } from "utils/parse";

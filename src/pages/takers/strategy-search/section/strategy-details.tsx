@@ -1,7 +1,5 @@
 import React, { useMemo } from "react";
-import { WingBlank, WhiteSpace, Button } from "antd-mobile";
-import { Title, SubTitle } from "components/_atoms/Typo";
-import StrategyCard from "components/lagacy/StrategyCard";
+import { Title, SubTitle } from "components/_atoms/Typos";
 import useBackButton from "components/lagacy/useBackButton";
 import { useHistory, useParams } from "react-router-dom";
 import { toTagsString } from "utils/parse";
@@ -11,6 +9,11 @@ import TradingPoints from "components/strategy-report/TradingPoints";
 import ReturnsStatus from "components/strategy-report/ReturnsStatus";
 import Description from "components/strategy-report/Description";
 import useStrategyDetail from "states/react-query/strategy/useStrategyDetail";
+import StrategyCardBox from "components/_modecules/StrategyCardBox";
+import NavHeaderDetail from "components/_modecules/NavHeaderDetail";
+import WhiteSpace from "components/_atoms/WhiteSpace";
+import WingBlank from "components/_atoms/WingBlank";
+import { Button } from "components/_atoms/Buttons";
 
 const StrategyDetails = () => {
   const Back = useBackButton();
@@ -58,18 +61,16 @@ const StrategyDetails = () => {
   // console.log("firstUniversal", firstUniversal);
 
   return (
-    <StrategyDetailP>
-      <WingBlank style={{ margin: "15x" }} size="lg">
-        <WhiteSpace size="xl" />
+    <PStrategyDetail>
+      <NavHeaderDetail
+        linkTo={process.env.PUBLIC_URL + "/takers/strategy-search"}
+        headerTitle="투자 전략 리포트"
+      />
+      <WingBlank>
         {strategyDetailQuery.isLoading && "loading..."}
-        <div className="flexRow">
-          {Back()}
-          <Title title={"투자 전략 리포트"} />
-        </div>
-        <WhiteSpace size="xl" />
-
+        <WhiteSpace />
         {memberStrategy && (
-          <StrategyCard
+          <StrategyCardBox
             title={memberStrategy.strategy_name}
             subTitle={toTagsString(
               memberStrategy.hashList?.map((e) => e?.hash?.hash_contents)
@@ -83,14 +84,10 @@ const StrategyDetails = () => {
         )}
 
         <div className="flexRowSBt">
-          <SubTitle
-            title="모의 투자"
-            style={{ marginRight: "15px" }}
-          ></SubTitle>
+          <Title title="모의 투자" style={{ marginRight: "15px" }}></Title>
           <Button
-            type="warning"
             size="small"
-            style={{ width: "100px" }}
+            style={{ width: "8rem" }}
             onClick={() => {
               history.push("/takers/mock-invest/create/1");
             }}
@@ -104,10 +101,9 @@ const StrategyDetails = () => {
             style={{ marginRight: "20px" }}
           ></SubTitle>
           <Button
-            type="ghost"
-            size="small"
-            style={{ width: "100px" }}
-            onClick={(e) => {
+            type="gray"
+            style={{ width: "8rem" }}
+            onClick={() => {
               console.log("deatil");
               history.push(
                 process.env.PUBLIC_URL +
@@ -118,6 +114,8 @@ const StrategyDetails = () => {
             리포트
           </Button>
         </div>
+        <WhiteSpace />
+        <WhiteSpace />
         {/* 0. 전략 메이커 설명 Description.tsx */}
         {memberStrategy && (
           <Description description={memberStrategy.strategy_explanation} />
@@ -155,13 +153,13 @@ const StrategyDetails = () => {
           />
         )}
       </WingBlank>
-    </StrategyDetailP>
+    </PStrategyDetail>
   );
 };
 
 export default StrategyDetails;
 
-const StrategyDetailP = styled.section`
+const PStrategyDetail = styled.section`
   .articleReturnsStatus {
     .name {
       color: ${(props) => props.theme.ColorGray};

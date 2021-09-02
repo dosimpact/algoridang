@@ -1,4 +1,4 @@
-import { SubTitle } from "components/_atoms/Typo";
+import { SubTitle } from "components/_atoms/Typos";
 import LineSeriesChartPointing from "components/light-weight/LineSeriesChartPointing";
 import { SeriesMarker, Time } from "lightweight-charts";
 import React, { useCallback, useMemo, useState } from "react";

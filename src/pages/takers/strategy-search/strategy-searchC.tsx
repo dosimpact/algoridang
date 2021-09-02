@@ -34,7 +34,10 @@ const StrategySearchC = () => {
         path={process.env.PUBLIC_URL + "/takers/strategy-search/list/:type"}
         component={StrategyListType}
       />
-      <Redirect to={process.env.PUBLIC_URL + "/takers/strategy-search"} />
+      <Redirect
+        from={process.env.PUBLIC_URL + "/takers/strategy-search"}
+        to={process.env.PUBLIC_URL + "/takers/strategy-search"}
+      />
     </Switch>
   );
 };

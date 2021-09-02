@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import TickerPrice from "./section/ticker-price";
 
 const TickerSearchC = () => {
@@ -11,6 +11,10 @@ const TickerSearchC = () => {
           exact
           path={process.env.PUBLIC_URL + "/takers/ticker-search"}
           component={TickerPrice}
+        />
+        <Redirect
+          from={process.env.PUBLIC_URL + "/takers/ticker-search"}
+          to={process.env.PUBLIC_URL + "/takers/ticker-search"}
         />
       </Switch>
     </>
