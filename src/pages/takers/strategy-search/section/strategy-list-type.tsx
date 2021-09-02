@@ -4,7 +4,7 @@ import WingBlank from "components/_atoms/WingBlank";
 import NavHeaderDetail from "components/_modecules/NavHeaderDetail";
 import SectionTitle from "components/_modecules/SectionTitle";
 import StrategyCardBox from "components/_modecules/StrategyCardBox";
-import useBackButton from "hooks/useBackButton";
+import useBackButton from "components/lagacy/useBackButton";
 import React from "react";
 import { useHistory, useParams } from "react-router-dom";
 import useStrategy from "states/react-query/strategy/useStrategy";
@@ -24,7 +24,6 @@ type StrategyListTypeParams = {
 };
 
 const StrategyListType = () => {
-  const Back = useBackButton();
   const history = useHistory();
   const params = useParams<StrategyListTypeParams>();
 
@@ -50,7 +49,10 @@ const StrategyListType = () => {
     <>
       {type === "new" && (
         <>
-          <NavHeaderDetail headerTitle="신규 투자 전략" />
+          <NavHeaderDetail
+            linkTo={process.env.PUBLIC_URL + "/takers/strategy-search"}
+            headerTitle="신규 투자 전략"
+          />
           <WhiteSpace />
           <WingBlank>
             {strategyListNew &&
@@ -79,7 +81,10 @@ const StrategyListType = () => {
       )}
       {type === "high-view" && (
         <>
-          <NavHeaderDetail headerTitle="조회수 높은 투자 전략" />
+          <NavHeaderDetail
+            linkTo={process.env.PUBLIC_URL + "/takers/strategy-search"}
+            headerTitle="조회수 높은 투자 전략"
+          />
           <WhiteSpace />
           <WingBlank>
             {strategyListHighView &&
@@ -109,7 +114,10 @@ const StrategyListType = () => {
 
       {type === "risk-taking" && (
         <>
-          <NavHeaderDetail headerTitle="위험 추구형 전략" />
+          <NavHeaderDetail
+            linkTo={process.env.PUBLIC_URL + "/takers/strategy-search"}
+            headerTitle="위험 추구형 전략"
+          />
           <WhiteSpace />
           <WingBlank>
             {strategyListRiskTaking &&
@@ -138,7 +146,10 @@ const StrategyListType = () => {
       )}
       {type === "neutral" && (
         <>
-          <NavHeaderDetail headerTitle="중립형 투자 전략" />
+          <NavHeaderDetail
+            linkTo={process.env.PUBLIC_URL + "/takers/strategy-search"}
+            headerTitle="중립형 투자 전략"
+          />
           <WhiteSpace />
           <WingBlank>
             {strategyListNeutral &&
@@ -167,7 +178,10 @@ const StrategyListType = () => {
       )}
       {type === "stable-income" && (
         <>
-          <NavHeaderDetail headerTitle="수익 안정형 전략" />
+          <NavHeaderDetail
+            linkTo={process.env.PUBLIC_URL + "/takers/strategy-search"}
+            headerTitle="수익 안정형 전략"
+          />
           <WhiteSpace />
           <WingBlank>
             {strategyListStableIncome &&
@@ -196,7 +210,10 @@ const StrategyListType = () => {
       )}
       {type === "high-profit" && (
         <>
-          <NavHeaderDetail headerTitle="신규 투자 전략" />
+          <NavHeaderDetail
+            linkTo={process.env.PUBLIC_URL + "/takers/strategy-search"}
+            headerTitle="신규 투자 전략"
+          />
           <WhiteSpace />
           <WingBlank>
             {strategyListNeutral &&

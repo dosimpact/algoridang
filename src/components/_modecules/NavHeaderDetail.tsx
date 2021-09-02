@@ -5,12 +5,16 @@ import styled from "styled-components";
 
 interface INavHeaderDetail {
   headerTitle: string;
+  linkTo?: string;
 }
 
-const NavHeaderDetail: React.FC<INavHeaderDetail> = ({ headerTitle }) => {
+const NavHeaderDetail: React.FC<INavHeaderDetail> = ({
+  headerTitle,
+  linkTo,
+}) => {
   return (
     <SNavHeaderDetail>
-      <Link to={process.env.PUBLIC_URL + "/takers/strategy-search"}>
+      <Link to={linkTo || process.env.PUBLIC_URL + "/takers/strategy-search"}>
         <div className="col1">
           <IconArrowLeft />
         </div>
