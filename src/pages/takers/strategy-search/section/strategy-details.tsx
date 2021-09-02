@@ -141,7 +141,7 @@ const StrategyDetails = () => {
         {histories && (
           <TradingHistory
             title="히스토리"
-            header={["날짜", "매수/매도", "가격", "수익/손실"]}
+            header={["날짜", "종목(코드)", "가격(원)", "수익/손실(%)"]}
             keyMap={[
               "history_date",
               "ticker",

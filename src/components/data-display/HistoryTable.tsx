@@ -1,3 +1,6 @@
+import BadgePriceDelta from "components/_atoms/BadgePriceDelta";
+import { Box } from "components/_atoms/Box";
+import FNumber from "components/_atoms/FNumber";
 import React from "react";
 import styled from "styled-components";
 
@@ -23,22 +26,38 @@ const HistoryTable: React.FC<{
 
   return (
     <HistoryTableS style={{ ...style }} {...props}>
-      <div className="historyTable">
+      <div className="historyTableHeader">
         {header &&
           Array.isArray(header) &&
           header.length >= 1 &&
           header.map((el, key) => (
-            <div key={key + el} className="header">
+            <div key={key + el} className="header flexCenter">
               {el}
             </div>
           ))}
-
+      </div>
+      <div className="historyTableBody">
         {body.slice(skip, skip + take).map((el, key) =>
-          keyMap.map((hkey) => (
-            <div className="body" key={key + hkey + el[hkey]}>
-              {el[hkey]}
-            </div>
-          ))
+          keyMap.map((hkey) => {
+            if (hkey === "profit_loss_rate") {
+              return (
+                <div className="body flexCenter" key={key + hkey + el[hkey]}>
+                  {el[hkey] ? (
+                    <>
+                      <FNumber val={Number(el[hkey])} /> <span>%</span>
+                    </>
+                  ) : (
+                    <span className="buy">매수</span>
+                  )}
+                </div>
+              );
+            }
+            return (
+              <div className="body flexCenter" key={key + hkey + el[hkey]}>
+                {el[hkey]}
+              </div>
+            );
+          })
         )}
       </div>
     </HistoryTableS>
@@ -48,20 +67,27 @@ const HistoryTable: React.FC<{
 export default HistoryTable;
 
 const HistoryTableS = styled.div`
-  .historyTable {
+  .historyTableHeader {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    /* grid-template-rows: repeat(auto-fit, 1fr); */
-    grid-auto-rows: 30px;
-    border-top: 1px solid gray;
-    border-bottom: 1px solid gray;
-    align-items: center;
-    justify-content: center;
+    height: 4.5rem;
+    width: 100%;
     .header {
       text-align: center;
+      background: rgba(196, 196, 196, 0.09);
+      height: 4.5rem;
     }
+  }
+  .historyTableBody {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     .body {
       text-align: center;
+      border-bottom: 1px solid #e4e4e4;
+      height: 5rem;
+    }
+    .buy {
+      color: ${(props) => props.theme.ColorMainGray};
     }
   }
 `;
