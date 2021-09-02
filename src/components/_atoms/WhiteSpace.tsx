@@ -1,11 +1,13 @@
 import React from "react";
 
 const WhiteSpace: React.FC<{ marginV?: string }> = ({ children, marginV }) => {
-  marginV = marginV || "2.8";
+  marginV = marginV || "1.4";
   return (
     <div
       style={{
         margin: `${marginV}rem 0rem`,
+        width: "100%",
+        height: "0.1rem",
       }}
     >
       {children}

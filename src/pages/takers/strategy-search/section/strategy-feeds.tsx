@@ -39,7 +39,10 @@ const StrategyFeeds = () => {
         }}
       />
       <WhiteSpace />
-      <SectionTitle title="신규 투자 전략" linkTo="/" />
+      <SectionTitle
+        title="신규 투자 전략"
+        linkTo={process.env.PUBLIC_URL + "/takers/strategy-search/list/new"}
+      />
       <WhiteSpace />
       {strategyListNew &&
         strategyListNew.slice(0, 3).map((data, key) => (
@@ -62,7 +65,12 @@ const StrategyFeeds = () => {
           />
         ))}
       <WhiteSpace />
-      <SectionTitle title="조회수 높은 투자 전략" linkTo="/" />
+      <SectionTitle
+        title="조회수 높은 투자 전략"
+        linkTo={
+          process.env.PUBLIC_URL + "/takers/strategy-search/list/high-view"
+        }
+      />
       <WhiteSpace />
       {strategyListHighView &&
         strategyListHighView.slice(0, 3).map((data, key) => (
@@ -83,7 +91,13 @@ const StrategyFeeds = () => {
             }}
           />
         ))}
-      <SectionTitle title="위험 추구형 투자 전략" linkTo="/" />
+      <WhiteSpace />
+      <SectionTitle
+        title="위험 추구형 투자 전략"
+        linkTo={
+          process.env.PUBLIC_URL + "/takers/strategy-search/list/risk-taking"
+        }
+      />
       <WhiteSpace />
       {strategyListRiskTaking &&
         strategyListRiskTaking.slice(0, 3).map((data, key) => (
@@ -104,7 +118,11 @@ const StrategyFeeds = () => {
             }}
           />
         ))}
-      <SectionTitle title="중립형 투자 전략" linkTo="/" />
+      <WhiteSpace />
+      <SectionTitle
+        title="중립형 투자 전략"
+        linkTo={process.env.PUBLIC_URL + "/takers/strategy-search/list/neutral"}
+      />
       <WhiteSpace />
       {strategyListNeutral &&
         strategyListNeutral.slice(0, 3).map((data, key) => (
@@ -125,7 +143,13 @@ const StrategyFeeds = () => {
             }}
           />
         ))}
-      <SectionTitle title="수익 안정형 투자 전략" linkTo="/" />
+      <WhiteSpace />
+      <SectionTitle
+        title="수익 안정형 투자 전략"
+        linkTo={
+          process.env.PUBLIC_URL + "/takers/strategy-search/list/stable-income"
+        }
+      />
       <WhiteSpace />
       {strategyListStableIncome &&
         strategyListStableIncome.slice(0, 3).map((data, key) => (

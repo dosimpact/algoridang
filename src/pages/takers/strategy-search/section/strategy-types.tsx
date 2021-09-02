@@ -9,25 +9,7 @@ import { toTagsString } from "utils/parse";
 const Title: React.FC<{ title: string }> = ({ title }) => {
   return <h1 style={{ fontSize: "20px", fontWeight: 700 }}>{title}</h1>;
 };
-// const dummyDatas2 = [
-//   {
-//     title: "삼성전자 황금 신호",
-//     subTitle: ["단일 종목", "골든 크로스"],
-//     CAGR: 22.22,
-//   },
-//   {
-//     title: "싸질만큼 싸진 바이오 제약주 Top10",
-//     subTitle: ["바이오 섹터", "블린저 매매"],
-//     CAGR: 10.91,
-//   },
-// ];
-// const dummyDatas3 = [
-//   {
-//     title: "골드 기업 종합 점수 Top20 ",
-//     subTitle: ["F-Score", "골든 크로스"],
-//     CAGR: 22.22,
-//   },
-// ];
+
 const StrategyTypes = () => {
   const history = useHistory();
   const Back = useBackButton();

@@ -15,9 +15,17 @@ const boxShadow = css`
   border-radius: 9px;
 `;
 
-const CSSTheme = { hoverBox, boxShadow };
+const flexCenter = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const CSSTheme = { hoverBox, boxShadow, flexCenter };
 
 const Theme = {
+  //CSSMixin
+
   // MainColor&
   ColorMainWhite: "#FFFFFF",
   ColorMainLightGray: "#ECECEC",
