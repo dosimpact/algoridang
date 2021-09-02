@@ -8,6 +8,22 @@ from route.routeCelery import Celerys
 from route.routeBacktest import BackTest
 from route.routeDailyStock import DailyStock
 
+import sentry_sdk
+
+##  sentry
+from sentry_sdk.integrations.flask import FlaskIntegration
+
+sentry_sdk.init(
+    dsn="https://9bcc130b93a649fb946adf4123664575@o986272.ingest.sentry.io/5942901",
+    integrations=[FlaskIntegration()],
+
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    # We recommend adjusting this value in production.
+    traces_sample_rate=1.0
+)
+##  /sentry
+
 
 app = Flask(__name__)
 CORS(app)
@@ -28,7 +44,9 @@ api.add_namespace(DailyStock, '/datas')
 
 
 
-    
+@app.route('/debug-sentry')
+def trigger_error():
+    division_by_zero = 1 / 0
 
 
 
