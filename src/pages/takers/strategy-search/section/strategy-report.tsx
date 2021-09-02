@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { WingBlank, WhiteSpace, Button } from "antd-mobile";
 import { SubTitle } from "components/_atoms/Typo";
-import StrategyCard from "components/strategy/StrategyCard";
+import StrategyCard from "components/lagacy/StrategyCard";
 import { useHistory, useParams } from "react-router-dom";
 import { toPercentage, toRatio, toTagsString } from "utils/parse";
 import styled from "styled-components";

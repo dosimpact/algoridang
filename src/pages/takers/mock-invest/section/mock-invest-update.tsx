@@ -1,5 +1,5 @@
 import { WingBlank, WhiteSpace, List, InputItem, Button } from "antd-mobile";
-import StrategyCard from "components/strategy/StrategyCard";
+import StrategyCard from "components/lagacy/StrategyCard";
 import useBackButton from "hooks/useBackButton";
 import React from "react";
 import { toTagsString } from "utils/parse";

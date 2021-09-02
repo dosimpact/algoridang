@@ -1,5 +1,5 @@
 import { WhiteSpace } from "antd-mobile";
-import StrategyCard from "components/strategy/StrategyCard";
+import StrategyCard from "components/lagacy/StrategyCard";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { toTagsString } from "utils/parse";

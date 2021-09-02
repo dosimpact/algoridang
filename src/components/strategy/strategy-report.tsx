@@ -1,6 +1,6 @@
 import React from "react";
 import { WingBlank, WhiteSpace } from "antd-mobile";
-import StrategyCard from "components/strategy/StrategyCard";
+import StrategyCard from "components/lagacy/StrategyCard";
 import { toTagsString } from "utils/parse";
 import styled from "styled-components";
 import ReturnsStatus from "components/strategy-report/ReturnsStatus";

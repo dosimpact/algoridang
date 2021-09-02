@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { WingBlank, WhiteSpace, Button } from "antd-mobile";
 import { Title, SubTitle } from "components/_atoms/Typo";
-import StrategyCard from "components/strategy/StrategyCard";
+import StrategyCard from "components/lagacy/StrategyCard";
 import useBackButton from "hooks/useBackButton";
 import { useHistory, useParams } from "react-router-dom";
 import { toTagsString } from "utils/parse";

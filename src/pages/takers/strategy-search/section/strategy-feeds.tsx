@@ -1,4 +1,3 @@
-import StrategyCard from "components/strategy/StrategyCard";
 import StrategyCardInfo from "components/_modecules/StrategyCardInfo";
 import React from "react";
 import { useHistory } from "react-router-dom";
@@ -11,6 +10,7 @@ import { IconSearchStrategy } from "assets/icons";
 import { Title } from "components/_atoms/Typo";
 import SectionTitle from "components/_modecules/SectionTitle";
 import WhiteSpace from "components/_atoms/WhiteSpace";
+import StrategyCardBox from "components/_modecules/StrategyCardBox";
 
 // todo:refactor CAGR 부분 DB Relation eager 처리 및 undefined 핸들링
 const StrategyFeeds = () => {
@@ -39,7 +39,7 @@ const StrategyFeeds = () => {
       <WhiteSpace />
       {strategyListNew &&
         strategyListNew.map((data, key) => (
-          <StrategyCard
+          <StrategyCardBox
             key={key}
             title={data.strategy_name}
             subTitle={toTagsString(
@@ -62,7 +62,7 @@ const StrategyFeeds = () => {
       <WhiteSpace />
       {strategyListHighView &&
         strategyListHighView.map((data, key) => (
-          <StrategyCard
+          <StrategyCardBox
             key={key}
             title={data.strategy_name}
             subTitle={toTagsString(
