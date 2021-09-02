@@ -4,7 +4,7 @@ import StrategyCard from "components/lagacy/StrategyCard";
 import { useParams } from "react-router-dom";
 import { toTagsString } from "utils/parse";
 import styled from "styled-components";
-import DetailSummary from "components/_molecules/report/DetailSummary";
+import DetailSummary from "components/_organisms/report/DetailSummary";
 import CumulativeReturn from "components/_molecules/report/CumulativeReturn";
 import MonthlyReturn from "components/_molecules/report/MonthlyReturn";
 import WinRatio from "components/_molecules/report/WinRatio";

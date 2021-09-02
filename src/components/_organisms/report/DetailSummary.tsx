@@ -1,7 +1,8 @@
-import ReportTable from "components/data-display/ReportTable";
+import ReportTable from "components/_molecules/report/ReportTable";
 import { SubTitle } from "components/_atoms/Typos";
 import React from "react";
 import styled from "styled-components";
+import WhiteSpace from "components/_atoms/WhiteSpace";
 
 interface Indexable {
   [idx: string]: string;
@@ -27,6 +28,7 @@ const DetailSummary: React.FC<IDetailSummary> = ({
       <div className="flexRow" style={{ marginTop: "50px" }}>
         <SubTitle title="상세 투자 정보" style={{ margin: "20px 0px" }} />
       </div>
+      <WhiteSpace />
       <ReportTable body={body} header={header} />
     </SDetailSummary>
   );

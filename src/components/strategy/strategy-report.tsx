@@ -6,7 +6,7 @@ import styled from "styled-components";
 import ReturnsStatus from "components/_organisms/report/ReturnsStatus";
 import TradingPoints from "components/_organisms/report/TradingPoints";
 import TradingHistory from "components/_organisms/report/TradingHistory";
-import DetailSummary from "components/_molecules/report/DetailSummary";
+import DetailSummary from "components/_organisms/report/DetailSummary";
 import CumulativeReturn from "components/_molecules/report/CumulativeReturn";
 import MonthlyReturn from "components/_molecules/report/MonthlyReturn";
 import WinRatio from "components/_molecules/report/WinRatio";

@@ -84,7 +84,6 @@ const StrategyDetails = () => {
         <div className="flexRowSBt">
           <Title title="모의 투자" style={{ marginRight: "15px" }}></Title>
           <Button
-            size="small"
             style={{ width: "8rem" }}
             onClick={() => {
               history.push("/takers/mock-invest/create/1");

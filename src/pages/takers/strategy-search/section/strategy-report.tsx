@@ -1,20 +1,19 @@
 import React, { useMemo } from "react";
-import { Button } from "antd-mobile";
-import { SubTitle } from "components/_atoms/Typos";
-import StrategyCard from "components/lagacy/StrategyCard";
+import { SubTitle, Title } from "components/_atoms/Typos";
 import { useHistory, useParams } from "react-router-dom";
 import { toPercentage, toRatio, toTagsString } from "utils/parse";
 import styled from "styled-components";
-import DetailSummary from "components/_molecules/report/DetailSummary";
+import DetailSummary from "components/_organisms/report/DetailSummary";
 import CumulativeReturn from "components/_molecules/report/CumulativeReturn";
 import MonthlyReturn from "components/_molecules/report/MonthlyReturn";
 import WinRatio from "components/_molecules/report/WinRatio";
-import BackNav from "components/takers/BackNav";
 import useStrategyDetail from "states/react-query/strategy/useStrategyDetail";
 import useBackTestReport from "states/react-query/backtest/useBackTestReport";
 import NavHeaderDetail from "components/_molecules/NavHeaderDetail";
 import WingBlank from "components/_atoms/WingBlank";
 import WhiteSpace from "components/_atoms/WhiteSpace";
+import StrategyCardBox from "components/_molecules/StrategyCardBox";
+import { Button } from "components/_atoms/Buttons";
 
 const StrategyReport = () => {
   const history = useHistory();
@@ -58,90 +57,90 @@ const StrategyReport = () => {
   const reportBody = useMemo(() => {
     return [
       {
-        항목: "시작 날짜",
-        결과: `${
+        name: "시작 날짜",
+        val: `${
           investProfitInfo?.invest_start_date
             ? investProfitInfo?.invest_start_date.slice(0, 10)
             : "-"
         }`,
       },
       {
-        항목: "종료 날짜",
-        결과: `${
+        name: "종료 날짜",
+        val: `${
           investProfitInfo?.invest_end_date
             ? investProfitInfo?.invest_end_date.slice(0, 10)
             : "-"
         }`,
       },
       {
-        항목: "수수료",
-        결과: `${
+        name: "수수료",
+        val: `${
           investProfitInfo?.securities_corp_fee
             ? toPercentage(investProfitInfo?.securities_corp_fee)
             : "-"
         } %`,
       },
       {
-        항목: "누적수익율",
-        결과: `${
+        name: "누적수익율",
+        val: `${
           investProfitInfo?.profit_rate
             ? toPercentage(investProfitInfo?.profit_rate)
             : "-"
         } %`,
       },
       {
-        항목: "연평균수익율",
-        결과: `${
+        name: "연평균수익율",
+        val: `${
           backtestDetailInfo?.year_avg_profit_rate
             ? toPercentage(backtestDetailInfo?.year_avg_profit_rate)
             : "-"
         } %`,
       },
       {
-        항목: "MDD",
-        결과: `${
+        name: "MDD",
+        val: `${
           backtestDetailInfo?.mdd ? toPercentage(backtestDetailInfo?.mdd) : "-"
         } %`,
       },
       {
-        항목: "거래 개월수",
-        결과: `${
+        name: "거래 개월수",
+        val: `${
           backtestDetailInfo?.trading_month_count
             ? toPercentage(backtestDetailInfo?.trading_month_count)
             : "-"
         }`,
       },
       {
-        항목: "상승 개월수",
-        결과: `${
+        name: "상승 개월수",
+        val: `${
           backtestDetailInfo?.rising_month_count
             ? toPercentage(backtestDetailInfo?.rising_month_count)
             : "-"
         }`,
       },
       {
-        항목: "승률",
-        결과: `${winRatio ? winRatio : "-"} %`,
+        name: "승률",
+        val: `${winRatio ? winRatio : "-"} %`,
       },
       {
-        항목: "월평균수익률",
-        결과: `${
+        name: "월평균수익률",
+        val: `${
           backtestDetailInfo?.month_avg_profit_rate
             ? toPercentage(backtestDetailInfo?.month_avg_profit_rate)
             : "-"
         }`,
       },
       {
-        항목: "연간변동성(표준편차)",
-        결과: `${
+        name: "연간변동성\n(표준편차)",
+        val: `${
           backtestDetailInfo?.yearly_volatility
             ? backtestDetailInfo?.yearly_volatility
             : "-"
         }`,
       },
       {
-        항목: "샤프 지수",
-        결과: `${backtestDetailInfo?.sharp ? backtestDetailInfo?.sharp : "-"}`,
+        name: "샤프 지수",
+        val: `${backtestDetailInfo?.sharp ? backtestDetailInfo?.sharp : "-"}`,
       },
     ];
   }, [investProfitInfo, backtestDetailInfo, winRatio]);
@@ -157,9 +156,8 @@ const StrategyReport = () => {
       />
       <WingBlank>
         <WhiteSpace />
-        <BackNav title={"투자 전략 리포트"} />
         {memberStrategy && (
-          <StrategyCard
+          <StrategyCardBox
             title={memberStrategy.strategy_name}
             subTitle={toTagsString(
               memberStrategy.hashList?.map((e) => e?.hash?.hash_contents)
@@ -173,17 +171,19 @@ const StrategyReport = () => {
         )}
         <>
           <div className="flexRowSBt">
-            <SubTitle
-              title="모의 투자"
-              style={{ marginRight: "15px" }}
-            ></SubTitle>
-            <Button type="warning" size="small" style={{ width: "100px" }}>
+            <Title title="모의 투자" style={{ marginRight: "15px" }}></Title>
+            <Button
+              style={{ width: "8rem" }}
+              onClick={() => {
+                history.push("/takers/mock-invest/create/1");
+              }}
+            >
               시작하기
             </Button>
           </div>
         </>
         {/* 4. 상세 리포트 DetailSummary.tsx  */}
-        <DetailSummary body={reportBody} header={["항목", "결과"]} />
+        <DetailSummary body={reportBody} header={["name", "val"]} />
         {/* 5. 백테스팅 누적 수익률 CumulativeReturn.tsx */}
         <CumulativeReturn strategyCode={"" + strategyCode} />
         {/* 6. 백테스팅 월간 수익률 */}
