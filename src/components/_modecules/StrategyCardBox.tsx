@@ -41,12 +41,6 @@ const StrategyCardBox: React.FC<IStrategyCardBox> = ({
           {subTitle && <div className="subTitle">{subTitle}</div>}
           <div className="CAGR">
             <BadgeCAGR val={CAGR} hasPercentage={true} />
-            {/* 연수익{" "}
-            {CAGR ? (
-              <BadgeCAGR val={CAGR} hasPercentage={true} />
-            ) : (
-              "- 백테스팅 대기중"
-            )} */}
           </div>
         </article>
       </Card>
@@ -106,8 +100,7 @@ const Card = styled.section`
       color: ${(props) => props.theme.ColorMainGray};
     }
     .CAGR {
-      font-size: ${(props) => props.theme.FontSizeSm};
-      color: ${(props) => props.theme.ColorGray};
+      margin-top: 0.7rem;
     }
   }
 `;

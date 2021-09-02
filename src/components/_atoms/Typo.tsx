@@ -9,7 +9,7 @@ export const Title: React.FC<{
   return (
     <h1
       style={{
-        fontSize: "1.45rem",
+        fontSize: "1.7rem",
         fontWeight: 700,
         marginLeft: "1.7rem",
         ...style,

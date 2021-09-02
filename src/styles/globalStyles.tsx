@@ -26,7 +26,7 @@ export default createGlobalStyle`
         background-color: #fff;
         min-height:100vh;
         /* background: linear-gradient(0deg, #fff2d2 0%, rgba(255, 255, 255, 0) 100%); */
-      );
+        padding-bottom:11rem;
     }
     input{
         border:unset;

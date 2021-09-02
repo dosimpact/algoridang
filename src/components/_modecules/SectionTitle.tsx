@@ -25,6 +25,7 @@ const SSectionTitle = styled.div`
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
+  align-items: center;
 
   .detailLink {
     font-size: 1.2rem;
