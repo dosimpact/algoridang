@@ -32,6 +32,8 @@
     "@nestjs/passport": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/typeorm": "^8.0.1",
+    "@sentry/node": "^6.12.0",
+    "@sentry/tracing": "^6.12.0",
     "apollo-server-express": "2.x.x",
     "aws-sdk": "^2.959.0",
     "bcrypt": "^5.0.1",
