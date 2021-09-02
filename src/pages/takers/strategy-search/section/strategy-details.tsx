@@ -1,12 +1,11 @@
 import React, { useMemo } from "react";
 import { Title, SubTitle } from "components/_atoms/Typos";
-import useBackButton from "components/lagacy/useBackButton";
 import { useHistory, useParams } from "react-router-dom";
 import { toTagsString } from "utils/parse";
 import styled from "styled-components";
-import TradingHistory from "components/_molecules/report/TradingHistory";
-import TradingPoints from "components/_molecules/report/TradingPoints";
-import ReturnsStatus from "components/_molecules/report/ReturnsStatus";
+import TradingHistory from "components/_organisms/report/TradingHistory";
+import TradingPoints from "components/_organisms/report/TradingPoints";
+import ReturnsStatus from "components/_organisms/report/ReturnsStatus";
 import Description from "components/_molecules/report/Description";
 import useStrategyDetail from "states/react-query/strategy/useStrategyDetail";
 import StrategyCardBox from "components/_molecules/StrategyCardBox";
@@ -16,7 +15,6 @@ import WingBlank from "components/_atoms/WingBlank";
 import { Button } from "components/_atoms/Buttons";
 
 const StrategyDetails = () => {
-  const Back = useBackButton();
   const history = useHistory();
   const params = useParams() as { id: string };
   const strategyCode = params?.id || 0;
@@ -138,6 +136,7 @@ const StrategyDetails = () => {
             title={`매매시점 - ${firstUniversal.ticker} | ${firstUniversal.trading_strategy_name}`}
           />
         )}
+        <WhiteSpace />
         {/* 3. 트레이딩 히스토리 */}
         {histories && (
           <TradingHistory

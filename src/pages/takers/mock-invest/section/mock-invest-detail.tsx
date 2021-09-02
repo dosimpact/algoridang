@@ -5,10 +5,10 @@ import StrategyCard from "components/lagacy/StrategyCard";
 import { useHistory, useParams } from "react-router-dom";
 import { toTagsString } from "utils/parse";
 import styled from "styled-components";
-import ReturnsStatus from "components/_molecules/report/ReturnsStatus";
-import TradingPoints from "components/_molecules/report/TradingPoints";
+import ReturnsStatus from "components/_organisms/report/ReturnsStatus";
+import TradingPoints from "components/_organisms/report/TradingPoints";
 import BackNav from "components/takers/BackNav";
-import TradingHistory from "components/_molecules/report/TradingHistory";
+import TradingHistory from "components/_organisms/report/TradingHistory";
 
 const dummyDatas = {
   title: "삼성전자 황금 신호",

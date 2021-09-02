@@ -1,5 +1,6 @@
 import FNumber from "components/_atoms/FNumber";
-import { SubTitle } from "components/_atoms/Typos";
+import { Title } from "components/_atoms/Typos";
+import WhiteSpace from "components/_atoms/WhiteSpace";
 import React from "react";
 import styled from "styled-components";
 import { toAddComma } from "utils/parse";
@@ -24,22 +25,21 @@ const ReturnsStatus: React.FC<IReturnsStatus> = ({
   return (
     <SReturnsStatus {...props}>
       <div className="flexRow" style={{ marginTop: "50px" }}>
-        <SubTitle title={title} style={{ marginTop: "20px" }} />
+        <Title title={title} style={{ marginTop: "20px" }} />
       </div>
-
-      <div className="returnsStatus" style={{ margin: "15px 0px" }}>
+      <WhiteSpace />
+      <div className="returnsStatus" style={{ margin: "1.8rem 0px" }}>
         <div className="flexRowSBt" style={{ margin: "5px 0px" }}>
           <div className="name">연수익률</div>
           <div className="value returnsValue">
             <FNumber val={Number(profit_rate)} hasPercentage={true} />
           </div>
         </div>
-
-        <div className="flexRowSBt" style={{ margin: "15px 0px" }}>
+        <div className="flexRowSBt" style={{ margin: "1.8rem 0px" }}>
           <div className="name">투자 원금</div>
           <div className="value">{toAddComma(invest_principal)}원</div>
         </div>
-        <div className="flexRowSBt" style={{ margin: "15px 0px" }}>
+        <div className="flexRowSBt" style={{ margin: "1.8rem 0px" }}>
           <div className="name">총 수익금</div>
           <div className="value">{toAddComma(total_profit_price)}원</div>
         </div>
@@ -61,10 +61,12 @@ const SReturnsStatus = styled.article`
   font-size: 1.4rem;
   line-height: 1.6rem;
   .name {
+    font-size: 1.7rem;
   }
   .value {
     color: ${(props) => props.theme.ColorYellow};
     font-weight: 600;
+    font-size: 1.6rem;
   }
   .returnsValue {
     font-size: ${(props) => props.theme.FontSizeXXlg};

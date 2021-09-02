@@ -1,4 +1,4 @@
-import { SubTitle } from "components/_atoms/Typos";
+import { Title } from "components/_atoms/Typos";
 import LineSeriesChartPointing from "components/light-weight/LineSeriesChartPointing";
 import { SeriesMarker, Time } from "lightweight-charts";
 import React, { useCallback, useMemo, useState } from "react";
@@ -7,6 +7,7 @@ import useBackTestHistory from "states/react-query/backtest/useBackTestHistory";
 import useDailyStock from "states/react-query/finance/useDailyStock";
 import styled from "styled-components";
 import { UTCtoDate } from "utils/parse";
+import WhiteSpace from "components/_atoms/WhiteSpace";
 
 // 매매시점 컴포넌트의 차트
 const ChartBuySelPoint: React.FC<{ ticker: string; strategyCode: string }> = ({
@@ -81,6 +82,7 @@ const ChartBuySelPoint: React.FC<{ ticker: string; strategyCode: string }> = ({
           ${currnetHistory.buy_sale_price} | 
           ${currnetHistory.profit_loss_rate}`}
       </div>
+      <WhiteSpace />
       <LineSeriesChartPointing
         datas={datas}
         markerDatas={markerDatas}
@@ -110,7 +112,7 @@ const TradingPoints: React.FC<ITradingPoints> = ({
   return (
     <STradingPoints {...props}>
       <div className="flexRow" style={{ marginTop: "50px" }}>
-        <SubTitle title={title || "매매 시점"} style={{ margin: "20px 0px" }} />
+        <Title title={title || "매매 시점"} style={{ margin: "20px 0px" }} />
       </div>
       <ChartBuySelPoint ticker={ticker} strategyCode={strategyCode} />
     </STradingPoints>
