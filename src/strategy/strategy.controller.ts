@@ -11,7 +11,7 @@ import {
 import { StrategyService } from './strategy.service';
 import { AuthUser, Roles } from 'src/auth/auth.decorator';
 import { HttpCacheInterceptor } from 'src/common/service/HttpCacheInterceptor';
-import { CreateMyStrategyInput } from './dto/mutation.dtos';
+import { CreateMyStrategyInput, ForkStrategyInput } from './dto/mutation.dtos';
 import { MemberInfo } from 'src/member/entities';
 import { TradingService } from 'src/trading/trading.service';
 import { AddUniversalInput } from 'src/trading/dto/mutation.dtos';
@@ -117,6 +117,20 @@ export class StrategyMutationController {
     return this.strategyService.createMyStrategy(member.email_id, {
       ...createMyStrategy,
     });
+  }
+
+  // (POST) createMyStrategy	(1) 나의 전략 만들기
+  @Roles(['Any'])
+  @Version('1')
+  @Post('fork')
+  async forkStrategy(
+    @AuthUser() member: MemberInfo,
+    @Body() forkStrategyInput: ForkStrategyInput,
+  ) {
+    return this.strategyService.forkStrategy(
+      member.email_id,
+      forkStrategyInput,
+    );
   }
 
   // 전략에 종목 + 매매전략 추가하기

@@ -56,9 +56,6 @@ export class CreateMyStrategyOutput extends CoreOutput {
 }
 
 export class ForkStrategyInput {
-  @IsEmail()
-  email_id: string;
-
   @IsString()
   strategy_code: string;
 }

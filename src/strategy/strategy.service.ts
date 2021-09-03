@@ -384,10 +384,10 @@ export class StrategyService {
   }
 
   // (POST) forkStrategy (2) 전략 복사
-  async forkStrategy({
-    email_id,
-    strategy_code,
-  }: ForkStrategyInput): Promise<ForkStrategyOutput> {
+  async forkStrategy(
+    email_id: string,
+    { strategy_code }: ForkStrategyInput,
+  ): Promise<ForkStrategyOutput> {
     const targetStrategy = await this.getStrategyById({ strategy_code });
 
     return {
