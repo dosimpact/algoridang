@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FinanceService } from 'src/finance/finance.service';
 import { StrategyService } from 'src/strategy/strategy.service';
@@ -39,6 +39,8 @@ export class TradingService {
     @InjectRepository(Universal)
     private readonly universalRepo: Repository<Universal>,
     private readonly financeService: FinanceService,
+
+    @Inject(forwardRef(() => StrategyService))
     private readonly strategyService: StrategyService,
   ) {}
   //(1) 기본 매매전략

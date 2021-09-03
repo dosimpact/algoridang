@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { getConnection, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import {
   GetMyStrategyByIdInput,
   GetMyStrategyByIdOutput,
@@ -41,6 +41,7 @@ import { Logger } from '@nestjs/common';
 import { InvestProfitInfo } from 'src/backtest/entities';
 import { StrategyHashService } from './strategy-hash.service';
 import { BacktestService } from 'src/backtest/backtest.service';
+import { TradingService } from 'src/trading/trading.service';
 // todo : 맴버필드 -> 소문자
 
 @Injectable()
@@ -66,9 +67,10 @@ export class StrategyService {
     private readonly investProfitInfoRepo: Repository<InvestProfitInfo>,
     private readonly HashService: StrategyHashService,
     private readonly backtestService: BacktestService,
-  ) {
-    (async () => {})();
-  }
+
+    @Inject(forwardRef(() => TradingService))
+    private readonly tradingService: TradingService,
+  ) {}
 
   // 1. query
   // (GET) getStrategyListNew	(1) 신규 투자 전략 API
@@ -386,9 +388,82 @@ export class StrategyService {
   // (POST) forkStrategy (2) 전략 복사
   async forkStrategy(
     email_id: string,
-    { strategy_code }: ForkStrategyInput,
+    {
+      strategy_code,
+      invest_principal,
+      securities_corp_fee,
+      strategy_name,
+    }: ForkStrategyInput,
   ): Promise<ForkStrategyOutput> {
-    const targetStrategy = await this.getStrategyById({ strategy_code });
+    console.log('strategy_code', strategy_code);
+
+    // 해당 전략을 복사한다.
+    const sourceStrategy = await this.MemberStrategyRepo.findOneOrFail({
+      where: {
+        strategy_code: '1',
+        // open_yes_no: true,
+      },
+      relations: [
+        'hashList', // 기본 ----
+        'hashList.hash',
+        'investProfitInfo',
+        'universal',
+      ],
+    });
+    console.log('[1]sourceStrategy', sourceStrategy);
+    // const hashs = sourceStrategy.hashList.has
+
+    delete sourceStrategy.strategy_code;
+    if (strategy_name) sourceStrategy.strategy_name = strategy_name;
+
+    if (invest_principal)
+      sourceStrategy.investProfitInfo.invest_principal = invest_principal;
+    if (securities_corp_fee)
+      sourceStrategy.investProfitInfo.securities_corp_fee = securities_corp_fee;
+
+    delete sourceStrategy.investProfitInfo.invest_profit_info_code;
+    delete sourceStrategy.investProfitInfo.strategy_code;
+
+    sourceStrategy.universal = sourceStrategy.universal.map((uni) => {
+      delete uni.universal_code;
+      delete uni.strategy_code;
+      return uni;
+    });
+
+    //
+    const copyedStrategy = this.MemberStrategyRepo.create({
+      ...sourceStrategy,
+    });
+
+    console.log('[2]sourceStrategy', sourceStrategy);
+
+    const newStrategy = await this.MemberStrategyRepo.save(copyedStrategy);
+    console.log('newStrategy', newStrategy);
+
+    // relation fork - investProfitInfoRepo
+    const copyedInvestProfitInfo = this.investProfitInfoRepo.create({
+      ...copyedStrategy.investProfitInfo,
+      strategy_code: newStrategy.strategy_code,
+    });
+    const newInvestProfitInfo = await this.investProfitInfoRepo.save(
+      copyedInvestProfitInfo,
+    );
+    console.log('newInvestProfitInfo', newInvestProfitInfo);
+    // relation fork - investProfitInfoRepo
+
+    // // 유니버셜 추가
+    // await tradingService.addUniversal('ypd03008@gmail.com', {
+    //   strategy_code: newStrategy.memberStrategy.strategy_code,
+    //   ticker,
+    //   trading_strategy_name: StrategyName.GoldenCross,
+    //   setting_json: { GoldenCross: { pfast: 16, pslow: 6 } },
+    //   start_date: '2011-08-19T06:58:48.421Z',
+    // });
+    // // 백테스팅 요청
+    // await flaskService.pushBackTestQ('ypd03008@gmail.com', {
+    //   strategy_code: newStrategy.memberStrategy.strategy_code,
+    // });
+    // console.log('✔', ticker, corp_name);
 
     return {
       ok: false,

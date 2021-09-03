@@ -1,4 +1,4 @@
-import { forwardRef, Module } from '@nestjs/common';
+import { forwardRef, Global, Module } from '@nestjs/common';
 import { TradingService } from './trading.service';
 import { TradingResolver } from './trading.resolver';
 import {
@@ -15,7 +15,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { FinanceModule } from 'src/finance/finance.module';
 import { StrategyModule } from 'src/strategy/strategy.module';
 // import { StockList } from './entities/stock-list.entity';
-
 @Module({
   imports: [
     TypeOrmModule.forFeature([
@@ -25,8 +24,8 @@ import { StrategyModule } from 'src/strategy/strategy.module';
       SimpleBacktest,
       Universal,
     ]),
-    forwardRef(() => FinanceModule),
     forwardRef(() => StrategyModule),
+    forwardRef(() => FinanceModule),
   ],
   controllers: [TradingQueryController, TradingMutationController],
   providers: [TradingService, TradingResolver],
