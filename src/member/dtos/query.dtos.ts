@@ -36,7 +36,7 @@ export class GetMemberInfoListOutput extends CorePaginationOutput {
 
 // () 전략 운용 회원 매핑 테이블 도회
 export class GetOperationMemberListInput {
-  strategy_code: number;
+  strategy_code: string;
   operation_customer_id: string;
 }
 export class GetOperationMemberListOutput extends CoreOutput {
@@ -45,7 +45,7 @@ export class GetOperationMemberListOutput extends CoreOutput {
 
 // () 조회 회원 매핑 테이블 도회
 export class GetLookupMemberListInput {
-  strategy_code: number;
+  strategy_code: string;
   lookup_customer_id: string;
 }
 export class GetLookupMemberListOutput extends CoreOutput {

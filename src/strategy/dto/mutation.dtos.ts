@@ -2,10 +2,8 @@ import { InputType, PartialType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 import {
   IsBoolean,
-  IsDate,
+  IsEmail,
   IsEnum,
-  IsNumber,
-  IsObject,
   IsOptional,
   IsString,
   ValidateNested,
@@ -56,6 +54,18 @@ export class CreateMyStrategyInput {
 export class CreateMyStrategyOutput extends CoreOutput {
   memberStrategy?: MemberStrategy;
 }
+
+export class ForkStrategyInput {
+  @IsEmail()
+  email_id: string;
+
+  @IsString()
+  strategy_code: string;
+}
+export class ForkStrategyOutput extends CoreOutput {
+  memberStrategy?: MemberStrategy;
+}
+
 // (POST) updateMyStrategyById		(2) 나의 전략 업데이트
 export class UpdateMyStrategyByIdInput extends PartialType(
   CreateMyStrategyInput,

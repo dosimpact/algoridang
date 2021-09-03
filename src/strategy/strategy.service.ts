@@ -26,6 +26,8 @@ import {
   CreateMyStrategyOutput,
   DeleteMyStrategyByIdInput,
   DeleteMyStrategyByIdOutput,
+  ForkStrategyInput,
+  ForkStrategyOutput,
   NoticeMyStrategyByIdInput,
   NoticeMyStrategyByIdOutput,
   RecoverStrategyByIdInput,
@@ -380,6 +382,19 @@ export class StrategyService {
       memberStrategy: res?.memberStrategy,
     };
   }
+
+  // (POST) forkStrategy (2) 전략 복사
+  async forkStrategy({
+    email_id,
+    strategy_code,
+  }: ForkStrategyInput): Promise<ForkStrategyOutput> {
+    const targetStrategy = await this.getStrategyById({ strategy_code });
+
+    return {
+      ok: false,
+    };
+  }
+
   // (POST) updateMyStrategyById		(2) 나의 전략 업데이트
   async updateMyStrategyById(
     updateMyStrategyByIdInput: UpdateMyStrategyByIdInput,

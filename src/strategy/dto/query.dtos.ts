@@ -35,7 +35,7 @@ export class GetStrategyListInvestTypeOutput extends CorePaginationOutput {
 
 // (GET) getStrategyById	(4)특정 Id로 전략 조회
 export class GetStrategyByIdInput {
-  strategy_code: number;
+  strategy_code: string;
 }
 export class GetStrategyByIdOutput extends CoreOutput {
   memberStrategy?: MemberStrategy;
