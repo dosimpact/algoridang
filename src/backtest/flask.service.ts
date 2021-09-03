@@ -1,4 +1,9 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import { StrategyService } from 'src/strategy/strategy.service';
@@ -13,6 +18,7 @@ export class FlaskService {
   private readonly dataServerUrl: string;
   constructor(
     private readonly configService: ConfigService,
+    @Inject(forwardRef(() => StrategyService))
     private readonly strategyService: StrategyService,
   ) {
     this.dataServerUrl = this.configService.get('DATA_SERVER_URL');

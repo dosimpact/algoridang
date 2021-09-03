@@ -42,6 +42,7 @@ import { InvestProfitInfo } from 'src/backtest/entities';
 import { StrategyHashService } from './strategy-hash.service';
 import { BacktestService } from 'src/backtest/backtest.service';
 import { TradingService } from 'src/trading/trading.service';
+import { FlaskService } from 'src/backtest/flask.service';
 // todo : 맴버필드 -> 소문자
 
 @Injectable()
@@ -70,6 +71,8 @@ export class StrategyService {
 
     @Inject(forwardRef(() => TradingService))
     private readonly tradingService: TradingService,
+    @Inject(forwardRef(() => FlaskService))
+    private readonly flaskService: FlaskService,
   ) {}
 
   // 1. query
@@ -400,7 +403,7 @@ export class StrategyService {
     // 해당 전략을 복사한다.
     const sourceStrategy = await this.MemberStrategyRepo.findOneOrFail({
       where: {
-        strategy_code: '1',
+        strategy_code,
         // open_yes_no: true,
       },
       relations: [
@@ -449,20 +452,38 @@ export class StrategyService {
       copyedInvestProfitInfo,
     );
     console.log('newInvestProfitInfo', newInvestProfitInfo);
-    // relation fork - investProfitInfoRepo
 
-    // // 유니버셜 추가
-    // await tradingService.addUniversal('ypd03008@gmail.com', {
-    //   strategy_code: newStrategy.memberStrategy.strategy_code,
-    //   ticker,
-    //   trading_strategy_name: StrategyName.GoldenCross,
-    //   setting_json: { GoldenCross: { pfast: 16, pslow: 6 } },
-    //   start_date: '2011-08-19T06:58:48.421Z',
-    // });
-    // // 백테스팅 요청
-    // await flaskService.pushBackTestQ('ypd03008@gmail.com', {
-    //   strategy_code: newStrategy.memberStrategy.strategy_code,
-    // });
+    // relation fork - Universal[]
+    await Promise.all(
+      sourceStrategy.universal.map(async (univ) => {
+        return this.tradingService.addUniversal(email_id, {
+          ...univ,
+          strategy_code: newStrategy.strategy_code,
+        });
+      }),
+    );
+    console.log('sourceStrategy.hashList', sourceStrategy.hashList);
+
+    for (let i = 0; i < sourceStrategy.hashList.length; i++) {
+      this.HashService.__createHashList(
+        sourceStrategy.hashList[i].hash_code,
+        newStrategy.strategy_code,
+      );
+    }
+
+    // relation fork - hashtag
+    // await this.HashService.__upsertHashList(
+    //   tagIdList,
+    //   newStrategy.strategy_code,
+    // );
+
+    // 백테스팅 요청
+    this.flaskService
+      .pushBackTestQ(email_id, {
+        strategy_code: newStrategy.strategy_code,
+      })
+      .then(() => {})
+      .catch((e) => {});
     // console.log('✔', ticker, corp_name);
 
     return {
