@@ -1,5 +1,3 @@
-import BadgePriceDelta from "components/_atoms/BadgePriceDelta";
-import { Box } from "components/_atoms/Box";
 import FNumber from "components/_atoms/FNumber";
 import React from "react";
 import styled from "styled-components";

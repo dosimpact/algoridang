@@ -1,4 +1,3 @@
-import StrategyCard from "components/lagacy/StrategyCard";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { toTagsString } from "utils/parse";
@@ -8,20 +7,9 @@ import { useMyStrategy } from "states/react-query/strategy/useMyStrategy";
 import WingBlank from "components/_atoms/WingBlank";
 import WhiteSpace from "components/_atoms/WhiteSpace";
 import StrategyCardBox from "components/_molecules/StrategyCardBox";
+import SectionTitle from "components/_molecules/SectionTitle";
 
-const Title: React.FC<{ title: string }> = ({ title }) => {
-  return <h1 style={{ fontSize: "20px", fontWeight: 700 }}>{title}</h1>;
-};
-
-const dummyDatas2 = [
-  {
-    title: "삼성전자 황금 신호",
-    subTitle: ["단일 종목", "골든 크로스"],
-    CAGR: -1.2,
-  },
-];
-
-const MockInvestList = () => {
+const MockInvestFeeds = () => {
   const history = useHistory();
   const { getMyStrategyListQuery } = useMyStrategy();
   console.log("getMyStrategyListQuery", getMyStrategyListQuery);
@@ -37,8 +25,12 @@ const MockInvestList = () => {
         title="모의 투자"
         subTitle="알고리당의 투자 로직에 따라 매일 모의투자를 합니다."
       />
-      <WhiteSpace />
-      <Title title={"나의 모의 투자 전략"} />
+      <SectionTitle
+        title="나의 모의 투자 전략"
+        linkTo={
+          process.env.PUBLIC_URL + "/takers/strategy-search/list/risk-taking"
+        }
+      />
       <WhiteSpace />
       {getMyStrategyListQuery.isLoading && "loading..."}
       {strategyList &&
@@ -63,4 +55,4 @@ const MockInvestList = () => {
   );
 };
 
-export default MockInvestList;
+export default MockInvestFeeds;

@@ -1,6 +1,4 @@
 import { List, InputItem, Button } from "antd-mobile";
-import StrategyCard from "components/lagacy/StrategyCard";
-import useBackButton from "components/lagacy/useBackButton";
 import WhiteSpace from "components/_atoms/WhiteSpace";
 import WingBlank from "components/_atoms/WingBlank";
 import NavHeaderDetail from "components/_molecules/NavHeaderDetail";
@@ -13,14 +11,6 @@ import { toTagsString } from "utils/parse";
 const Title: React.FC<{ title: string }> = ({ title }) => {
   return <h1 style={{ fontSize: "20px", fontWeight: 700 }}>{title}</h1>;
 };
-
-const dummyDatas2 = [
-  {
-    title: "삼성전자 황금 신호",
-    subTitle: ["단일 종목", "골든 크로스"],
-    CAGR: -1.2,
-  },
-];
 
 const MockInvestCreate = () => {
   const history = useHistory();
@@ -35,7 +25,6 @@ const MockInvestCreate = () => {
     () => strategyDetailQuery?.data?.memberStrategy,
     [strategyDetailQuery?.data]
   );
-  const backBtn = useBackButton();
   return (
     <>
       <NavHeaderDetail

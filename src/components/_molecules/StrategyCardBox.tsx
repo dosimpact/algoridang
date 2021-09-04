@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import FNumber from "components/_atoms/FNumber";
 import { randomDefaultThunmnail } from "utils/default-values";
 import BadgeCAGR from "components/_atoms/BadgeCAGR";
 

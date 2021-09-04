@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { SubTitle, Title } from "components/_atoms/Typos";
+import { Title } from "components/_atoms/Typos";
 import { useHistory, useParams } from "react-router-dom";
 import { toPercentage, toRatio, toTagsString } from "utils/parse";
 import styled from "styled-components";
@@ -23,8 +23,10 @@ const StrategyReport = () => {
     history.push("/");
   }
   const { strategyDetailQuery } = useStrategyDetail(strategyCode + "");
-  const { accumulateProfitRateQuery, montlyProfitRateQuery, winRatioQuery } =
-    useBackTestReport(strategyCode + "");
+  const {
+    winRatioQuery,
+    // accumulateProfitRateQuery, montlyProfitRateQuery,
+  } = useBackTestReport(strategyCode + "");
 
   const memberStrategy = useMemo(
     () => strategyDetailQuery?.data?.memberStrategy,

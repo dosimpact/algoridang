@@ -2,7 +2,7 @@ import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import MockInvestCreate from "./section/mock-invest-create";
 import MockInvestDetail from "./section/mock-invest-detail";
-import MockInvestList from "./section/mock-invest-list";
+import MockInvestFeed from "./section/mock-invest-feeds";
 import MockInvestReport from "./section/mock-invest-report";
 import MockInvestUpdate from "./section/mock-invest-update";
 
@@ -25,7 +25,7 @@ const MockInvestC = () => {
         <Route
           exact
           path={process.env.PUBLIC_URL + "/takers/mock-invest"}
-          component={MockInvestList}
+          component={MockInvestFeed}
         />
         <Route
           exact

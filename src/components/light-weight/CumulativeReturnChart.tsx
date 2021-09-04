@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useEffect, useCallback } from "react";
+import React, { useLayoutEffect, useRef, useCallback } from "react";
 import { createChart, IChartApi, ISeriesApi } from "lightweight-charts";
 
 export interface ILineData {

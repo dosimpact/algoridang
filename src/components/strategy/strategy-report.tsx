@@ -4,7 +4,6 @@ import StrategyCard from "components/lagacy/StrategyCard";
 import { toTagsString } from "utils/parse";
 import styled from "styled-components";
 import ReturnsStatus from "components/_organisms/report/ReturnsStatus";
-import TradingPoints from "components/_organisms/report/TradingPoints";
 import TradingHistory from "components/_organisms/report/TradingHistory";
 import DetailSummary from "components/_organisms/report/DetailSummary";
 import CumulativeReturn from "components/_molecules/report/CumulativeReturn";

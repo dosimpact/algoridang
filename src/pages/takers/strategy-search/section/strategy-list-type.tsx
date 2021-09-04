@@ -1,14 +1,13 @@
-import StrategyCard from "components/lagacy/StrategyCard";
 import WhiteSpace from "components/_atoms/WhiteSpace";
 import WingBlank from "components/_atoms/WingBlank";
 import NavHeaderDetail from "components/_molecules/NavHeaderDetail";
-import SectionTitle from "components/_molecules/SectionTitle";
 import StrategyCardBox from "components/_molecules/StrategyCardBox";
-import useBackButton from "components/lagacy/useBackButton";
 import React from "react";
 import { useHistory, useParams } from "react-router-dom";
 import useStrategy from "states/react-query/strategy/useStrategy";
 import { toTagsString } from "utils/parse";
+
+// 더보기 버튼에서 온 인피니트 스크롤링 페이지
 
 const StrategyListTypes = [
   "new",

@@ -1,5 +1,4 @@
 import React, { useMemo } from "react";
-import { Badge } from "antd-mobile";
 import MockInvest from "../mock-invest/mock-investC";
 import StrategySearch from "../strategy-search/strategy-searchC";
 import TickerSearch from "../ticker-search/ticker-searchC";
