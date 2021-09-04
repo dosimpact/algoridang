@@ -85,6 +85,9 @@ export class StrategyService {
     take = skip || 7;
     const [memberStrategyList, totalResult] =
       await this.MemberStrategyRepo.findAndCount({
+        where: {
+          open_yes_no: true,
+        },
         order: {
           create_date: 'DESC',
         },
@@ -108,6 +111,9 @@ export class StrategyService {
     take = skip || 7;
     let [memberStrategyList, totalResult] =
       await this.MemberStrategyRepo.findAndCount({
+        where: {
+          open_yes_no: true,
+        },
         order: {
           create_date: 'DESC',
         },
@@ -182,6 +188,7 @@ export class StrategyService {
             create_date: 'DESC',
           },
           where: {
+            open_yes_no: true,
             invest_type: InvestType[type],
           },
           relations: this.strategyListRelation,
@@ -212,6 +219,7 @@ export class StrategyService {
         create_date: 'DESC',
       },
       where: {
+        open_yes_no: true,
         invest_type: investType,
       },
       relations: this.strategyListRelation,
@@ -286,10 +294,10 @@ export class StrategyService {
   }
   // (GET) getMyStrategyById(6) 나의 전략 조회
   // 비공개 전략이더라도, 나는 볼 수 있다.
-  async getMyStrategyById({
+  async getMyStrategyById(
     email_id,
-    strategy_code,
-  }: GetMyStrategyByIdInput): Promise<GetMyStrategyByIdOutput> {
+    { strategy_code }: GetMyStrategyByIdInput,
+  ): Promise<GetMyStrategyByIdOutput> {
     const memberStrategy = await this.MemberStrategyRepo.findOneOrFail({
       where: {
         operator_id: email_id,
@@ -316,10 +324,10 @@ export class StrategyService {
     };
   }
 
-  async __checkMyStrategy({
+  async __checkMyStrategy(
     email_id,
-    strategy_code,
-  }: GetMyStrategyByIdInput): Promise<GetMyStrategyByIdOutput> {
+    { strategy_code }: GetMyStrategyByIdInput,
+  ): Promise<GetMyStrategyByIdOutput> {
     const memberStrategy = await this.MemberStrategyRepo.findOneOrFail({
       where: {
         operator_id: email_id,
@@ -376,8 +384,7 @@ export class StrategyService {
       newStrategy.strategy_code,
     );
     // (4) 전략 얻어보기
-    const res = await this.getMyStrategyById({
-      email_id,
+    const res = await this.getMyStrategyById(email_id, {
       strategy_code: newStrategy.strategy_code,
     });
     if (!res.ok) throw new Error('cannot find getMyStrategyById');
@@ -484,8 +491,7 @@ export class StrategyService {
     );
     // console.log('[5] newTags', newTags);
     // 6. final strategy
-    const res = await this.getMyStrategyById({
-      email_id,
+    const res = await this.getMyStrategyById(email_id, {
       strategy_code: newStrategy.strategy_code,
     });
     if (!res.ok || !res.memberStrategy)
@@ -493,9 +499,20 @@ export class StrategyService {
 
     // 7. 백테스팅 요청
 
-    this.flaskService.pushBackTestQ(email_id, {
-      strategy_code: res.memberStrategy.strategy_code,
-    });
+    this.flaskService
+      .pushBackTestQ(email_id, {
+        strategy_code: res.memberStrategy.strategy_code,
+      })
+      .then((e) => {
+        this.logger.verbose(
+          `✔ pushBackTestQ ok ${res.memberStrategy.strategy_code}`,
+        );
+      })
+      .catch(() => {
+        this.logger.error(
+          `✔ pushBackTestQ fail ${res.memberStrategy.strategy_code}`,
+        );
+      });
 
     this.logger.verbose(
       `✔ forked memberStrategy ${sourceStrategy.strategy_code} -> ${res.memberStrategy.strategy_code}`,

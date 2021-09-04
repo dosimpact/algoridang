@@ -100,9 +100,8 @@ export class TradingService {
       term: ticker,
     });
 
-    await this.strategyService.__checkMyStrategy({
+    await this.strategyService.__checkMyStrategy(email_id, {
       strategy_code,
-      email_id,
     });
 
     // universal 매핑 테이블 생성
@@ -128,10 +127,12 @@ export class TradingService {
     }: UpsertTradingStrategyInput,
   ): Promise<UpsertTradingStrategyOutput> {
     // 전략 및 유니버셜 존재성 확인
-    const existStrategy = await this.strategyService.__checkMyStrategy({
-      strategy_code,
+    const existStrategy = await this.strategyService.__checkMyStrategy(
       email_id,
-    });
+      {
+        strategy_code,
+      },
+    );
     // unversial을 찾아 전략 추가
     const universal = await this.universalRepo.findOneOrFail({
       where: {

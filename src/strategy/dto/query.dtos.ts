@@ -50,7 +50,6 @@ export class GetMyStrategyListOutput extends CorePaginationOutput {
 }
 // (GET) getMyStrategyById(6) 나의 전략 조회
 export class GetMyStrategyByIdInput {
-  email_id: string;
   strategy_code: string;
 }
 export class GetMyStrategyByIdOutput extends CoreOutput {

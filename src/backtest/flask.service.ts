@@ -74,8 +74,7 @@ export class FlaskService {
     email_id: string,
     { strategy_code }: PushBackTestQInput,
   ): Promise<PushBackTestQOutput> {
-    const res = await this.strategyService.__checkMyStrategy({
-      email_id,
+    const res = await this.strategyService.__checkMyStrategy(email_id, {
       strategy_code,
     });
     if (res.ok) {

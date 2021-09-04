@@ -85,9 +85,8 @@ export class StrategyQueryController {
     @AuthUser() MemberInfo,
     @Param('strategy_code') strategy_code,
   ) {
-    return this.strategyService.getMyStrategyById({
+    return this.strategyService.getMyStrategyById(MemberInfo.email_id, {
       strategy_code,
-      email_id: MemberInfo.email_id,
     });
   }
 
