@@ -1,5 +1,6 @@
 import {
   Controller,
+  Get,
   Post,
   UploadedFile,
   UseInterceptors,
@@ -44,5 +45,12 @@ export class UploadController {
   @UseInterceptors(FileInterceptor('file'))
   async uploadFileTicker(@UploadedFile() file: Express.Multer.File) {
     return this.uploadService.uploadTickerS3(file, 'ticker');
+  }
+
+  @Version('1')
+  @Roles(['Admin', 'DAServer'])
+  @Get('objects')
+  async uploadedObjects() {
+    return this.uploadService.getUploadedObjects();
   }
 }
