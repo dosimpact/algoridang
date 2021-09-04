@@ -28,6 +28,7 @@ import {
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { HashList } from './hash-list.entity';
 import { Universal } from 'src/trading/entities/universal';

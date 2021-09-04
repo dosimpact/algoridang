@@ -398,8 +398,6 @@ export class StrategyService {
       strategy_name,
     }: ForkStrategyInput,
   ): Promise<ForkStrategyOutput> {
-    console.log('strategy_code', strategy_code);
-
     // 해당 전략을 복사한다.
     const sourceStrategy = await this.MemberStrategyRepo.findOneOrFail({
       where: {
@@ -413,81 +411,98 @@ export class StrategyService {
         'universal',
       ],
     });
-    console.log('[1]sourceStrategy', sourceStrategy);
-    // const hashs = sourceStrategy.hashList.has
+    // console.log('[1]sourceStrategy', sourceStrategy);
 
-    delete sourceStrategy.strategy_code;
-    if (strategy_name) sourceStrategy.strategy_name = strategy_name;
+    // 1 전략 만들기
+    const templateStrategy = this.MemberStrategyRepo.create({});
 
+    // 1.1 전략 디폴트 데이터
+    templateStrategy.strategy_name = sourceStrategy.strategy_name;
+    templateStrategy.create_date = sourceStrategy.create_date;
+    templateStrategy.invest_type = sourceStrategy.invest_type;
+    templateStrategy.strategy_explanation = sourceStrategy.strategy_explanation;
+    templateStrategy.operation_yes_no = sourceStrategy.operation_yes_no;
+    templateStrategy.alarm_setting = sourceStrategy.alarm_setting;
+    // templateStrategy.deleteAt = sourceStrategy.deleteAt;
+    templateStrategy.open_yes_no = sourceStrategy.open_yes_no;
+    // templateStrategy.operator_id = sourceStrategy.operator_id;
+    templateStrategy.maker_id = sourceStrategy.maker_id;
+    templateStrategy.image_url = sourceStrategy.image_url;
+    templateStrategy.universal_producer = sourceStrategy.universal_producer;
+
+    // 1.2 전략 forked 데이터
+    if (strategy_name) templateStrategy.strategy_name = strategy_name;
+    templateStrategy.operator_id = email_id;
+    templateStrategy.open_yes_no = false;
+    delete templateStrategy.create_date; // ORM 처리
+
+    const newStrategy = await this.MemberStrategyRepo.save(templateStrategy);
+    // console.log('[2] newStrategy', newStrategy);
+
+    // 2. InvestProfitInfo fork
+    const sourceInvestProfitInfo = sourceStrategy.investProfitInfo;
+    const templateInvestProfitInfo = this.investProfitInfoRepo.create({});
+
+    // 2.1 디폴트 값
+    templateInvestProfitInfo.invest_principal =
+      sourceInvestProfitInfo.invest_principal;
+    templateInvestProfitInfo.securities_corp_fee =
+      sourceInvestProfitInfo.securities_corp_fee;
+
+    templateInvestProfitInfo.strategy_code = newStrategy.strategy_code;
+    templateInvestProfitInfo.invest_start_date = new Date().toISOString();
     if (invest_principal)
-      sourceStrategy.investProfitInfo.invest_principal = invest_principal;
+      templateInvestProfitInfo.invest_principal = invest_principal;
     if (securities_corp_fee)
-      sourceStrategy.investProfitInfo.securities_corp_fee = securities_corp_fee;
+      templateInvestProfitInfo.securities_corp_fee = securities_corp_fee;
 
-    delete sourceStrategy.investProfitInfo.invest_profit_info_code;
-    delete sourceStrategy.investProfitInfo.strategy_code;
-
-    sourceStrategy.universal = sourceStrategy.universal.map((uni) => {
-      delete uni.universal_code;
-      delete uni.strategy_code;
-      return uni;
-    });
-
-    //
-    const copyedStrategy = this.MemberStrategyRepo.create({
-      ...sourceStrategy,
-    });
-
-    console.log('[2]sourceStrategy', sourceStrategy);
-
-    const newStrategy = await this.MemberStrategyRepo.save(copyedStrategy);
-    console.log('newStrategy', newStrategy);
-
-    // relation fork - investProfitInfoRepo
-    const copyedInvestProfitInfo = this.investProfitInfoRepo.create({
-      ...copyedStrategy.investProfitInfo,
-      strategy_code: newStrategy.strategy_code,
-    });
     const newInvestProfitInfo = await this.investProfitInfoRepo.save(
-      copyedInvestProfitInfo,
+      templateInvestProfitInfo,
     );
-    console.log('newInvestProfitInfo', newInvestProfitInfo);
+    // console.log('[3] newInvestProfitInfo', newInvestProfitInfo);
 
-    // relation fork - Universal[]
-    await Promise.all(
-      sourceStrategy.universal.map(async (univ) => {
+    // 4. Universal fork
+    const sourceUniversals = sourceStrategy.universal;
+    const newUniversals = await Promise.all(
+      sourceUniversals.map(async (univ) => {
         return this.tradingService.addUniversal(email_id, {
           ...univ,
           strategy_code: newStrategy.strategy_code,
         });
       }),
     );
-    console.log('sourceStrategy.hashList', sourceStrategy.hashList);
+    // console.log('[4] newUniversals', newUniversals);
+    // 5. hash fork
+    const sourceTags = sourceStrategy.hashList;
+    const newTags = await Promise.all(
+      sourceTags.map(async (hashList) => {
+        return this.HashService.__createHashList(
+          hashList.hash_code,
+          newStrategy.strategy_code,
+        );
+      }),
+    );
+    // console.log('[5] newTags', newTags);
+    // 6. final strategy
+    const res = await this.getMyStrategyById({
+      email_id,
+      strategy_code: newStrategy.strategy_code,
+    });
+    if (!res.ok || !res.memberStrategy)
+      throw new Error('cannot find getMyStrategyById');
 
-    for (let i = 0; i < sourceStrategy.hashList.length; i++) {
-      this.HashService.__createHashList(
-        sourceStrategy.hashList[i].hash_code,
-        newStrategy.strategy_code,
-      );
-    }
+    // 7. 백테스팅 요청
 
-    // relation fork - hashtag
-    // await this.HashService.__upsertHashList(
-    //   tagIdList,
-    //   newStrategy.strategy_code,
-    // );
+    this.flaskService.pushBackTestQ(email_id, {
+      strategy_code: res.memberStrategy.strategy_code,
+    });
 
-    // 백테스팅 요청
-    this.flaskService
-      .pushBackTestQ(email_id, {
-        strategy_code: newStrategy.strategy_code,
-      })
-      .then(() => {})
-      .catch((e) => {});
-    // console.log('✔', ticker, corp_name);
-
+    this.logger.verbose(
+      `✔ forked memberStrategy ${sourceStrategy.strategy_code} -> ${res.memberStrategy.strategy_code}`,
+    );
     return {
-      ok: false,
+      ok: true,
+      memberStrategy: res?.memberStrategy,
     };
   }
 

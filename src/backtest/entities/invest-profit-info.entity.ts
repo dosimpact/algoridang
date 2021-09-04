@@ -50,12 +50,12 @@ export class InvestProfitInfo {
 
   @IsDateString()
   @Column({ type: 'timestamptz' })
-  invest_start_date: Date;
+  invest_start_date: string;
 
   @IsDateString()
   @IsOptional()
   @Column({ type: 'timestamptz', nullable: true })
-  invest_end_date?: Date;
+  invest_end_date?: string;
 
   // 1:N
   // (1) 대상 전략의 수익

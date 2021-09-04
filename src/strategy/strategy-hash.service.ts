@@ -48,16 +48,7 @@ export class StrategyHashService {
     // private readonly StockListRepo: Repository<StockList>,
     @InjectRepository(InvestProfitInfo)
     private readonly investProfitInfoRepo: Repository<InvestProfitInfo>,
-  ) {
-    (async () => {
-      await this.HashListRepo.save([
-        this.HashListRepo.create({
-          hash_code: 1,
-          strategy_code: '17',
-        }),
-      ]);
-    })();
-  }
+  ) {}
   // (3) 해쉬 태그 리스트 생성
   async __upsertHashTags(tags: string[]): Promise<number[]> {
     if (!tags) return [];
@@ -101,11 +92,14 @@ export class StrategyHashService {
   }
 
   async __createHashList(hash_code: number, strategy_code: string) {
-    return await this.HashListRepo.save(
-      this.HashListRepo.create({
+    const hashList = await this.HashListRepo.createQueryBuilder('hash_list')
+      .insert()
+      .into(HashList)
+      .values({
         hash_code,
         strategy_code,
-      }),
-    );
+      })
+      .execute();
+    return hashList;
   }
 }
