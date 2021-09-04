@@ -1,5 +1,5 @@
-from flask import request, jsonify
-from flask_restx import Resource, Api, Namespace, fields
+from flask import request
+from flask_restx import Resource,  Namespace, fields
 
 
 from pycelery import processor
@@ -20,8 +20,9 @@ backTestFields = BackTest.model('Backtest', {  # Model 객체 생성
 
 backTestFieldsWithId = BackTest.inherit('Backtest With ID', backTestFields, {
     'data': fields.String(description='Backtest result', required=True, example="request backtest result"),
-    'status' : fields.String(description='status', required=False, example="status")
+    'status': fields.String(description='status', required=False, example="status")
 })
+
 
 @BackTest.route('')
 @BackTest.doc(params={'strategyCode': 'Database strategyCode'})
@@ -33,25 +34,22 @@ class BackTestPost(Resource):
         if request.method == 'POST':
             inputdata = request.get_json(silent=True)
             strategyCode = inputdata["strategyCode"]
-            if not strategyCode or  strategyCode == '':
-                
+            if not strategyCode or strategyCode == '':
+
                 return {
-                    'status' : "error : Some required data is missing!"
+                    'status': "error : Some required data is missing!"
                 }, 400
             task = processor.backtestTaskCall.apply_async([strategyCode])
-           
+
             if not task.id:
                 return {
-                    'status' : "error : Celery Server is down"
+                    'status': "error : Celery Server is down"
                 }, 503
 
-            
-
-        
         return {
             'BacktestId': strategyCode,
-            'data': "[ "+str(task.id) +" ]  Request Celery Server ",
-            'status' : "done"
+            'data': "[ "+str(task.id)+" ]  Request Celery Server ",
+            'status': "done"
         }, 201
 
 
@@ -66,28 +64,20 @@ class BackTestPost(Resource):
             inputdata = request.get_json(silent=True)
             strategyCode = inputdata["strategyCode"]
             QueueID = inputdata["ID"]
-            if not strategyCode or  strategyCode == '':
+            if not strategyCode or strategyCode == '':
                 
                 return {
-                    'status' : "error : Some required data is missing!"
+                    'status': "error : Some required data is missing!"
                 }, 400
-            task = processor.Test___backtestTestCode(QueueID,strategyCode)
+            task= processor.Test___backtestTestCode(QueueID, strategyCode)
            
             if not QueueID:
                 return {
-                    'status' : "error : Celery Server is down"
+                    'status': "error : Celery Server is down"
                 }, 503
 
-            
-
-        
-        return {
+        return{
             'BacktestId': strategyCode,
-            'data': "[ "+str(QueueID) +" ]  Request Celery Server ",
-            'status' : "done"
+            'data': "[ "+str(QueueID)+" ]  Request Celery Server ",
+            'status': "done"
         }, 201
-
-
-
-
-

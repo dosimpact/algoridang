@@ -1,5 +1,5 @@
-from flask import request, jsonify
-from flask_restx import Resource, Api, Namespace, fields
+from flask import request
+from flask_restx import Resource,  Namespace, fields
 
 
 from openAPI.pricePykrx import CPricePykrx
@@ -19,7 +19,7 @@ DailyStockFields = DailyStock.model('Backtest', {  # Model 객체 생성
 
 DailyStockFieldsWithId = DailyStock.inherit('Backtest With ID', DailyStockFields, {
     'data': fields.String(description='celery id result', required=True, example="celery id"),
-    'status' : fields.String(description='status', required=False, example="done")
+    'status': fields.String(description='status', required=False, example="done")
 })
 
 
@@ -36,43 +36,42 @@ class DBinitDailyStockMulti(Resource):
 
         worker = request.args.get('worker')
         startDate = request.args.get('startdate')
-        if worker == None or len(startDate) > 8:
+        if worker is None or len(startDate) > 8:
             return {
-                'status' : "error :  data is missing!"
+                'status': "error :  data is missing!"
             }, 400
 
-        if startDate == None:
+        if startDate is None:
             startDate = '20110101'
 
         worker = int(worker)
 
-        if worker < 1 and worker >10:
+        if worker < 1 and worker > 10:
             return {
-                'status' : "error : woker required data is wrong!"
+                'status': "error : woker required data is wrong!"
             }, 400
 
         pykrx = CPricePykrx()
         tickers = pykrx.getAllTickerFromDB()
         length = int(len(tickers)/worker) + 1
-        tasks= []
+        tasks = []
         for i in range(worker):
             if length*(i+1) > len(tickers):
-                task = processor.initDB_DailyStock_queue.apply_async([tickers[length*i:],startDate])
+                task = processor.initDB_DailyStock_queue.apply_async([tickers[length * i:], startDate])
             else:
-                task = processor.initDB_DailyStock_queue.apply_async([tickers[length*i:length*(i+1)],startDate])
+                task = processor.initDB_DailyStock_queue.apply_async([tickers[length * i:length*(i+1)], startDate])
             tasks.append(task.id)
 
             if not task.id:
                 return {
-                    'status' : "error : Celery Server is down"
+                    'status': "error : Celery Server is down"
                 }, 503
-       
+                
         return {
             'worker': str(worker),
             'data': str(tasks),
-            'status' : "done"
+            'status': "done"
         }, 201
-
 
 
 @DailyStock.route("/Corporation")
@@ -86,12 +85,11 @@ class Corporation(Resource):
 
         if not task.id:
             return {
-                'status' : "error : Celery Server is down"
+                'status': "error : Celery Server is down"
             }, 503
 
         return {
             'CeleryId': "Corporation",
-            'data': "[ "+str(task.id) +" ]  Request Celery Server ",
-            'status' : "done"
+            'data': "[ "+str(task.id) + " ]  Request Celery Server ",
+            'status': "done"
         }, 201
-

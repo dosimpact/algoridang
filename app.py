@@ -1,7 +1,6 @@
-from flask import Flask, render_template, request, jsonify
-from flask_restx import Resource, Api
+from flask import Flask
+from flask_restx import Api
 
-from pycelery import processor, state
 from flask_cors import CORS
 
 from route.routeCelery import Celerys
@@ -10,7 +9,7 @@ from route.routeDailyStock import DailyStock
 
 import sentry_sdk
 
-##  sentry
+#  sentry
 from sentry_sdk.integrations.flask import FlaskIntegration
 
 sentry_sdk.init(
@@ -22,7 +21,7 @@ sentry_sdk.init(
     # We recommend adjusting this value in production.
     traces_sample_rate=1.0
 )
-##  /sentry
+#  /sentry
 
 
 app = Flask(__name__)
@@ -43,15 +42,6 @@ api.add_namespace(Celerys, '/celery')
 api.add_namespace(DailyStock, '/datas')
 
 
-
-@app.route('/debug-sentry')
-def trigger_error():
-    division_by_zero = 1 / 0
-
-
-
 if __name__ == "__main__":
-    app.run(host ='0.0.0.0',port = 5000)
-    #print(processor.Test___backtestTestCode(1))
-
-    
+    app.run(host='0.0.0.0', port=5000)
+    # print(processor.Test___backtestTestCode(1))
