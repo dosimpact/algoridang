@@ -71,6 +71,7 @@ export class UploadService {
     };
   }
 
+  // originalname
   async uploadTickerS3(file: Express.Multer.File, folder?: string) {
     let Key = `${file.originalname.replace(/\s/g, '')}`;
     folder = folder ? folder : 'common';
