@@ -44,7 +44,7 @@ export class UploadController {
   @Post('ticker')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFileTicker(@UploadedFile() file: Express.Multer.File) {
-    return this.uploadService.uploadTickerS3(file, 'ticker');
+    return this.uploadService.uploadS3TickerS3(file, 'ticker');
   }
 
   @Version('1')

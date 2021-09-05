@@ -47,6 +47,9 @@ export class UploadService {
   }
   // (1) (common) 폴더 업로드
   async uploadS3(file: Express.Multer.File, folder?: string) {
+    if (!file) {
+      throw new Error('flie neeeds ( key - file, value - image file  )');
+    }
     const Key = `${Date.now()}${file.originalname.replace(/\s/g, '')}`;
     folder = folder ? folder : 'common';
     // console.log(`${this.buketName}/${folder}`);
@@ -72,7 +75,11 @@ export class UploadService {
   }
 
   // originalname
-  async uploadTickerS3(file: Express.Multer.File, folder?: string) {
+  async uploadS3TickerS3(file: Express.Multer.File, folder?: string) {
+    if (!file) {
+      throw new Error('flie neeeds ( key - file, value - image file  )');
+    }
+
     let Key = `${file.originalname.replace(/\s/g, '')}`;
     folder = folder ? folder : 'common';
     // console.log(`${this.buketName}/${folder}`);

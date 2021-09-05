@@ -37,7 +37,8 @@ export class ErrorHandlerInterceptor implements NestInterceptor {
         } else {
           // 500 애러는 숨기는것이 맞는지 모르겠다.
           this.logger.error(error.message, error.stack);
-          throw error;
+          // 500 애러에 , 서버 오류 메시지도 (dev환경) 보내주기
+          throw new InternalServerErrorException(error.message);
         }
       }),
     );
