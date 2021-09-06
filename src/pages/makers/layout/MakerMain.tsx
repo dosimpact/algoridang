@@ -5,6 +5,7 @@ import { Link, Redirect, Route, Switch } from "react-router-dom";
 import StrategyCreateC from "../strategy-create/strategy-createC";
 import StrategyMyC from "../strategy-my/strategy-myC";
 import StrategyPublicC from "../strategy-public/strategy-publicC";
+import { ErrorHandler } from "states/recoil/error-state";
 
 const NavigationContainer = () => {
   return (
@@ -86,7 +87,9 @@ const MakerMainContainer = () => {
   return (
     <SMakerMainContainer>
       <NavigationContainer />
-      <ContentContainer />
+      <ErrorHandler>
+        <ContentContainer />
+      </ErrorHandler>
     </SMakerMainContainer>
   );
 };

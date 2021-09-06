@@ -13,6 +13,7 @@ import {
 } from "assets/icons";
 import Helmet from "react-helmet";
 import useMobileSetting from "hooks/useMobileSetting";
+import { ErrorHandler } from "states/recoil/error-state";
 
 export const URLList = {
   tickerSearch: {
@@ -266,7 +267,9 @@ const TakerMainContainer = () => {
           paddingBottom: "8rem",
         }}
       >
-        <TakerMainSection />
+        <ErrorHandler>
+          <TakerMainSection />
+        </ErrorHandler>
       </div>
       <BottomNavigation />
       <BottomGradient />

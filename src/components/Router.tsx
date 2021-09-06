@@ -10,16 +10,14 @@ import Page404 from "./error-page/Page404";
 const Router = () => {
   return (
     <BrowserRouter>
-      <ErrorHandler>
-        <Switch>
-          <Route path="/" exact component={LandingPage} />
-          <Route path="/takers" component={TakersHome} />
-          <Route path="/makers" component={MakersHome} />
-          <Route path="/test" component={Test} />
-          <Route component={Page404} />
-          {/* <Redirect from="*" to="/" /> */}
-        </Switch>
-      </ErrorHandler>
+      <Switch>
+        <Route path="/" exact component={LandingPage} />
+        <Route path="/takers" component={TakersHome} />
+        <Route path="/makers" component={MakersHome} />
+        <Route path="/test" component={Test} />
+        <Route component={Page404} />
+        {/* <Redirect from="*" to="/" /> */}
+      </Switch>
     </BrowserRouter>
   );
 };
