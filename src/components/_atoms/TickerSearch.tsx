@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Corporation } from "states/interface/finance/entities";
 import useCorporation from "states/react-query/finance/useCorporation";
 import styled from "styled-components";
+import { debouncing } from "utils/funcs";
 
 interface ITickerSearchInput {
   term: string;
@@ -18,8 +19,9 @@ interface ITickerSearch {
 
 // todo : refactor : 뒤로가기 누르면 왜 검색이 되느지?..
 const TickerSearch: React.FC<ITickerSearch> = ({ onSuccess }) => {
-  const { register, handleSubmit, getValues } = useForm<ITickerSearchInput>();
-
+  const { register, handleSubmit, getValues, watch, setValue } =
+    useForm<ITickerSearchInput>();
+  watch("term");
   const { corporations, isLoading, refetch } = useCorporation({
     term: getValues("term") || "삼성전자",
   });
@@ -49,14 +51,16 @@ const TickerSearch: React.FC<ITickerSearch> = ({ onSuccess }) => {
           placeholder="코드,기업명을 입력해주세요"
           autoComplete="off"
           {...register("term", { required: true })}
+          onChange={debouncing((e: React.ChangeEvent<HTMLInputElement>) => {
+            setValue("term", e.target.value);
+          }, 500)}
         ></input>
       </form>
-      <div>{isLoading && "loading..."}</div>
       {/* <div>{error && "error..."}</div> */}
-      <div>
-        {corporations?.length === 0
+      <div style={{ marginTop: "1rem" }}>
+        {corporations?.length === 0 || isLoading
           ? "종목없음"
-          : `검색 완료 : ${corporations && corporations[0].corp_name}`}
+          : `검색 완료 : ${(corporations && corporations[0].corp_name) || ""}`}
       </div>
       {/* {JSON.stringify(corporations, null, 2)} */}
     </STickerSearch>
@@ -66,10 +70,23 @@ const TickerSearch: React.FC<ITickerSearch> = ({ onSuccess }) => {
 export default TickerSearch;
 
 const STickerSearch = styled.section`
-  margin: 1rem;
+  margin-top: 3.7rem;
+  width: 100%;
   .tickerInput {
+    background: rgba(255, 255, 255, 0.53);
+    /* box-shadow: 0px 0.3px 2px rgba(0, 0, 0, 0.25); */
+    border-radius: 9px;
     width: 100%;
-    height: 4rem;
+    height: 4.6rem;
     border: ${(props) => props.theme.Border};
+    padding: 1.5rem 2.8rem;
+
+    background: rgba(255, 255, 255, 0.53);
+    box-shadow: 0px 0.3px 2px rgba(0, 0, 0, 0.25);
+    border-radius: 9px;
+    font-size: 1.3rem;
+  }
+  input::placeholder {
+    color: rgba(122, 122, 122, 0.67);
   }
 `;

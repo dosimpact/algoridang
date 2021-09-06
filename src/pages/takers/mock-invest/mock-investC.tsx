@@ -1,8 +1,8 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import MockInvestCreate from "./section/mock-invest-create";
 import MockInvestDetail from "./section/mock-invest-detail";
-import MockInvestList from "./section/mock-invest-list";
+import MockInvestFeed from "./section/mock-invest-feeds";
 import MockInvestReport from "./section/mock-invest-report";
 import MockInvestUpdate from "./section/mock-invest-update";
 
@@ -19,13 +19,13 @@ const MockInvestC = () => {
   // 3. 모의투자데이터가 있어서 바로 보여주면 되는 경우
 
   return (
-    <div>
+    <>
       <Switch>
         {/* default mock-invest page section */}
         <Route
           exact
-          path={process.env.PUBLIC_URL + "/takers/"}
-          component={MockInvestList}
+          path={process.env.PUBLIC_URL + "/takers/mock-invest"}
+          component={MockInvestFeed}
         />
         <Route
           exact
@@ -47,8 +47,12 @@ const MockInvestC = () => {
           path={process.env.PUBLIC_URL + "/takers/mock-invest/update/:id"}
           component={MockInvestUpdate}
         />
+        <Redirect
+          from={process.env.PUBLIC_URL + "/takers/mock-invest"}
+          to={process.env.PUBLIC_URL + "/takers/mock-invest"}
+        />
       </Switch>
-    </div>
+    </>
   );
 };
 

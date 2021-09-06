@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Button, WhiteSpace, WingBlank } from "antd-mobile";
 import useMember from "states/react-query/useMember";
-import SampleMarker from "components/light-weight/SampleMarker";
+// import SampleMarker from "components/light-weight/SampleMarker";
 
 // todo : makers, takers 선택 저장하기
 const LandingPage = () => {
@@ -23,14 +23,14 @@ const LandingPage = () => {
       <h1 style={{ fontSize: "20px" }}>
         알고리당에 오신것을 환영합니다.
         <br />
-        {!me.isLoading && me?.data?.data.member_name} 님 ({" "}
-        {!me.isLoading && me?.data?.data.email_id})
+        {!me.isLoading && me?.data?.email_id} 님 ({" "}
+        {!me.isLoading && me?.data?.email_id})
       </h1>
       <WhiteSpace />
       <nav>
         <ul>
           <Button type="ghost">
-            <Link to="takers">
+            <Link to="takers/ticker-search">
               <li>전략 탐색 하기</li>
             </Link>
           </Button>
@@ -43,8 +43,6 @@ const LandingPage = () => {
           <WhiteSpace />
         </ul>
       </nav>
-      <div>Landing page</div>
-      <SampleMarker />
     </WingBlank>
   );
 };

@@ -69,8 +69,8 @@ const LineSeriesChartPointing: React.FC<ILineSeriesChartPointing> = ({
         height: 400,
         layout: {
           fontSize: 12,
-          backgroundColor: "#F5F5F9",
-          textColor: "#333",
+          // backgroundColor: "#F5F5F9",
+          // textColor: "#333",
         },
         rightPriceScale: {
           visible: false,
@@ -80,10 +80,10 @@ const LineSeriesChartPointing: React.FC<ILineSeriesChartPointing> = ({
         },
         grid: {
           horzLines: {
-            color: "#ffffff",
+            color: "#ebebeb",
           },
           vertLines: {
-            color: "#ffffff",
+            color: "#ebebeb",
           },
         },
       });

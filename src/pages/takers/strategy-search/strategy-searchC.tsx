@@ -4,6 +4,7 @@ import StrategyFeeds from "./section/strategy-feeds";
 import StrategyTypes from "./section/strategy-types";
 import StrategyDetails from "./section/strategy-details";
 import StrategyReport from "./section/strategy-report";
+import StrategyListType from "./section/strategy-list-type";
 
 const StrategySearchC = () => {
   return (
@@ -11,7 +12,7 @@ const StrategySearchC = () => {
       {/* default strategy-search page section */}
       <Route
         exact
-        path={process.env.PUBLIC_URL + "/takers/"}
+        path={process.env.PUBLIC_URL + "/takers/strategy-search"}
         component={StrategyFeeds}
       />
       <Route
@@ -28,7 +29,15 @@ const StrategySearchC = () => {
         path={process.env.PUBLIC_URL + "/takers/strategy-search/types"}
         component={StrategyTypes}
       />
-      <Redirect from="*" to="/takers/" push={true} />
+      <Route
+        exact
+        path={process.env.PUBLIC_URL + "/takers/strategy-search/list/:type"}
+        component={StrategyListType}
+      />
+      <Redirect
+        from={process.env.PUBLIC_URL + "/takers/strategy-search"}
+        to={process.env.PUBLIC_URL + "/takers/strategy-search"}
+      />
     </Switch>
   );
 };

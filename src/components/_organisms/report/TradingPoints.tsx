@@ -1,4 +1,4 @@
-import { SubTitle } from "components/data-display/Typo";
+import { Title } from "components/_atoms/Typos";
 import LineSeriesChartPointing from "components/light-weight/LineSeriesChartPointing";
 import { SeriesMarker, Time } from "lightweight-charts";
 import React, { useCallback, useMemo, useState } from "react";
@@ -7,6 +7,8 @@ import useBackTestHistory from "states/react-query/backtest/useBackTestHistory";
 import useDailyStock from "states/react-query/finance/useDailyStock";
 import styled from "styled-components";
 import { UTCtoDate } from "utils/parse";
+import WhiteSpace from "components/_atoms/WhiteSpace";
+import FNumber from "components/_atoms/FNumber";
 
 // 매매시점 컴포넌트의 차트
 const ChartBuySelPoint: React.FC<{ ticker: string; strategyCode: string }> = ({
@@ -74,13 +76,20 @@ const ChartBuySelPoint: React.FC<{ ticker: string; strategyCode: string }> = ({
 
   return (
     <div>
-      <div>
+      <div style={{ fontSize: "1.2rem" }}>
         {currnetHistory &&
           `${currnetHistory.history_date.slice(0, 10)} |   
           ${currnetHistory.ticker} |
-          ${currnetHistory.buy_sale_price} | 
-          ${currnetHistory.profit_loss_rate}`}
+          ${currnetHistory.buy_sale_price} | `}
+        {currnetHistory && currnetHistory.profit_loss_rate === null
+          ? "매수"
+          : currnetHistory && (
+              <span>
+                <FNumber val={currnetHistory.profit_loss_rate} />%
+              </span>
+            )}
       </div>
+      <WhiteSpace />
       <LineSeriesChartPointing
         datas={datas}
         markerDatas={markerDatas}
@@ -110,7 +119,7 @@ const TradingPoints: React.FC<ITradingPoints> = ({
   return (
     <STradingPoints {...props}>
       <div className="flexRow" style={{ marginTop: "50px" }}>
-        <SubTitle title={title || "매매 시점"} style={{ margin: "20px 0px" }} />
+        <Title title={title || "매매 시점"} style={{ margin: "20px 0px" }} />
       </div>
       <ChartBuySelPoint ticker={ticker} strategyCode={strategyCode} />
     </STradingPoints>

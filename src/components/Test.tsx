@@ -25,6 +25,4 @@ const Test = () => {
 
 export default Test;
 
-const STest = styled.div`
-  color: ${(props) => props.theme.ColorMain};
-`;
+const STest = styled.div``;

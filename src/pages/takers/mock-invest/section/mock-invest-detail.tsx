@@ -1,20 +1,17 @@
 import React from "react";
-import { WingBlank, WhiteSpace, Button } from "antd-mobile";
-import { SubTitle } from "components/data-display/Typo";
-import StrategyCard from "components/strategy/StrategyCard";
+import { Button } from "antd-mobile";
+import { SubTitle } from "components/_atoms/Typos";
 import { useHistory, useParams } from "react-router-dom";
 import { toTagsString } from "utils/parse";
 import styled from "styled-components";
-import ReturnsStatus from "components/strategy-report/ReturnsStatus";
-import TradingPoints from "components/strategy-report/TradingPoints";
-import BackNav from "components/takers/BackNav";
-import TradingHistory from "components/strategy-report/TradingHistory";
+import ReturnsStatus from "components/_organisms/report/ReturnsStatus";
+import TradingHistory from "components/_organisms/report/TradingHistory";
+import { useMyStrategyId } from "states/react-query/strategy/useMyStrategyId";
+import WingBlank from "components/_atoms/WingBlank";
+import WhiteSpace from "components/_atoms/WhiteSpace";
+import StrategyCardBox from "components/_molecules/StrategyCardBox";
+import NavHeaderDetail from "components/_molecules/NavHeaderDetail";
 
-const dummyDatas = {
-  title: "삼성전자 황금 신호",
-  subTitle: ["단일 종목", "골든 크로스"],
-  CAGR: -1.2,
-};
 const dummyDatasHistory = {
   header: ["날짜", "매수/매도", "가격", "수익/손실"],
   body: [
@@ -48,19 +45,39 @@ const dummyDatasHistory = {
 const MockInvestDetail = () => {
   const history = useHistory();
   const params = useParams() as { id: string };
-  // console.log(params);
+  if (!params.id || !Number.isInteger(Number(params.id))) {
+    history.push(process.env.PUBLIC_URL + "/takers/mock-invest");
+  }
+  const strategyCode = params.id;
+  const { getMyStrategyByIdQuery } = useMyStrategyId(strategyCode);
+  console.log("getMyStrategyByIdQuery", getMyStrategyByIdQuery);
+
+  const memberStrategy = React.useMemo(
+    () => getMyStrategyByIdQuery.data?.memberStrategy,
+    [getMyStrategyByIdQuery]
+  );
+
   return (
     <StrategyDetailP>
-      <WingBlank style={{ margin: "15x" }} size="lg">
-        <WhiteSpace size="xl" />
-        <BackNav title={"모의 투자 상세보기"} />
-
-        <WhiteSpace size="xl" />
-        <StrategyCard
-          title={dummyDatas.title}
-          subTitle={toTagsString(dummyDatas.subTitle)}
-          CAGR={dummyDatas.CAGR}
-        />
+      <NavHeaderDetail
+        linkTo={process.env.PUBLIC_URL + "/takers/mock-invest"}
+        headerTitle="모의 투자 상세보기"
+      />
+      <WingBlank>
+        <WhiteSpace />
+        {memberStrategy && (
+          <StrategyCardBox
+            title={memberStrategy.strategy_name}
+            subTitle={toTagsString(
+              memberStrategy.hashList?.map((e) => e?.hash?.hash_contents)
+            )}
+            CAGR={
+              memberStrategy?.backtestDetailInfo?.year_avg_profit_rate &&
+              Number(memberStrategy?.backtestDetailInfo?.year_avg_profit_rate)
+            }
+            thumnail={memberStrategy.image_url}
+          />
+        )}
         <>
           <div className="flexRowSBt" style={{ marginTop: "15px" }}>
             <SubTitle

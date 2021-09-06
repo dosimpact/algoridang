@@ -1,10 +1,12 @@
-import TickerSearch from "components/inputs/TickerSearch";
-import LineSeriesChart from "components/light-weight/LineSeriesChart";
 import React, { useMemo, useState, useCallback, useEffect } from "react";
+import TickerSearch from "components/_atoms/TickerSearch";
+import LineSeriesChart from "components/light-weight/LineSeriesChart";
 import { useRecoilState } from "recoil";
 import useDailyStock from "states/react-query/finance/useDailyStock";
 import { atomCorporationState } from "states/recoil/corporation";
 import styled from "styled-components";
+import WingBlank from "components/_atoms/WingBlank";
+import BadgePriceDelta from "components/_atoms/BadgePriceDelta";
 
 // todo:refator onSuccess등 콜백함수에 usecallback안써도 되도록 하기
 const TickerPrice = () => {
@@ -20,31 +22,54 @@ const TickerPrice = () => {
     }));
   }, [dayilStocks]);
 
+  const diff = useMemo(() => {
+    if (dayilStocks && dayilStocks.length >= 2) {
+      return {
+        tday: dayilStocks[dayilStocks.length - 1].close_price,
+        yday: dayilStocks[dayilStocks.length - 2].close_price,
+      };
+    } else {
+      return {
+        tday: NaN,
+        yday: NaN,
+      };
+    }
+  }, [dayilStocks]);
+
   useEffect(() => {
-    if (datas) setPrice(datas[datas.length - 1].value);
+    if (datas && datas[datas.length - 1] && datas[datas.length - 1].value) {
+      setPrice(datas[datas.length - 1].value);
+    }
     return () => {};
   }, [datas]);
 
   return (
     <TickerPriceS>
-      <TickerSearch
-        onSuccess={useCallback(
-          (e) => {
-            // console.log("TickerSearch sucess", e.corp_name, e.ticker);
-            if (e.corp_name && e.ticker) {
-              const { corp_name, ticker } = e;
-              setCorporation({ corp_name, ticker });
-            }
-          },
-          [setCorporation]
-        )}
-      />
-      <article className="chartLegend">
-        <div className="tickerName">{corporation.corp_name}</div>
-        <div className="tickerPrice">
-          <span>{price}</span> 원
-        </div>
-      </article>
+      <WingBlank>
+        <TickerSearch
+          onSuccess={useCallback(
+            (e) => {
+              // console.log("TickerSearch sucess", e.corp_name, e.ticker);
+              if (e.corp_name && e.ticker) {
+                const { corp_name, ticker } = e;
+                setCorporation({ corp_name, ticker });
+              }
+            },
+            [setCorporation]
+          )}
+        />
+      </WingBlank>
+
+      <WingBlank>
+        <article className="chartLegend">
+          <div className="tickerName">{corporation.corp_name}</div>
+          <div className="tickerPrice">
+            <span className="priceText">{price}</span>
+            <span className="unitText">원</span>
+            <BadgePriceDelta today={diff.tday} yesterday={diff.yday} />
+          </div>
+        </article>
+      </WingBlank>
       <article className="chartBox">
         <LineSeriesChart
           datas={datas}
@@ -63,21 +88,31 @@ const TickerPrice = () => {
 export default TickerPrice;
 
 const TickerPriceS = styled.section`
-  padding: 0rem 1.5rem;
   .chartLegend {
+    margin-top: 5.8rem;
     padding: 0rem 1.5rem;
-    font-size: 3.5rem;
-    font-weight: 500;
+    font-size: 2.3rem;
+    font-weight: 400;
     .tickerName {
+      margin-bottom: 1rem;
     }
     .tickerPrice {
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: flex-end;
       margin-top: 0.5rem;
-      span {
+      .priceText {
         color: #f3bc2f;
+        font-weight: 600;
+        font-size: 3.3rem;
+        margin-right: 0.5rem;
+      }
+      .unitText {
+        margin-right: 1.5rem;
       }
     }
   }
   .chartBox {
-    margin-top: 1rem;
+    margin-top: 4.8rem;
   }
 `;

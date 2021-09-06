@@ -66,12 +66,12 @@ const LineSeriesChart: React.FC<ILineSeriesChart> = ({
       // const width = 600;
       // const height = 300;
       const chart = createChart(charContainer.current, {
-        height: 500,
+        height: 400,
         layout: {
           fontSize: 11,
         },
         rightPriceScale: {
-          visible: true,
+          visible: false,
         },
         leftPriceScale: {
           visible: false,

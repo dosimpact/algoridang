@@ -1,15 +1,14 @@
 import React from "react";
 import { WingBlank, WhiteSpace } from "antd-mobile";
-import StrategyCard from "components/strategy/StrategyCard";
+import StrategyCard from "components/lagacy/StrategyCard";
 import { toTagsString } from "utils/parse";
 import styled from "styled-components";
-import ReturnsStatus from "components/strategy-report/ReturnsStatus";
-import TradingPoints from "components/strategy-report/TradingPoints";
-import TradingHistory from "components/strategy-report/TradingHistory";
-import DetailSummary from "components/strategy-report/DetailSummary";
-import CumulativeReturn from "components/strategy-report/CumulativeReturn";
-import MonthlyReturn from "components/strategy-report/MonthlyReturn";
-import WinRatio from "components/strategy-report/WinRatio";
+import ReturnsStatus from "components/_organisms/report/ReturnsStatus";
+import TradingHistory from "components/_organisms/report/TradingHistory";
+import DetailSummary from "components/_organisms/report/DetailSummary";
+import CumulativeReturn from "components/_molecules/report/CumulativeReturn";
+import MonthlyReturn from "components/_molecules/report/MonthlyReturn";
+import WinRatio from "components/_molecules/report/WinRatio";
 
 const dummyDatasReport = {
   header: ["항목", "결과값"],

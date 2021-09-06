@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useEffect, useCallback } from "react";
+import React, { useLayoutEffect, useRef, useCallback } from "react";
 import { createChart, IChartApi, ISeriesApi } from "lightweight-charts";
 
 export interface ILineData {
@@ -63,8 +63,8 @@ const CumulativeReturnChart: React.FC<ICumulativeReturnChart> = ({
         height: 500,
         layout: {
           fontSize: 12,
-          backgroundColor: "#F5F5F9",
-          textColor: "#333",
+          // backgroundColor: "#F5F5F9",
+          // textColor: "#333",
         },
         rightPriceScale: {
           visible: true,

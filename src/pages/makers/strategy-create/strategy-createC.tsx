@@ -5,8 +5,8 @@ import styled from "styled-components";
 import ScreateBasic from "./section/screate-basic";
 import ScreatePropterties from "./section/screate-propterties";
 import ScreateTickers from "./section/screate-tickers";
-import { useRecoilState } from "recoil";
-import { atomStrategyState } from "states/recoil/strategy";
+// import { useRecoilState } from "recoil";
+// import { atomStrategyState } from "states/recoil/strategy";
 
 // array을 value로 사용하면서도, 리터럴 타입으로도 가지고 싶다.
 // ⚠ https://steveholgado.com/typescript-types-from-arrays/
@@ -15,7 +15,7 @@ import { atomStrategyState } from "states/recoil/strategy";
 const StrategyCreateC = () => {
   const SegmentedControlValues = ["기본설정", "종목발굴", "매매전략"];
   const [tab, setTab] = React.useState<string>(SegmentedControlValues[0]);
-  const [strategyState] = useRecoilState(atomStrategyState);
+  // const [strategyState] = useRecoilState(atomStrategyState);
 
   return (
     <SStrategyCreateC>

@@ -1,26 +1,54 @@
 import { css } from "styled-components";
 
 const hoverBox = css`
+  background-color: white;
   box-shadow: 0 4px 12px 0px rgba(0, 0, 0, 0.25);
   transition: box-shadow 0.2s ease-in-out;
   :hover {
-    box-shadow: none;
+    box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.5);
   }
 `;
 
-const CSSTheme = { hoverBox };
+const boxShadow = css`
+  background: rgba(255, 255, 255, 0.53);
+  box-shadow: 0px 0.3px 2px rgba(0, 0, 0, 0.25);
+  border-radius: 9px;
+`;
+
+const flexCenter = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const CSSTheme = { hoverBox, boxShadow, flexCenter };
 
 const Theme = {
+  //CSSMixin
+
+  // MainColor&
+  ColorMainWhite: "#FFFFFF",
+  ColorMainLightGray: "#ECECEC",
+  ColorMainGray: "#7A7A7A",
+  ColorMainDarkGray: "#87847D",
+  ColorMainLightYellow: "#FFFEF3",
+  ColorMainYellow: "#F3BC2F",
+  ColorMainLightBlue: " rgba(7, 156, 255, 0.14)",
+  ColorMainBlue: "#079CFF",
+  ColorMainLightRed: "#FFF3F3",
+  ColorMainRed: "#FF0000",
+  ColorMainLightGreen: "#D8FFDE",
+  ColorMainGreen: "#04BE00",
   // Color*
   ColorMain: "gray",
   ColorDark: "#263238",
   ColorWhite: "#ffffff",
-  ColorGrayL1: "#ECEFF1",
+  ColorGrayL1: "#ECECEC",
   ColorGray: "#546E7A",
-  ColorGrayD1: "#546E7A",
+  ColorGrayD1: "#87847D",
   ColorRed: "#FF5151",
   ColorBlue: "#5193FF",
-  ColorYellow: "#F39C12",
+  ColorYellow: "#F3BC2F",
   // fontSize*
   FontSizeSm: "1.3rem",
   FontSizeMd: "1.4rem",

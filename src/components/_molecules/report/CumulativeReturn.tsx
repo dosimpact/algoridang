@@ -1,4 +1,4 @@
-import { SubTitle } from "components/data-display/Typo";
+import { SubTitle } from "components/_atoms/Typos";
 import CumulativeReturnChart, {
   ILineData,
 } from "components/light-weight/CumulativeReturnChart";

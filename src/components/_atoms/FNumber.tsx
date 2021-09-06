@@ -1,6 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 
+// 수익률에 따라서 빨/회/파 의 색상을 가진다.
+// 입력단위 0.1
+// (toPercentage:true) 출력 10%
 const FNumber: React.FC<{
   val: number;
   props?: any;
@@ -8,7 +11,7 @@ const FNumber: React.FC<{
 }> = ({ val, hasPercentage = false, ...props }) => {
   return (
     <FNumberS num={val} {...props}>
-      {Math.round(val * 100)}
+      {hasPercentage ? Math.round(val * 100) : val}
       {hasPercentage ? "%" : ""}
     </FNumberS>
   );
