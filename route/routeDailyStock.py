@@ -36,7 +36,7 @@ class DBinitDailyStockMulti(Resource):
 
         worker = request.args.get('worker')
         startDate = request.args.get('startdate')
-        if worker == None or len(startDate) > 8:
+        if worker is None:
             return {
                 'status' : "error :  data is missing!"
             }, 400
