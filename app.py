@@ -10,8 +10,11 @@ from route.routeDailyStock import DailyStock
 
 import sentry_sdk
 
-##  sentry
+# sentry
 from sentry_sdk.integrations.flask import FlaskIntegration
+
+# cron
+from dailyfunction.daily import callDailyFunction
 
 sentry_sdk.init(
     dsn="https://9bcc130b93a649fb946adf4123664575@o986272.ingest.sentry.io/5942901",
@@ -25,7 +28,9 @@ sentry_sdk.init(
 ##  /sentry
 
 
+
 app = Flask(__name__)
+
 CORS(app)
 
 api = Api(
@@ -42,16 +47,6 @@ api.add_namespace(BackTest, '/backtest')
 api.add_namespace(Celerys, '/celery')
 api.add_namespace(DailyStock, '/datas')
 
-
-
-@app.route('/debug-sentry')
-def trigger_error():
-    division_by_zero = 1 / 0
-
-
-
 if __name__ == "__main__":
-    app.run(host ='0.0.0.0',port = 5000)
-    #print(processor.Test___backtestTestCode(1))
-
-    
+    callDailyFunction()
+    app.run(host='0.0.0.0', port=5000)
