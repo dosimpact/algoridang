@@ -50,6 +50,7 @@ import { AuthModule } from './auth/auth.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from './common/service/LogginInterceptor';
 import { ErrorHandlerInterceptor } from './common/service/ErrorHandlerInterceptor';
+import { FinancialStatement } from './finance/entities/financial-statement.entity';
 
 @Module({
   imports: [
@@ -82,11 +83,12 @@ import { ErrorHandlerInterceptor } from './common/service/ErrorHandlerIntercepto
       logging: false,
       entities: [
         ...[
-          // finance (4/4)
+          // finance (5/5)
           CategoryList,
           Category,
           Corporation,
           DailyStock,
+          FinancialStatement,
         ],
         ...[
           // Trading(4/4)
