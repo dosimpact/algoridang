@@ -8,16 +8,17 @@ import {
   UniversalSetting,
 } from "components/_organisms/inspector";
 
+export type IInspectorTypes =
+  | "default"
+  | "basicSetting"
+  | "universalSetting"
+  | "tradingSetting" // 매매 전략 추가 삭제
+  | "tradingPropertySetting" // 매매 전략 상세 설정
+  | "backTestingSetting";
 // 인스팩터 상태관리
 interface IInspector {
   isShow: boolean;
-  inspectorType:
-    | "default"
-    | "basicSetting"
-    | "universalSetting"
-    | "tradingSetting" // 매매 전략 추가 삭제
-    | "tradingPropertySetting" // 매매 전략 상세 설정
-    | "backTestingSetting";
+  inspectorType: IInspectorTypes;
   inspectorState: {
     basicSetting: {};
     universalSetting: {

@@ -8,22 +8,34 @@ import ScreateTickers from "./section/screate-tickers";
 import WhiteSpace from "components/_atoms/WhiteSpace";
 import WingBlank from "components/_atoms/WingBlank";
 import BasicSettings from "components/_organisms/inspector/BaseSettings";
-import { useRecoilValue } from "recoil";
-import { selectorInspector } from "states/recoil/strategy-create";
+import { useRecoilState, useRecoilValue } from "recoil";
+import {
+  atomInspector,
+  IInspectorTypes,
+  selectorInspector,
+} from "states/recoil/strategy-create";
+import DashBoardButton from "components/_molecules/DashBoardButton";
+import { IconPlus, IconSetting } from "assets/icons";
 
 // 전략 생성 모듈
 // DashBoard - Inspector
 interface IStrategyCreateModule {
+  // 현재 인스팩터 앨리먼트
   currentInspectorElement: JSX.Element;
+  // 전략 셋팅 버튼 앨리먼트
   baseSettingBtnElement: JSX.Element;
+  // 종목 셋팅 버튼 앨리먼트
   universalSettingBtnElement: JSX.Element;
   // 종목 리스트 표시 앨리먼트
+
   // 단일 종목 설정 앨리먼트
   // 단일 종목 매매 결과 앨리먼트
   // 다종 종목 백테스팅 결과 앨리먼트
 }
 const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
   currentInspectorElement,
+  baseSettingBtnElement,
+  universalSettingBtnElement,
 }) => {
   const SegmentedControlValues = ["기본설정", "종목발굴", "매매전략"];
   const [tab, setTab] = React.useState<string>(SegmentedControlValues[0]);
@@ -34,8 +46,8 @@ const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
       <div className="wrapper">
         <article className="dashBoard">
           <section className="dashBoardCol1">
-            <div className="slot">기본설정</div>
-            <div className="slot">종목관리</div>
+            <div className="slot">{baseSettingBtnElement}</div>
+            <div className="slot">{universalSettingBtnElement}</div>
           </section>
           <section className="dashBoardCol2">
             <ul>
@@ -103,13 +115,37 @@ const SStrategyCreateModule = styled.section`
  * @returns {React.FC}
  */
 const StrategyCreateTemplate = () => {
+  const [insepctorState, setInsepctorState] = useRecoilState(atomInspector);
   const CurrentInspector = useRecoilValue(selectorInspector);
+
+  const handleChangeInspector = (type: IInspectorTypes) => {
+    setInsepctorState((prev) => ({
+      ...prev,
+      inspectorType: type,
+    }));
+  };
 
   return (
     <StrategyCreateModule
       currentInspectorElement={<CurrentInspector />}
-      baseSettingBtnElement={<div>hello</div>}
-      universalSettingBtnElement={<div>hello</div>}
+      baseSettingBtnElement={
+        <DashBoardButton
+          Icon={IconSetting}
+          text="기본 설정"
+          onClick={() => {
+            handleChangeInspector("basicSetting");
+          }}
+        />
+      }
+      universalSettingBtnElement={
+        <DashBoardButton
+          Icon={IconPlus}
+          text="종목 관리"
+          onClick={() => {
+            handleChangeInspector("universalSetting");
+          }}
+        />
+      }
     />
   );
 };
