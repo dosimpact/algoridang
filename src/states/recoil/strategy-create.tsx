@@ -2,10 +2,12 @@ import { atom, selector } from "recoil";
 import {
   BackTestingSetting,
   BasicSettings,
+  IInspectorSettings,
   TradingPropertySetting,
   TradingSetting,
   UniversalSetting,
 } from "components/_organisms/inspector";
+
 interface IInspector {
   isShow: boolean;
   inspectorType:
@@ -52,7 +54,7 @@ export const atomInspector = atom<IInspector>({
 
 // JSX Selector
 
-export const selectorInspector = selector({
+export const selectorInspector = selector<React.FC<IInspectorSettings>>({
   key: "selectorInspector",
   get: ({ get }) => {
     const inspectorState = get(atomInspector);

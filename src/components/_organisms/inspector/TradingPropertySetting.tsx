@@ -1,10 +1,17 @@
 import InspectorHeaderDetail from "components/_molecules/inspector/InspectorHeaderDetail";
 import React from "react";
+import { IInspectorSettings } from ".";
 
-const TradingPropertySetting = () => {
+interface ITradingPropertySetting extends IInspectorSettings {}
+
+const TradingPropertySetting: React.FC<ITradingPropertySetting> = ({
+  headerTitle,
+}) => {
   return (
     <div>
-      <InspectorHeaderDetail headerTitle="TradingPropertySetting" />
+      <InspectorHeaderDetail
+        headerTitle={headerTitle || "TradingPropertySetting"}
+      />
       <div></div>
       TradingPropertySetting
     </div>

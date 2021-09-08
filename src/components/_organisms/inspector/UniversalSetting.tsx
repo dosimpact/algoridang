@@ -1,10 +1,13 @@
 import InspectorHeaderDetail from "components/_molecules/inspector/InspectorHeaderDetail";
 import React from "react";
+import { IInspectorSettings } from ".";
 
-const UniversalSetting = () => {
+interface IUniversalSetting extends IInspectorSettings {}
+
+const UniversalSetting: React.FC<IUniversalSetting> = ({ headerTitle }) => {
   return (
     <div>
-      <InspectorHeaderDetail headerTitle="UniversalSetting" />
+      <InspectorHeaderDetail headerTitle={headerTitle || "UniversalSetting"} />
       <div></div>
       universalSetting
     </div>
