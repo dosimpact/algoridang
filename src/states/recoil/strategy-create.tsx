@@ -8,6 +8,7 @@ import {
   UniversalSetting,
 } from "components/_organisms/inspector";
 
+// 인스팩터 상태관리
 interface IInspector {
   isShow: boolean;
   inspectorType:
@@ -52,8 +53,7 @@ export const atomInspector = atom<IInspector>({
   },
 });
 
-// JSX Selector
-
+// 인스펙터 JSX Selector
 export const selectorInspector = selector<React.FC<IInspectorSettings>>({
   key: "selectorInspector",
   get: ({ get }) => {
@@ -75,3 +75,33 @@ export const selectorInspector = selector<React.FC<IInspectorSettings>>({
     }
   },
 });
+
+// 전략 기본 설정 상태관리
+
+interface IBasicSetting {
+  strategy_name: string; // 전략 이름
+  strategy_explanation: string; // 전략 설명
+  tags: string[];
+
+  invest_principal: string; // 투자 원금
+  invest_start_date: string; // 백테스트 시작일
+  securities_corp_fee: string; // 수수료
+
+  operation_yes_no: boolean; // 공개범위
+}
+export const atomBasicSetting = atom<IBasicSetting>({
+  key: "BasicSetting",
+  default: {
+    strategy_name: "",
+    strategy_explanation: "",
+    tags: [""],
+    operation_yes_no: true,
+    invest_principal: "",
+    invest_start_date: "",
+    securities_corp_fee: "",
+  },
+});
+interface IUniversalSetting {}
+interface ITradingSetting {}
+interface ITradingPropertySetting {}
+interface IBackTestingSetting {}

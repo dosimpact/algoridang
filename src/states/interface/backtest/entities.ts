@@ -2,13 +2,14 @@ import { CoreOutput } from "../common/dtos";
 import { Corporation } from "../finance/entities";
 import { MemberStrategy } from "../strategy/entities";
 
+// 운용 셋팅
 export interface InvestProfitInfo {
   invest_profit_info_code: number;
   invest_price: string; // 평가 금액 = 투자원금+총수익금
   invest_principal: string; // 투자 원금
   total_profit_price: string; //  총 수익금
   profit_rate: string;
-  securities_corp_fee: string;
+  securities_corp_fee: string; // 수수료
   invest_start_date: string;
   invest_end_date: string;
   // 1:N

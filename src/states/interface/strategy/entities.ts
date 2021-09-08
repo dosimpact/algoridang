@@ -24,9 +24,9 @@ export enum InvestType {
 
 export interface MemberStrategy {
   strategy_code: string;
-  strategy_name: string;
+  strategy_name: string; // 전략 이름
   invest_type: InvestType;
-  strategy_explanation: string;
+  strategy_explanation: string; // 전략 설명
   operation_yes_no: boolean; // 전략 탐색
   alarm_setting: boolean;
   open_yes_no: boolean;
