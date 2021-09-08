@@ -88,20 +88,22 @@ interface IBasicSetting {
   invest_start_date: string; // 백테스트 시작일
   securities_corp_fee: string; // 수수료
 
-  operation_yes_no: boolean; // 공개범위
+  open_yes_no: boolean; // 공개범위
 }
+
 export const atomBasicSetting = atom<IBasicSetting>({
   key: "BasicSetting",
   default: {
     strategy_name: "",
     strategy_explanation: "",
     tags: [""],
-    operation_yes_no: true,
+    open_yes_no: true,
     invest_principal: "",
     invest_start_date: "",
     securities_corp_fee: "",
   },
 });
+
 interface IUniversalSetting {}
 interface ITradingSetting {}
 interface ITradingPropertySetting {}
