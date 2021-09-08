@@ -1,7 +1,7 @@
 import { IsDateString, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import { Corporation } from './corporation.entity';
-
+// 37 - 3 - 1 = 33 / 33
 @Entity({ name: 'financial_statement' })
 export class FinancialStatement {
   @IsDateString()
@@ -26,12 +26,12 @@ export class FinancialStatement {
   @IsNumber()
   @IsOptional()
   @Column()
-  Revenue?: number;
+  revenue?: number;
 
   @IsNumber()
   @IsOptional()
   @Column()
-  Operating_Income?: number;
+  operating_income?: number;
 
   @IsNumber()
   @IsOptional()
@@ -67,47 +67,47 @@ export class FinancialStatement {
   @IsNumber()
   @IsOptional()
   @Column()
-  Revenue_Q?: number; // 매출액(분기)
+  revenue_Q?: number; // 매출액(분기)
 
   @IsNumber()
   @IsOptional()
   @Column()
-  Operating_Income_Q?: number; //영업이익(분기)
+  operating_income_Q?: number; //영업이익(분기)
 
   @IsNumber()
   @IsOptional()
   @Column()
-  Net_Income_Q?: number; // 당기순이익
+  net_income_Q?: number; // 당기순이익
 
   @IsNumber()
   @IsOptional()
   @Column()
-  Controlling_interest_Q?: number; // 지배주주순이익
+  controlling_interest_Q?: number; // 지배주주순이익
 
   @IsNumber()
   @IsOptional()
   @Column()
-  Non_controlling_interest_Q?: number; //비지배주주순이익
+  non_controlling_interest_Q?: number; //비지배주주순이익
 
   @IsNumber()
   @IsOptional()
   @Column()
-  Total_assets_Q?: number; // 자산총계
+  total_assets_Q?: number; // 자산총계
 
   @IsNumber()
   @IsOptional()
   @Column()
-  Total_stock_holders_Q?: number; // 자본총계
+  total_stock_holders_Q?: number; // 자본총계
 
   @IsNumber()
   @IsOptional()
   @Column()
-  Controlling_Interest_Q?: number; // 지배주주지분
+  controlling_interest_share_Q?: number; // 지배주주지분
 
   @IsNumber()
   @IsOptional()
   @Column()
-  non_Controlling_Interest_Q?: number; //비지배주주지분
+  non_controlling_interest_share_Q?: number; //비지배주주지분
 
   @IsNumber()
   @IsOptional()
@@ -118,7 +118,7 @@ export class FinancialStatement {
   @IsNumber()
   @IsOptional()
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
-  Debt_Ratio_Q?: number; // 부채비율
+  debt_ratio_Q?: number; // 부채비율
 
   @IsNumber()
   @IsOptional()
@@ -133,7 +133,7 @@ export class FinancialStatement {
   @IsNumber()
   @IsOptional()
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
-  Controlling_Interest_rate_Q?: number; // 지배주주순이익률
+  controlling_interest_rate_Q?: number; // 지배주주순이익률
 
   // --- 6
   @IsNumber()
