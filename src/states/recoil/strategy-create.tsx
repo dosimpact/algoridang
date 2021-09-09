@@ -8,6 +8,9 @@ import {
   UniversalSetting,
 } from "components/_organisms/inspector";
 import { Corporation } from "states/interface/finance/entities";
+import SelectedTickerButton, {
+  ISelectedTickerButton,
+} from "components/_organisms/dashboard/SelectedTickerButton";
 /**
  * 전략 생성에 대한 클라이언트 상태관리 입니다.
  *
@@ -66,8 +69,8 @@ export const atomInspector = atom<IInspector>({
 
 // 1.1 인스팩터 상태관리 Selector
 // 인스펙터 JSX Selector
-export const selectorInspector = selector<React.FC<IInspectorSettings>>({
-  key: "selectorInspector",
+export const selectorInspectorFC = selector<React.FC<IInspectorSettings>>({
+  key: "selectorInspectorFC",
   get: ({ get }) => {
     const inspectorState = get(atomInspector);
     if (inspectorState.inspectorType === "default") {
@@ -128,6 +131,19 @@ export const atomUniversalSettingState = atom<IUniversalSettingState>({
     selectedCorporations: [],
   },
 });
+
+// 1.2 선택된 종목 selectedTickerElementList - selector
+
+export const selectedTickerElementListJSX = selector({
+  key: "selectedTickerElementListJSX",
+  get: ({ get }) => {
+    const at = get(atomUniversalSettingState);
+    return at.selectedCorporations.map((data, idx) => (
+      <SelectedTickerButton key={idx} title={`${data.corp_name}`} />
+    ));
+  },
+});
+
 // 2.3 단일 종목 매매전략 설정
 interface ITradingSetting {}
 

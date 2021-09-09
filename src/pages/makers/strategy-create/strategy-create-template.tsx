@@ -12,22 +12,26 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import {
   atomInspector,
   IInspectorTypes,
-  selectorInspector,
+  selectedTickerElementListJSX,
+  selectorInspectorFC,
 } from "states/recoil/strategy-create";
 import DashBoardButton from "components/_molecules/DashBoardButton";
 import { IconPlus, IconSetting } from "assets/icons";
+import SelectedTickerButton from "components/_organisms/dashboard/SelectedTickerButton";
 
 // 전략 생성 모듈
 // DashBoard - Inspector
+// TODO : JSX.Element  vs React.ReactElement
+// JSX.Element 의 제너릭 타입이 React.ReactElement 이다.
 interface IStrategyCreateModule {
   // 현재 인스팩터 앨리먼트
-  currentInspectorElement: JSX.Element;
+  currentInspectorElement: React.ReactElement | null; //JSX.Element;
   // 전략 셋팅 버튼 앨리먼트
   baseSettingBtnElement: JSX.Element;
   // 종목 셋팅 버튼 앨리먼트
   universalSettingBtnElement: JSX.Element;
-  // 종목 리스트 표시 앨리먼트
-
+  // 선택된 종목 리스트 표시 앨리먼트
+  selectedTickerElementList: JSX.Element[];
   // 단일 종목 설정 앨리먼트
   // 단일 종목 매매 결과 앨리먼트
   // 다종 종목 백테스팅 결과 앨리먼트
@@ -36,6 +40,7 @@ const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
   currentInspectorElement,
   baseSettingBtnElement,
   universalSettingBtnElement,
+  selectedTickerElementList,
 }) => {
   const SegmentedControlValues = ["기본설정", "종목발굴", "매매전략"];
   const [tab, setTab] = React.useState<string>(SegmentedControlValues[0]);
@@ -48,6 +53,7 @@ const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
           <section className="dashBoardCol1">
             <div className="slot">{baseSettingBtnElement}</div>
             <div className="slot">{universalSettingBtnElement}</div>
+            <div className="slot">{selectedTickerElementList}</div>
           </section>
           <section className="dashBoardCol2">
             <ul>
@@ -65,7 +71,9 @@ const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
             <div className="slot">포트 백테스팅 결과</div>
           </section>
         </article>
-        <article className="inspector">{currentInspectorElement}</article>
+        <article className="inspector">
+          {currentInspectorElement && currentInspectorElement}
+        </article>
       </div>
     </SStrategyCreateModule>
   );
@@ -116,7 +124,10 @@ const SStrategyCreateModule = styled.section`
  */
 const StrategyCreateTemplate = () => {
   const [insepctorState, setInsepctorState] = useRecoilState(atomInspector);
-  const CurrentInspector = useRecoilValue(selectorInspector);
+  const CurrentInspector = useRecoilValue(selectorInspectorFC);
+  const selectedTickerElementList = useRecoilValue(
+    selectedTickerElementListJSX
+  );
 
   const handleChangeInspector = (type: IInspectorTypes) => {
     setInsepctorState((prev) => ({
@@ -128,6 +139,7 @@ const StrategyCreateTemplate = () => {
   return (
     <StrategyCreateModule
       currentInspectorElement={<CurrentInspector />}
+      // currentInspectorElement={CurrentInspector({})}
       baseSettingBtnElement={
         <DashBoardButton
           Icon={IconSetting}
@@ -146,6 +158,7 @@ const StrategyCreateTemplate = () => {
           }}
         />
       }
+      selectedTickerElementList={selectedTickerElementList}
     />
   );
 };
