@@ -8,9 +8,8 @@ import {
   UniversalSetting,
 } from "components/_organisms/inspector";
 import { Corporation } from "states/interface/finance/entities";
-import SelectedTickerButton, {
-  ISelectedTickerButton,
-} from "components/_organisms/dashboard/SelectedTickerButton";
+import MonoTickerSettingButton from "components/_organisms/dashboard/MonoTickerSettingButton";
+import SelectedTickerButton from "components/_organisms/dashboard/SelectedTickerButton";
 /**
  * 전략 생성에 대한 클라이언트 상태관리 입니다.
  *
@@ -119,11 +118,12 @@ export const atomBasicSetting = atom<IBasicSetting>({
     securities_corp_fee: "",
   },
 });
+
 // 2.2 종목 관리 상태관리 - atom
 interface IUniversalSettingState {
   // 선택된 종목들
-  // 퀀트 필터들
   selectedCorporations: Corporation[];
+  // 퀀트 필터들
 }
 export const atomUniversalSettingState = atom<IUniversalSettingState>({
   key: "UniversalSettingState",
@@ -133,6 +133,7 @@ export const atomUniversalSettingState = atom<IUniversalSettingState>({
 });
 
 // 1.2 선택된 종목 selectedTickerElementList - selector
+// (선택된 종목리스트)
 
 export const selectedTickerElementListJSX = selector({
   key: "selectedTickerElementListJSX",
@@ -144,10 +145,21 @@ export const selectedTickerElementListJSX = selector({
   },
 });
 
-// 2.3 단일 종목 매매전략 설정
-interface ITradingSetting {}
+// 1.3 선택된 단일 종목 매매전략 셋팅 버튼 , JSX 리스트 리턴
+// (개별 매매전략 셋팅 리스트)
+export const selectedMonoTickerSettingButtonListJSX = selector({
+  key: "selectedMonoTickerSettingButtonListJSX",
+  get: ({ get }) => {
+    const at = get(atomUniversalSettingState);
+    return at.selectedCorporations.map((data, idx) => (
+      <MonoTickerSettingButton key={idx} title={`${data.corp_name}`} />
+    ));
+  },
+});
 
-interface ITradingPropertySetting {}
-interface IBackTestingSetting {}
+// 2.3 단일 종목 매매전략 설정
+// interface ITradingSetting {}
+// interface ITradingPropertySetting {}
+// interface IBackTestingSetting {}
 
 // TODO selector 에서 비동기 처리?

@@ -9,6 +9,7 @@ import TickerSearch from "../ticker-search/ticker-searchC";
 import WhiteSpace from "components/_atoms/WhiteSpace";
 import WingBlank from "components/_atoms/WingBlank";
 
+// TODO LOGIN 처리 ( Email , Google )
 const NavigationContainer = () => {
   return (
     <SNavigationContainer className="navigation">
@@ -38,6 +39,9 @@ const NavigationContainer = () => {
         <Link to="/makers/strategy-public">
           <div className="navItem flexCenter">공개 전략</div>
         </Link>
+        <div style={{ marginTop: "10rem" }}>
+          <div className="navItem flexCenter">로그인</div>
+        </div>
       </SNav>
     </SNavigationContainer>
   );

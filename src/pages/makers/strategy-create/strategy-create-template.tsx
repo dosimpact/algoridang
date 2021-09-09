@@ -12,6 +12,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import {
   atomInspector,
   IInspectorTypes,
+  selectedMonoTickerSettingButtonListJSX,
   selectedTickerElementListJSX,
   selectorInspectorFC,
 } from "states/recoil/strategy-create";
@@ -33,6 +34,7 @@ interface IStrategyCreateModule {
   // 선택된 종목 리스트 표시 앨리먼트
   selectedTickerElementList: JSX.Element[];
   // 단일 종목 설정 앨리먼트
+  selectedMonoTickerSettingButtonList: JSX.Element[];
   // 단일 종목 매매 결과 앨리먼트
   // 다종 종목 백테스팅 결과 앨리먼트
 }
@@ -41,6 +43,7 @@ const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
   baseSettingBtnElement,
   universalSettingBtnElement,
   selectedTickerElementList,
+  selectedMonoTickerSettingButtonList,
 }) => {
   const SegmentedControlValues = ["기본설정", "종목발굴", "매매전략"];
   const [tab, setTab] = React.useState<string>(SegmentedControlValues[0]);
@@ -56,10 +59,7 @@ const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
             <div className="slot">{selectedTickerElementList}</div>
           </section>
           <section className="dashBoardCol2">
-            <ul>
-              <div className="slot">종목1 매매전략 설정</div>
-              <div className="slot">종목2 매매전략 설정</div>
-            </ul>
+            <ul className="slot">{selectedMonoTickerSettingButtonList}</ul>
           </section>
           <section className="dashBoardCol3">
             <ul>
@@ -123,12 +123,22 @@ const SStrategyCreateModule = styled.section`
  * @returns {React.FC}
  */
 const StrategyCreateTemplate = () => {
+  // State: 인스펙터 전체 상태
   const [insepctorState, setInsepctorState] = useRecoilState(atomInspector);
+  // Selector: 현재 인스팩터 - React.FC 반환
   const CurrentInspector = useRecoilValue(selectorInspectorFC);
+
+  // Selector: 현재 선택된 종목 - JSX.Element 리스트를 선택
   const selectedTickerElementList = useRecoilValue(
     selectedTickerElementListJSX
   );
 
+  // Selector : 선택된 단일 종목 매매전략 셋팅 버튼 , JSX 리스트 리턴
+  const selectedMonoTickerSettingButtonList = useRecoilValue(
+    selectedMonoTickerSettingButtonListJSX
+  );
+
+  // Handler
   const handleChangeInspector = (type: IInspectorTypes) => {
     setInsepctorState((prev) => ({
       ...prev,
@@ -159,6 +169,7 @@ const StrategyCreateTemplate = () => {
         />
       }
       selectedTickerElementList={selectedTickerElementList}
+      selectedMonoTickerSettingButtonList={selectedMonoTickerSettingButtonList}
     />
   );
 };
