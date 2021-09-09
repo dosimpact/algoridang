@@ -7,7 +7,17 @@ import {
   TradingSetting,
   UniversalSetting,
 } from "components/_organisms/inspector";
+import { Corporation } from "states/interface/finance/entities";
+/**
+ * 전략 생성에 대한 클라이언트 상태관리 입니다.
+ *
+ * 주요 상태 관리 대상  - atom,selector 이용
+ * 1. 전략 생성에 필요한 대시보드 + 인스펙터의 View 상태 관리
+ * 2. 사용자입력 (Form 및 HTMLInputElement) 에 대한 데이터 바인딩
+ * 3. API 호출시 Body조립을 위한
+ */
 
+// 1.1 인스팩터 상태관리 interface & type
 export type IInspectorTypes =
   | "default"
   | "basicSetting"
@@ -15,7 +25,7 @@ export type IInspectorTypes =
   | "tradingSetting" // 매매 전략 추가 삭제
   | "tradingPropertySetting" // 매매 전략 상세 설정
   | "backTestingSetting";
-// 인스팩터 상태관리
+
 interface IInspector {
   isShow: boolean;
   inspectorType: IInspectorTypes;
@@ -34,7 +44,7 @@ interface IInspector {
     };
   };
 }
-
+// 1.1 인스팩터 상태관리 atom
 // 전략 생성 페이지의 인스펙터 상태 관리
 export const atomInspector = atom<IInspector>({
   key: "Inspector",
@@ -54,6 +64,7 @@ export const atomInspector = atom<IInspector>({
   },
 });
 
+// 1.1 인스팩터 상태관리 Selector
 // 인스펙터 JSX Selector
 export const selectorInspector = selector<React.FC<IInspectorSettings>>({
   key: "selectorInspector",
@@ -77,8 +88,8 @@ export const selectorInspector = selector<React.FC<IInspectorSettings>>({
   },
 });
 
+// 1.1 인스팩터 상태관리 Selector
 // 전략 기본 설정 상태관리
-
 interface IBasicSetting {
   strategy_name: string; // 전략 이름
   strategy_explanation: string; // 전략 설명
@@ -91,6 +102,8 @@ interface IBasicSetting {
   open_yes_no: boolean; // 공개범위
 }
 
+// 2.1 전략 기본 설정 상태관리 - atom
+// 전략 기본 설정 입력 form 저장 atom
 export const atomBasicSetting = atom<IBasicSetting>({
   key: "BasicSetting",
   default: {
@@ -103,8 +116,22 @@ export const atomBasicSetting = atom<IBasicSetting>({
     securities_corp_fee: "",
   },
 });
-
-interface IUniversalSetting {}
+// 2.2 종목 관리 상태관리 - atom
+interface IUniversalSettingState {
+  // 선택된 종목들
+  // 퀀트 필터들
+  selectedCorporations: Corporation[];
+}
+export const atomUniversalSettingState = atom<IUniversalSettingState>({
+  key: "UniversalSettingState",
+  default: {
+    selectedCorporations: [],
+  },
+});
+// 2.3 단일 종목 매매전략 설정
 interface ITradingSetting {}
+
 interface ITradingPropertySetting {}
 interface IBackTestingSetting {}
+
+// TODO selector 에서 비동기 처리?

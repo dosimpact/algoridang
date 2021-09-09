@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { Corporation } from "states/interface/finance/entities";
 import useCorporation from "states/react-query/finance/useCorporation";
 import styled from "styled-components";
@@ -15,15 +15,18 @@ export type TickerSearchOnSuccessResult = {
 };
 interface ITickerSearch {
   onSuccess?: (e: TickerSearchOnSuccessResult) => void;
+  onKeyDownEnter?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-// todo : refactor : 뒤로가기 누르면 왜 검색이 되느지?..
-const TickerSearch: React.FC<ITickerSearch> = ({ onSuccess }) => {
-  const { register, handleSubmit, getValues, watch, setValue } =
+const TickerSearch: React.FC<ITickerSearch> = ({
+  onSuccess,
+  onKeyDownEnter,
+}) => {
+  const { register, handleSubmit, setValue, control } =
     useForm<ITickerSearchInput>();
-  watch("term");
+  const term = useWatch({ control, name: "term" });
   const { corporations, isLoading, refetch } = useCorporation({
-    term: getValues("term") || "삼성전자",
+    term,
   });
 
   useEffect(() => {
@@ -54,6 +57,11 @@ const TickerSearch: React.FC<ITickerSearch> = ({ onSuccess }) => {
           onChange={debouncing((e: React.ChangeEvent<HTMLInputElement>) => {
             setValue("term", e.target.value);
           }, 500)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && onKeyDownEnter) {
+              onKeyDownEnter(e);
+            }
+          }}
         ></input>
       </form>
       {/* <div>{error && "error..."}</div> */}
