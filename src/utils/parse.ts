@@ -1,4 +1,5 @@
 import { HashList } from "states/interface/strategy/entities";
+import { cloneObject } from "./funcs";
 
 export const hashListToString = (hashs: HashList[]) => {
   return hashs
@@ -25,4 +26,17 @@ export const toRatio = (a: string | number, b: string | number) => {
 
 export const toTickerImage = (code: number | string) => {
   return `${process.env.REACT_APP_S3_URL}/ticker/${code}.jpg`;
+};
+
+export const RemoveMultipleElements = (
+  valuesArr: any[],
+  removeValFrom: number[]
+) => {
+  const copyiedValuesArr = [...valuesArr];
+  removeValFrom.sort((a, b) => b - a);
+
+  for (let idx of removeValFrom) {
+    copyiedValuesArr.splice(idx, 1);
+  }
+  return copyiedValuesArr;
 };

@@ -11,26 +11,24 @@ import {
   atomUniversalSettingState,
 } from "states/recoil/strategy-create";
 import styled from "styled-components";
+import { RemoveMultipleElements } from "utils/parse";
 import { IInspectorSettings } from ".";
 
 interface IUniversalSetting extends IInspectorSettings {}
 
 const UniversalSetting: React.FC<IUniversalSetting> = ({ headerTitle }) => {
-  // 인스펙터 상태
+  // 1 인스펙터 상태
   const [inspectorState, setInspectorState] = useRecoilState(atomInspector);
-  // 종목관리 상태
-  const [universalStateSetting, setUniversalStateSetting] = useRecoilState(
-    atomUniversalSettingState
-  );
-  // 현재 인스팩터 상태
+
+  // 1.1 현재 인스팩터 상태
   const inspectorUniversalSetting = React.useMemo(() => {
     return inspectorState.inspectorState.universalSetting;
   }, [inspectorState]);
 
-  // TODO 탭 상태 - 중간 임시변수 없시, 바로 Recoil과 바인딩 하도록
+  // 1.1.1 TODO 탭 상태 - 중간 임시변수 없시, 바로 Recoil과 바인딩 하도록
   const [tab, setTab] = React.useState(inspectorUniversalSetting.tab);
 
-  // 탭 상태 관리
+  // 1.2 탭 상태 관리
   const handleTabIdx = (tabIdx: number) => {
     setTab(tabIdx);
     // TODO Recoild Setter ( depth level = 4) (using like immer.js)
@@ -47,11 +45,32 @@ const UniversalSetting: React.FC<IUniversalSetting> = ({ headerTitle }) => {
       };
     });
   };
+  // 2. 종목관리 상태
+  const [universalSettingState, setUniversalSettingState] = useRecoilState(
+    atomUniversalSettingState
+  );
+  // 2.1 삭제예정인 티커들
+  const [willDelCorpIdxs, setWillDelCorpIdxs] = React.useState<Set<number>>(
+    new Set()
+  );
+  // 2.3 종목 삭제하기
+  const handleWillDelTickerClick = () => {
+    setUniversalSettingState((prev) => {
+      const result = RemoveMultipleElements(
+        prev.selectedCorporations,
+        Array.from(willDelCorpIdxs.values())
+      );
+      // console.log(result);
+      return { ...prev, selectedCorporations: result };
+    });
+    // willDelCorpIdxs
+  };
 
+  // 3. 종목 검색 결과
   const [searchResultCorps, setSearchResultCorps] = React.useState<
     Corporation[]
   >([]);
-  // 검색된 종목을 임시 저장
+  // 3.1 검색된 종목을 임시 저장
   const handleSearchedCorporations = React.useCallback(
     (e: TickerSearchOnSuccessResult) => {
       setSearchResultCorps(e.corporations);
@@ -78,9 +97,8 @@ const UniversalSetting: React.FC<IUniversalSetting> = ({ headerTitle }) => {
             <TickerSearch
               onSuccess={handleSearchedCorporations}
               onKeyDownEnter={(e) => {
-                console.log(searchResultCorps);
                 if (searchResultCorps.length >= 1) {
-                  setUniversalStateSetting((prev) => {
+                  setUniversalSettingState((prev) => {
                     return {
                       ...prev,
                       selectedCorporations: [
@@ -92,9 +110,32 @@ const UniversalSetting: React.FC<IUniversalSetting> = ({ headerTitle }) => {
                 }
               }}
             />
+            <div>---</div>
+            <button onClick={handleWillDelTickerClick}>종목삭제</button>
+            <div>선택된 종목 {1} 개</div>
             <div>
-              {universalStateSetting.selectedCorporations.map((corp, idx) => {
-                return <div key={idx}>{corp.corp_name}</div>;
+              {universalSettingState.selectedCorporations.map((corp, idx) => {
+                return (
+                  <div style={{ display: "flex" }}>
+                    <input
+                      onClick={(e) => {
+                        if (e.currentTarget.checked) {
+                          setWillDelCorpIdxs((prev) => new Set(prev.add(idx)));
+                        } else {
+                          setWillDelCorpIdxs((prev) => {
+                            prev.delete(idx);
+                            return new Set(prev);
+                          });
+                        }
+                      }}
+                      id={`willDel-${idx}`}
+                      type="checkbox"
+                    ></input>
+                    <label htmlFor={`willDel-${idx}`}>
+                      <div key={idx}>{corp.corp_name}</div>
+                    </label>
+                  </div>
+                );
               })}
             </div>
           </>
