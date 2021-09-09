@@ -51,10 +51,10 @@ class CPricePykrx(object):
         db.putConn(conn)
         return res
 
-    def getKRStockDaily(self, ticker, _from = None, _to= None):
-        if _to == None:
+    def getKRStockDaily(self, ticker, _from=None, _to=None):
+        if _to is None:
             _to = str(datetime.today().strftime("%Y%m%d"))
-        if _from == None:
+        if _from is None:
             before30Day = datetime.today() - timedelta(30)
             _from = str(before30Day.strftime("%Y%m%d"))
 
