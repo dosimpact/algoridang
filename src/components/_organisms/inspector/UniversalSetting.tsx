@@ -14,37 +14,8 @@ import styled from "styled-components";
 import { RemoveMultipleElements } from "utils/parse";
 import { IInspectorSettings } from ".";
 
-interface IUniversalSetting extends IInspectorSettings {}
-
-const UniversalSetting: React.FC<IUniversalSetting> = ({ headerTitle }) => {
-  // 1 인스펙터 상태
-  const [inspectorState, setInspectorState] = useRecoilState(atomInspector);
-
-  // 1.1 현재 인스팩터 상태
-  const inspectorUniversalSetting = React.useMemo(() => {
-    return inspectorState.inspectorState.universalSetting;
-  }, [inspectorState]);
-
-  // 1.1.1 TODO 탭 상태 - 중간 임시변수 없시, 바로 Recoil과 바인딩 하도록
-  const [tab, setTab] = React.useState(inspectorUniversalSetting.tab);
-
-  // 1.2 탭 상태 관리
-  const handleTabIdx = (tabIdx: number) => {
-    setTab(tabIdx);
-    // TODO Recoild Setter ( depth level = 4) (using like immer.js)
-    setInspectorState((prev) => {
-      return {
-        ...prev,
-        inspectorState: {
-          ...prev.inspectorState,
-          universalSetting: {
-            ...prev.inspectorState.universalSetting,
-            tab: tabIdx,
-          },
-        },
-      };
-    });
-  };
+// UniversalSetting - TabTickerSearch
+const UniversalSettingTabTickerSearch = () => {
   // 2. 종목관리 상태
   const [universalSettingState, setUniversalSettingState] = useRecoilState(
     atomUniversalSettingState
@@ -79,6 +50,88 @@ const UniversalSetting: React.FC<IUniversalSetting> = ({ headerTitle }) => {
   );
 
   return (
+    <>
+      <TickerSearch
+        onSuccess={handleSearchedCorporations}
+        onKeyDownEnter={(e) => {
+          if (searchResultCorps.length >= 1) {
+            setUniversalSettingState((prev) => {
+              return {
+                ...prev,
+                selectedCorporations: [
+                  ...prev.selectedCorporations,
+                  searchResultCorps[0],
+                ],
+              };
+            });
+          }
+        }}
+      />
+      <div>---</div>
+      <button onClick={handleWillDelTickerClick}>종목삭제</button>
+      <div>선택된 종목 {1} 개</div>
+      <div>
+        {universalSettingState.selectedCorporations.map((corp, idx) => {
+          return (
+            <div style={{ display: "flex" }}>
+              <input
+                onClick={(e) => {
+                  if (e.currentTarget.checked) {
+                    setWillDelCorpIdxs((prev) => new Set(prev.add(idx)));
+                  } else {
+                    setWillDelCorpIdxs((prev) => {
+                      prev.delete(idx);
+                      return new Set(prev);
+                    });
+                  }
+                }}
+                id={`willDel-${idx}`}
+                type="checkbox"
+              ></input>
+              <label htmlFor={`willDel-${idx}`}>
+                <div key={idx}>{corp.corp_name}</div>
+              </label>
+            </div>
+          );
+        })}
+      </div>
+    </>
+  );
+};
+
+interface IUniversalSetting extends IInspectorSettings {}
+
+const UniversalSetting: React.FC<IUniversalSetting> = ({ headerTitle }) => {
+  // 1 인스펙터 상태
+  const [inspectorState, setInspectorState] = useRecoilState(atomInspector);
+
+  // 1.1 현재 인스팩터 상태
+  const inspectorUniversalSetting = React.useMemo(() => {
+    return inspectorState.inspectorState.universalSetting;
+  }, [inspectorState]);
+
+  // 1.1.1 TODO 탭 상태 - 중간 임시변수 없시, 바로 Recoil과 바인딩 하도록
+  const [tab, setTab] = React.useState(inspectorUniversalSetting.tab);
+
+  // 1.2 탭 상태 관리
+  const handleTabIdx = (tabIdx: number) => {
+    setTab(tabIdx);
+    // TODO Recoild Setter ( depth level = 4) (using like immer.js)
+    setInspectorState((prev) => {
+      return {
+        ...prev,
+        inspectorState: {
+          ...prev.inspectorState,
+          universalSetting: {
+            ...prev.inspectorState.universalSetting,
+            tab: tabIdx,
+          },
+        },
+      };
+    });
+  };
+
+  return (
     <SUniversalSetting>
       <WingBlank>
         <InspectorHeaderDetail
@@ -94,50 +147,7 @@ const UniversalSetting: React.FC<IUniversalSetting> = ({ headerTitle }) => {
         </article>
         {tab === 0 && (
           <>
-            <TickerSearch
-              onSuccess={handleSearchedCorporations}
-              onKeyDownEnter={(e) => {
-                if (searchResultCorps.length >= 1) {
-                  setUniversalSettingState((prev) => {
-                    return {
-                      ...prev,
-                      selectedCorporations: [
-                        ...prev.selectedCorporations,
-                        searchResultCorps[0],
-                      ],
-                    };
-                  });
-                }
-              }}
-            />
-            <div>---</div>
-            <button onClick={handleWillDelTickerClick}>종목삭제</button>
-            <div>선택된 종목 {1} 개</div>
-            <div>
-              {universalSettingState.selectedCorporations.map((corp, idx) => {
-                return (
-                  <div style={{ display: "flex" }}>
-                    <input
-                      onClick={(e) => {
-                        if (e.currentTarget.checked) {
-                          setWillDelCorpIdxs((prev) => new Set(prev.add(idx)));
-                        } else {
-                          setWillDelCorpIdxs((prev) => {
-                            prev.delete(idx);
-                            return new Set(prev);
-                          });
-                        }
-                      }}
-                      id={`willDel-${idx}`}
-                      type="checkbox"
-                    ></input>
-                    <label htmlFor={`willDel-${idx}`}>
-                      <div key={idx}>{corp.corp_name}</div>
-                    </label>
-                  </div>
-                );
-              })}
-            </div>
+            <UniversalSettingTabTickerSearch />
           </>
         )}
         {tab === 1 && (
