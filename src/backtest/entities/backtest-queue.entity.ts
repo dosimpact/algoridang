@@ -1,7 +1,15 @@
-import { IsString } from 'class-validator';
+import { IsDateString, IsString } from 'class-validator';
 import { MemberStrategy } from 'src/strategy/entities';
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryColumn,
+} from 'typeorm';
 
+// Error
 export enum BacktestState {
   New = 'New', // 생성
   Ready = 'Ready', // 진입 & 대기중
@@ -23,6 +31,10 @@ export class BacktestQueue {
   @IsString()
   @Column({ type: 'varchar', length: 15 })
   work_info: string;
+
+  @IsDateString()
+  @CreateDateColumn({ type: 'timestamptz', nullable: true })
+  createAt?: string;
 
   // (1) 백테스트 큐에 연동된 투자 전략
   @Column()

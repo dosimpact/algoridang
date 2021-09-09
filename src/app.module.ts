@@ -80,7 +80,7 @@ import { FinancialStatement } from './finance/entities/financial-statement.entit
         },
       }),
       synchronize: true,
-      logging: true,
+      logging: false,
       entities: [
         ...[
           // finance (5/5)

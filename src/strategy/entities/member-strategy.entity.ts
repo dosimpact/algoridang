@@ -2,6 +2,7 @@ import {
   IsBoolean,
   IsDateString,
   IsEnum,
+  IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
@@ -61,6 +62,15 @@ export type MemberStrategyFullRelation = Array<
     >
 >;
 
+// Error
+export enum BacktestState {
+  New = 'New', // 생성
+  Ready = 'Ready', // 진입 & 대기중
+  Running = 'Running', // 작업중
+  Success = 'Success', // 완료
+  Error = 'Error', // 애러
+}
+
 @Entity({ name: 'member_strategy' })
 export class MemberStrategy {
   @IsString()
@@ -107,6 +117,10 @@ export class MemberStrategy {
   @Type()
   @Column({ type: 'json', nullable: true })
   universal_producer?: UniversalProducer;
+
+  @IsString()
+  @Column({ type: 'enum', enum: BacktestState, default: BacktestState.New })
+  state_info: BacktestState;
 
   // 1:1 관계
 

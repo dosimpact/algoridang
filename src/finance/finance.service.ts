@@ -16,6 +16,9 @@ import {
   Corporation,
   DailyStock,
 } from './entities/index';
+import { execSync } from 'child_process';
+import { join } from 'path';
+// import { promisify } from 'util';
 
 // 👨‍💻 FinanceService 의 책임이 막중하다.
 // > 서비스 단위를 나눌필요성..?
@@ -33,7 +36,19 @@ export class FinanceService {
     private readonly CorporationRepo: Repository<Corporation>,
     @InjectRepository(DailyStock)
     private readonly DailyStockRepo: Repository<DailyStock>,
-  ) {}
+  ) {
+    const test = async () => {
+      try {
+        // const res = execSync(`node utils/getThemeStocks.js`);
+        // console.log(res);
+        // process.stdout.write(res.toString());
+        // console.log(res.toString());
+      } catch (error) {
+        // console.log(error);
+      }
+    };
+    // test();
+  }
 
   // (1) 모든 회사들의 리스트를 리턴
   async getCorporations(): Promise<GetCorporationsOutput> {

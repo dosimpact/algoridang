@@ -54,6 +54,7 @@ export class StrategyService {
     'investProfitInfo',
     'backtestDetailInfo',
     'operationMemberList',
+    'universal',
   ];
   constructor(
     @InjectRepository(Hash)
@@ -143,7 +144,7 @@ export class StrategyService {
     group by A.strategy_code
     ;
   */
-  //
+
   async getStrategyListHighProfit({}: GetStrategyListHighProfitInput): Promise<GetStrategyListHighProfitOutput> {
     // 높은 수익률의 전략 코드 리스트를 가져옴
     const strategyCodes =
@@ -166,10 +167,12 @@ export class StrategyService {
         'member_strategy.operationMemberList',
         'operationMemberList',
       )
+      .leftJoinAndSelect('member_strategy.queueList', 'queueList')
       .orderBy({
         'member_strategy.create_date': 'DESC',
       })
       .getMany();
+
     return {
       ok: true,
       memberStrategyList,
