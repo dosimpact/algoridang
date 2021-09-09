@@ -1,19 +1,21 @@
 import React from "react";
 import styled from "styled-components";
-import { WingBlank, WhiteSpace } from "antd-mobile";
 import { Link, Redirect, Route, Switch } from "react-router-dom";
 import StrategyCreateTemplate from "../strategy-create/strategy-create-template";
 import StrategyMyC from "../strategy-my/strategy-myC";
 import StrategyPublicC from "../strategy-public/strategy-publicC";
 import { ErrorHandler } from "states/recoil/error-state";
+import TickerSearch from "../ticker-search/ticker-searchC";
+import WhiteSpace from "components/_atoms/WhiteSpace";
+import WingBlank from "components/_atoms/WingBlank";
 
 const NavigationContainer = () => {
   return (
     <SNavigationContainer className="navigation">
-      <WhiteSpace size="xl" />
-      <WhiteSpace size="xl" />
+      <WhiteSpace />
+      <WhiteSpace />
       <SHeader>
-        <Link to="/makers/strategy-create">
+        <Link to="/makers/ticker-search">
           <WingBlank className="hwrapper">
             {/* <div className="icon">🥞</div> */}
             <div className="headerName">알고</div>
@@ -22,10 +24,13 @@ const NavigationContainer = () => {
           </WingBlank>
         </Link>
       </SHeader>
-      <WhiteSpace size="xl" />
+      <WhiteSpace />
       <SNav>
+        <Link to="/makers/ticker-search">
+          <div className="navItem flexCenter">종목 탐색</div>
+        </Link>
         <Link to="/makers/strategy-create">
-          <div className="navItem flexCenter">퀀트 전략 생성</div>
+          <div className="navItem flexCenter">전략 생성</div>
         </Link>
         <Link to="/makers/strategy-my">
           <div className="navItem flexCenter">나의 전략</div>
@@ -64,7 +69,6 @@ const SNav = styled.nav`
   .navItem {
     height: 7rem;
     font-size: 0.75rem;
-    font-weight: 700;
     background-color: ${(props) => props.theme.ColorWhite};
     cursor: pointer;
     transition: all 0.2s ease-in-out;
@@ -80,6 +84,7 @@ const ContentContainer = () => {
   return (
     <section className="content">
       <Switch>
+        <Route path="/makers/ticker-search" component={TickerSearch} />
         <Route
           path="/makers/strategy-create"
           component={StrategyCreateTemplate}
