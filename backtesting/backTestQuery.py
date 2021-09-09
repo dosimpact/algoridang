@@ -4,6 +4,7 @@ import pandas as pd
 from backtesting.SMACross import SMACross
 
 class backTestQuery(object):
+    error = ""
     totalDailyData = []
     totalreturn = []
     invest = 0
@@ -39,6 +40,7 @@ class backTestQuery(object):
     
 
     def _getDBData(self, ticker, mindatalen, start, end=None):
+        res = []
         DBClass = databasepool()
         conn = DBClass.getConn()
         if DBClass:
@@ -56,26 +58,31 @@ class backTestQuery(object):
                 "low_price":"Low",
                 "close_price":'Close'	,
                 "volume":"Volume"
-            },inplace = True)
+            },inplace=True)
             
-            res = []
+            
             alllen = len(df)
-            backtestlen =  len(df[str(pd.to_datetime(start, format='%Y-%m-%d')) : ])
+            backtestlen = len(df[str(pd.to_datetime(start, format='%Y-%m-%d')):])
             getDataPosStr = alllen - backtestlen - mindatalen
             if getDataPosStr > 0:
-                if end == None or end == '':
-                    res = df[getDataPosStr : ]
+                if end is None or end == '':
+                    res = df[getDataPosStr:]
                 else:
-                    getDataPosEnd = len(df[  :str(pd.to_datetime(end, format='%Y-%m-%d')) ])
-                    res = df[ getDataPosStr :getDataPosEnd ]
+                    getDataPosEnd = len(df[:str(pd.to_datetime(end, format='%Y-%m-%d'))])
+                    res = df[getDataPosStr:getDataPosEnd]
 
             else:
-                return "error"        
+                res = df
+
+            if len(res) < mindatalen:
+                self.error = "DataCondition Error  function(_getDBData)" + str(ticker)
+                return res, "pass"    
 
             DBClass.putConn(conn)
 
-            return res
-        return "error"
+            return res, "work"
+        self.error = "DB connection Error  function(_getDBData)"
+        return res, "error"
 
         
     def _saveHistoryTable(self):
@@ -87,7 +94,7 @@ class backTestQuery(object):
         conn = DBClass.getConn()
         
         for i in range(len(tradehitory)):
-            query  = "select * from history "
+            query = "select * from history "
             query += " where strategy_code = " + str(strategyCode)
             query += " and ticker = \'" + str(tradehitory[i][3])+"\'"
             query += " and history_date = \'"+str(tradehitory[i][0]) + "\';"

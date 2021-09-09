@@ -39,7 +39,8 @@ class CBackTtrader(backTestQuery):
             print("["+str(self.queueId)+"] apply Strategy from DB...")
 
             case = (self._setStrategy(data["strategyCode"]))
-            if len(case) == 0 :
+            
+            if len(case) == 0:
                 print("DB dose'not have any data in this field...")
                 return "error"
 
@@ -78,6 +79,7 @@ class CBackTtrader(backTestQuery):
         except:
             if id is not None:
                 self._initQueue(self.queueId, "Error", "DBError", self.strategyCode)
+            print("error data = ", self.error)
             print("Unexpected error:", sys.exc_info()[0])
         finally:
             return self.invest
@@ -115,7 +117,7 @@ class CBackTtrader(backTestQuery):
                 if monthlydata[1] > 0:
                     monthlyProfitRatioRiseMonth += 1
 
-        print("monthlyProfitRatioChartData = ",self.monthlyProfitRatioChartData)
+        print("monthlyProfitRatioChartData = ", self.monthlyProfitRatioChartData)
 
         # 투자 수익 정보
         self.investProfitInfo = [self.invest, int(data['investPrice']), self.invest - int(data['investPrice']), round(self.invest / int(data['investPrice']), 2)-1]
@@ -141,7 +143,15 @@ class CBackTtrader(backTestQuery):
                 
         cerebro.broker.setcash(int(data['investPrice'])/tickerlen * weight)
         
-        cerebro.adddata(bt.feeds.PandasData(dataname=self._getDBData(ticker, minDate, data['startTime'], data['endTime'])), name=ticker)
+        tickerDateData, state = self._getDBData(ticker, minDate, data['startTime'], data['endTime'])
+
+        if state == 'pass':
+            print("["+str(self.queueId)+"] work Error")
+            self.invest += int(data['investPrice'])/tickerlen * weight
+            del cerebro
+            return
+
+        cerebro.adddata(bt.feeds.PandasData(dataname=tickerDateData), name=ticker)
 
         print("["+str(self.queueId)+"] Start cerebro")
             
@@ -171,7 +181,6 @@ class CBackTtrader(backTestQuery):
         self.tradehitory = strat.analyzers.bar_data.get_tradehistory()
         self._saveHistoryTable()
         
-
         # cerebro.plot()
         strat.analyzers.bar_data.init_tradehistory()
         del cerebro
