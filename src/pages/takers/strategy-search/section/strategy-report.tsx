@@ -1,7 +1,12 @@
 import React, { useMemo } from "react";
 import { Title } from "components/_atoms/Typos";
 import { useHistory, useParams } from "react-router-dom";
-import { toPercentage, toRatio, toTagsString } from "utils/parse";
+import {
+  toPercentage,
+  toRatio,
+  toTagsString,
+  toTickerImage,
+} from "utils/parse";
 import styled from "styled-components";
 import DetailSummary from "components/_organisms/report/DetailSummary";
 import CumulativeReturn from "components/_molecules/report/CumulativeReturn";
@@ -168,7 +173,12 @@ const StrategyReport = () => {
               memberStrategy?.backtestDetailInfo?.year_avg_profit_rate &&
               Number(memberStrategy?.backtestDetailInfo?.year_avg_profit_rate)
             }
-            thumnail={memberStrategy.image_url}
+            thumnail={
+              memberStrategy.universal.length >= 1
+                ? toTickerImage(memberStrategy.universal[0].ticker)
+                : ""
+            }
+            onErrorImg={memberStrategy.image_url}
           />
         )}
         <>

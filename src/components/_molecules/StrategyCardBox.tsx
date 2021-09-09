@@ -9,6 +9,7 @@ import BadgeCAGR from "components/_atoms/BadgeCAGR";
 
 interface IStrategyCardBox {
   thumnail?: string;
+  onErrorImg?: string;
   title: string;
   subTitle?: string;
   CAGR?: number;
@@ -20,11 +21,13 @@ const StrategyCardBox: React.FC<IStrategyCardBox> = ({
   CAGR,
   subTitle = "",
   thumnail = "",
+  onErrorImg = "",
   title = "Error",
   onClick,
   StrategyState,
 }) => {
   if (!thumnail) thumnail = randomDefaultThunmnail(title);
+  if (!onErrorImg) onErrorImg = randomDefaultThunmnail(title);
   return (
     <>
       <Card
@@ -33,7 +36,14 @@ const StrategyCardBox: React.FC<IStrategyCardBox> = ({
         }}
       >
         <article className="left">
-          <img className="thumnail" src={thumnail} alt="thumnail"></img>
+          <img
+            className="thumnail"
+            src={thumnail}
+            alt="thumnail"
+            onError={(e) => {
+              e.currentTarget.src = onErrorImg;
+            }}
+          ></img>
         </article>
         <article className="right">
           <div className="title">{title}</div>
@@ -79,7 +89,8 @@ const Card = styled.section`
       border-bottom-left-radius: 7px;
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
+      padding: 1rem;
     }
   }
   .right {

@@ -5,7 +5,7 @@ import StrategyCardBox from "components/_molecules/StrategyCardBox";
 import React from "react";
 import { useHistory, useParams } from "react-router-dom";
 import useStrategy from "states/react-query/strategy/useStrategy";
-import { toTagsString } from "utils/parse";
+import { toTagsString, toTickerImage } from "utils/parse";
 
 // 더보기 버튼에서 온 인피니트 스크롤링 페이지
 
@@ -66,7 +66,12 @@ const StrategyListType = () => {
                     data?.backtestDetailInfo?.year_avg_profit_rate &&
                     Number(data?.backtestDetailInfo?.year_avg_profit_rate)
                   }
-                  thumnail={data.image_url}
+                  thumnail={
+                    data.universal.length >= 1
+                      ? toTickerImage(data.universal[0].ticker)
+                      : ""
+                  }
+                  onErrorImg={data.image_url}
                   onClick={() => {
                     history.push(
                       `/takers/strategy-search/details/${data.strategy_code}`

@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import useStrategy from "states/react-query/strategy/useStrategy";
-import { toTagsString } from "utils/parse";
+import { toTagsString, toTickerImage } from "utils/parse";
 import WingBlank from "components/_atoms/WingBlank";
 import PageGuide from "components/_molecules/PageGuide";
 
@@ -20,7 +20,7 @@ const StrategyFeeds = () => {
     strategyListRiskTaking,
     strategyListStableIncome,
   } = useStrategy();
-
+  console.log("strategyListRiskTaking", strategyListRiskTaking);
   return (
     <WingBlank>
       <PageGuide
@@ -45,7 +45,12 @@ const StrategyFeeds = () => {
               data?.backtestDetailInfo?.year_avg_profit_rate &&
               Number(data?.backtestDetailInfo?.year_avg_profit_rate)
             }
-            thumnail={data.image_url}
+            thumnail={
+              data.universal.length >= 1
+                ? toTickerImage(data.universal[0].ticker)
+                : ""
+            }
+            onErrorImg={data.image_url}
             onClick={() => {
               history.push(
                 `/takers/strategy-search/details/${data.strategy_code}`
@@ -73,6 +78,12 @@ const StrategyFeeds = () => {
               data?.backtestDetailInfo?.year_avg_profit_rate &&
               Number(data?.backtestDetailInfo?.year_avg_profit_rate)
             }
+            thumnail={
+              data.universal.length >= 1
+                ? toTickerImage(data.universal[0].ticker)
+                : ""
+            }
+            onErrorImg={data.image_url}
             onClick={() => {
               history.push(
                 `/takers/strategy-search/details/${data.strategy_code}`
@@ -100,6 +111,12 @@ const StrategyFeeds = () => {
               data?.backtestDetailInfo?.year_avg_profit_rate &&
               Number(data?.backtestDetailInfo?.year_avg_profit_rate)
             }
+            thumnail={
+              data.universal.length >= 1
+                ? toTickerImage(data.universal[0].ticker)
+                : ""
+            }
+            onErrorImg={data.image_url}
             onClick={() => {
               history.push(
                 `/takers/strategy-search/details/${data.strategy_code}`
@@ -125,6 +142,12 @@ const StrategyFeeds = () => {
               data?.backtestDetailInfo?.year_avg_profit_rate &&
               Number(data?.backtestDetailInfo?.year_avg_profit_rate)
             }
+            thumnail={
+              data.universal.length >= 1
+                ? toTickerImage(data.universal[0].ticker)
+                : ""
+            }
+            onErrorImg={data.image_url}
             onClick={() => {
               history.push(
                 `/takers/strategy-search/details/${data.strategy_code}`
@@ -152,6 +175,12 @@ const StrategyFeeds = () => {
               data?.backtestDetailInfo?.year_avg_profit_rate &&
               Number(data?.backtestDetailInfo?.year_avg_profit_rate)
             }
+            thumnail={
+              data.universal.length >= 1
+                ? toTickerImage(data.universal[0].ticker)
+                : ""
+            }
+            onErrorImg={data.image_url}
             onClick={() => {
               history.push(
                 `/takers/strategy-search/details/${data.strategy_code}`

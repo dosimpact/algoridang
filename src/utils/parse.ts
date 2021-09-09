@@ -22,3 +22,7 @@ export const toRatio = (a: string | number, b: string | number) => {
   if (typeof b === "string") b = Number(b);
   return (a / b).toFixed(3);
 };
+
+export const toTickerImage = (code: number | string) => {
+  return `${process.env.REACT_APP_S3_URL}/ticker/${code}.jpg`;
+};

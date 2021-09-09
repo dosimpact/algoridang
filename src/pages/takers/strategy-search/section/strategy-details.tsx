@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { Title, SubTitle } from "components/_atoms/Typos";
 import { useHistory, useParams } from "react-router-dom";
-import { toTagsString } from "utils/parse";
+import { toTagsString, toTickerImage } from "utils/parse";
 import styled from "styled-components";
 import TradingHistory from "components/_organisms/report/TradingHistory";
 import TradingPoints from "components/_organisms/report/TradingPoints";
@@ -77,7 +77,12 @@ const StrategyDetails = () => {
               memberStrategy?.backtestDetailInfo?.year_avg_profit_rate &&
               Number(memberStrategy?.backtestDetailInfo?.year_avg_profit_rate)
             }
-            thumnail={memberStrategy.image_url}
+            thumnail={
+              memberStrategy.universal.length >= 1
+                ? toTickerImage(memberStrategy.universal[0].ticker)
+                : ""
+            }
+            onErrorImg={memberStrategy.image_url}
           />
         )}
 
