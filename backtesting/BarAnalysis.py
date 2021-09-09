@@ -32,10 +32,21 @@ class BarAnalysis(bt.analyzers.Analyzer):
 
     def get_analysis(self):
         return self.rets
+
+
     def get_winloseCnt(self):
         return self.winCnt,self.loseCnt
+
+
     def get_tradehistory(self):
         return self.tradehistory
+
+
+    def init_tradehistory(self):
+        while len(self.tradehistory) != 0:
+            self.tradehistory.pop()
+        self.winCnt = 0
+        self.loseCnt = 0
 
     def notify_trade(self, trade):
         date = self.data.datetime.datetime()

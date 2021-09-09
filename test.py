@@ -12,6 +12,10 @@ if __name__ == '__main__':
     #getAllLog()
     #test = stock()
     #test.Test()
-    test = MockInvest()
-    test.requestMockInvestStock("test")
+    
+    test = MockInvest("test",1)
+    test.requestMockInvestStock()
+
+
+
 

@@ -114,13 +114,13 @@ def initDB_DailyStock_queue(self,tickers,startDate):
 @process.task(bind=True, base=CoreTask)
 def backtestTaskCall(self,strategyCode):
     
-    bk = backtesting.CBackTtrader()
-    res = bk.requestBacktestOneStock(self.request.id, strategyCode)
+    bk = backtesting.CBackTtrader(self.request.id, strategyCode)
+    res = bk.requestBacktestOneStock()
     return res
 
 
 def Test___backtestTestCode(id,strategyCode):
-    bk = backtesting.CBackTtrader()
-    res = bk.requestBacktestOneStock(None,strategyCode)
+    bk = backtesting.CBackTtrader(None,strategyCode)
+    res = bk.requestBacktestOneStock()
     return res
 
