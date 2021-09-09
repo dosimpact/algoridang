@@ -4,7 +4,21 @@ import pandas as pd
 from backtesting.SMACross import SMACross
 
 class backTestQuery(object):
-    
+    totalDailyData = []
+    totalreturn = []
+    invest = 0
+
+    queueId = 0
+    strategyCode = 0
+
+    tradehitory = []
+    monthlyProfitRatioChartData = []
+    backtestDetailInfo = []
+    investProfitInfo = []
+    dailydata = []
+    win = 0
+    lose = 0
+
     def _setStrategy(self, strategyCode):
         strategyList = []
         DBClass = databasepool()
@@ -12,26 +26,26 @@ class backTestQuery(object):
         if DBClass:
             query = "select u.strategy_code,u.ticker, u.trading_strategy_name ,u.setting_json from universal u where u.strategy_code = "+str(strategyCode)
             
-            df = DBClass.selectDataframe(conn,query)
+            df = DBClass.selectDataframe(conn, query)
             DBClass.putConn(conn)
             for index, row in df.iterrows():
-                if  row[2]== 'GoldenCross':
+                if row[2] == 'GoldenCross':
                     setting = [row[3]['GoldenCross']['pfast'],row[3]['GoldenCross']['pslow']]
                     minDate = row[3]['GoldenCross']['pslow']
-                    strategyList.append(( row[1] , SMACross ,setting, 1, minDate)) 
+                    strategyList.append((row[1], SMACross, setting, 1, minDate)) 
 
         return strategyList
         #(ticker, strategy, setting , weigth)
     
 
-    def _getDBData(self,ticker,mindatalen, start, end = None):
+    def _getDBData(self, ticker, mindatalen, start, end=None):
         DBClass = databasepool()
         conn = DBClass.getConn()
         if DBClass:
             query = "select stock_date, open_price, high_price, low_price, close_price, volume from daily_stock"
             query += " where \"ticker\" = \'"+ticker+"\' order by stock_date asc;"
             
-            df = DBClass.selectDataframe(conn,query)
+            df = DBClass.selectDataframe(conn, query)
             df["stock_date"] = pd.to_datetime(df["stock_date"], format='%Y-%m-%d')
             df = df.set_index("stock_date")
             df = df.sort_values(by=['stock_date'], axis=0, ascending=True)
@@ -64,7 +78,11 @@ class backTestQuery(object):
         return "error"
 
         
-    def _saveHistoryTable(self, tradehitory,strategyCode):
+    def _saveHistoryTable(self):
+
+        tradehitory = self.tradehitory
+        strategyCode = self.strategyCode
+
         DBClass = databasepool()
         conn = DBClass.getConn()
         
@@ -109,7 +127,10 @@ class backTestQuery(object):
 
 
         
-    def _saveBacktestDailyProfitRateChartTable(self,returns, strategyCode):
+    def _saveBacktestDailyProfitRateChartTable(self):
+
+        returns = self.totalreturn
+        strategyCode = self.strategyCode
 
         DBClass = databasepool()
         conn = DBClass.getConn()
@@ -134,7 +155,11 @@ class backTestQuery(object):
         DBClass.putConn(conn)
 
 
-    def _saveBacktestMonthlyProfitRateChartTable(self,monthlyProfitRatioChartData,strategyCode):
+    def _saveBacktestMonthlyProfitRateChartTable(self):
+
+        monthlyProfitRatioChartData = self.monthlyProfitRatioChartData
+        strategyCode = self.strategyCode
+
         DBClass = databasepool()
         conn = DBClass.getConn()
         
@@ -142,23 +167,28 @@ class backTestQuery(object):
             query = "select * from backtest_monthly_profit_rate_chart where chart_month = " + "\'"+str(monthlyProfitRatioChartData[i][0]) + "\'  "
             query += " and strategy_code = " + str(strategyCode) + ";"
 
-            if len(DBClass.selectData(conn,query)) == 1:
+            if len(DBClass.selectData(conn, query)) == 1:
                 query = "update backtest_monthly_profit_rate_chart set "
                 query += "  \"profit_rate\" = " + str(monthlyProfitRatioChartData[i][1])
                 query += "  where strategy_code = "+str(strategyCode)
                 query += "  and chart_month = " + "\'" + str(monthlyProfitRatioChartData[i][0]) + "\';"
-                DBClass.updateData(conn,query)
+                DBClass.updateData(conn, query)
 
-            else :
+            else:
                 query = "insert into backtest_monthly_profit_rate_chart(\"chart_month\",\"profit_rate\",\"strategy_code\")"
-                query += "values(\'"+str(monthlyProfitRatioChartData[i][0]) + "\'," + str(monthlyProfitRatioChartData[i][1]) +","+str(strategyCode)+")"
-                DBClass.insertIntoData(conn,query)
+                query += "values(\'"+str(monthlyProfitRatioChartData[i][0]) + "\'," + str(monthlyProfitRatioChartData[i][1]) + "," + str(strategyCode) + ")"
+                DBClass.insertIntoData(conn, query)
         
         conn.commit()
         DBClass.putConn(conn)
 
 
-    def _saveBacktestWinRatioTable(self,win,lose,strategyCode):
+    def _saveBacktestWinRatioTable(self):
+        win = self.win
+        lose = self.lose
+        strategyCode = self.strategyCode
+
+
         DBClass = databasepool()
         conn = DBClass.getConn()
         query = "select * from backtest_win_ratio where strategy_code = "+str(strategyCode)+";"
@@ -178,7 +208,10 @@ class backTestQuery(object):
         DBClass.putConn(conn)
 
 
-    def _saveBacktestDetailInfoTable(self,backtestDetailInfo,strategyCode):
+    def _saveBacktestDetailInfoTable(self):
+        backtestDetailInfo = self.backtestDetailInfo
+        strategyCode = self.strategyCode
+
         DBClass = databasepool()
         conn = DBClass.getConn()
         query = "select * from backtest_detail_info where strategy_code = " + str(strategyCode) + ";"
@@ -202,7 +235,9 @@ class backTestQuery(object):
         DBClass.putConn(conn)
 
 
-    def _saveInvestProfitInfoTable(self, investProfitInfo , strategyCode):
+    def _saveInvestProfitInfoTable(self):
+        investProfitInfo = self.investProfitInfo
+        strategyCode = self.strategyCode
         DBClass = databasepool()
         conn = DBClass.getConn()
 
@@ -218,7 +253,10 @@ class backTestQuery(object):
         DBClass.putConn(conn)
 
 
-    def _saveAccumulateProfitRateChartTable(self, data, strategyCode ):
+    def _saveAccumulateProfitRateChartTable(self ):
+        data = self.dailydata
+        strategyCode = self.strategyCode
+        
         DBClass = databasepool()
         conn = DBClass.getConn()
         for idx, row in data.iterrows():

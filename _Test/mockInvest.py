@@ -121,7 +121,6 @@ class MockInvest(backTestQuery):
 
     def tickerBackTest(self, data, tickerlen, ticker, strategy, setting, weight, minDate):
         
-
         cerebro = bt.Cerebro()
         BarAnalysis.ticker = ticker
         cerebro.addanalyzer(BarAnalysis, _name="bar_data")

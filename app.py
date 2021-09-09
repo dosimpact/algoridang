@@ -10,6 +10,7 @@ from route.routeDailyStock import DailyStock
 
 
 app = Flask(__name__)
+
 CORS(app)
 
 api = Api(
@@ -26,14 +27,6 @@ api.add_namespace(BackTest, '/backtest')
 api.add_namespace(Celerys, '/celery')
 api.add_namespace(DailyStock, '/datas')
 
-
-
-    
-
-
-
 if __name__ == "__main__":
-    app.run(host ='0.0.0.0',port = 5000)
-    #print(processor.Test___backtestTestCode(1))
-
-    
+    app.run(host='0.0.0.0', port=5000)
+    #print(processor.Test___backtestTestCode(None, 2583))
