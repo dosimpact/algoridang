@@ -56,7 +56,7 @@ const TickerSearch: React.FC<ITickerSearch> = ({
           {...register("term", { required: true })}
           onChange={debouncing((e: React.ChangeEvent<HTMLInputElement>) => {
             setValue("term", e.target.value);
-          }, 500)}
+          }, 100)}
           onKeyDown={(e) => {
             if (e.key === "Enter" && onKeyDownEnter) {
               onKeyDownEnter(e);

@@ -83,7 +83,7 @@ const SStrategyCreateModule = styled.section`
   min-height: 100vh;
   .wrapper {
     display: grid;
-    grid-template-columns: 1fr 40rem;
+    grid-template-columns: minmax(70rem, 1fr) 40rem;
     min-height: 100vh;
   }
 

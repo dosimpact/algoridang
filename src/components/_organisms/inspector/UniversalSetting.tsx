@@ -13,6 +13,10 @@ import {
 import styled from "styled-components";
 import { RemoveMultipleElements } from "utils/parse";
 import { IInspectorSettings } from ".";
+import Modal from "react-modal";
+
+//https://velog.io/@seungsang00/React-React-Modal
+Modal.setAppElement("#root");
 
 // UniversalSetting - TabTickerSearch
 const UniversalSettingTabTickerSearch = () => {
@@ -35,6 +39,7 @@ const UniversalSettingTabTickerSearch = () => {
       return { ...prev, selectedCorporations: result };
     });
     // willDelCorpIdxs
+    setWillDelCorpIdxs(new Set<number>());
   };
 
   // 3. 종목 검색 결과
@@ -69,7 +74,7 @@ const UniversalSettingTabTickerSearch = () => {
       />
       <div>---</div>
       <button onClick={handleWillDelTickerClick}>종목삭제</button>
-      <div>선택된 종목 {1} 개</div>
+      <div>선택된 종목 {willDelCorpIdxs.size} 개 삭제하기</div>
       <div>
         {universalSettingState.selectedCorporations.map((corp, idx) => {
           return (
@@ -98,6 +103,122 @@ const UniversalSettingTabTickerSearch = () => {
     </>
   );
 };
+
+const UniversalSettingTabQuantSearch = () => {
+  // 1. 모달창 open/close 상태
+  const [modalIsOpen, setModalIsOpen] = React.useState(false);
+
+  return (
+    <>
+      <div>UniversalSettingTabQuantSearch</div>
+
+      <div>----</div>
+      <div>
+        <button
+          onClick={() => {
+            setModalIsOpen(true);
+          }}
+        >
+          필터 추가
+        </button>
+        <button>종목 추출</button>
+      </div>
+      <div>종목 추가 하기</div>
+      <ul>
+        <li>
+          <div className="title">거래량 ( 단위: )</div>
+          <div style={{ display: "flex" }}>
+            <input type="text" name="" id="" placeholder="0" />
+            <span>~</span>
+            <input type="text" name="" id="" placeholder="100" />
+          </div>
+        </li>
+        <li>
+          <div className="title">ROE ( 단위: )</div>
+          <div style={{ display: "flex" }}>
+            <input type="text" name="" id="" placeholder="0" />
+            <span>~</span>
+            <input type="text" name="" id="" placeholder="100" />
+          </div>
+        </li>
+      </ul>
+      <Modal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)}>
+        <QuantFilter />
+        <button
+          onClick={() => {
+            setModalIsOpen(false);
+          }}
+        >
+          close
+        </button>
+      </Modal>
+    </>
+  );
+};
+
+const QuantFilter = () => {
+  return (
+    <SQuantFilter>
+      <article className="col1">
+        <div>섹터 필터</div>
+        <div>
+          <input type="checkbox" name="kospi" id="kospi" />
+          <label htmlFor="kospi">코스피</label>
+          <input type="checkbox" name="kosdaq" id="kosdaq" />
+          <label htmlFor="kosdaq">코스피</label>
+        </div>
+        <div>퀀트 필터셋</div>
+        <div>
+          <input type="checkbox" name="filterSet-1" id="filterSet-1" />
+          <label htmlFor="filterSet-1">마법공식</label>
+          <input type="checkbox" name="filterSet-2" id="filterSet-2" />
+          <label htmlFor="filterSet-2">테스트 공식</label>
+        </div>
+      </article>
+      <article className="col2">
+        <div>모든 필터</div>
+        {["시가 총액", "시가총액", "PER", "PCR", "PSR"].map((word, idx) => {
+          return (
+            <div key={idx}>
+              <input
+                type="checkbox"
+                name={`filter-${idx}`}
+                id={`filter-${idx}`}
+              />
+              <label htmlFor={`filter-${idx}`}>{word}</label>
+            </div>
+          );
+        })}
+      </article>
+      <article className="col3">
+        <div>필터 설명</div>
+        <div
+          style={{
+            whiteSpace: "pre-wrap",
+          }}
+        >
+          시가총액(Market Capitalization) 전일종가와 발행주식 수를 곱한 것으로
+          주식시장에서 상장회사의 규모를 평가하는 지표이다.
+        </div>
+      </article>
+    </SQuantFilter>
+  );
+};
+const SQuantFilter = styled.section`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 1rem;
+  min-height: 80%;
+  .col1 {
+    background-color: aliceblue;
+  }
+  .col2 {
+    background-color: antiquewhite;
+  }
+  .col3 {
+    background-color: azure;
+  }
+`;
 
 interface IUniversalSetting extends IInspectorSettings {}
 
@@ -152,7 +273,7 @@ const UniversalSetting: React.FC<IUniversalSetting> = ({ headerTitle }) => {
         )}
         {tab === 1 && (
           <>
-            <div>퀀트 발굴</div>
+            <UniversalSettingTabQuantSearch />
           </>
         )}
       </WingBlank>

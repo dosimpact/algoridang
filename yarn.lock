@@ -1976,6 +1976,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-modal@^3.12.1":
+  version "3.12.1"
+  resolved "https://registry.yarnpkg.com/@types/react-modal/-/react-modal-3.12.1.tgz#fd1558762ed96020291b831190c85bc721aad3c1"
+  integrity sha512-pgq/jAnSJqHX7NXTFyUSXwlFOBUGngBXavFmAIKE7bkM7WNKyF/9XvmMr2+eIBOvR8waiA0Nj2qHfDZqMgeT6w==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-router-dom@^5.1.8":
   version "5.1.8"
   resolved "https://registry.yarnpkg.com/@types/react-router-dom/-/react-router-dom-5.1.8.tgz#bf3e1c8149b3d62eaa206d58599de82df0241192"
@@ -9693,10 +9700,20 @@ react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.1.tgz#5b3531bd76a645a4c9fb6e693ed36419e3301339"
   integrity sha512-NAnt2iGDXohE5LI7uBnLnqvLQMtzhkiAOLXTmv+qnF9Ky7xAPcX8Up/xWIhxvLVGJvuLiNc4xQLtuqDRzb4fSA==
 
-react-lifecycles-compat@^3.0.4:
+react-lifecycles-compat@^3.0.0, react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
+
+react-modal@^3.14.3:
+  version "3.14.3"
+  resolved "https://registry.yarnpkg.com/react-modal/-/react-modal-3.14.3.tgz#7eb7c5ec85523e5843e2d4737cc17fc3f6aeb1c0"
+  integrity sha512-+C2KODVKyu20zHXPJxfOOcf571L1u/EpFlH+oS/3YDn8rgVE51QZuxuuIwabJ8ZFnOEHaD+r6XNjqwtxZnXO0g==
+  dependencies:
+    exenv "^1.2.0"
+    prop-types "^15.7.2"
+    react-lifecycles-compat "^3.0.0"
+    warning "^4.0.3"
 
 react-native-swipeout@^2.2.2:
   version "2.3.6"
@@ -11938,6 +11955,13 @@ warning@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/warning/-/warning-3.0.0.tgz#32e5377cb572de4ab04753bdf8821c01ed605b7c"
   integrity sha1-MuU3fLVy3kqwR1O9+IIcAe1gW3w=
+  dependencies:
+    loose-envify "^1.0.0"
+
+warning@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/warning/-/warning-4.0.3.tgz#16e9e077eb8a86d6af7d64aa1e05fd85b4678ca3"
+  integrity sha512-rpJyN222KWIvHJ/F53XSZv0Zl/accqHR8et1kpaMTD/fLCRxtV8iX8czMzY7sVZupTI3zcUTg8eycS2kNF9l6w==
   dependencies:
     loose-envify "^1.0.0"
 
