@@ -8,13 +8,13 @@ import { debouncing } from "utils/funcs";
 interface ITickerSearchInput {
   term: string;
 }
-
+export type TickerSearchOnSuccessResult = {
+  ticker: string;
+  corp_name: string;
+  corporations: Corporation[];
+};
 interface ITickerSearch {
-  onSuccess?: (e: {
-    ticker: string;
-    corp_name: string;
-    corporations: Corporation[];
-  }) => void;
+  onSuccess?: (e: TickerSearchOnSuccessResult) => void;
 }
 
 // todo : refactor : 뒤로가기 누르면 왜 검색이 되느지?..
