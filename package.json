@@ -25,6 +25,7 @@
     "react-query": "^3.19.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "reactour": "^1.18.6",
     "recoil": "^0.3.1",
     "styled-components": "^5.3.0",
     "styled-reset": "^4.3.4",
@@ -61,6 +62,7 @@
     "@types/react-helmet": "^6.1.2",
     "@types/react-modal": "^3.12.1",
     "@types/react-router-dom": "^5.1.8",
+    "@types/reactour": "^1.18.2",
     "@types/styled-components": "^5.1.10"
   }
 }
