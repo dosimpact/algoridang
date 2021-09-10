@@ -1,6 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { toTagsString } from "utils/parse";
+import { toTagsString, toTickerImage } from "utils/parse";
 import PageGuide from "components/_molecules/PageGuide";
 import { IconMockInvest } from "assets/icons";
 import { useMyStrategy } from "states/react-query/strategy/useMyStrategy";
@@ -27,9 +27,7 @@ const MockInvestFeeds = () => {
       />
       <SectionTitle
         title="나의 모의 투자 전략"
-        linkTo={
-          process.env.PUBLIC_URL + "/takers/strategy-search/list/risk-taking"
-        }
+        // linkTo={process.env.PUBLIC_URL + "/takers/mock-invest/list/risk-taking"}
       />
       <WhiteSpace />
       {getMyStrategyListQuery.isLoading && "loading..."}
@@ -45,7 +43,12 @@ const MockInvestFeeds = () => {
               data?.backtestDetailInfo?.year_avg_profit_rate &&
               Number(data?.backtestDetailInfo?.year_avg_profit_rate)
             }
-            thumnail={data.image_url}
+            thumnail={
+              data.universal.length >= 1
+                ? toTickerImage(data.universal[0].ticker)
+                : ""
+            }
+            onErrorImg={data.image_url}
             onClick={() => {
               history.push(`/takers/mock-invest/details/${data.strategy_code}`);
             }}

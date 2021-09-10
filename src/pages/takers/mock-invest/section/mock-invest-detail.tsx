@@ -1,16 +1,18 @@
-import React from "react";
-import { Button } from "antd-mobile";
-import { SubTitle } from "components/_atoms/Typos";
+import React, { useMemo } from "react";
+import { SubTitle, Title } from "components/_atoms/Typos";
 import { useHistory, useParams } from "react-router-dom";
-import { toTagsString } from "utils/parse";
+import { getTodayDiff, toTagsString, toTickerImage } from "utils/parse";
 import styled from "styled-components";
 import ReturnsStatus from "components/_organisms/report/ReturnsStatus";
 import TradingHistory from "components/_organisms/report/TradingHistory";
-import { useMyStrategyId } from "states/react-query/strategy/useMyStrategyId";
 import WingBlank from "components/_atoms/WingBlank";
 import WhiteSpace from "components/_atoms/WhiteSpace";
 import StrategyCardBox from "components/_molecules/StrategyCardBox";
 import NavHeaderDetail from "components/_molecules/NavHeaderDetail";
+import { Button } from "components/_atoms/Buttons";
+import { useMyStrategyDetail } from "states/react-query/strategy/useMyStrategyDetail";
+import Description from "components/_molecules/report/Description";
+import TradingPoints from "components/_organisms/report/TradingPoints";
 
 const dummyDatasHistory = {
   header: ["날짜", "매수/매도", "가격", "수익/손실"],
@@ -49,13 +51,24 @@ const MockInvestDetail = () => {
     history.push(process.env.PUBLIC_URL + "/takers/mock-invest");
   }
   const strategyCode = params.id;
-  const { getMyStrategyByIdQuery } = useMyStrategyId(strategyCode);
-  console.log("getMyStrategyByIdQuery", getMyStrategyByIdQuery);
+  const {
+    myStrategyDetailQuery,
+    firstUniversal,
+    histories,
+    investProfitInfo,
+    memberStrategy,
+  } = useMyStrategyDetail(strategyCode + "");
 
-  const memberStrategy = React.useMemo(
-    () => getMyStrategyByIdQuery.data?.memberStrategy,
-    [getMyStrategyByIdQuery]
-  );
+  const todayHistories = useMemo(() => {
+    if (histories) {
+      const todayHistories = histories.filter((history) => {
+        return getTodayDiff(history.history_date) <= 2;
+      });
+
+      return todayHistories;
+    }
+    return [];
+  }, [histories]);
 
   return (
     <StrategyDetailP>
@@ -75,65 +88,84 @@ const MockInvestDetail = () => {
               memberStrategy?.backtestDetailInfo?.year_avg_profit_rate &&
               Number(memberStrategy?.backtestDetailInfo?.year_avg_profit_rate)
             }
-            thumnail={memberStrategy.image_url}
+            thumnail={
+              memberStrategy.universal.length >= 1
+                ? toTickerImage(memberStrategy.universal[0].ticker)
+                : ""
+            }
+            onErrorImg={memberStrategy.image_url}
           />
         )}
-        <>
-          <div className="flexRowSBt" style={{ marginTop: "15px" }}>
-            <SubTitle
-              title="상세 설정"
-              style={{ marginRight: "20px" }}
-            ></SubTitle>
-            <Button
-              type="ghost"
-              size="small"
-              style={{ width: "100px" }}
-              onClick={(e) => {
-                console.log("deatil");
-                history.push(
-                  process.env.PUBLIC_URL +
-                    `/takers/mock-invest/update/${params.id}`
-                );
-              }}
-            >
-              변경
-            </Button>
-          </div>
-          <div className="flexRowSBt" style={{ marginTop: "15px" }}>
-            <SubTitle
-              title="상세 전략 리포트"
-              style={{ marginRight: "20px" }}
-            ></SubTitle>
-            <Button
-              type="ghost"
-              size="small"
-              style={{ width: "100px" }}
-              onClick={(e) => {
-                console.log("deatil");
-                history.push(
-                  process.env.PUBLIC_URL +
-                    `/takers/mock-invest/report/${params.id}`
-                );
-              }}
-            >
-              리포트
-            </Button>
-          </div>
-        </>
-        <ReturnsStatus
-          title="모의 투자 수익 현황"
-          profit_rate="0.0"
-          invest_price="0"
-          invest_principal="0"
-          total_profit_price="0"
-        />
+        <div className="flexRowSBt">
+          <Title title="모의 투자" style={{ marginRight: "15px" }}></Title>
+          <Button
+            style={{ width: "8rem" }}
+            onClick={() => {
+              history.push(`/takers/mock-invest/update/${strategyCode}`);
+            }}
+          >
+            수정하기
+          </Button>
+        </div>
+        <div className="flexRowSBt" style={{ marginTop: "15px" }}>
+          <SubTitle
+            title="상세 전략 리포트"
+            style={{ marginRight: "20px" }}
+          ></SubTitle>
+          <Button
+            type="gray"
+            style={{ width: "8rem" }}
+            onClick={() => {
+              history.push(
+                process.env.PUBLIC_URL +
+                  `/takers/mock-invest/report/${strategyCode}`
+              );
+            }}
+          >
+            리포트
+          </Button>
+        </div>
+        <WhiteSpace />
+        <WhiteSpace />
+        {/* 0. 전략 메이커 설명 Description.tsx */}
+        {/* {memberStrategy && (
+          <Description description={memberStrategy.strategy_explanation} />
+        )} */}
+        {/* 1. 투자 수익 현황 ReturnsStatus.tsx */}
+        {investProfitInfo && (
+          <ReturnsStatus
+            title={`모의 투자 수익 현황 ${"(운용중)"}`}
+            profit_rate={investProfitInfo?.profit_rate}
+            invest_price={investProfitInfo?.invest_price}
+            invest_principal={investProfitInfo?.invest_principal}
+            total_profit_price={investProfitInfo?.total_profit_price}
+          />
+        )}
         {/* <TradingPoints /> */}
-        <TradingHistory
-          title="오늘의 종목"
-          header={dummyDatasHistory.header}
-          keyMap={dummyDatasHistory.header}
-          body={dummyDatasHistory.body}
-        />
+        <WhiteSpace />
+        <WhiteSpace />
+        {/* 3. 트레이딩 히스토리 */}
+        {histories && todayHistories && (
+          <TradingHistory
+            title={`오늘의 종목 (${todayHistories.length}개)`}
+            header={["날짜", `종목\n(코드)`, "가격\n(원)", "수익/손실\n(%)"]}
+            keyMap={[
+              "history_date",
+              "ticker",
+              "buy_sale_price",
+              "profit_loss_rate",
+            ]}
+            body={todayHistories as any as Record<string, string>[]}
+          />
+        )}
+        {/* 2. 매매 시점 TradingPoints.tsx */}
+        {firstUniversal && firstUniversal.universal_code && (
+          <TradingPoints
+            strategyCode={String(strategyCode)}
+            ticker={firstUniversal.ticker}
+            title={`매매시점 - ${firstUniversal.ticker} | ${firstUniversal.trading_strategy_name}`}
+          />
+        )}
       </WingBlank>
     </StrategyDetailP>
   );

@@ -40,3 +40,8 @@ export const RemoveMultipleElements = (
   }
   return copyiedValuesArr;
 };
+
+const oneDay = 1000 * 60 * 60 * 24;
+export const getTodayDiff = (t1: string) => {
+  return Math.floor((new Date().getTime() - new Date(t1).getTime()) / oneDay);
+};

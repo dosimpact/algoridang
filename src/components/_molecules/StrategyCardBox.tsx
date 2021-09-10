@@ -89,13 +89,13 @@ const Card = styled.section`
       border-bottom-left-radius: 7px;
       width: 100%;
       height: 100%;
-      object-fit: contain;
+      object-fit: scale-down;
       padding: 1rem;
     }
   }
   .right {
     width: 100%;
-    padding-left: 3.4rem;
+    padding-left: 0.4rem;
     padding-top: 1.9rem;
     .title {
       font-size: 1.3rem;

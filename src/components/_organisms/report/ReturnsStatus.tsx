@@ -30,7 +30,7 @@ const ReturnsStatus: React.FC<IReturnsStatus> = ({
       <WhiteSpace />
       <div className="returnsStatus" style={{ margin: "1.8rem 0px" }}>
         <div className="flexRowSBt" style={{ margin: "5px 0px" }}>
-          <div className="name">연수익률</div>
+          <div className="name">수익률</div>
           <div className="value returnsValue">
             <FNumber val={Number(profit_rate)} hasPercentage={true} />
           </div>

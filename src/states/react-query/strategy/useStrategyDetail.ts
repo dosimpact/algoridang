@@ -1,3 +1,4 @@
+import React, { useMemo } from "react";
 import { AxiosError, AxiosResponse } from "axios";
 import { useQuery } from "react-query";
 import { strategyApi } from "states/api";
@@ -34,8 +35,49 @@ const useStrategyDetail = (strategy_code: string) => {
       },
     }
   );
+
+  // 받아온 데이터중 memberStrategy 에 관한 데이터 메모
+  const memberStrategy = useMemo(
+    () => strategyDetailQuery?.data?.memberStrategy,
+    [strategyDetailQuery?.data]
+  );
+  // const backtestDetailInfo = useMemo(
+  //   () => strategyDetailQuery?.data?.memberStrategy?.backtestDetailInfo,
+  //   [strategyDetailQuery?.data]
+  // );
+  // 아온 데이터중 universal 에 관한 데이터 메모
+  const firstUniversal = useMemo(
+    () =>
+      strategyDetailQuery?.data?.memberStrategy &&
+      strategyDetailQuery?.data?.memberStrategy.universal &&
+      strategyDetailQuery?.data?.memberStrategy?.universal.length >= 1 &&
+      strategyDetailQuery?.data?.memberStrategy?.universal[0],
+    [strategyDetailQuery?.data]
+  );
+
+  const investProfitInfo = useMemo(
+    () => strategyDetailQuery?.data?.memberStrategy?.investProfitInfo,
+    [strategyDetailQuery?.data]
+  );
+
+  const histories = useMemo(
+    () =>
+      strategyDetailQuery?.data?.memberStrategy?.histories.map((history) => ({
+        ...history,
+        history_date: String(history.history_date).substr(0, 10),
+      })),
+    [strategyDetailQuery?.data]
+  );
+  // console.log("histories", histories);
+  // console.log("investProfitInfo", investProfitInfo);
+  // console.log("firstUniversal", firstUniversal);
+
   return {
     strategyDetailQuery,
+    memberStrategy,
+    firstUniversal,
+    investProfitInfo,
+    histories,
   };
 };
 
