@@ -167,7 +167,7 @@ export class StrategyService {
         'member_strategy.operationMemberList',
         'operationMemberList',
       )
-      .leftJoinAndSelect('member_strategy.queueList', 'queueList')
+      // .leftJoinAndSelect('member_strategy.queueList', 'queueList')
       .orderBy({
         'member_strategy.create_date': 'DESC',
       })
@@ -250,7 +250,6 @@ export class StrategyService {
         'backtestDetailInfo',
         'operationMemberList',
         'universal',
-        'queueList',
         'histories', // 디테일 -- eager
         // 'backtestWinRatio',  // lazy --
         // 'backtestMontlyProfitRateChart',
@@ -276,14 +275,7 @@ export class StrategyService {
         },
         skip,
         take,
-        relations: [
-          'hashList',
-          'hashList.hash',
-          'investProfitInfo',
-          'backtestDetailInfo',
-          'operationMemberList',
-          'universal',
-        ],
+        relations: this.strategyListRelation,
         order: {
           create_date: 'DESC',
         },
@@ -444,6 +436,7 @@ export class StrategyService {
     if (strategy_name) templateStrategy.strategy_name = strategy_name;
     templateStrategy.operator_id = email_id;
     templateStrategy.open_yes_no = false;
+    templateStrategy.operation_yes_no = true;
     delete templateStrategy.create_date; // ORM 처리
 
     const newStrategy = await this.MemberStrategyRepo.save(templateStrategy);

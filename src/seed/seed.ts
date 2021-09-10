@@ -20,7 +20,7 @@ async function bootstrap() {
 
   const getCorporations = await financeService.getCorporations();
   if (getCorporations.corporations) {
-    getCorporations.corporations.map(async (corp) => {
+    getCorporations.corporations.slice(10, 13).map(async (corp) => {
       const { ticker, corp_name } = corp;
       console.log('start...', ticker, corp_name);
       // 전략 만들기

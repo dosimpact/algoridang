@@ -42,6 +42,14 @@ export enum InvestType {
   Neutral = 'Neutral', // 2 - 중립형
   RiskTaking = 'RiskTaking', // 3 - 위험추구형
 }
+// Error
+export enum BacktestState {
+  New = 'New', // 생성
+  Ready = 'Ready', // 진입 & 대기중
+  Running = 'Running', // 작업중
+  Success = 'Success', // 완료
+  Error = 'Error', // 애러
+}
 
 // (1) relation 가능한 string을 주고 싶다.
 export type MemberStrategyFullRelation = Array<
@@ -61,15 +69,6 @@ export type MemberStrategyFullRelation = Array<
       | 'histories'
     >
 >;
-
-// Error
-export enum BacktestState {
-  New = 'New', // 생성
-  Ready = 'Ready', // 진입 & 대기중
-  Running = 'Running', // 작업중
-  Success = 'Success', // 완료
-  Error = 'Error', // 애러
-}
 
 @Entity({ name: 'member_strategy' })
 export class MemberStrategy {
@@ -120,8 +119,11 @@ export class MemberStrategy {
 
   @IsString()
   @Column({ type: 'enum', enum: BacktestState, default: BacktestState.New })
-  state_info: BacktestState;
+  backtest_status: BacktestState; // 최근 백테스트 상황 ( )
 
+  @IsString()
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  state_info: string; // 최근 백테스트 결과 - 응답 메시지
   // 1:1 관계
 
   // (2) 투자 수익 정보

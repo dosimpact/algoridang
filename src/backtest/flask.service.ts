@@ -49,7 +49,7 @@ export class FlaskService {
   // (2) backtest 실행, - strategyCode 입력
   async __setBackTest(strategyCode: number): Promise<SetBackTestOutput> {
     try {
-      const { data, request } = await axios({
+      const { data, status } = await axios({
         method: 'post',
         url: `${this.dataServerUrl}/backtest`,
         data: {
@@ -60,10 +60,10 @@ export class FlaskService {
           'Access-Control-Allow-Origin': '*',
         },
       });
-      if (request?.statusCode !== 200) {
+      if (status !== 201) {
         return { ok: false, ...data };
       }
-      return data;
+      return { ok: true, ...data };
     } catch (e) {
       console.error('[FAIL] GET test', e);
       throw e;
