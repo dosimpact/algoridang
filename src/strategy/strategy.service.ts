@@ -38,7 +38,7 @@ import {
 import { Hash, HashList, MemberStrategy } from './entities';
 import { InvestType } from './entities/member-strategy.entity';
 import { Logger } from '@nestjs/common';
-import { InvestProfitInfo } from 'src/backtest/entities';
+import { InvestProfitInfo, History } from 'src/backtest/entities';
 import { StrategyHashService } from './strategy-hash.service';
 import { BacktestService } from 'src/backtest/backtest.service';
 import { TradingService } from 'src/trading/trading.service';
@@ -238,25 +238,72 @@ export class StrategyService {
   async getStrategyById({
     strategy_code,
   }: GetStrategyByIdInput): Promise<GetStrategyByIdOutput> {
-    const memberStrategy = await this.MemberStrategyRepo.findOneOrFail({
-      where: {
+    const memberStrategy = await this.MemberStrategyRepo.createQueryBuilder(
+      'member_strategy',
+    )
+      .where('member_strategy.strategy_code = :strategy_code', {
         strategy_code,
-        open_yes_no: true,
-      },
-      relations: [
-        'hashList', // 기본 ----
-        'hashList.hash',
-        'investProfitInfo',
+      })
+      // .whereInIds(strategy_code)
+      .leftJoinAndSelect('member_strategy.hashList', 'hashList')
+      .leftJoinAndSelect('hashList.hash', 'hash')
+      .leftJoinAndSelect('member_strategy.investProfitInfo', 'investProfitInfo')
+      .leftJoinAndSelect(
+        'member_strategy.backtestDetailInfo',
         'backtestDetailInfo',
+      )
+      .leftJoinAndSelect(
+        'member_strategy.operationMemberList',
         'operationMemberList',
-        'universal',
-        'histories', // 디테일 -- eager
-        // 'backtestWinRatio',  // lazy --
-        // 'backtestMontlyProfitRateChart',
-        // 'accumulateProfitRateChart',     // 일일 누적 - join 없이
-        // 'backtestDailyProfitRateChart', // 일일 수익실현 - join 없이
-      ],
-    });
+      )
+      .leftJoinAndSelect('member_strategy.universal', 'universal')
+      .leftJoinAndSelect('member_strategy.histories', 'histories')
+      // .leftJoinAndSelect('member_strategy.queueList', 'queueList')
+      .orderBy({
+        // 'member_strategy.histories.history_date': 'DESC',
+        // 'member_strategy.create_date': 'DESC',
+      })
+      .getOneOrFail();
+    //⚠
+    if (
+      memberStrategy &&
+      memberStrategy.histories &&
+      memberStrategy.histories.length >= 2
+    ) {
+      // ✅ TypeORM에서 @Column({ type: 'timestamptz' }) 은 Date로 반환한다.
+      // 메모리상에서는 객체이고, API 의 응답값으로는 Date 문자열로 치환되어 나간ㄷ.
+      // Typescript: Date.getTime()으로 밀리세컨들르 구해서 정렬
+      memberStrategy.histories = this.sortHistoryList(memberStrategy.histories);
+      // ✅ (정렬방법2) Date객체가 아니라, 문자열로 "2016-10-26T06:30:00.000Z" 주어진다면
+      // let [u, v] = [a.history_date.slice(0, 10), b.history_date.slice(0, 10)];
+      // u = u.split('-').reverse().join('');
+      // v = v.split('-').reverse().join('');
+      // return u > v ? 1 : u < v ? -1 : 0;
+    }
+
+    // const memberStrategy = await this.MemberStrategyRepo.findOneOrFail({
+    //   where: {
+    //     strategy_code,
+    //     open_yes_no: true,
+    //   },
+    //   relations: [
+    //     'hashList', // 기본 ----
+    //     'hashList.hash',
+    //     'investProfitInfo',
+    //     'backtestDetailInfo',
+    //     'operationMemberList',
+    //     'universal',
+    //     'histories', // 디테일 -- eager
+    //     // 'backtestWinRatio',  // lazy --
+    //     // 'backtestMontlyProfitRateChart',
+    //     // 'accumulateProfitRateChart',     // 일일 누적 - join 없이
+    //     // 'backtestDailyProfitRateChart', // 일일 수익실현 - join 없이
+    //   ],
+    //   order: {
+    //     histories: 'ASC',
+    //   },
+    // });
+
     return {
       ok: true,
       memberStrategy,
@@ -313,10 +360,27 @@ export class StrategyService {
         // 'backtestDailyProfitRateChart', // 일일 수익실현 - join 없이
       ],
     });
+
+    if (
+      memberStrategy &&
+      memberStrategy.histories &&
+      memberStrategy.histories.length >= 2
+    ) {
+      memberStrategy.histories = this.sortHistoryList(memberStrategy.histories);
+    }
+
     return {
       ok: true,
       memberStrategy,
     };
+  }
+
+  sortHistoryList(histories: History[]) {
+    histories = histories.sort((a, b) => {
+      let [u, v] = [a.history_date, b.history_date];
+      return v.getTime() - u.getTime();
+    });
+    return histories;
   }
 
   async __checkMyStrategy(
