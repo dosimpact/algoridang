@@ -122,13 +122,13 @@ export const atomBasicSetting = atom<IBasicSetting>({
 // 2.2 종목 관리 상태관리 - atom
 interface IUniversalSettingState {
   // 선택된 종목들
-  selectedCorporations: Corporation[];
+  selected: { selectedCorporations: Corporation }[];
   // 퀀트 필터들
 }
 export const atomUniversalSettingState = atom<IUniversalSettingState>({
   key: "UniversalSettingState",
   default: {
-    selectedCorporations: [],
+    selected: [],
   },
 });
 
@@ -139,8 +139,11 @@ export const selectedTickerElementListJSX = selector({
   key: "selectedTickerElementListJSX",
   get: ({ get }) => {
     const at = get(atomUniversalSettingState);
-    return at.selectedCorporations.map((data, idx) => (
-      <SelectedTickerButton key={idx} title={`${data.corp_name}`} />
+    return at.selected.map((data, idx) => (
+      <SelectedTickerButton
+        key={idx}
+        title={`${data.selectedCorporations.corp_name}`}
+      />
     ));
   },
 });
@@ -151,8 +154,11 @@ export const selectedMonoTickerSettingButtonListJSX = selector({
   key: "selectedMonoTickerSettingButtonListJSX",
   get: ({ get }) => {
     const at = get(atomUniversalSettingState);
-    return at.selectedCorporations.map((data, idx) => (
-      <MonoTickerSettingButton key={idx} title={`${data.corp_name}`} />
+    return at.selected.map((data, idx) => (
+      <MonoTickerSettingButton
+        key={idx}
+        title={`${data.selectedCorporations.corp_name}`}
+      />
     ));
   },
 });

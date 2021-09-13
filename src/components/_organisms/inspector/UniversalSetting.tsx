@@ -32,11 +32,11 @@ const UniversalSettingTabTickerSearch = () => {
   const handleWillDelTickerClick = () => {
     setUniversalSettingState((prev) => {
       const result = RemoveMultipleElements(
-        prev.selectedCorporations,
+        prev.selected,
         Array.from(willDelCorpIdxs.values())
       );
       // console.log(result);
-      return { ...prev, selectedCorporations: result };
+      return { ...prev, selected: result };
     });
     // willDelCorpIdxs
     setWillDelCorpIdxs(new Set<number>());
@@ -63,9 +63,9 @@ const UniversalSettingTabTickerSearch = () => {
             setUniversalSettingState((prev) => {
               return {
                 ...prev,
-                selectedCorporations: [
-                  ...prev.selectedCorporations,
-                  searchResultCorps[0],
+                selected: [
+                  ...prev.selected,
+                  { selectedCorporations: searchResultCorps[0] },
                 ],
               };
             });
@@ -76,9 +76,12 @@ const UniversalSettingTabTickerSearch = () => {
       <button onClick={handleWillDelTickerClick}>종목삭제</button>
       <div>선택된 종목 {willDelCorpIdxs.size} 개 삭제하기</div>
       <div>
-        {universalSettingState.selectedCorporations.map((corp, idx) => {
+        {universalSettingState.selected.map((data, idx) => {
           return (
-            <div style={{ display: "flex" }}>
+            <div
+              key={`willDel-${idx}${data.selectedCorporations.ticker}`}
+              style={{ display: "flex" }}
+            >
               <input
                 onClick={(e) => {
                   if (e.currentTarget.checked) {
@@ -90,11 +93,11 @@ const UniversalSettingTabTickerSearch = () => {
                     });
                   }
                 }}
-                id={`willDel-${idx}`}
+                id={`willDel-${idx}${data.selectedCorporations.ticker}`}
                 type="checkbox"
               ></input>
               <label htmlFor={`willDel-${idx}`}>
-                <div key={idx}>{corp.corp_name}</div>
+                <div key={idx}>{data.selectedCorporations.corp_name}</div>
               </label>
             </div>
           );

@@ -14,14 +14,14 @@ export interface Corporation {
   corp_name: string;
   // 1:N
   // (1) 회사의 일봉 데이터 리스트
-  dailyStocks: DailyStock[];
+  dailyStocks?: DailyStock[];
 
   // N:M
   // (1) 회사의 소속 카테고리 리스트
-  categoryList: CategoryList[];
+  categoryList?: CategoryList[];
 
   // (2) 이 회사를 참조하는 전략들
-  stragetyList: StockList[];
+  stragetyList?: StockList[];
 
   // (3) 이 회사를 히스토리로 가지는 전략들 리스트 (참조 안함)
 }
