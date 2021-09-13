@@ -101,8 +101,8 @@ export const financeApi = {
 
 export const tradingApi = {
   GET: {
-    getBaseTradingStrategy: () => axios.get(`trading/base/1`),
-    getBaseTradingStrategyList: () => axios.get(`trading/base`),
+    getBaseTradingStrategy: () => axios.get(`trading/technicals/1`),
+    getBaseTradingStrategyList: () => axios.get(`trading/technicals`),
   },
   POST: {},
   PATCH: {},

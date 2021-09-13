@@ -19,6 +19,9 @@ interface IFormBasicSetting {
 
 interface IBaseSettings extends IInspectorSettings {}
 
+/**
+ * 인스팩터 - 기본설정
+ */
 const BaseSettings: React.FC<IBaseSettings> = ({ headerTitle }) => {
   const [basicSetting, setBasicSetting] = useRecoilState(atomBasicSetting);
   const { register, watch } = useForm<IFormBasicSetting>({

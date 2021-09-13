@@ -153,7 +153,7 @@ const ScreatePropterties = () => {
         <div> {baseTradingStrategyListLoading && "loading..."} </div>
         <List>
           {baseTradingStrategyList &&
-            baseTradingStrategyList.map((i, idx) => (
+            baseTradingStrategyList.map((i: any, idx: any) => (
               <RadioItem
                 key={i.trading_strategy_code}
                 checked={idx === selectedNum}

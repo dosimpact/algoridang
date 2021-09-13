@@ -7,6 +7,7 @@ interface IMonoTickerSettingButton {
   title?: string;
 }
 
+// 대시보드 (col-2) : 개별 종목 매매전략 설정 및 매매전략상세설정 button
 const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
   children,
   title,
@@ -36,11 +37,12 @@ const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
 export default MonoTickerSettingButton;
 
 const SMonoTickerSettingButton = styled.section`
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 0.3fr 1fr;
   border: 1px solid black;
-  padding: 1rem;
-
   cursor: pointer;
+  min-height: 5rem;
+
   :hover {
     border: 1px solid red;
   }

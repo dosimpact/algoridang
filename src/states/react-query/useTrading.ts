@@ -1,14 +1,15 @@
 import { AxiosError, AxiosResponse } from "axios";
 import { useQuery } from "react-query";
 import { tradingApi } from "states/api";
-import { getBaseTradingStrategyListOutput } from "states/interface/trading/dtos";
+import { GetBaseTradingStrategyListOutput } from "states/interface/trading/dtos";
 
+// TODO 레거시 정리(옛날 Maker)
 const useTrading = () => {
   const {
     data: baseTradingStrategyList,
     isError: baseTradingStrategyListError,
     isLoading: baseTradingStrategyListLoading,
-  } = useQuery<{}, AxiosError, AxiosResponse<getBaseTradingStrategyListOutput>>(
+  } = useQuery<{}, AxiosError, AxiosResponse<GetBaseTradingStrategyListOutput>>(
     "getBaseTradingStrategyList",
     () => {
       return tradingApi.GET.getBaseTradingStrategyList();

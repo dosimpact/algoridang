@@ -7,15 +7,15 @@ import {
 } from "./entities";
 
 // query DTOs
-export interface getBaseTradingStrategyInput {
+export interface GetBaseTradingStrategyInput {
   trading_strategy_code: string;
 }
-export interface getBaseTradingStrategyOutput extends CoreOutput {
+export interface GetBaseTradingStrategyOutput extends CoreOutput {
   baseTradingStrategy?: BaseTradingStrategy;
 }
 
-export interface getBaseTradingStrategyListInput {}
-export interface getBaseTradingStrategyListOutput extends CoreOutput {
+export interface GetBaseTradingStrategyListInput {}
+export interface GetBaseTradingStrategyListOutput extends CoreOutput {
   baseTradingStrategyList?: BaseTradingStrategy[];
 }
 

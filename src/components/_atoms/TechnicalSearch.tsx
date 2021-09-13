@@ -5,30 +5,25 @@ import useCorporation from "states/react-query/finance/useCorporation";
 import styled from "styled-components";
 import { debouncing } from "utils/funcs";
 
-/**
- * 종목을 검색하는 컴포넌트
- */
-
-export type TickerSearchOnSuccessResult = {
+interface ITechnicalSearchInput {
+  term: string;
+}
+export type TechnicalSearchOnSuccessResult = {
   ticker: string;
   corp_name: string;
   corporations: Corporation[];
 };
-
-interface ITickerSearch {
-  // 종목 검색 성공시 콜백
-  onSuccess?: (e: TickerSearchOnSuccessResult) => void;
-  // 종목 검색 후 앤터를 눌렀을때 콜백
+interface ITechnicalSearch {
+  onSuccess?: (e: TechnicalSearchOnSuccessResult) => void;
   onKeyDownEnter?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
-const TickerSearch: React.FC<ITickerSearch> = ({
+const TechnicalSearch: React.FC<ITechnicalSearch> = ({
   onSuccess,
   onKeyDownEnter,
 }) => {
-  const { register, handleSubmit, setValue, control } = useForm<{
-    term: string;
-  }>();
+  const { register, handleSubmit, setValue, control } =
+    useForm<ITechnicalSearchInput>();
   const term = useWatch({ control, name: "term" });
   const { corporations, isLoading, refetch } = useCorporation({
     term,
@@ -47,7 +42,7 @@ const TickerSearch: React.FC<ITickerSearch> = ({
 
   // todo : refactor : error 표시
   return (
-    <STickerSearch>
+    <STechnicalSearch>
       <form
         onSubmit={handleSubmit((data) => {
           refetch();
@@ -76,13 +71,13 @@ const TickerSearch: React.FC<ITickerSearch> = ({
           : `검색 완료 : ${(corporations && corporations[0].corp_name) || ""}`}
       </div>
       {/* {JSON.stringify(corporations, null, 2)} */}
-    </STickerSearch>
+    </STechnicalSearch>
   );
 };
 
-export default TickerSearch;
+export default TechnicalSearch;
 
-const STickerSearch = styled.section`
+const STechnicalSearch = styled.section`
   margin-top: 3.7rem;
   width: 100%;
   .tickerInput {
