@@ -1,9 +1,9 @@
-import ChartMonthlyReturn from "components/data-display/ChartMonthlyReturn";
-import { SubTitle } from "components/_atoms/Typos";
-import React, { useMemo } from "react";
-import useBackTestReport from "states/react-query/backtest/useBackTestReport";
-import styled from "styled-components";
-import { toPercentage } from "utils/parse";
+import ChartMonthlyReturn from 'components/data-display/ChartMonthlyReturn';
+import { SubTitle } from 'components/_atoms/Typos';
+import React, { useMemo } from 'react';
+import useBackTestReport from 'states/react-query/backtest/useBackTestReport';
+import styled from 'styled-components';
+import { toPercentage } from 'utils/parse';
 
 interface IMonthlyReturn {
   strategyCode: string;
@@ -11,7 +11,7 @@ interface IMonthlyReturn {
 }
 
 const MonthlyReturn: React.FC<IMonthlyReturn> = ({ strategyCode, props }) => {
-  const { montlyProfitRateQuery } = useBackTestReport(strategyCode + "");
+  const { montlyProfitRateQuery } = useBackTestReport(strategyCode + '');
   // console.log("montlyProfitRateQuery", montlyProfitRateQuery);
 
   const data = useMemo(() => {
@@ -33,10 +33,10 @@ const MonthlyReturn: React.FC<IMonthlyReturn> = ({ strategyCode, props }) => {
   }, [montlyProfitRateQuery]);
   return (
     <SMonthlyReturn {...props}>
-      <div className="flexRow" style={{ marginTop: "50px" }}>
+      <div className="flexRow" style={{ marginTop: '50px' }}>
         <SubTitle
           title="백테스팅 월간 수익률 (%)"
-          style={{ margin: "20px 0px" }}
+          style={{ margin: '20px 0px' }}
         />
       </div>
       <ChartMonthlyReturn data={data} labels={labels} />

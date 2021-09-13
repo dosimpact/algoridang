@@ -1,11 +1,11 @@
-import { AxiosError, AxiosResponse } from "axios";
-import { useQuery } from "react-query";
-import { strategyApi } from "states/api";
+import { AxiosError, AxiosResponse } from 'axios';
+import { useQuery } from 'react-query';
+import { strategyApi } from 'states/api';
 import {
   GetStrategyListHighViewOutput,
   GetStrategyListNewOutput,
   GetStrategyListTypeOutput,
-} from "states/interface/strategy/dtos";
+} from 'states/interface/strategy/dtos';
 
 const useStrategy = () => {
   const {
@@ -13,7 +13,7 @@ const useStrategy = () => {
     isError: strategyListNewError,
     isLoading: strategyListNewLoading,
   } = useQuery<{}, AxiosError, AxiosResponse<GetStrategyListNewOutput>>(
-    "getStrategyListNew",
+    'getStrategyListNew',
     () => {
       return strategyApi.GET.getStrategyListNew();
     },
@@ -30,7 +30,7 @@ const useStrategy = () => {
       onSuccess: (e) => {
         // type : AxiosResponse<GetStrategyListNewOutput>>
       },
-    }
+    },
   );
 
   const {
@@ -38,7 +38,7 @@ const useStrategy = () => {
     isError: strategyListHighViewError,
     isLoading: strategyListHighViewLoading,
   } = useQuery<{}, AxiosError, AxiosResponse<GetStrategyListHighViewOutput>>(
-    "getStrategyListHighView",
+    'getStrategyListHighView',
     () => {
       return strategyApi.GET.getStrategyListHighView();
     },
@@ -55,7 +55,7 @@ const useStrategy = () => {
       onSuccess: (e) => {
         // type : AxiosResponse<GetStrategyListNewOutput>>
       },
-    }
+    },
   );
 
   const {
@@ -63,7 +63,7 @@ const useStrategy = () => {
     isError: strategyListTypeError,
     isLoading: strategyListTypeLoading,
   } = useQuery<{}, AxiosError, AxiosResponse<GetStrategyListTypeOutput>>(
-    "getStrategyListType",
+    'getStrategyListType',
     () => {
       return strategyApi.GET.getStrategyListType();
     },
@@ -80,7 +80,7 @@ const useStrategy = () => {
       onSuccess: (e) => {
         // type : AxiosResponse<GetStrategyListNewOutput>>
       },
-    }
+    },
   );
 
   return {

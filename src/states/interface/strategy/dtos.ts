@@ -1,6 +1,6 @@
-import { CreateInvestProfitInfoInput } from "../backtest/dtos";
-import { CoreOutput } from "../common/dtos";
-import { InvestType, MemberStrategy } from "./entities";
+import { CreateInvestProfitInfoInput } from '../backtest/dtos';
+import { CoreOutput } from '../common/dtos';
+import { InvestType, MemberStrategy } from './entities';
 
 // (GET) getStrategyListNew	(1) 신규 투자 전략 API
 export interface GetStrategyListNewInput {}

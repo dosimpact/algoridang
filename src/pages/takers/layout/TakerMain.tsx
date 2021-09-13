@@ -1,29 +1,29 @@
-import React, { useMemo } from "react";
-import MockInvest from "../mock-invest/mock-investC";
-import StrategySearch from "../strategy-search/strategy-searchC";
-import TickerSearch from "../ticker-search/ticker-searchC";
-import { Link, useHistory, useLocation } from "react-router-dom";
-import useMember from "states/react-query/useMember";
-import styled from "styled-components";
+import React, { useMemo } from 'react';
+import MockInvest from '../mock-invest/mock-investC';
+import StrategySearch from '../strategy-search/strategy-searchC';
+import TickerSearch from '../ticker-search/ticker-searchC';
+import { Link, useHistory, useLocation } from 'react-router-dom';
+import useMember from 'states/react-query/useMember';
+import styled from 'styled-components';
 import {
   IconMockInvest,
   IconPerson,
   IconSearchStrategy,
   IconSearchTicker,
-} from "assets/icons";
-import Helmet from "react-helmet";
-import useMobileSetting from "hooks/useMobileSetting";
-import { ErrorHandler } from "states/recoil/error-state";
+} from 'assets/icons';
+import Helmet from 'react-helmet';
+import useMobileSetting from 'hooks/useMobileSetting';
+import { ErrorHandler } from 'states/recoil/error-state';
 
 export const URLList = {
   tickerSearch: {
-    url: "/takers/ticker-search",
+    url: '/takers/ticker-search',
   },
   strategySearch: {
-    url: "/takers/strategy-search",
+    url: '/takers/strategy-search',
   },
   mockInvest: {
-    url: "/takers/mock-invest",
+    url: '/takers/mock-invest',
   },
 } as const;
 
@@ -37,8 +37,8 @@ const TopNavigation = () => {
   // TODO TEST
   const mockUpUserLogin = () => {
     logIn({
-      email_id: "ypd03008@gmail.com",
-      password: "ypd03008",
+      email_id: 'ypd03008@gmail.com',
+      password: 'ypd03008',
     });
   };
 
@@ -47,10 +47,10 @@ const TopNavigation = () => {
       <div
         className="logo"
         onClick={() => {
-          history.push("/takers");
+          history.push('/takers');
         }}
       >
-        {"알고\n리당"}
+        {'알고\n리당'}
       </div>
       <div className="authInfo">
         <span className="email">
@@ -229,7 +229,7 @@ const SNavItem = styled.li<{ selected?: boolean }>`
 
 const TakerMainSection = () => {
   return (
-    <section style={{ marginBottom: "7.8rem" }}>
+    <section style={{ marginBottom: '7.8rem' }}>
       <section>
         <TickerSearch />
       </section>
@@ -263,8 +263,8 @@ const TakerMainContainer = () => {
       <TopNavigation />
       <div
         style={{
-          paddingTop: "4.5rem",
-          paddingBottom: "8rem",
+          paddingTop: '4.5rem',
+          paddingBottom: '8rem',
         }}
       >
         <ErrorHandler>

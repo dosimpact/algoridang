@@ -1,6 +1,6 @@
-import { useQuery } from "react-query";
-import { financeApi } from "states/api";
-import { GetCorporationsWithTermOutput } from "states/interface/finance/dtos";
+import { useQuery } from 'react-query';
+import { financeApi } from 'states/api';
+import { GetCorporationsWithTermOutput } from 'states/interface/finance/dtos';
 
 interface IuseCorporationOption {
   term: string;
@@ -8,7 +8,7 @@ interface IuseCorporationOption {
 const useCorporation = ({ term }: IuseCorporationOption) => {
   const { data, isLoading, error, refetch } = useQuery(
     // Corporation 이라는 기본 키와, querystring이 바뀌면 다시 refetch하도록 키를 배열로 구성
-    ["Corporation", term],
+    ['Corporation', term],
     () => {
       // Axios 의 Promise를 리턴하는 부분
       return financeApi.GET.getCorporationsWithTerm({ term });
@@ -18,7 +18,7 @@ const useCorporation = ({ term }: IuseCorporationOption) => {
       cacheTime: 5 * 60 * 1000,
       onSuccess: () => {}, // 성공시 처리 eg) 파싱 등
       onError: () => {}, // 실패시 애러 핸들링 eg) 400처리 401처리
-    }
+    },
   );
   const corp = data?.data as GetCorporationsWithTermOutput;
   return {

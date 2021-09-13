@@ -1,5 +1,5 @@
-import React, { useLayoutEffect, useRef, useCallback } from "react";
-import { createChart, IChartApi } from "lightweight-charts";
+import React, { useLayoutEffect, useRef, useCallback } from 'react';
+import { createChart, IChartApi } from 'lightweight-charts';
 
 const Sample = () => {
   // refObject - JSX 컨테이너는 readonly ( usecallback에 의해 )
@@ -19,7 +19,7 @@ const Sample = () => {
           charApi.current.applyOptions({ width });
         }
       }
-    })
+    }),
   );
   // chart 컨테이너를 참조하는 함수
   const handleContainerRef = useCallback((node) => {
@@ -43,16 +43,16 @@ const Sample = () => {
       charApi.current = chart;
       const lineSeries = chart.addLineSeries();
       lineSeries.setData([
-        { time: "2019-04-11", value: 80.01 },
-        { time: "2019-04-12", value: 96.63 },
-        { time: "2019-04-13", value: 76.64 },
-        { time: "2019-04-14", value: 81.89 },
-        { time: "2019-04-15", value: 74.43 },
-        { time: "2019-04-16", value: 80.01 },
-        { time: "2019-04-17", value: 96.63 },
-        { time: "2019-04-18", value: 76.64 },
-        { time: "2019-04-19", value: 81.89 },
-        { time: "2019-04-20", value: 74.43 },
+        { time: '2019-04-11', value: 80.01 },
+        { time: '2019-04-12', value: 96.63 },
+        { time: '2019-04-13', value: 76.64 },
+        { time: '2019-04-14', value: 81.89 },
+        { time: '2019-04-15', value: 74.43 },
+        { time: '2019-04-16', value: 80.01 },
+        { time: '2019-04-17', value: 96.63 },
+        { time: '2019-04-18', value: 76.64 },
+        { time: '2019-04-19', value: 81.89 },
+        { time: '2019-04-20', value: 74.43 },
       ]);
     }
 

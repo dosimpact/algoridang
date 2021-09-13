@@ -37,7 +37,7 @@ export const debouncing = (cb: Function, ms: number) => {
 export const cloneObject = (obj: any) => {
   var clone = {} as any;
   for (var key in obj) {
-    if (typeof obj[key] === "object" && obj[key] != null) {
+    if (typeof obj[key] === 'object' && obj[key] != null) {
       clone[key] = cloneObject(obj[key]);
     } else {
       clone[key] = obj[key];

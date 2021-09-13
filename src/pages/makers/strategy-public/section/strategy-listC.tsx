@@ -1,5 +1,5 @@
-import StrategyList from "components/strategy/strategy-maker-list";
-import React from "react";
+import StrategyList from 'components/strategy/strategy-maker-list';
+import React from 'react';
 
 const StrategyListC = () => {
   return (

@@ -1,18 +1,18 @@
-import React, { useMemo, useState, useCallback, useEffect } from "react";
-import TickerSearch from "components/_atoms/TickerSearch";
-import LineSeriesChart from "components/light-weight/LineSeriesChart";
-import { useRecoilState } from "recoil";
-import useDailyStock from "states/react-query/finance/useDailyStock";
-import { atomCorporationState } from "states/recoil/corporation";
-import styled from "styled-components";
-import WingBlank from "components/_atoms/WingBlank";
-import BadgePriceDelta from "components/_atoms/BadgePriceDelta";
+import React, { useMemo, useState, useCallback, useEffect } from 'react';
+import TickerSearch from 'components/_atoms/TickerSearch';
+import LineSeriesChart from 'components/light-weight/LineSeriesChart';
+import { useRecoilState } from 'recoil';
+import useDailyStock from 'states/react-query/finance/useDailyStock';
+import { atomCorporationState } from 'states/recoil/corporation';
+import styled from 'styled-components';
+import WingBlank from 'components/_atoms/WingBlank';
+import BadgePriceDelta from 'components/_atoms/BadgePriceDelta';
 
 // todo:refator onSuccess등 콜백함수에 usecallback안써도 되도록 하기
 const TickerPrice = () => {
   const [corporation, setCorporation] = useRecoilState(atomCorporationState);
   // const [corporation, setCorporation] = useState<{ticker:string}>("005930");
-  const { dayilStocks } = useDailyStock(corporation.ticker, 365, 0, "ASC");
+  const { dayilStocks } = useDailyStock(corporation.ticker, 365, 0, 'ASC');
   const [price, setPrice] = useState(0);
 
   const datas = useMemo(() => {
@@ -55,7 +55,7 @@ const TickerPrice = () => {
                 setCorporation({ corp_name, ticker });
               }
             },
-            [setCorporation]
+            [setCorporation],
           )}
         />
       </WingBlank>

@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
-import { useForm, useWatch } from "react-hook-form";
-import { Corporation } from "states/interface/finance/entities";
-import useCorporation from "states/react-query/finance/useCorporation";
-import styled from "styled-components";
-import { debouncing } from "utils/funcs";
+import React, { useEffect } from 'react';
+import { useForm, useWatch } from 'react-hook-form';
+import { Corporation } from 'states/interface/finance/entities';
+import useCorporation from 'states/react-query/finance/useCorporation';
+import styled from 'styled-components';
+import { debouncing } from 'utils/funcs';
 
 /**
  * 종목을 검색하는 컴포넌트
@@ -29,7 +29,7 @@ const TickerSearch: React.FC<ITickerSearch> = ({
   const { register, handleSubmit, setValue, control } = useForm<{
     term: string;
   }>();
-  const term = useWatch({ control, name: "term" });
+  const term = useWatch({ control, name: 'term' });
   const { corporations, isLoading, refetch } = useCorporation({
     term,
   });
@@ -58,22 +58,22 @@ const TickerSearch: React.FC<ITickerSearch> = ({
           type="text"
           placeholder="코드,기업명을 입력해주세요"
           autoComplete="off"
-          {...register("term", { required: true })}
+          {...register('term', { required: true })}
           onChange={debouncing((e: React.ChangeEvent<HTMLInputElement>) => {
-            setValue("term", e.target.value);
+            setValue('term', e.target.value);
           }, 100)}
           onKeyDown={(e) => {
-            if (e.key === "Enter" && onKeyDownEnter) {
+            if (e.key === 'Enter' && onKeyDownEnter) {
               onKeyDownEnter(e);
             }
           }}
         ></input>
       </form>
       {/* <div>{error && "error..."}</div> */}
-      <div style={{ marginTop: "1rem" }}>
+      <div style={{ marginTop: '1rem' }}>
         {corporations?.length === 0 || isLoading
-          ? "종목없음"
-          : `검색 완료 : ${(corporations && corporations[0].corp_name) || ""}`}
+          ? '종목없음'
+          : `검색 완료 : ${(corporations && corporations[0].corp_name) || ''}`}
       </div>
       {/* {JSON.stringify(corporations, null, 2)} */}
     </STickerSearch>

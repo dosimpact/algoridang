@@ -1,5 +1,5 @@
-import { Corporation } from "../finance/entities";
-import { MemberStrategy } from "../strategy/entities";
+import { Corporation } from '../finance/entities';
+import { MemberStrategy } from '../strategy/entities';
 
 export interface BaseTradingStrategy {
   trading_strategy_code: string;
@@ -8,9 +8,9 @@ export interface BaseTradingStrategy {
 }
 
 export enum StrategyName {
-  None = "None",
-  GoldenCross = "GoldenCross",
-  SMA = "SMA",
+  None = 'None',
+  GoldenCross = 'GoldenCross',
+  SMA = 'SMA',
 }
 
 export interface StrategyValue {

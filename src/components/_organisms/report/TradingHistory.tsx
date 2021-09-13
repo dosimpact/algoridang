@@ -1,9 +1,9 @@
-import { Box } from "components/_atoms/Box";
-import { SubTitle } from "components/_atoms/Typos";
-import WhiteSpace from "components/_atoms/WhiteSpace";
-import React from "react";
-import styled from "styled-components";
-import HistoryTable from "../../data-display/HistoryTable";
+import { Box } from 'components/_atoms/Box';
+import { SubTitle } from 'components/_atoms/Typos';
+import WhiteSpace from 'components/_atoms/WhiteSpace';
+import React from 'react';
+import styled from 'styled-components';
+import HistoryTable from '../../data-display/HistoryTable';
 
 interface ITradingHistory {
   title: string;
@@ -47,13 +47,13 @@ const TradingHistory: React.FC<ITradingHistory> = ({
   return (
     <STradingHistory
       className="articleHistory"
-      style={{ marginBottom: "100px" }}
+      style={{ marginBottom: '100px' }}
     >
       <div className="flexRowSBt">
-        <SubTitle title={title} style={{ margin: "20px 0px" }} />
+        <SubTitle title={title} style={{ margin: '20px 0px' }} />
         <Box
           type="normal"
-          style={{ width: "10rem", fontSize: "1.2rem" }}
+          style={{ width: '10rem', fontSize: '1.2rem' }}
           onClick={handleToogleTake}
         >
           {take} 개씩보기

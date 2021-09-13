@@ -1,11 +1,11 @@
-import { MemberInfo } from "./interface/member/entities";
+import { MemberInfo } from './interface/member/entities';
 
 export enum IItemsKeys {
-  memberInfo = "memberInfo",
+  memberInfo = 'memberInfo',
 }
 
 export const getLocalMemberInfo = () =>
-  JSON.parse(localStorage.getItem(IItemsKeys.memberInfo) || "{}") as MemberInfo;
+  JSON.parse(localStorage.getItem(IItemsKeys.memberInfo) || '{}') as MemberInfo;
 
 export const setLocalMemberInfo = (memberInfo: MemberInfo) =>
   localStorage.setItem(IItemsKeys.memberInfo, JSON.stringify(memberInfo));

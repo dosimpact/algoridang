@@ -1,12 +1,12 @@
-import { AxiosError, AxiosResponse } from "axios";
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import { memberApi } from "states/api";
+import { AxiosError, AxiosResponse } from 'axios';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { memberApi } from 'states/api';
 import {
   LoginMemberInfoInput,
   LoginMemberInfoOutput,
   MeOutput,
-} from "states/interface/member/dtos";
-import { setLocalMemberInfo } from "states/local-state";
+} from 'states/interface/member/dtos';
+import { setLocalMemberInfo } from 'states/local-state';
 
 //  Query
 // (1) 나의 정보를 받는
@@ -18,10 +18,10 @@ import { setLocalMemberInfo } from "states/local-state";
 const useMember = () => {
   const queryClient = useQueryClient();
   const refresh = () => {
-    queryClient.invalidateQueries("me");
+    queryClient.invalidateQueries('me');
   };
   const me = useQuery<AxiosResponse<MeOutput>, AxiosError, MeOutput>(
-    "me",
+    'me',
     () => {
       return memberApi.GET.me();
     },
@@ -29,20 +29,20 @@ const useMember = () => {
       select: (data) => {
         return data.data;
       },
-    }
+    },
   );
 
   //LoginMemberInfoOutput
   // AxiosError
   // LoginMemberInfoInput
   const logInMutation = useMutation(
-    "login",
+    'login',
     (body: LoginMemberInfoInput) => {
       return memberApi.POST.loginMemberInfo(body);
     },
     {
       onSuccess: (result) => {
-        console.log("onSuccess", result);
+        console.log('onSuccess', result);
         const data = result.data as LoginMemberInfoOutput;
         setLocalMemberInfo({ token: data.token });
         refresh();
@@ -53,14 +53,14 @@ const useMember = () => {
           console.log(error?.response.status);
           console.log(error?.response.headers);
         } else if (error?.request) {
-          console.log("서버 무응답");
+          console.log('서버 무응답');
         }
       },
-    }
+    },
   );
 
   const logOut = () => {
-    setLocalMemberInfo({ token: "" });
+    setLocalMemberInfo({ token: '' });
   };
 
   return {

@@ -1,10 +1,10 @@
-import { AxiosError, AxiosResponse } from "axios";
-import { useMutation } from "react-query";
-import { backtestApi } from "states/api";
+import { AxiosError, AxiosResponse } from 'axios';
+import { useMutation } from 'react-query';
+import { backtestApi } from 'states/api';
 import {
   PushBackTestQInput,
   PushBackTestQOutput,
-} from "states/interface/backtest/entities";
+} from 'states/interface/backtest/entities';
 
 const useBackTestMutation = () => {
   // <TData 출력데이터 + Axios응답, TError 애러 데이터 ,TVariables input body 데이터>

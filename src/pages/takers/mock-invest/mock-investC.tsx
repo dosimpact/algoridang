@@ -1,10 +1,10 @@
-import React from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
-import MockInvestCreate from "./section/mock-invest-create";
-import MockInvestDetail from "./section/mock-invest-detail";
-import MockInvestFeed from "./section/mock-invest-feeds";
-import MockInvestReport from "./section/mock-invest-report";
-import MockInvestUpdate from "./section/mock-invest-update";
+import React from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import MockInvestCreate from './section/mock-invest-create';
+import MockInvestDetail from './section/mock-invest-detail';
+import MockInvestFeed from './section/mock-invest-feeds';
+import MockInvestReport from './section/mock-invest-report';
+import MockInvestUpdate from './section/mock-invest-update';
 
 const MockInvestC = () => {
   // 유저아이디로, 전략을 운용 하려고 한다.
@@ -24,32 +24,32 @@ const MockInvestC = () => {
         {/* default mock-invest page section */}
         <Route
           exact
-          path={process.env.PUBLIC_URL + "/takers/mock-invest"}
+          path={process.env.PUBLIC_URL + '/takers/mock-invest'}
           component={MockInvestFeed}
         />
         <Route
           exact
-          path={process.env.PUBLIC_URL + "/takers/mock-invest/details/:id"}
+          path={process.env.PUBLIC_URL + '/takers/mock-invest/details/:id'}
           component={MockInvestDetail}
         />
         <Route
           exact
-          path={process.env.PUBLIC_URL + "/takers/mock-invest/report/:id"}
+          path={process.env.PUBLIC_URL + '/takers/mock-invest/report/:id'}
           component={MockInvestReport}
         />
         <Route
           exact
-          path={process.env.PUBLIC_URL + "/takers/mock-invest/create/:id/"}
+          path={process.env.PUBLIC_URL + '/takers/mock-invest/create/:id/'}
           component={MockInvestCreate}
         />
         <Route
           exact
-          path={process.env.PUBLIC_URL + "/takers/mock-invest/update/:id"}
+          path={process.env.PUBLIC_URL + '/takers/mock-invest/update/:id'}
           component={MockInvestUpdate}
         />
         <Redirect
-          from={process.env.PUBLIC_URL + "/takers/mock-invest"}
-          to={process.env.PUBLIC_URL + "/takers/mock-invest"}
+          from={process.env.PUBLIC_URL + '/takers/mock-invest'}
+          to={process.env.PUBLIC_URL + '/takers/mock-invest'}
         />
       </Switch>
     </>

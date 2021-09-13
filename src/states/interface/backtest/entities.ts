@@ -1,6 +1,6 @@
-import { CoreOutput } from "../common/dtos";
-import { Corporation } from "../finance/entities";
-import { MemberStrategy } from "../strategy/entities";
+import { CoreOutput } from '../common/dtos';
+import { Corporation } from '../finance/entities';
+import { MemberStrategy } from '../strategy/entities';
 
 // 운용 셋팅
 export interface InvestProfitInfo {
@@ -38,11 +38,11 @@ export interface BacktestWinRatio {
   loss_count: number;
 }
 export enum BacktestState {
-  New = "New", // 생성
-  Ready = "Ready", // 진입 & 대기중
-  Running = "Running", // 작업중
-  Success = "Success", // 완료
-  Error = "Error", // 애러
+  New = 'New', // 생성
+  Ready = 'Ready', // 진입 & 대기중
+  Running = 'Running', // 작업중
+  Success = 'Success', // 완료
+  Error = 'Error', // 애러
 }
 
 export interface BacktestQueue {

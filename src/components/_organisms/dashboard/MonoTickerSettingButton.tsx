@@ -1,10 +1,10 @@
-import React from "react";
-import { useRecoilState } from "recoil";
+import React from 'react';
+import { useRecoilState } from 'recoil';
 import {
   atomInspector,
   atomUniversalSettingState,
-} from "states/recoil/strategy-create";
-import styled from "styled-components";
+} from 'states/recoil/strategy-create';
+import styled from 'styled-components';
 
 interface IMonoTickerSettingButton {
   title?: string;
@@ -20,20 +20,20 @@ const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
   const [inspector, setInspector] = useRecoilState(atomInspector);
 
   const handleClickTicker = () => {
-    setInspector((prev) => ({ ...prev, inspectorType: "tradingSetting" }));
+    setInspector((prev) => ({ ...prev, inspectorType: 'tradingSetting' }));
   };
 
   const handleClickTradingSetting = () => {
     setInspector((prev) => ({
       ...prev,
-      inspectorType: "tradingPropertySetting",
+      inspectorType: 'tradingPropertySetting',
     }));
   };
 
   return (
     <SMonoTickerSettingButton>
       <div onClick={handleClickTicker}>{title}</div>
-      <div>{" > "}</div>
+      <div>{' > '}</div>
       <div onClick={handleClickTradingSetting}>매매전략 선택</div>
     </SMonoTickerSettingButton>
   );

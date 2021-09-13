@@ -2,14 +2,14 @@
  * Query
  */
 
-import { CoreOutput } from "../common/dtos";
+import { CoreOutput } from '../common/dtos';
 import {
   AccumulateProfitRateChart,
   BacktestDailyProfitRateChart,
   BacktestMontlyProfitRateChart,
   BacktestWinRatio,
   History,
-} from "./entities";
+} from './entities';
 
 // 전략에 대한 히스토리 획득
 export interface GetHistoryListInput {

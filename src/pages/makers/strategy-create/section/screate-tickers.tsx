@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { Button, List, Checkbox, Icon } from "antd-mobile";
-import TickerSearch from "components/_atoms/TickerSearch";
-import { Corporation } from "states/interface/finance/entities";
-import { useRecoilState } from "recoil";
-import { atomStrategyState } from "states/recoil/strategy";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { Button, List, Checkbox, Icon } from 'antd-mobile';
+import TickerSearch from 'components/_atoms/TickerSearch';
+import { Corporation } from 'states/interface/finance/entities';
+import { useRecoilState } from 'recoil';
+import { atomStrategyState } from 'states/recoil/strategy';
 
 const CheckboxItem = Checkbox.CheckboxItem;
 
@@ -49,13 +49,13 @@ const ScreateTickers = () => {
         <List>
           {searched.map((e) => (
             <CheckboxItem
-              key={"1" + e.corp_name}
+              key={'1' + e.corp_name}
               onChange={(event: any) => {
                 if (event?.target?.checked) {
                   setSelected((prev) => [...prev, e]);
                 } else {
                   setSelected((prev) =>
-                    prev.filter((corp) => corp.corp_name !== e.corp_name)
+                    prev.filter((corp) => corp.corp_name !== e.corp_name),
                   );
                 }
               }}
@@ -67,25 +67,25 @@ const ScreateTickers = () => {
       </article>
       <article className="articleCol buttonCol">
         <div className="wrapper">
-          <div className="flexCenter" style={{ margin: "0.5rem" }}>
+          <div className="flexCenter" style={{ margin: '0.5rem' }}>
             <Icon size="lg" type="right" />
           </div>
           <Button type="primary">선택 추가</Button>
           <Button type="warning">선택 삭제</Button>
-          <div className="flexCenter" style={{ margin: "0.5rem" }}>
+          <div className="flexCenter" style={{ margin: '0.5rem' }}>
             <Icon size="lg" type="left" />
           </div>
         </div>
       </article>
       <article className="articleCol selectedCol">
-        <div style={{ height: "5rem" }}></div>
+        <div style={{ height: '5rem' }}></div>
         <div className="flexRow">
           <Button className="btn">전체 선택</Button>
         </div>
         <div>*MVP - 가장 처음 종목 1개만 전략에 추가할 수 있습니다.</div>
         <List>
           {selected.map((e) => (
-            <CheckboxItem key={"2" + e.corp_name} onChange={() => {}}>
+            <CheckboxItem key={'2' + e.corp_name} onChange={() => {}}>
               <span className="companyCode">{e.ticker}</span> {e.corp_name}
             </CheckboxItem>
           ))}

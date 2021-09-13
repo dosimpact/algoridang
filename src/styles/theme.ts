@@ -1,4 +1,4 @@
-import { css } from "styled-components";
+import { css } from 'styled-components';
 
 const hoverBox = css`
   background-color: white;
@@ -27,43 +27,43 @@ const Theme = {
   //CSSMixin
 
   // MainColor&
-  ColorMainWhite: "#FFFFFF",
-  ColorMainLightGray: "#ECECEC",
-  ColorMainGray: "#7A7A7A",
-  ColorMainDarkGray: "#87847D",
-  ColorMainLightYellow: "#FFFEF3",
-  ColorMainYellow: "#F3BC2F",
-  ColorMainLightBlue: " rgba(7, 156, 255, 0.14)",
-  ColorMainBlue: "#079CFF",
-  ColorMainLightRed: "#FFF3F3",
-  ColorMainRed: "#FF0000",
-  ColorMainLightGreen: "#D8FFDE",
-  ColorMainGreen: "#04BE00",
+  ColorMainWhite: '#FFFFFF',
+  ColorMainLightGray: '#ECECEC',
+  ColorMainGray: '#7A7A7A',
+  ColorMainDarkGray: '#87847D',
+  ColorMainLightYellow: '#FFFEF3',
+  ColorMainYellow: '#F3BC2F',
+  ColorMainLightBlue: ' rgba(7, 156, 255, 0.14)',
+  ColorMainBlue: '#079CFF',
+  ColorMainLightRed: '#FFF3F3',
+  ColorMainRed: '#FF0000',
+  ColorMainLightGreen: '#D8FFDE',
+  ColorMainGreen: '#04BE00',
   // Color*
-  ColorMain: "gray",
-  ColorDark: "#263238",
-  ColorWhite: "#ffffff",
-  ColorGrayL1: "#ECECEC",
-  ColorGray: "#546E7A",
-  ColorGrayD1: "#87847D",
-  ColorRed: "#FF5151",
-  ColorBlue: "#5193FF",
-  ColorYellow: "#F3BC2F",
+  ColorMain: 'gray',
+  ColorDark: '#263238',
+  ColorWhite: '#ffffff',
+  ColorGrayL1: '#ECECEC',
+  ColorGray: '#546E7A',
+  ColorGrayD1: '#87847D',
+  ColorRed: '#FF5151',
+  ColorBlue: '#5193FF',
+  ColorYellow: '#F3BC2F',
   // fontSize*
-  FontSizeSm: "1.3rem",
-  FontSizeMd: "1.4rem",
-  FontSizeLg: "1.6rem",
-  FontSizeXlg: "1.9rem",
-  FontSizeXXlg: "2.3rem",
+  FontSizeSm: '1.3rem',
+  FontSizeMd: '1.4rem',
+  FontSizeLg: '1.6rem',
+  FontSizeXlg: '1.9rem',
+  FontSizeXXlg: '2.3rem',
   // border
-  Border: "1PX solid #ddd",
+  Border: '1PX solid #ddd',
   /*breakpoints */
   breakpoints: {
-    xs: "0px",
-    sm: "576px",
-    md: "768px",
-    lg: "992px",
-    xl: "1200px",
+    xs: '0px',
+    sm: '576px',
+    md: '768px',
+    lg: '992px',
+    xl: '1200px',
   },
 };
 

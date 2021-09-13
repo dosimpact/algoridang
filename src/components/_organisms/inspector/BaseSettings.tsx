@@ -1,9 +1,9 @@
-import InspectorHeaderDetail from "components/_molecules/inspector/InspectorHeaderDetail";
-import React from "react";
-import { useForm } from "react-hook-form";
-import { useRecoilState } from "recoil";
-import { atomBasicSetting } from "states/recoil/strategy-create";
-import { IInspectorSettings } from "./index";
+import InspectorHeaderDetail from 'components/_molecules/inspector/InspectorHeaderDetail';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { useRecoilState } from 'recoil';
+import { atomBasicSetting } from 'states/recoil/strategy-create';
+import { IInspectorSettings } from './index';
 
 interface IFormBasicSetting {
   strategy_name: string; // 전략 이름
@@ -27,7 +27,7 @@ const BaseSettings: React.FC<IBaseSettings> = ({ headerTitle }) => {
   const { register, watch } = useForm<IFormBasicSetting>({
     defaultValues: {
       ...basicSetting,
-      tags: basicSetting.tags.join(" "),
+      tags: basicSetting.tags.join(' '),
     },
   });
 
@@ -38,7 +38,7 @@ const BaseSettings: React.FC<IBaseSettings> = ({ headerTitle }) => {
       setBasicSetting((prev) => ({
         ...prev,
         ...value,
-        tags: value.tags.split(" "),
+        tags: value.tags.split(' '),
         open_yes_no: value.open_yes_no,
       }));
     });
@@ -49,39 +49,39 @@ const BaseSettings: React.FC<IBaseSettings> = ({ headerTitle }) => {
 
   return (
     <div>
-      <InspectorHeaderDetail headerTitle={headerTitle || "BaseSettings"} />
+      <InspectorHeaderDetail headerTitle={headerTitle || 'BaseSettings'} />
       BaseSettings
       <form>
         <div>전략 이름</div>
-        <input {...register("strategy_name")} placeholder="전략 이름"></input>
+        <input {...register('strategy_name')} placeholder="전략 이름"></input>
         <div>전략 설명</div>
         <input
-          {...register("strategy_explanation")}
+          {...register('strategy_explanation')}
           placeholder="전략 설명"
         ></input>
         <div>태그</div>
-        <input {...register("tags")} placeholder="태그"></input>
+        <input {...register('tags')} placeholder="태그"></input>
         <div>운용자금</div>
-        <input {...register("invest_principal")} placeholder="운용자금"></input>
+        <input {...register('invest_principal')} placeholder="운용자금"></input>
         <div>백테스트 시작 날짜</div>
         <input
           type="date"
-          {...register("invest_start_date")}
+          {...register('invest_start_date')}
           placeholder="전략이름"
         ></input>
         <div>수수료</div>
         <input
-          {...register("securities_corp_fee")}
+          {...register('securities_corp_fee')}
           placeholder="수수료"
         ></input>
         <div>공개 범위</div>
         <select
-          {...register("open_yes_no", {
-            setValueAs: (v) => (v === "true" ? true : false),
+          {...register('open_yes_no', {
+            setValueAs: (v) => (v === 'true' ? true : false),
           })}
         >
-          <option value={"true"}>public</option>
-          <option value={"false"}>private</option>
+          <option value={'true'}>public</option>
+          <option value={'false'}>private</option>
         </select>
       </form>
     </div>

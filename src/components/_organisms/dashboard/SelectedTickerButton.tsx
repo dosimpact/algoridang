@@ -1,7 +1,7 @@
-import React from "react";
-import { useRecoilState } from "recoil";
-import { atomInspector } from "states/recoil/strategy-create";
-import styled from "styled-components";
+import React from 'react';
+import { useRecoilState } from 'recoil';
+import { atomInspector } from 'states/recoil/strategy-create';
+import styled from 'styled-components';
 
 export interface ISelectedTickerButton {
   title?: string;
@@ -12,13 +12,13 @@ const SelectedTickerButton: React.FC<ISelectedTickerButton> = ({ title }) => {
   const [inspector, setInspector] = useRecoilState(atomInspector);
 
   const handleClickTicker = () => {
-    setInspector((prev) => ({ ...prev, inspectorType: "tradingSetting" }));
+    setInspector((prev) => ({ ...prev, inspectorType: 'tradingSetting' }));
   };
 
   return (
     <SSelectedTickerButton onClick={handleClickTicker}>
       <div>로고</div>
-      <div> {(title && title) || "title"}</div>
+      <div> {(title && title) || 'title'}</div>
       <div>변화율</div>
     </SSelectedTickerButton>
   );

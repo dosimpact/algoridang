@@ -1,8 +1,8 @@
-import ReportTable from "components/_molecules/report/ReportTable";
-import { SubTitle } from "components/_atoms/Typos";
-import React from "react";
-import styled from "styled-components";
-import WhiteSpace from "components/_atoms/WhiteSpace";
+import ReportTable from 'components/_molecules/report/ReportTable';
+import { SubTitle } from 'components/_atoms/Typos';
+import React from 'react';
+import styled from 'styled-components';
+import WhiteSpace from 'components/_atoms/WhiteSpace';
 
 interface Indexable {
   [idx: string]: string;
@@ -23,10 +23,10 @@ const DetailSummary: React.FC<IDetailSummary> = ({
     <SDetailSummary
       {...props}
       className="articleDetailSummary"
-      style={{ marginBottom: "100px" }}
+      style={{ marginBottom: '100px' }}
     >
-      <div className="flexRow" style={{ marginTop: "50px" }}>
-        <SubTitle title="상세 투자 정보" style={{ margin: "20px 0px" }} />
+      <div className="flexRow" style={{ marginTop: '50px' }}>
+        <SubTitle title="상세 투자 정보" style={{ margin: '20px 0px' }} />
       </div>
       <WhiteSpace />
       <ReportTable body={body} header={header} />

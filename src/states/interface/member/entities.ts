@@ -1,8 +1,8 @@
-import { MemberStrategy } from "../strategy/entities";
+import { MemberStrategy } from '../strategy/entities';
 
 export enum UserRole {
-  Normal = "Normal",
-  Admin = "Admin",
+  Normal = 'Normal',
+  Admin = 'Admin',
 }
 
 export interface MemberInfo {

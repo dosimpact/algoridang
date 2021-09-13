@@ -1,14 +1,14 @@
-import axios from "axios";
-import { getLocalMemberInfo } from "states/local-state";
-import { PushBackTestQInput } from "./interface/backtest/entities";
+import axios from 'axios';
+import { getLocalMemberInfo } from 'states/local-state';
+import { PushBackTestQInput } from './interface/backtest/entities';
 import {
   GetCorporationInput,
   GetCorporationsWithTermInput,
   GetDayilStocksInput,
-} from "./interface/finance/dtos";
-import { LoginMemberInfoInput } from "./interface/member/dtos";
-import { CreateMyStrategyInput } from "./interface/strategy/dtos";
-import { AddUniversalInput } from "./interface/trading/dtos";
+} from './interface/finance/dtos';
+import { LoginMemberInfoInput } from './interface/member/dtos';
+import { CreateMyStrategyInput } from './interface/strategy/dtos';
+import { AddUniversalInput } from './interface/trading/dtos';
 
 // base setttings ,  interceptors
 
@@ -16,10 +16,10 @@ axios.defaults.baseURL = process.env.REACT_APP_SERVER_URI;
 
 // jwt 토큰
 axios.interceptors.request.use(async (config) => {
-  if (!config.headers["x-jwt"] && getLocalMemberInfo()?.token) {
-    config.headers["x-jwt"] = getLocalMemberInfo()?.token;
+  if (!config.headers['x-jwt'] && getLocalMemberInfo()?.token) {
+    config.headers['x-jwt'] = getLocalMemberInfo()?.token;
   }
-  config.headers["Content-Type"] = "application/json";
+  config.headers['Content-Type'] = 'application/json';
   return config;
 });
 
@@ -27,11 +27,11 @@ axios.interceptors.request.use(async (config) => {
 
 export const memberApi = {
   GET: {
-    me: () => axios.get("member/me"),
+    me: () => axios.get('member/me'),
   },
   POST: {
     loginMemberInfo: (body: LoginMemberInfoInput) =>
-      axios.post("member/loginMemberInfo", body),
+      axios.post('member/loginMemberInfo', body),
   },
   PATCH: {},
   DELETE: {},
@@ -41,19 +41,19 @@ export const memberApi = {
 export const strategyApi = {
   GET: {
     getStrategyListNew: () => {
-      return axios.get("strategies?type=new");
+      return axios.get('strategies?type=new');
     },
     getStrategyListHighView: () => {
-      return axios.get("strategies?type=high-view");
+      return axios.get('strategies?type=high-view');
     },
     getStrategyListType: () => {
-      return axios.get("strategies/invest-type");
+      return axios.get('strategies/invest-type');
     },
     getStrategyById: (strategy_code: string) => {
       return axios.get(`strategies/${strategy_code}`);
     },
     getMyStrategyList: () => {
-      return axios.get("strategies/my");
+      return axios.get('strategies/my');
     },
     getMyStrategyById: (strategy_code: string) => {
       return axios.get(`strategies/my/${strategy_code}`);

@@ -1,8 +1,8 @@
-import React, { useMemo } from "react";
-import { AxiosError, AxiosResponse } from "axios";
-import { useQuery } from "react-query";
-import { strategyApi } from "states/api";
-import { GetStrategyByIdOutput } from "states/interface/strategy/dtos";
+import React, { useMemo } from 'react';
+import { AxiosError, AxiosResponse } from 'axios';
+import { useQuery } from 'react-query';
+import { strategyApi } from 'states/api';
+import { GetStrategyByIdOutput } from 'states/interface/strategy/dtos';
 
 const useStrategyDetail = (strategy_code: string) => {
   // 타이핑
@@ -15,7 +15,7 @@ const useStrategyDetail = (strategy_code: string) => {
     AxiosError,
     GetStrategyByIdOutput
   >(
-    ["getStrategyById", strategy_code],
+    ['getStrategyById', strategy_code],
     () => {
       return strategyApi.GET.getStrategyById(strategy_code);
     },
@@ -33,13 +33,13 @@ const useStrategyDetail = (strategy_code: string) => {
       onSuccess: (e) => {
         // type : AxiosResponse<GetStrategyListNewOutput>>
       },
-    }
+    },
   );
 
   // 받아온 데이터중 memberStrategy 에 관한 데이터 메모
   const memberStrategy = useMemo(
     () => strategyDetailQuery?.data?.memberStrategy,
-    [strategyDetailQuery?.data]
+    [strategyDetailQuery?.data],
   );
   // const backtestDetailInfo = useMemo(
   //   () => strategyDetailQuery?.data?.memberStrategy?.backtestDetailInfo,
@@ -52,12 +52,12 @@ const useStrategyDetail = (strategy_code: string) => {
       strategyDetailQuery?.data?.memberStrategy.universal &&
       strategyDetailQuery?.data?.memberStrategy?.universal.length >= 1 &&
       strategyDetailQuery?.data?.memberStrategy?.universal[0],
-    [strategyDetailQuery?.data]
+    [strategyDetailQuery?.data],
   );
 
   const investProfitInfo = useMemo(
     () => strategyDetailQuery?.data?.memberStrategy?.investProfitInfo,
-    [strategyDetailQuery?.data]
+    [strategyDetailQuery?.data],
   );
 
   const histories = useMemo(
@@ -66,7 +66,7 @@ const useStrategyDetail = (strategy_code: string) => {
         ...history,
         history_date: String(history.history_date).substr(0, 10),
       })),
-    [strategyDetailQuery?.data]
+    [strategyDetailQuery?.data],
   );
   // console.log("histories", histories);
   // console.log("investProfitInfo", investProfitInfo);

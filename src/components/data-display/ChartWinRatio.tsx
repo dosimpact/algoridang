@@ -1,14 +1,14 @@
-import React from "react";
-import { Bar } from "react-chartjs-2";
+import React from 'react';
+import { Bar } from 'react-chartjs-2';
 const options = {
   responsive: true,
   maintainAspectRatio: true,
   //tooltips 사용시
-  indexAxis: "y",
+  indexAxis: 'y',
   tooltips: {
     enabled: true,
-    mode: "nearest",
-    position: "average",
+    mode: 'nearest',
+    position: 'average',
     intersect: false,
   },
   scales: {
@@ -18,9 +18,9 @@ const options = {
         display: true,
         scaleLabel: {
           display: true,
-          labelString: "Step",
-          fontFamily: "Montserrat",
-          fontColor: "black",
+          labelString: 'Step',
+          fontFamily: 'Montserrat',
+          fontColor: 'black',
         },
         ticks: {
           // beginAtZero: true,
@@ -34,9 +34,9 @@ const options = {
         //   padding: 10,
         scaleLabel: {
           display: true,
-          labelString: "Coverage",
-          fontFamily: "Montserrat",
-          fontColor: "black",
+          labelString: 'Coverage',
+          fontFamily: 'Montserrat',
+          fontColor: 'black',
         },
         ticks: {
           beginAtZero: true,
@@ -45,7 +45,7 @@ const options = {
           max: 100,
           //y축 scale 값에 % 붙이기 위해 사용
           callback: function (value: any) {
-            return value + "%";
+            return value + '%';
           },
         },
       },
@@ -57,10 +57,10 @@ const makeData = (arr: number[]) => {
     labels: arr.map((e) => String(e)),
     datasets: [
       {
-        label: "승/패 카운트",
+        label: '승/패 카운트',
         data: arr,
-        backgroundColor: ["rgba(255, 99, 132, 0.2)", "rgba(54, 162, 235, 0.2)"],
-        borderColor: ["rgb(255, 99, 132)", "rgb(54, 162, 235)"],
+        backgroundColor: ['rgba(255, 99, 132, 0.2)', 'rgba(54, 162, 235, 0.2)'],
+        borderColor: ['rgb(255, 99, 132)', 'rgb(54, 162, 235)'],
         borderWidth: 1,
       },
     ],
@@ -74,7 +74,7 @@ const ChartWinRatio = ({ a = 50, b = 50 }: { a?: number; b?: number }) => {
         data={makeData([a, b])}
         type="bar"
         options={options}
-        style={{ height: "300px" }}
+        style={{ height: '300px' }}
       ></Bar>
     </>
   );

@@ -1,13 +1,13 @@
-import React from "react";
-import { Line } from "react-chartjs-2";
+import React from 'react';
+import { Line } from 'react-chartjs-2';
 const options = {
   responsive: true,
   maintainAspectRatio: true,
   //tooltips 사용시
   tooltips: {
     enabled: true,
-    mode: "nearest",
-    position: "average",
+    mode: 'nearest',
+    position: 'average',
     intersect: false,
   },
   scales: {
@@ -17,9 +17,9 @@ const options = {
         display: true,
         scaleLabel: {
           display: true,
-          labelString: "Step",
-          fontFamily: "Montserrat",
-          fontColor: "black",
+          labelString: 'Step',
+          fontFamily: 'Montserrat',
+          fontColor: 'black',
         },
         ticks: {
           // beginAtZero: true,
@@ -33,9 +33,9 @@ const options = {
         //   padding: 10,
         scaleLabel: {
           display: true,
-          labelString: "Coverage",
-          fontFamily: "Montserrat",
-          fontColor: "black",
+          labelString: 'Coverage',
+          fontFamily: 'Montserrat',
+          fontColor: 'black',
         },
         ticks: {
           beginAtZero: true,
@@ -44,7 +44,7 @@ const options = {
           max: 100,
           //y축 scale 값에 % 붙이기 위해 사용
           callback: function (value: any) {
-            return value + "%";
+            return value + '%';
           },
         },
       },
@@ -56,10 +56,10 @@ const data = {
   labels: labels,
   datasets: [
     {
-      label: "My First Dataset",
+      label: 'My First Dataset',
       data: [65, 59, 80, 81, 56, 55, 40],
       fill: false,
-      borderColor: "rgb(75, 192, 192)",
+      borderColor: 'rgb(75, 192, 192)',
       tension: 0.1,
     },
   ],
@@ -72,7 +72,7 @@ const ChartCumulativeReturn = () => {
         data={data}
         type="line"
         options={options}
-        style={{ height: "300px" }}
+        style={{ height: '300px' }}
       ></Line>
     </div>
   );

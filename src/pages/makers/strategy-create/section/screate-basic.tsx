@@ -1,21 +1,21 @@
-import React from "react";
-import styled from "styled-components";
-import { useForm } from "react-hook-form";
-import { useRecoilState } from "recoil";
-import { atomStrategyState } from "states/recoil/strategy";
-import { CreateMyStrategyInput } from "states/interface/strategy/dtos";
+import React from 'react';
+import styled from 'styled-components';
+import { useForm } from 'react-hook-form';
+import { useRecoilState } from 'recoil';
+import { atomStrategyState } from 'states/recoil/strategy';
+import { CreateMyStrategyInput } from 'states/interface/strategy/dtos';
 
 // 폼 인터페이스
 export interface IformStateBasicSetting {
   strategy_name: string;
   strategy_explanation: string;
   tags?: string;
-  open_yes_no: "public" | "private";
+  open_yes_no: 'public' | 'private';
 
-  "investProfitInfo.invest_principal": number;
-  "investProfitInfo.invest_start_date": string;
-  "investProfitInfo.invest_end_date"?: string;
-  "investProfitInfo.securities_corp_fee": number;
+  'investProfitInfo.invest_principal': number;
+  'investProfitInfo.invest_start_date': string;
+  'investProfitInfo.invest_end_date'?: string;
+  'investProfitInfo.securities_corp_fee': number;
 }
 
 // todo:refactor : 유효성 검사
@@ -27,12 +27,12 @@ const ScreateBasic = () => {
     <SScreateBasic>
       <form
         className="basicSettingForm"
-        style={{ display: "flex", flexFlow: "column nowrap" }}
+        style={{ display: 'flex', flexFlow: 'column nowrap' }}
         onSubmit={handleSubmit((data) => {
-          console.log("basicSettingForm", data);
+          console.log('basicSettingForm', data);
 
-          const tags = data?.tags?.split(" ");
-          const open_yes_no = data.open_yes_no === "private" ? false : true;
+          const tags = data?.tags?.split(' ');
+          const open_yes_no = data.open_yes_no === 'private' ? false : true;
 
           const createMyStrategyInput =
             data as unknown as CreateMyStrategyInput;
@@ -57,8 +57,8 @@ const ScreateBasic = () => {
           <div className="col inputField">
             <input
               type="text"
-              placeholder={"전략 이름"}
-              {...register("strategy_name", {
+              placeholder={'전략 이름'}
+              {...register('strategy_name', {
                 // required: true,
               })}
             ></input>
@@ -70,8 +70,8 @@ const ScreateBasic = () => {
           <div className="col inputField">
             <input
               type="text"
-              placeholder={"전략 설명"}
-              {...register("strategy_explanation", {
+              placeholder={'전략 설명'}
+              {...register('strategy_explanation', {
                 // required: true,
               })}
             ></input>
@@ -83,8 +83,8 @@ const ScreateBasic = () => {
           <div className="col inputField">
             <input
               type="text"
-              placeholder={"태그 입력"}
-              {...register("tags", {
+              placeholder={'태그 입력'}
+              {...register('tags', {
                 // required: true,
               })}
             ></input>
@@ -94,9 +94,9 @@ const ScreateBasic = () => {
         <div className="inputRow">
           <div className="col detail">공개범위</div>
           <div className="col inputField">
-            <select {...register("open_yes_no")}>
-              <option value={"false"}>public</option>
-              <option value={"true"}>private</option>
+            <select {...register('open_yes_no')}>
+              <option value={'false'}>public</option>
+              <option value={'true'}>private</option>
             </select>
           </div>
         </div>
@@ -106,8 +106,8 @@ const ScreateBasic = () => {
           <div className="col inputField">
             <input
               type="date"
-              placeholder={"태그 입력"}
-              {...register("investProfitInfo.invest_start_date", {
+              placeholder={'태그 입력'}
+              {...register('investProfitInfo.invest_start_date', {
                 required: true,
               })}
             ></input>
@@ -119,8 +119,8 @@ const ScreateBasic = () => {
           <div className="col inputField">
             <input
               type="date"
-              placeholder={"태그 입력"}
-              {...register("investProfitInfo.invest_end_date", {
+              placeholder={'태그 입력'}
+              {...register('investProfitInfo.invest_end_date', {
                 // required: true,
               })}
             ></input>
@@ -132,8 +132,8 @@ const ScreateBasic = () => {
           <div className="col inputField">
             <input
               type="text"
-              placeholder={"Ex) 10000000"}
-              {...register("investProfitInfo.invest_principal", {
+              placeholder={'Ex) 10000000'}
+              {...register('investProfitInfo.invest_principal', {
                 // required: true,
                 // valueAsNumber: true,
               })}
@@ -146,8 +146,8 @@ const ScreateBasic = () => {
           <div className="col inputField">
             <input
               type="text"
-              placeholder={"Ex) 0.1"}
-              {...register("investProfitInfo.securities_corp_fee", {
+              placeholder={'Ex) 0.1'}
+              {...register('investProfitInfo.securities_corp_fee', {
                 // required: true,
                 // valueAsNumber: true,
               })}

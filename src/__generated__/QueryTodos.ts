@@ -8,7 +8,7 @@
 // ====================================================
 
 export interface QueryTodos_getTodos_todo {
-  __typename: "Todo";
+  __typename: 'Todo';
   content: string;
   createAt: any;
   deleteAt: any | null;
@@ -19,7 +19,7 @@ export interface QueryTodos_getTodos_todo {
 }
 
 export interface QueryTodos_getTodos {
-  __typename: "GetTodosOutput";
+  __typename: 'GetTodosOutput';
   error: string | null;
   ok: boolean;
   todo: QueryTodos_getTodos_todo[] | null;

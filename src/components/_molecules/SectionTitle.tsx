@@ -1,7 +1,7 @@
-import React from "react";
-import { Title } from "components/_atoms/Typos";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Title } from 'components/_atoms/Typos';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const SectionTitle: React.FC<{ title: string; linkTo?: string }> = ({
   title,
@@ -9,7 +9,7 @@ const SectionTitle: React.FC<{ title: string; linkTo?: string }> = ({
 }) => {
   return (
     <SSectionTitle>
-      <Title title={title} style={{ marginLeft: "1.7rem" }} />
+      <Title title={title} style={{ marginLeft: '1.7rem' }} />
       {linkTo && (
         <Link to={linkTo}>
           <div className="detailLink">더 보기</div>

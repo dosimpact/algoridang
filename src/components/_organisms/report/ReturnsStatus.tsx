@@ -1,9 +1,9 @@
-import FNumber from "components/_atoms/FNumber";
-import { Title } from "components/_atoms/Typos";
-import WhiteSpace from "components/_atoms/WhiteSpace";
-import React from "react";
-import styled from "styled-components";
-import { toAddComma } from "utils/parse";
+import FNumber from 'components/_atoms/FNumber';
+import { Title } from 'components/_atoms/Typos';
+import WhiteSpace from 'components/_atoms/WhiteSpace';
+import React from 'react';
+import styled from 'styled-components';
+import { toAddComma } from 'utils/parse';
 
 interface IReturnsStatus {
   title: string;
@@ -24,27 +24,27 @@ const ReturnsStatus: React.FC<IReturnsStatus> = ({
 }) => {
   return (
     <SReturnsStatus {...props}>
-      <div className="flexRow" style={{ marginTop: "50px" }}>
-        <Title title={title} style={{ marginTop: "20px" }} />
+      <div className="flexRow" style={{ marginTop: '50px' }}>
+        <Title title={title} style={{ marginTop: '20px' }} />
       </div>
       <WhiteSpace />
-      <div className="returnsStatus" style={{ margin: "1.8rem 0px" }}>
-        <div className="flexRowSBt" style={{ margin: "5px 0px" }}>
+      <div className="returnsStatus" style={{ margin: '1.8rem 0px' }}>
+        <div className="flexRowSBt" style={{ margin: '5px 0px' }}>
           <div className="name">수익률</div>
           <div className="value returnsValue">
             <FNumber val={Number(profit_rate)} hasPercentage={true} />
           </div>
         </div>
-        <div className="flexRowSBt" style={{ margin: "1.8rem 0px" }}>
+        <div className="flexRowSBt" style={{ margin: '1.8rem 0px' }}>
           <div className="name">투자 원금</div>
           <div className="value">{toAddComma(invest_principal)}원</div>
         </div>
-        <div className="flexRowSBt" style={{ margin: "1.8rem 0px" }}>
+        <div className="flexRowSBt" style={{ margin: '1.8rem 0px' }}>
           <div className="name">총 수익금</div>
           <div className="value">{toAddComma(total_profit_price)}원</div>
         </div>
         <hr />
-        <div className="flexRowSBt" style={{ margin: "10px 0px" }}>
+        <div className="flexRowSBt" style={{ margin: '10px 0px' }}>
           <div className="name">예상 수익 금액</div>
           <div className="value">{toAddComma(invest_price)}원</div>
         </div>

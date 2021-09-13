@@ -1,5 +1,5 @@
-import React, { useLayoutEffect, useRef, useCallback } from "react";
-import { createChart, IChartApi } from "lightweight-charts";
+import React, { useLayoutEffect, useRef, useCallback } from 'react';
+import { createChart, IChartApi } from 'lightweight-charts';
 
 const SampleMarker = () => {
   // refObject - JSX 컨테이너는 readonly ( usecallback에 의해 )
@@ -19,7 +19,7 @@ const SampleMarker = () => {
           charApi.current.applyOptions({ width });
         }
       }
-    })
+    }),
   );
   // chart 컨테이너를 참조하는 함수
   const handleContainerRef = useCallback((node) => {
@@ -44,42 +44,42 @@ const SampleMarker = () => {
       const lineSeries = chart.addLineSeries();
       // 가격 데이터 설정
       lineSeries.setData([
-        { time: "2019-04-11", value: 80.01 },
-        { time: "2019-04-12", value: 96.63 },
-        { time: "2019-04-13", value: 76.64 },
-        { time: "2019-04-14", value: 81.89 },
-        { time: "2019-04-15", value: 74.43 },
-        { time: "2019-04-16", value: 80.01 },
-        { time: "2019-04-17", value: 96.63 },
-        { time: "2019-04-18", value: 76.64 },
-        { time: "2019-04-19", value: 81.89 },
-        { time: "2019-04-20", value: 74.43 },
+        { time: '2019-04-11', value: 80.01 },
+        { time: '2019-04-12', value: 96.63 },
+        { time: '2019-04-13', value: 76.64 },
+        { time: '2019-04-14', value: 81.89 },
+        { time: '2019-04-15', value: 74.43 },
+        { time: '2019-04-16', value: 80.01 },
+        { time: '2019-04-17', value: 96.63 },
+        { time: '2019-04-18', value: 76.64 },
+        { time: '2019-04-19', value: 81.89 },
+        { time: '2019-04-20', value: 74.43 },
       ]);
       // 마커 데이터 설정
       lineSeries.setMarkers([
         {
-          id: "id1",
-          time: "2019-04-12",
-          position: "aboveBar",
-          color: "#2196F3",
-          shape: "arrowDown",
-          text: "Buy",
+          id: 'id1',
+          time: '2019-04-12',
+          position: 'aboveBar',
+          color: '#2196F3',
+          shape: 'arrowDown',
+          text: 'Buy',
         },
         {
-          id: "id2",
-          time: "2019-04-16",
-          position: "belowBar",
-          color: "#e91e63",
-          shape: "arrowUp",
-          text: "Sell",
+          id: 'id2',
+          time: '2019-04-16',
+          position: 'belowBar',
+          color: '#e91e63',
+          shape: 'arrowUp',
+          text: 'Sell',
         },
         {
-          id: "id3",
-          time: "2019-04-19",
-          position: "belowBar",
-          color: "orange",
-          shape: "circle",
-          text: "example",
+          id: 'id3',
+          time: '2019-04-19',
+          position: 'belowBar',
+          color: 'orange',
+          shape: 'circle',
+          text: 'example',
           size: 1,
         },
       ]);

@@ -1,5 +1,5 @@
-import React, { useLayoutEffect, useRef, useCallback } from "react";
-import { createChart, IChartApi, ISeriesApi } from "lightweight-charts";
+import React, { useLayoutEffect, useRef, useCallback } from 'react';
+import { createChart, IChartApi, ISeriesApi } from 'lightweight-charts';
 
 export interface ILineData {
   time: string;
@@ -37,12 +37,12 @@ const CumulativeReturnChart: React.FC<ICumulativeReturnChart> = ({
           charApi.current.applyOptions({ width });
         }
       }
-    })
+    }),
   );
 
   // 그래프의 Area 시리즈 데이터를 참조
   // const lineSeries = useRef<ISeriesApi<"Line">>();
-  const SeriesApiArea = useRef<ISeriesApi<"Area">>();
+  const SeriesApiArea = useRef<ISeriesApi<'Area'>>();
 
   // chart 컨테이너를 참조하는 함수
   const handleContainerRef = useCallback((node) => {
@@ -74,18 +74,18 @@ const CumulativeReturnChart: React.FC<ICumulativeReturnChart> = ({
         },
         grid: {
           horzLines: {
-            color: "#ffffff",
+            color: '#ffffff',
           },
           vertLines: {
-            color: "#ffffff",
+            color: '#ffffff',
           },
         },
       });
       charApi.current = chart;
       SeriesApiArea.current = chart.addAreaSeries({
-        lineColor: "rgb(243, 188, 47)",
-        topColor: "rgb(243, 188, 47,0.5)",
-        bottomColor: "rgb(243, 188, 47,0)",
+        lineColor: 'rgb(243, 188, 47)',
+        topColor: 'rgb(243, 188, 47,0.5)',
+        bottomColor: 'rgb(243, 188, 47,0)',
         lineWidth: 2,
       });
       if (datas) {

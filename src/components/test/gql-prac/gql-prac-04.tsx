@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import useTodosNMain from "states/apollo/useTodoQueries";
+import React, { useEffect } from 'react';
+import useTodosNMain from 'states/apollo/useTodoQueries';
 
 const GqlPrac04 = () => {
   const [getTodosNMain, { loading, data }] = useTodosNMain();
@@ -7,7 +7,7 @@ const GqlPrac04 = () => {
     getTodosNMain({
       variables: {
         getTodoInput: {
-          term: "first",
+          term: 'first',
         },
       },
     });
@@ -16,7 +16,7 @@ const GqlPrac04 = () => {
 
   return (
     <div>
-      {loading ? "loading" : " complete"}
+      {loading ? 'loading' : ' complete'}
       <pre>{JSON.stringify(data, null, 2)}</pre>;
     </div>
   );

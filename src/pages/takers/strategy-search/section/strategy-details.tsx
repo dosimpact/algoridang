@@ -1,18 +1,18 @@
-import React, { useMemo } from "react";
-import { Title, SubTitle } from "components/_atoms/Typos";
-import { useHistory, useParams } from "react-router-dom";
-import { toTagsString, toTickerImage } from "utils/parse";
-import styled from "styled-components";
-import TradingHistory from "components/_organisms/report/TradingHistory";
-import TradingPoints from "components/_organisms/report/TradingPoints";
-import ReturnsStatus from "components/_organisms/report/ReturnsStatus";
-import Description from "components/_molecules/report/Description";
-import useStrategyDetail from "states/react-query/strategy/useStrategyDetail";
-import StrategyCardBox from "components/_molecules/StrategyCardBox";
-import NavHeaderDetail from "components/_molecules/NavHeaderDetail";
-import WhiteSpace from "components/_atoms/WhiteSpace";
-import WingBlank from "components/_atoms/WingBlank";
-import { Button } from "components/_atoms/Buttons";
+import React, { useMemo } from 'react';
+import { Title, SubTitle } from 'components/_atoms/Typos';
+import { useHistory, useParams } from 'react-router-dom';
+import { toTagsString, toTickerImage } from 'utils/parse';
+import styled from 'styled-components';
+import TradingHistory from 'components/_organisms/report/TradingHistory';
+import TradingPoints from 'components/_organisms/report/TradingPoints';
+import ReturnsStatus from 'components/_organisms/report/ReturnsStatus';
+import Description from 'components/_molecules/report/Description';
+import useStrategyDetail from 'states/react-query/strategy/useStrategyDetail';
+import StrategyCardBox from 'components/_molecules/StrategyCardBox';
+import NavHeaderDetail from 'components/_molecules/NavHeaderDetail';
+import WhiteSpace from 'components/_atoms/WhiteSpace';
+import WingBlank from 'components/_atoms/WingBlank';
+import { Button } from 'components/_atoms/Buttons';
 
 const StrategyDetails = () => {
   // 히스토리
@@ -21,7 +21,7 @@ const StrategyDetails = () => {
   const params = useParams() as { id: string };
   const strategyCode = params?.id || 0;
   if (strategyCode === 0) {
-    history.push("/");
+    history.push('/');
   }
   // 현재 전략코드로 데이터 API 요청
   const {
@@ -30,7 +30,7 @@ const StrategyDetails = () => {
     histories,
     investProfitInfo,
     memberStrategy,
-  } = useStrategyDetail(strategyCode + "");
+  } = useStrategyDetail(strategyCode + '');
 
   // // 받아온 데이터중 memberStrategy 에 관한 데이터 메모
   // const memberStrategy = useMemo(
@@ -71,17 +71,17 @@ const StrategyDetails = () => {
   return (
     <PStrategyDetail>
       <NavHeaderDetail
-        linkTo={process.env.PUBLIC_URL + "/takers/strategy-search"}
+        linkTo={process.env.PUBLIC_URL + '/takers/strategy-search'}
         headerTitle="투자 전략 상세"
       />
       <WingBlank>
-        {strategyDetailQuery.isLoading && "loading..."}
+        {strategyDetailQuery.isLoading && 'loading...'}
         <WhiteSpace />
         {memberStrategy && (
           <StrategyCardBox
             title={memberStrategy.strategy_name}
             subTitle={toTagsString(
-              memberStrategy.hashList?.map((e) => e?.hash?.hash_contents)
+              memberStrategy.hashList?.map((e) => e?.hash?.hash_contents),
             )}
             CAGR={
               memberStrategy?.backtestDetailInfo?.year_avg_profit_rate &&
@@ -90,36 +90,36 @@ const StrategyDetails = () => {
             thumnail={
               memberStrategy.universal.length >= 1
                 ? toTickerImage(memberStrategy.universal[0].ticker)
-                : ""
+                : ''
             }
             onErrorImg={memberStrategy.image_url}
           />
         )}
 
         <div className="flexRowSBt">
-          <Title title="모의 투자" style={{ marginRight: "15px" }}></Title>
+          <Title title="모의 투자" style={{ marginRight: '15px' }}></Title>
           <Button
-            style={{ width: "8rem" }}
+            style={{ width: '8rem' }}
             onClick={() => {
-              history.push("/takers/mock-invest/create/1");
+              history.push('/takers/mock-invest/create/1');
             }}
           >
             시작하기
           </Button>
         </div>
-        <div className="flexRowSBt" style={{ marginTop: "15px" }}>
+        <div className="flexRowSBt" style={{ marginTop: '15px' }}>
           <SubTitle
             title="상세 전략 리포트"
-            style={{ marginRight: "20px" }}
+            style={{ marginRight: '20px' }}
           ></SubTitle>
           <Button
             type="gray"
-            style={{ width: "8rem" }}
+            style={{ width: '8rem' }}
             onClick={() => {
-              console.log("deatil");
+              console.log('deatil');
               history.push(
                 process.env.PUBLIC_URL +
-                  `/takers/strategy-search/report/${params.id}`
+                  `/takers/strategy-search/report/${params.id}`,
               );
             }}
           >
@@ -155,12 +155,12 @@ const StrategyDetails = () => {
         {histories && (
           <TradingHistory
             title="히스토리"
-            header={["날짜", `종목\n(코드)`, "가격\n(원)", "수익/손실\n(%)"]}
+            header={['날짜', `종목\n(코드)`, '가격\n(원)', '수익/손실\n(%)']}
             keyMap={[
-              "history_date",
-              "ticker",
-              "buy_sale_price",
-              "profit_loss_rate",
+              'history_date',
+              'ticker',
+              'buy_sale_price',
+              'profit_loss_rate',
             ]}
             body={histories as any as Record<string, string>[]}
           />

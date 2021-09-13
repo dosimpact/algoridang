@@ -1,14 +1,14 @@
-import { AxiosError, AxiosResponse } from "axios";
-import { useMutation } from "react-query";
-import { strategyApi } from "states/api";
+import { AxiosError, AxiosResponse } from 'axios';
+import { useMutation } from 'react-query';
+import { strategyApi } from 'states/api';
 import {
   CreateMyStrategyInput,
   CreateMyStrategyOutput,
-} from "states/interface/strategy/dtos";
+} from 'states/interface/strategy/dtos';
 import {
   AddUniversalInput,
   AddUniversalOutput,
-} from "states/interface/trading/dtos";
+} from 'states/interface/trading/dtos';
 
 const useCreateStrategy = () => {
   // <TData 출력데이터 + Axios응답, TError 애러 데이터 ,TVariables input body 데이터>

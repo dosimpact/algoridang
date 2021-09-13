@@ -3,14 +3,14 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { CreateTodoInput } from "./globalTypes";
+import { CreateTodoInput } from './globalTypes';
 
 // ====================================================
 // GraphQL mutation operation: MutationCreateTodo
 // ====================================================
 
 export interface MutationCreateTodo_createTodo_todo {
-  __typename: "Todo";
+  __typename: 'Todo';
   content: string;
   createAt: any;
   deleteAt: any | null;
@@ -21,7 +21,7 @@ export interface MutationCreateTodo_createTodo_todo {
 }
 
 export interface MutationCreateTodo_createTodo {
-  __typename: "CreateTodoOutput";
+  __typename: 'CreateTodoOutput';
   error: string | null;
   ok: boolean;
   todo: MutationCreateTodo_createTodo_todo | null;

@@ -1,39 +1,39 @@
 import TickerSearch, {
   TickerSearchOnSuccessResult,
-} from "components/_atoms/TickerSearch";
-import WingBlank from "components/_atoms/WingBlank";
-import InspectorHeaderDetail from "components/_molecules/inspector/InspectorHeaderDetail";
-import React from "react";
-import { useRecoilState } from "recoil";
-import { Corporation } from "states/interface/finance/entities";
+} from 'components/_atoms/TickerSearch';
+import WingBlank from 'components/_atoms/WingBlank';
+import InspectorHeaderDetail from 'components/_molecules/inspector/InspectorHeaderDetail';
+import React from 'react';
+import { useRecoilState } from 'recoil';
+import { Corporation } from 'states/interface/finance/entities';
 import {
   atomInspector,
   atomUniversalSettingState,
-} from "states/recoil/strategy-create";
-import styled from "styled-components";
-import { RemoveMultipleElements } from "utils/parse";
-import { IInspectorSettings } from ".";
-import Modal from "react-modal";
+} from 'states/recoil/strategy-create';
+import styled from 'styled-components';
+import { RemoveMultipleElements } from 'utils/parse';
+import { IInspectorSettings } from '.';
+import Modal from 'react-modal';
 
 //https://velog.io/@seungsang00/React-React-Modal
-Modal.setAppElement("#root");
+Modal.setAppElement('#root');
 
 // UniversalSetting - TabTickerSearch
 const UniversalSettingTabTickerSearch = () => {
   // 2. 종목관리 상태
   const [universalSettingState, setUniversalSettingState] = useRecoilState(
-    atomUniversalSettingState
+    atomUniversalSettingState,
   );
   // 2.1 삭제예정인 티커들
   const [willDelCorpIdxs, setWillDelCorpIdxs] = React.useState<Set<number>>(
-    new Set()
+    new Set(),
   );
   // 2.3 종목 삭제하기
   const handleWillDelTickerClick = () => {
     setUniversalSettingState((prev) => {
       const result = RemoveMultipleElements(
         prev.selected,
-        Array.from(willDelCorpIdxs.values())
+        Array.from(willDelCorpIdxs.values()),
       );
       // console.log(result);
       return { ...prev, selected: result };
@@ -51,7 +51,7 @@ const UniversalSettingTabTickerSearch = () => {
     (e: TickerSearchOnSuccessResult) => {
       setSearchResultCorps(e.corporations);
     },
-    []
+    [],
   );
 
   return (
@@ -80,7 +80,7 @@ const UniversalSettingTabTickerSearch = () => {
           return (
             <div
               key={`willDel-${idx}${data.selectedCorporations.ticker}`}
-              style={{ display: "flex" }}
+              style={{ display: 'flex' }}
             >
               <input
                 onClick={(e) => {
@@ -130,7 +130,7 @@ const UniversalSettingTabQuantSearch = () => {
       <ul>
         <li>
           <div className="title">거래량 ( 단위: )</div>
-          <div style={{ display: "flex" }}>
+          <div style={{ display: 'flex' }}>
             <input type="text" name="" id="" placeholder="0" />
             <span>~</span>
             <input type="text" name="" id="" placeholder="100" />
@@ -138,7 +138,7 @@ const UniversalSettingTabQuantSearch = () => {
         </li>
         <li>
           <div className="title">ROE ( 단위: )</div>
-          <div style={{ display: "flex" }}>
+          <div style={{ display: 'flex' }}>
             <input type="text" name="" id="" placeholder="0" />
             <span>~</span>
             <input type="text" name="" id="" placeholder="100" />
@@ -180,7 +180,7 @@ const QuantFilter = () => {
       </article>
       <article className="col2">
         <div>모든 필터</div>
-        {["시가 총액", "시가총액", "PER", "PCR", "PSR"].map((word, idx) => {
+        {['시가 총액', '시가총액', 'PER', 'PCR', 'PSR'].map((word, idx) => {
           return (
             <div key={idx}>
               <input
@@ -197,7 +197,7 @@ const QuantFilter = () => {
         <div>필터 설명</div>
         <div
           style={{
-            whiteSpace: "pre-wrap",
+            whiteSpace: 'pre-wrap',
           }}
         >
           시가총액(Market Capitalization) 전일종가와 발행주식 수를 곱한 것으로
@@ -259,7 +259,7 @@ const UniversalSetting: React.FC<IUniversalSetting> = ({ headerTitle }) => {
     <SUniversalSetting>
       <WingBlank>
         <InspectorHeaderDetail
-          headerTitle={headerTitle || "UniversalSetting"}
+          headerTitle={headerTitle || 'UniversalSetting'}
         />
         <article className="tabContainer">
           <div onClick={() => handleTabIdx(0)} className="tabItem">

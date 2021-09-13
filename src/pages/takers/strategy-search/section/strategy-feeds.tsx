@@ -1,14 +1,14 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
-import useStrategy from "states/react-query/strategy/useStrategy";
-import { toTagsString, toTickerImage } from "utils/parse";
-import WingBlank from "components/_atoms/WingBlank";
-import PageGuide from "components/_molecules/PageGuide";
+import React from 'react';
+import { useHistory } from 'react-router-dom';
+import useStrategy from 'states/react-query/strategy/useStrategy';
+import { toTagsString, toTickerImage } from 'utils/parse';
+import WingBlank from 'components/_atoms/WingBlank';
+import PageGuide from 'components/_molecules/PageGuide';
 
-import { IconSearchStrategy } from "assets/icons";
-import SectionTitle from "components/_molecules/SectionTitle";
-import WhiteSpace from "components/_atoms/WhiteSpace";
-import StrategyCardBox from "components/_molecules/StrategyCardBox";
+import { IconSearchStrategy } from 'assets/icons';
+import SectionTitle from 'components/_molecules/SectionTitle';
+import WhiteSpace from 'components/_atoms/WhiteSpace';
+import StrategyCardBox from 'components/_molecules/StrategyCardBox';
 
 // todo:refactor CAGR 부분 DB Relation eager 처리 및 undefined 핸들링
 const StrategyFeeds = () => {
@@ -20,7 +20,7 @@ const StrategyFeeds = () => {
     strategyListRiskTaking,
     strategyListStableIncome,
   } = useStrategy();
-  console.log("strategyListRiskTaking", strategyListRiskTaking);
+  console.log('strategyListRiskTaking', strategyListRiskTaking);
   return (
     <WingBlank>
       <PageGuide
@@ -30,7 +30,7 @@ const StrategyFeeds = () => {
       />
       <SectionTitle
         title="신규 투자 전략"
-        linkTo={process.env.PUBLIC_URL + "/takers/strategy-search/list/new"}
+        linkTo={process.env.PUBLIC_URL + '/takers/strategy-search/list/new'}
       />
       <WhiteSpace />
       {strategyListNew &&
@@ -39,7 +39,7 @@ const StrategyFeeds = () => {
             key={key}
             title={data.strategy_name}
             subTitle={toTagsString(
-              data.hashList?.map((e) => e?.hash?.hash_contents)
+              data.hashList?.map((e) => e?.hash?.hash_contents),
             )}
             CAGR={
               data?.backtestDetailInfo?.year_avg_profit_rate &&
@@ -48,12 +48,12 @@ const StrategyFeeds = () => {
             thumnail={
               data.universal.length >= 1
                 ? toTickerImage(data.universal[0].ticker)
-                : ""
+                : ''
             }
             onErrorImg={data.image_url}
             onClick={() => {
               history.push(
-                `/takers/strategy-search/details/${data.strategy_code}`
+                `/takers/strategy-search/details/${data.strategy_code}`,
               );
             }}
           />
@@ -62,7 +62,7 @@ const StrategyFeeds = () => {
       <SectionTitle
         title="조회수 높은 투자 전략"
         linkTo={
-          process.env.PUBLIC_URL + "/takers/strategy-search/list/high-view"
+          process.env.PUBLIC_URL + '/takers/strategy-search/list/high-view'
         }
       />
       <WhiteSpace />
@@ -72,7 +72,7 @@ const StrategyFeeds = () => {
             key={key}
             title={data.strategy_name}
             subTitle={toTagsString(
-              data.hashList?.map((e) => e?.hash?.hash_contents)
+              data.hashList?.map((e) => e?.hash?.hash_contents),
             )}
             CAGR={
               data?.backtestDetailInfo?.year_avg_profit_rate &&
@@ -81,12 +81,12 @@ const StrategyFeeds = () => {
             thumnail={
               data.universal.length >= 1
                 ? toTickerImage(data.universal[0].ticker)
-                : ""
+                : ''
             }
             onErrorImg={data.image_url}
             onClick={() => {
               history.push(
-                `/takers/strategy-search/details/${data.strategy_code}`
+                `/takers/strategy-search/details/${data.strategy_code}`,
               );
             }}
           />
@@ -95,7 +95,7 @@ const StrategyFeeds = () => {
       <SectionTitle
         title="위험 추구형 투자 전략"
         linkTo={
-          process.env.PUBLIC_URL + "/takers/strategy-search/list/risk-taking"
+          process.env.PUBLIC_URL + '/takers/strategy-search/list/risk-taking'
         }
       />
       <WhiteSpace />
@@ -105,7 +105,7 @@ const StrategyFeeds = () => {
             key={key}
             title={data.strategy_name}
             subTitle={toTagsString(
-              data.hashList?.map((e) => e?.hash?.hash_contents)
+              data.hashList?.map((e) => e?.hash?.hash_contents),
             )}
             CAGR={
               data?.backtestDetailInfo?.year_avg_profit_rate &&
@@ -114,12 +114,12 @@ const StrategyFeeds = () => {
             thumnail={
               data.universal.length >= 1
                 ? toTickerImage(data.universal[0].ticker)
-                : ""
+                : ''
             }
             onErrorImg={data.image_url}
             onClick={() => {
               history.push(
-                `/takers/strategy-search/details/${data.strategy_code}`
+                `/takers/strategy-search/details/${data.strategy_code}`,
               );
             }}
           />
@@ -127,7 +127,7 @@ const StrategyFeeds = () => {
       <WhiteSpace />
       <SectionTitle
         title="중립형 투자 전략"
-        linkTo={process.env.PUBLIC_URL + "/takers/strategy-search/list/neutral"}
+        linkTo={process.env.PUBLIC_URL + '/takers/strategy-search/list/neutral'}
       />
       <WhiteSpace />
       {strategyListNeutral &&
@@ -136,7 +136,7 @@ const StrategyFeeds = () => {
             key={key}
             title={data.strategy_name}
             subTitle={toTagsString(
-              data.hashList?.map((e) => e?.hash?.hash_contents)
+              data.hashList?.map((e) => e?.hash?.hash_contents),
             )}
             CAGR={
               data?.backtestDetailInfo?.year_avg_profit_rate &&
@@ -145,12 +145,12 @@ const StrategyFeeds = () => {
             thumnail={
               data.universal.length >= 1
                 ? toTickerImage(data.universal[0].ticker)
-                : ""
+                : ''
             }
             onErrorImg={data.image_url}
             onClick={() => {
               history.push(
-                `/takers/strategy-search/details/${data.strategy_code}`
+                `/takers/strategy-search/details/${data.strategy_code}`,
               );
             }}
           />
@@ -159,7 +159,7 @@ const StrategyFeeds = () => {
       <SectionTitle
         title="수익 안정형 투자 전략"
         linkTo={
-          process.env.PUBLIC_URL + "/takers/strategy-search/list/stable-income"
+          process.env.PUBLIC_URL + '/takers/strategy-search/list/stable-income'
         }
       />
       <WhiteSpace />
@@ -169,7 +169,7 @@ const StrategyFeeds = () => {
             key={key}
             title={data.strategy_name}
             subTitle={toTagsString(
-              data.hashList?.map((e) => e?.hash?.hash_contents)
+              data.hashList?.map((e) => e?.hash?.hash_contents),
             )}
             CAGR={
               data?.backtestDetailInfo?.year_avg_profit_rate &&
@@ -178,12 +178,12 @@ const StrategyFeeds = () => {
             thumnail={
               data.universal.length >= 1
                 ? toTickerImage(data.universal[0].ticker)
-                : ""
+                : ''
             }
             onErrorImg={data.image_url}
             onClick={() => {
               history.push(
-                `/takers/strategy-search/details/${data.strategy_code}`
+                `/takers/strategy-search/details/${data.strategy_code}`,
               );
             }}
           />

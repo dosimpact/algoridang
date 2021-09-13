@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import { randomDefaultThunmnail } from "utils/default-values";
+import React from 'react';
+import styled from 'styled-components';
+import { randomDefaultThunmnail } from 'utils/default-values';
 
 interface IStrategyCardImg {
   thumnail?: string; // 썸네일 이미지 url
@@ -12,9 +12,9 @@ interface IStrategyCardImg {
 
 const StrategyCardImg: React.FC<IStrategyCardImg> = ({
   thumnail,
-  title = "Error",
-  subTitle = "",
-  bottomText = "",
+  title = 'Error',
+  subTitle = '',
+  bottomText = '',
   onClick,
 }) => {
   thumnail = thumnail || randomDefaultThunmnail(title);

@@ -1,4 +1,4 @@
-import { Universal } from "../trading/entities";
+import { Universal } from '../trading/entities';
 
 // 기업과 카테고리의 N:M 매핑 테이블
 export interface CategoryList {

@@ -1,11 +1,11 @@
-import React, { useLayoutEffect, useRef, useEffect, useCallback } from "react";
+import React, { useLayoutEffect, useRef, useEffect, useCallback } from 'react';
 import {
   createChart,
   IChartApi,
   ISeriesApi,
   SeriesMarker,
   Time,
-} from "lightweight-charts";
+} from 'lightweight-charts';
 
 export interface ILineData {
   time: string;
@@ -49,11 +49,11 @@ const LineSeriesChartPointing: React.FC<ILineSeriesChartPointing> = ({
           charApi.current.applyOptions({ width });
         }
       }
-    })
+    }),
   );
 
   // 그래프의 Area 시리즈 데이터를 참조
-  const SeriesApiArea = useRef<ISeriesApi<"Area">>();
+  const SeriesApiArea = useRef<ISeriesApi<'Area'>>();
 
   // chart 컨테이너를 참조하는 함수
   const handleContainerRef = useCallback((node) => {
@@ -80,18 +80,18 @@ const LineSeriesChartPointing: React.FC<ILineSeriesChartPointing> = ({
         },
         grid: {
           horzLines: {
-            color: "#ebebeb",
+            color: '#ebebeb',
           },
           vertLines: {
-            color: "#ebebeb",
+            color: '#ebebeb',
           },
         },
       });
       charApi.current = chart;
       SeriesApiArea.current = chart.addAreaSeries({
-        lineColor: "rgb(243, 188, 47)",
-        topColor: "rgb(243, 188, 47,0.5)",
-        bottomColor: "rgb(243, 188, 47,0)",
+        lineColor: 'rgb(243, 188, 47)',
+        topColor: 'rgb(243, 188, 47,0.5)',
+        bottomColor: 'rgb(243, 188, 47,0)',
         lineWidth: 2,
       });
       chart.subscribeCrosshairMove(function (param) {

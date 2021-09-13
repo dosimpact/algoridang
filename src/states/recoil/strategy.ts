@@ -1,7 +1,7 @@
-import { atom, selector } from "recoil";
-import { CreateMyStrategyInput } from "states/interface/strategy/dtos";
-import { AddUniversalInput } from "states/interface/trading/dtos";
-import { Corporation } from "states/interface/finance/entities";
+import { atom, selector } from 'recoil';
+import { CreateMyStrategyInput } from 'states/interface/strategy/dtos';
+import { AddUniversalInput } from 'states/interface/trading/dtos';
+import { Corporation } from 'states/interface/finance/entities';
 
 interface IStrategyState {
   createMyStrategyInput: CreateMyStrategyInput;
@@ -12,17 +12,17 @@ interface IStrategyState {
 }
 
 export const atomStrategyState = atom<IStrategyState>({
-  key: "StrategyState",
+  key: 'StrategyState',
   default: {
     createMyStrategyInput: {
       investProfitInfo: {
         invest_start_date: new Date().toISOString(),
       },
-      strategy_explanation: "",
-      strategy_name: "",
+      strategy_explanation: '',
+      strategy_name: '',
       image_url:
         process.env.REACT_APP_DEFAULT_IMG ||
-        "https://algoridang.s3.ap-northeast-2.amazonaws.com/common/1627272499339d_thumb03.jpeg",
+        'https://algoridang.s3.ap-northeast-2.amazonaws.com/common/1627272499339d_thumb03.jpeg',
     },
     addUniversalInput: [],
     // formStateBasicSetting: {
@@ -40,7 +40,7 @@ export const atomStrategyState = atom<IStrategyState>({
 });
 
 export const parseCreateMyStrategy = selector({
-  key: "parseCreateMyStrategy",
+  key: 'parseCreateMyStrategy',
   get: ({ get }) => {
     const strategyState = get(atomStrategyState);
     const crops = strategyState.formStateTickerSelected;

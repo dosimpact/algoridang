@@ -1,9 +1,9 @@
-import React, { useEffect } from "react";
-import { useForm, useWatch } from "react-hook-form";
-import { Corporation } from "states/interface/finance/entities";
-import useCorporation from "states/react-query/finance/useCorporation";
-import styled from "styled-components";
-import { debouncing } from "utils/funcs";
+import React, { useEffect } from 'react';
+import { useForm, useWatch } from 'react-hook-form';
+import { Corporation } from 'states/interface/finance/entities';
+import useCorporation from 'states/react-query/finance/useCorporation';
+import styled from 'styled-components';
+import { debouncing } from 'utils/funcs';
 
 interface ITechnicalSearchInput {
   term: string;
@@ -24,7 +24,7 @@ const TechnicalSearch: React.FC<ITechnicalSearch> = ({
 }) => {
   const { register, handleSubmit, setValue, control } =
     useForm<ITechnicalSearchInput>();
-  const term = useWatch({ control, name: "term" });
+  const term = useWatch({ control, name: 'term' });
   const { corporations, isLoading, refetch } = useCorporation({
     term,
   });
@@ -53,22 +53,22 @@ const TechnicalSearch: React.FC<ITechnicalSearch> = ({
           type="text"
           placeholder="코드,기업명을 입력해주세요"
           autoComplete="off"
-          {...register("term", { required: true })}
+          {...register('term', { required: true })}
           onChange={debouncing((e: React.ChangeEvent<HTMLInputElement>) => {
-            setValue("term", e.target.value);
+            setValue('term', e.target.value);
           }, 100)}
           onKeyDown={(e) => {
-            if (e.key === "Enter" && onKeyDownEnter) {
+            if (e.key === 'Enter' && onKeyDownEnter) {
               onKeyDownEnter(e);
             }
           }}
         ></input>
       </form>
       {/* <div>{error && "error..."}</div> */}
-      <div style={{ marginTop: "1rem" }}>
+      <div style={{ marginTop: '1rem' }}>
         {corporations?.length === 0 || isLoading
-          ? "종목없음"
-          : `검색 완료 : ${(corporations && corporations[0].corp_name) || ""}`}
+          ? '종목없음'
+          : `검색 완료 : ${(corporations && corporations[0].corp_name) || ''}`}
       </div>
       {/* {JSON.stringify(corporations, null, 2)} */}
     </STechnicalSearch>

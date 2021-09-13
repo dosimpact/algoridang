@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import { BoxType } from "./Box";
+import React from 'react';
+import styled from 'styled-components';
+import { BoxType } from './Box';
 
 // button type :
 //
@@ -12,9 +12,9 @@ export const Button: React.FC<{
 }> = ({ children, type, style, ...props }) => {
   return (
     <SButton
-      type={type || "normal"}
+      type={type || 'normal'}
       style={{
-        cursor: "pointer",
+        cursor: 'pointer',
         ...style,
       }}
       {...props}
@@ -31,12 +31,12 @@ const SButton = styled.div<{
   min-height: 3rem;
   border-radius: 0.5rem;
   color: ${(props) =>
-    (props.type === "normal" && props.theme.ColorMainWhite) ||
-    (props.type === "gray" && props.theme.ColorMainGray)};
+    (props.type === 'normal' && props.theme.ColorMainWhite) ||
+    (props.type === 'gray' && props.theme.ColorMainGray)};
 
   background-color: ${(props) =>
-    (props.type === "normal" && props.theme.ColorMainYellow) ||
-    (props.type === "gray" && props.theme.ColorMainLightGray)};
+    (props.type === 'normal' && props.theme.ColorMainYellow) ||
+    (props.type === 'gray' && props.theme.ColorMainLightGray)};
 
   display: flex;
   justify-content: center;

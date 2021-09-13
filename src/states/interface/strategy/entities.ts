@@ -6,19 +6,19 @@ import {
   BacktestWinRatio,
   History,
   InvestProfitInfo,
-} from "../backtest/entities";
+} from '../backtest/entities';
 import {
   LookupMemberList,
   MemberInfo,
   OperationMemberList,
-} from "../member/entities";
-import { Universal } from "../trading/entities";
+} from '../member/entities';
+import { Universal } from '../trading/entities';
 
 export enum InvestType {
-  Unclassified = "Unclassified", // 0 - 미분류
-  StableIncome = "StableIncome", // 1 - 수익 안정형
-  Neutral = "Neutral", // 2 - 중립형
-  RiskTaking = "RiskTaking", // 3 - 위험추구형
+  Unclassified = 'Unclassified', // 0 - 미분류
+  StableIncome = 'StableIncome', // 1 - 수익 안정형
+  Neutral = 'Neutral', // 2 - 중립형
+  RiskTaking = 'RiskTaking', // 3 - 위험추구형
 }
 
 export interface MemberStrategy {

@@ -1,9 +1,9 @@
-import React, { useCallback, useState } from "react";
-import { useCreateTodo } from "states/apollo/useTodoMutations";
-import { gql_QueryTodos } from "states/apollo/useTodoQueries";
+import React, { useCallback, useState } from 'react';
+import { useCreateTodo } from 'states/apollo/useTodoMutations';
+import { gql_QueryTodos } from 'states/apollo/useTodoQueries';
 
 const GqlPrac05 = () => {
-  const [content, setContent] = useState("");
+  const [content, setContent] = useState('');
   const [createTodo, { data, error, loading }] = useCreateTodo();
 
   const handleSubmit = useCallback(
@@ -20,10 +20,10 @@ const GqlPrac05 = () => {
             },
           ],
         });
-        setContent("");
+        setContent('');
       }
     },
-    [content, createTodo]
+    [content, createTodo],
   );
 
   return (
@@ -36,7 +36,7 @@ const GqlPrac05 = () => {
           onChange={(e) => setContent(e.target.value)}
         ></input>
       </form>
-      <div>{loading ? "loading.." : ""}</div>
+      <div>{loading ? 'loading..' : ''}</div>
       <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>
   );

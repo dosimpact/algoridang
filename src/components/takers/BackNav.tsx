@@ -1,7 +1,7 @@
-import { WhiteSpace } from "antd-mobile";
-import { Title } from "components/_atoms/Typos";
-import useBackButton from "components/lagacy/useBackButton";
-import React from "react";
+import { WhiteSpace } from 'antd-mobile';
+import { Title } from 'components/_atoms/Typos';
+import useBackButton from 'components/lagacy/useBackButton';
+import React from 'react';
 
 interface IBackNav {
   title: string;

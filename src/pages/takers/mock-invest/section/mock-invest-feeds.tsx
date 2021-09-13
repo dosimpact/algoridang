@@ -1,22 +1,22 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
-import { toTagsString, toTickerImage } from "utils/parse";
-import PageGuide from "components/_molecules/PageGuide";
-import { IconMockInvest } from "assets/icons";
-import { useMyStrategy } from "states/react-query/strategy/useMyStrategy";
-import WingBlank from "components/_atoms/WingBlank";
-import WhiteSpace from "components/_atoms/WhiteSpace";
-import StrategyCardBox from "components/_molecules/StrategyCardBox";
-import SectionTitle from "components/_molecules/SectionTitle";
+import React from 'react';
+import { useHistory } from 'react-router-dom';
+import { toTagsString, toTickerImage } from 'utils/parse';
+import PageGuide from 'components/_molecules/PageGuide';
+import { IconMockInvest } from 'assets/icons';
+import { useMyStrategy } from 'states/react-query/strategy/useMyStrategy';
+import WingBlank from 'components/_atoms/WingBlank';
+import WhiteSpace from 'components/_atoms/WhiteSpace';
+import StrategyCardBox from 'components/_molecules/StrategyCardBox';
+import SectionTitle from 'components/_molecules/SectionTitle';
 
 const MockInvestFeeds = () => {
   const history = useHistory();
   const { getMyStrategyListQuery } = useMyStrategy();
-  console.log("getMyStrategyListQuery", getMyStrategyListQuery);
+  console.log('getMyStrategyListQuery', getMyStrategyListQuery);
 
   const strategyList = React.useMemo(
     () => getMyStrategyListQuery.data?.memberStrategyList,
-    [getMyStrategyListQuery]
+    [getMyStrategyListQuery],
   );
   return (
     <WingBlank>
@@ -30,14 +30,14 @@ const MockInvestFeeds = () => {
         // linkTo={process.env.PUBLIC_URL + "/takers/mock-invest/list/risk-taking"}
       />
       <WhiteSpace />
-      {getMyStrategyListQuery.isLoading && "loading..."}
+      {getMyStrategyListQuery.isLoading && 'loading...'}
       {strategyList &&
         strategyList.slice(0, 3).map((data, key) => (
           <StrategyCardBox
             key={key}
             title={data.strategy_name}
             subTitle={toTagsString(
-              data.hashList?.map((e) => e?.hash?.hash_contents)
+              data.hashList?.map((e) => e?.hash?.hash_contents),
             )}
             CAGR={
               data?.backtestDetailInfo?.year_avg_profit_rate &&
@@ -46,7 +46,7 @@ const MockInvestFeeds = () => {
             thumnail={
               data.universal.length >= 1
                 ? toTickerImage(data.universal[0].ticker)
-                : ""
+                : ''
             }
             onErrorImg={data.image_url}
             onClick={() => {

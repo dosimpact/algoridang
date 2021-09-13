@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom } from 'recoil';
 
 // 애러 state를 가지고 있는 atom
 interface ICorporation {
@@ -7,9 +7,9 @@ interface ICorporation {
 }
 
 export const atomCorporationState = atom<ICorporation>({
-  key: "CorporationStatus",
+  key: 'CorporationStatus',
   default: {
-    ticker: "005930",
-    corp_name: "삼성전자",
+    ticker: '005930',
+    corp_name: '삼성전자',
   },
 });

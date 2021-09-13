@@ -1,24 +1,24 @@
-import React from "react";
-import { SegmentedControl } from "antd-mobile";
-import styled from "styled-components";
+import React from 'react';
+import { SegmentedControl } from 'antd-mobile';
+import styled from 'styled-components';
 
-import ScreateBasic from "./section/screate-basic";
-import ScreatePropterties from "./section/screate-propterties";
-import ScreateTickers from "./section/screate-tickers";
-import WhiteSpace from "components/_atoms/WhiteSpace";
-import WingBlank from "components/_atoms/WingBlank";
-import BasicSettings from "components/_organisms/inspector/BaseSettings";
-import { useRecoilState, useRecoilValue } from "recoil";
+import ScreateBasic from './section/screate-basic';
+import ScreatePropterties from './section/screate-propterties';
+import ScreateTickers from './section/screate-tickers';
+import WhiteSpace from 'components/_atoms/WhiteSpace';
+import WingBlank from 'components/_atoms/WingBlank';
+import BasicSettings from 'components/_organisms/inspector/BaseSettings';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   atomInspector,
   IInspectorTypes,
   selectedMonoTickerSettingButtonListJSX,
   selectedTickerElementListJSX,
   selectorInspectorFC,
-} from "states/recoil/strategy-create";
-import DashBoardButton from "components/_molecules/DashBoardButton";
-import { IconPlus, IconSetting } from "assets/icons";
-import SelectedTickerButton from "components/_organisms/dashboard/SelectedTickerButton";
+} from 'states/recoil/strategy-create';
+import DashBoardButton from 'components/_molecules/DashBoardButton';
+import { IconPlus, IconSetting } from 'assets/icons';
+import SelectedTickerButton from 'components/_organisms/dashboard/SelectedTickerButton';
 
 // 전략 생성 모듈
 // DashBoard - Inspector
@@ -45,7 +45,7 @@ const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
   selectedTickerElementList,
   selectedMonoTickerSettingButtonList,
 }) => {
-  const SegmentedControlValues = ["기본설정", "종목발굴", "매매전략"];
+  const SegmentedControlValues = ['기본설정', '종목발굴', '매매전략'];
   const [tab, setTab] = React.useState<string>(SegmentedControlValues[0]);
   // const [strategyState] = useRecoilState(atomStrategyState);
 
@@ -130,12 +130,12 @@ const StrategyCreateTemplate = () => {
 
   // Selector: 현재 선택된 종목 - JSX.Element 리스트를 선택
   const selectedTickerElementList = useRecoilValue(
-    selectedTickerElementListJSX
+    selectedTickerElementListJSX,
   );
 
   // Selector : 선택된 단일 종목 매매전략 셋팅 버튼 , JSX 리스트 리턴
   const selectedMonoTickerSettingButtonList = useRecoilValue(
-    selectedMonoTickerSettingButtonListJSX
+    selectedMonoTickerSettingButtonListJSX,
   );
 
   // Handler
@@ -155,7 +155,7 @@ const StrategyCreateTemplate = () => {
           Icon={IconSetting}
           text="기본 설정"
           onClick={() => {
-            handleChangeInspector("basicSetting");
+            handleChangeInspector('basicSetting');
           }}
         />
       }
@@ -164,7 +164,7 @@ const StrategyCreateTemplate = () => {
           Icon={IconPlus}
           text="종목 관리"
           onClick={() => {
-            handleChangeInspector("universalSetting");
+            handleChangeInspector('universalSetting');
           }}
         />
       }

@@ -1,4 +1,4 @@
-import { MemberInfo } from "./entities";
+import { MemberInfo } from './entities';
 
 // member dtos
 export interface MeOutput extends MemberInfo {}

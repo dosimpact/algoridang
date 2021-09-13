@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export const Title: React.FC<{
   title: string;
@@ -9,7 +9,7 @@ export const Title: React.FC<{
   return (
     <h1
       style={{
-        fontSize: "1.7rem",
+        fontSize: '1.7rem',
         fontWeight: 700,
 
         ...style,
@@ -27,7 +27,7 @@ export const SubTitle: React.FC<{
   props?: any;
 }> = ({ title, style, ...props }) => {
   return (
-    <h1 {...props} style={{ fontSize: "18px", fontWeight: 700, ...style }}>
+    <h1 {...props} style={{ fontSize: '18px', fontWeight: 700, ...style }}>
       {title}
     </h1>
   );

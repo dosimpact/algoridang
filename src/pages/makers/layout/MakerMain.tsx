@@ -1,13 +1,13 @@
-import React from "react";
-import styled from "styled-components";
-import { Link, Redirect, Route, Switch } from "react-router-dom";
-import StrategyCreateTemplate from "../strategy-create/strategy-create-template";
-import StrategyMyC from "../strategy-my/strategy-myC";
-import StrategyPublicC from "../strategy-public/strategy-publicC";
-import { ErrorHandler } from "states/recoil/error-state";
-import TickerSearch from "../ticker-search/ticker-searchC";
-import WhiteSpace from "components/_atoms/WhiteSpace";
-import WingBlank from "components/_atoms/WingBlank";
+import React from 'react';
+import styled from 'styled-components';
+import { Link, Redirect, Route, Switch } from 'react-router-dom';
+import StrategyCreateTemplate from '../strategy-create/strategy-create-template';
+import StrategyMyC from '../strategy-my/strategy-myC';
+import StrategyPublicC from '../strategy-public/strategy-publicC';
+import { ErrorHandler } from 'states/recoil/error-state';
+import TickerSearch from '../ticker-search/ticker-searchC';
+import WhiteSpace from 'components/_atoms/WhiteSpace';
+import WingBlank from 'components/_atoms/WingBlank';
 
 // TODO LOGIN 처리 ( Email , Google )
 const NavigationContainer = () => {
@@ -39,7 +39,7 @@ const NavigationContainer = () => {
         <Link to="/makers/strategy-public">
           <div className="navItem flexCenter">공개 전략</div>
         </Link>
-        <div style={{ marginTop: "10rem" }}>
+        <div style={{ marginTop: '10rem' }}>
           <div className="navItem flexCenter">로그인</div>
         </div>
       </SNav>

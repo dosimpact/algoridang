@@ -1,6 +1,6 @@
-import React from "react";
-import { Icon } from "antd-mobile";
-import { useHistory } from "react-router";
+import React from 'react';
+import { Icon } from 'antd-mobile';
+import { useHistory } from 'react-router';
 
 // todo refactor : headless components
 const useBackButton = () => {
@@ -17,7 +17,7 @@ const useBackButton = () => {
         type="left"
         size="lg"
         onClick={handleClick}
-        style={{ cursor: "pointer" }}
+        style={{ cursor: 'pointer' }}
       />
     );
   };

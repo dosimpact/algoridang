@@ -1,9 +1,9 @@
-import React from "react";
-import StrategyCardImg from "components/strategy/StrategyCardImg";
-import styled from "styled-components";
-import { useHistory } from "react-router-dom";
-import { MemberStrategy } from "states/interface/strategy/entities";
-import { hashListToString } from "utils/parse";
+import React from 'react';
+import StrategyCardImg from 'components/strategy/StrategyCardImg';
+import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
+import { MemberStrategy } from 'states/interface/strategy/entities';
+import { hashListToString } from 'utils/parse';
 // 1. get my Strategies
 // 2. view list
 // - grid layout
@@ -35,7 +35,7 @@ const StrategyMakerList: React.FC<IStrategyMakerList> = ({
   memberStrategyList,
 }) => {
   const history = useHistory();
-  console.log("memberStrategyList", memberStrategyList);
+  console.log('memberStrategyList', memberStrategyList);
 
   // const selectBottomText= (strategy:MemberStrategy)=>{
   //   if(strategy?.investProfitInfo){
@@ -56,8 +56,8 @@ const StrategyMakerList: React.FC<IStrategyMakerList> = ({
               bottomText={e.strategy_name}
               onClick={() => {
                 isPublic
-                  ? history.push("/makers/strategy-public/detail/1")
-                  : history.push("/makers/strategy-my/detail/1");
+                  ? history.push('/makers/strategy-public/detail/1')
+                  : history.push('/makers/strategy-my/detail/1');
               }}
             />
           );

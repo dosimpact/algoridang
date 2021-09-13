@@ -1,7 +1,7 @@
-import { AxiosError, AxiosResponse } from "axios";
-import { useQuery } from "react-query";
-import { tradingApi } from "states/api";
-import { GetBaseTradingStrategyListOutput } from "states/interface/trading/dtos";
+import { AxiosError, AxiosResponse } from 'axios';
+import { useQuery } from 'react-query';
+import { tradingApi } from 'states/api';
+import { GetBaseTradingStrategyListOutput } from 'states/interface/trading/dtos';
 
 // TODO 레거시 정리(옛날 Maker)
 const useTrading = () => {
@@ -10,7 +10,7 @@ const useTrading = () => {
     isError: baseTradingStrategyListError,
     isLoading: baseTradingStrategyListLoading,
   } = useQuery<{}, AxiosError, AxiosResponse<GetBaseTradingStrategyListOutput>>(
-    "getBaseTradingStrategyList",
+    'getBaseTradingStrategyList',
     () => {
       return tradingApi.GET.getBaseTradingStrategyList();
     },
@@ -25,7 +25,7 @@ const useTrading = () => {
       onSuccess: (e) => {
         // type : AxiosResponse<GetStrategyListNewOutput>>
       },
-    }
+    },
   );
   return {
     baseTradingStrategyList:

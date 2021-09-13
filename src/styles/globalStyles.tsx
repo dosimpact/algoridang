@@ -1,6 +1,6 @@
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle } from 'styled-components';
 // import Theme from "./Theme";
-import reset from "styled-reset";
+import reset from 'styled-reset';
 
 // return Class Components
 export default createGlobalStyle`

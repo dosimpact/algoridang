@@ -1,49 +1,49 @@
-import React, { useMemo } from "react";
-import { Title } from "components/_atoms/Typos";
-import { useHistory, useParams } from "react-router-dom";
+import React, { useMemo } from 'react';
+import { Title } from 'components/_atoms/Typos';
+import { useHistory, useParams } from 'react-router-dom';
 import {
   toPercentage,
   toRatio,
   toTagsString,
   toTickerImage,
-} from "utils/parse";
-import styled from "styled-components";
-import DetailSummary from "components/_organisms/report/DetailSummary";
-import CumulativeReturn from "components/_molecules/report/CumulativeReturn";
-import MonthlyReturn from "components/_molecules/report/MonthlyReturn";
-import WinRatio from "components/_molecules/report/WinRatio";
-import useStrategyDetail from "states/react-query/strategy/useStrategyDetail";
-import useBackTestReport from "states/react-query/backtest/useBackTestReport";
-import NavHeaderDetail from "components/_molecules/NavHeaderDetail";
-import WingBlank from "components/_atoms/WingBlank";
-import WhiteSpace from "components/_atoms/WhiteSpace";
-import StrategyCardBox from "components/_molecules/StrategyCardBox";
-import { Button } from "components/_atoms/Buttons";
+} from 'utils/parse';
+import styled from 'styled-components';
+import DetailSummary from 'components/_organisms/report/DetailSummary';
+import CumulativeReturn from 'components/_molecules/report/CumulativeReturn';
+import MonthlyReturn from 'components/_molecules/report/MonthlyReturn';
+import WinRatio from 'components/_molecules/report/WinRatio';
+import useStrategyDetail from 'states/react-query/strategy/useStrategyDetail';
+import useBackTestReport from 'states/react-query/backtest/useBackTestReport';
+import NavHeaderDetail from 'components/_molecules/NavHeaderDetail';
+import WingBlank from 'components/_atoms/WingBlank';
+import WhiteSpace from 'components/_atoms/WhiteSpace';
+import StrategyCardBox from 'components/_molecules/StrategyCardBox';
+import { Button } from 'components/_atoms/Buttons';
 
 const StrategyReport = () => {
   const history = useHistory();
   const params = useParams() as { id: string };
   const strategyCode = params?.id || 0;
   if (strategyCode === 0) {
-    history.push("/");
+    history.push('/');
   }
-  const { strategyDetailQuery } = useStrategyDetail(strategyCode + "");
+  const { strategyDetailQuery } = useStrategyDetail(strategyCode + '');
   const {
     winRatioQuery,
     // accumulateProfitRateQuery, montlyProfitRateQuery,
-  } = useBackTestReport(strategyCode + "");
+  } = useBackTestReport(strategyCode + '');
 
   const memberStrategy = useMemo(
     () => strategyDetailQuery?.data?.memberStrategy,
-    [strategyDetailQuery?.data]
+    [strategyDetailQuery?.data],
   );
   const backtestDetailInfo = useMemo(
     () => strategyDetailQuery?.data?.memberStrategy?.backtestDetailInfo,
-    [strategyDetailQuery?.data]
+    [strategyDetailQuery?.data],
   );
   const investProfitInfo = useMemo(
     () => strategyDetailQuery?.data?.memberStrategy?.investProfitInfo,
-    [strategyDetailQuery?.data]
+    [strategyDetailQuery?.data],
   );
 
   // console.log("memberStrategy", memberStrategy);
@@ -51,7 +51,7 @@ const StrategyReport = () => {
   // console.log("accumulateProfitRateQuery", accumulateProfitRateQuery);
   // console.log("montlyProfitRateQuery", montlyProfitRateQuery);
   // console.log("winRatioQuery", winRatioQuery);
-  console.log("investProfitInfo", investProfitInfo);
+  console.log('investProfitInfo', investProfitInfo);
 
   const winRatio = useMemo(() => {
     if (winRatioQuery.data?.ok && winRatioQuery.data.backtestWinRatio) {
@@ -64,90 +64,90 @@ const StrategyReport = () => {
   const reportBody = useMemo(() => {
     return [
       {
-        name: "시작 날짜",
+        name: '시작 날짜',
         val: `${
           investProfitInfo?.invest_start_date
             ? investProfitInfo?.invest_start_date.slice(0, 10)
-            : "-"
+            : '-'
         }`,
       },
       {
-        name: "종료 날짜",
+        name: '종료 날짜',
         val: `${
           investProfitInfo?.invest_end_date
             ? investProfitInfo?.invest_end_date.slice(0, 10)
-            : "-"
+            : '-'
         }`,
       },
       {
-        name: "수수료",
+        name: '수수료',
         val: `${
           investProfitInfo?.securities_corp_fee
             ? toPercentage(investProfitInfo?.securities_corp_fee)
-            : "-"
+            : '-'
         } %`,
       },
       {
-        name: "누적수익율",
+        name: '누적수익율',
         val: `${
           investProfitInfo?.profit_rate
             ? toPercentage(investProfitInfo?.profit_rate)
-            : "-"
+            : '-'
         } %`,
       },
       {
-        name: "연평균수익율",
+        name: '연평균수익율',
         val: `${
           backtestDetailInfo?.year_avg_profit_rate
             ? toPercentage(backtestDetailInfo?.year_avg_profit_rate)
-            : "-"
+            : '-'
         } %`,
       },
       {
-        name: "MDD",
+        name: 'MDD',
         val: `${
-          backtestDetailInfo?.mdd ? toPercentage(backtestDetailInfo?.mdd) : "-"
+          backtestDetailInfo?.mdd ? toPercentage(backtestDetailInfo?.mdd) : '-'
         } %`,
       },
       {
-        name: "거래 개월수",
+        name: '거래 개월수',
         val: `${
           backtestDetailInfo?.trading_month_count
             ? backtestDetailInfo?.trading_month_count
-            : "-"
+            : '-'
         }`,
       },
       {
-        name: "상승 개월수",
+        name: '상승 개월수',
         val: `${
           backtestDetailInfo?.rising_month_count
             ? backtestDetailInfo?.rising_month_count
-            : "-"
+            : '-'
         }`,
       },
       {
-        name: "승률",
-        val: `${winRatio ? winRatio : "-"} %`,
+        name: '승률',
+        val: `${winRatio ? winRatio : '-'} %`,
       },
       {
-        name: "월평균수익률",
+        name: '월평균수익률',
         val: `${
           backtestDetailInfo?.month_avg_profit_rate
             ? `${toPercentage(backtestDetailInfo?.month_avg_profit_rate)} %`
-            : "-"
+            : '-'
         }`,
       },
       {
-        name: "연간변동성\n(표준편차)",
+        name: '연간변동성\n(표준편차)',
         val: `${
           backtestDetailInfo?.yearly_volatility
             ? backtestDetailInfo?.yearly_volatility
-            : "-"
+            : '-'
         }`,
       },
       {
-        name: "샤프 지수",
-        val: `${backtestDetailInfo?.sharp ? backtestDetailInfo?.sharp : "-"}`,
+        name: '샤프 지수',
+        val: `${backtestDetailInfo?.sharp ? backtestDetailInfo?.sharp : '-'}`,
       },
     ];
   }, [investProfitInfo, backtestDetailInfo, winRatio]);
@@ -167,7 +167,7 @@ const StrategyReport = () => {
           <StrategyCardBox
             title={memberStrategy.strategy_name}
             subTitle={toTagsString(
-              memberStrategy.hashList?.map((e) => e?.hash?.hash_contents)
+              memberStrategy.hashList?.map((e) => e?.hash?.hash_contents),
             )}
             CAGR={
               memberStrategy?.backtestDetailInfo?.year_avg_profit_rate &&
@@ -176,18 +176,18 @@ const StrategyReport = () => {
             thumnail={
               memberStrategy.universal.length >= 1
                 ? toTickerImage(memberStrategy.universal[0].ticker)
-                : ""
+                : ''
             }
             onErrorImg={memberStrategy.image_url}
           />
         )}
         <>
           <div className="flexRowSBt">
-            <Title title="모의 투자" style={{ marginRight: "15px" }}></Title>
+            <Title title="모의 투자" style={{ marginRight: '15px' }}></Title>
             <Button
-              style={{ width: "8rem" }}
+              style={{ width: '8rem' }}
               onClick={() => {
-                history.push("/takers/mock-invest/create/1");
+                history.push('/takers/mock-invest/create/1');
               }}
             >
               시작하기
@@ -195,11 +195,11 @@ const StrategyReport = () => {
           </div>
         </>
         {/* 4. 상세 리포트 DetailSummary.tsx  */}
-        <DetailSummary body={reportBody} header={["name", "val"]} />
+        <DetailSummary body={reportBody} header={['name', 'val']} />
         {/* 5. 백테스팅 누적 수익률 CumulativeReturn.tsx */}
-        <CumulativeReturn strategyCode={"" + strategyCode} />
+        <CumulativeReturn strategyCode={'' + strategyCode} />
         {/* 6. 백테스팅 월간 수익률 */}
-        <MonthlyReturn strategyCode={"" + strategyCode} />
+        <MonthlyReturn strategyCode={'' + strategyCode} />
         {/* 7. 승률 */}
         <WinRatio />
       </WingBlank>

@@ -1,12 +1,12 @@
-import { AxiosError, AxiosResponse } from "axios";
-import { useQuery } from "react-query";
-import { backtestApi } from "states/api";
+import { AxiosError, AxiosResponse } from 'axios';
+import { useQuery } from 'react-query';
+import { backtestApi } from 'states/api';
 import {
   GetAccumulateProfitRateChartListOutput,
   GetBacktestWinRatioOutput,
   //   GetDailyProfitRateChartListOutput,
   GetMontlyProfitRateChartListOutput,
-} from "states/interface/backtest/dtos";
+} from 'states/interface/backtest/dtos';
 
 const useBackTestReport = (strategy_code: string) => {
   // <TQueryFnData : 출력 , TError:애러타이핑 , TData :알맹이>
@@ -15,11 +15,11 @@ const useBackTestReport = (strategy_code: string) => {
     AxiosError,
     GetAccumulateProfitRateChartListOutput
   >(
-    ["getAccumulateProfitRate", strategy_code],
+    ['getAccumulateProfitRate', strategy_code],
     () => backtestApi.GET.getAccumulateProfitRate(strategy_code),
     {
       select: (data) => data.data,
-    }
+    },
   );
 
   const montlyProfitRateQuery = useQuery<
@@ -27,11 +27,11 @@ const useBackTestReport = (strategy_code: string) => {
     AxiosError,
     GetMontlyProfitRateChartListOutput
   >(
-    ["getMontlyProfitRate", strategy_code],
+    ['getMontlyProfitRate', strategy_code],
     () => backtestApi.GET.getMontlyProfitRate(strategy_code),
     {
       select: (data) => data.data,
-    }
+    },
   );
 
   //   const dailyProfitRateQuery = useQuery<
@@ -51,10 +51,10 @@ const useBackTestReport = (strategy_code: string) => {
     AxiosError,
     GetBacktestWinRatioOutput
   >(
-    ["getWinRatio", strategy_code],
+    ['getWinRatio', strategy_code],
     () => backtestApi.GET.getWinRatio(strategy_code),
 
-    { select: (data) => data.data }
+    { select: (data) => data.data },
   );
 
   return {

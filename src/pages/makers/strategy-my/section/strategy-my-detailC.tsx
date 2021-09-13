@@ -1,8 +1,8 @@
-import React from "react";
-import StrategyReport from "components/strategy/strategy-report";
-import { useLocation } from "react-router-dom";
-import styled from "styled-components";
-import SupdateBasic from "./supdate-basic";
+import React from 'react';
+import StrategyReport from 'components/strategy/strategy-report';
+import { useLocation } from 'react-router-dom';
+import styled from 'styled-components';
+import SupdateBasic from './supdate-basic';
 
 // show basic setting
 // CAGR, MDD

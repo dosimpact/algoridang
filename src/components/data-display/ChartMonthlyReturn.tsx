@@ -1,5 +1,5 @@
-import React from "react";
-import { Bar } from "react-chartjs-2";
+import React from 'react';
+import { Bar } from 'react-chartjs-2';
 
 // const options = {
 //   responsive: true,
@@ -58,10 +58,10 @@ const makeChartMonthlyReturn = (labels: string[], data: number[]) => {
     labels,
     datasets: [
       {
-        label: "수익률 %",
+        label: '수익률 %',
         data,
-        backgroundColor: "rgba(255, 205, 86, 0.2)",
-        borderColor: "rgb(255, 205, 86)",
+        backgroundColor: 'rgba(255, 205, 86, 0.2)',
+        borderColor: 'rgb(255, 205, 86)',
         borderWidth: 1,
       },
     ],
@@ -88,7 +88,7 @@ const ChartMonthlyReturn: React.FC<IChartMonthlyReturn> = ({
           maintainAspectRatio: true,
           aspectRatio: 1,
         }}
-        style={{ height: "300px" }}
+        style={{ height: '300px' }}
       ></Bar>
     </>
   );

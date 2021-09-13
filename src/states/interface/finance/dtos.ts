@@ -1,5 +1,5 @@
-import { CoreOutput, CorePaginationInput } from "../common/dtos";
-import { Corporation, DailyStock } from "./entities";
+import { CoreOutput, CorePaginationInput } from '../common/dtos';
+import { Corporation, DailyStock } from './entities';
 
 // (1)
 // 모든 Corporation list를 리턴
@@ -31,7 +31,7 @@ export interface GetCorporationOutput extends CoreOutput {
 
 export interface GetDayilStocksInput extends CorePaginationInput {
   term: string;
-  sort?: "DESC" | "ASC";
+  sort?: 'DESC' | 'ASC';
 }
 export interface GetDayilStocksOutput extends CoreOutput {
   dailyStocks?: DailyStock[];

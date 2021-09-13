@@ -1,14 +1,14 @@
-import React, { useMemo, useState } from "react";
-import styled from "styled-components";
-import { useForm } from "react-hook-form";
-import { Button, List, Radio } from "antd-mobile";
-import useTrading from "states/react-query/useTrading";
-import { StrategyName, StrategyValue } from "states/interface/trading/entities";
-import { useRecoilState } from "recoil";
-import { atomStrategyState } from "states/recoil/strategy";
-import { AddUniversalInput } from "states/interface/trading/dtos";
-import useCreateStrategy from "states/react-query/strategy/useCreateStrategy";
-import useBackTestMutation from "states/react-query/backtest/useBackTestMutation";
+import React, { useMemo, useState } from 'react';
+import styled from 'styled-components';
+import { useForm } from 'react-hook-form';
+import { Button, List, Radio } from 'antd-mobile';
+import useTrading from 'states/react-query/useTrading';
+import { StrategyName, StrategyValue } from 'states/interface/trading/entities';
+import { useRecoilState } from 'recoil';
+import { atomStrategyState } from 'states/recoil/strategy';
+import { AddUniversalInput } from 'states/interface/trading/dtos';
+import useCreateStrategy from 'states/react-query/strategy/useCreateStrategy';
+import useBackTestMutation from 'states/react-query/backtest/useBackTestMutation';
 
 const RadioItem = Radio.RadioItem;
 
@@ -20,7 +20,7 @@ type IScreateBasicInput = {
   backtestFrom: string;
   backtestTo: string;
   fees: number;
-  openRange: "public" | "private";
+  openRange: 'public' | 'private';
 };
 
 // 1. 코드 기업명 검색
@@ -75,15 +75,15 @@ const ScreatePropterties = () => {
   const handleFinalSubmit = async () => {
     const createMyStrategyMutationRes =
       await createMyStrategyMutation.mutateAsync(
-        strategyState.createMyStrategyInput
+        strategyState.createMyStrategyInput,
       );
     console.log(createMyStrategyMutation.error);
     console.log(createMyStrategyMutation.error?.message);
-    console.log("createMyStrategyMutationRes", createMyStrategyMutationRes);
+    console.log('createMyStrategyMutationRes', createMyStrategyMutationRes);
 
     const strategy_code =
       createMyStrategyMutationRes.data.memberStrategy?.strategy_code;
-    console.log("strategy_code", strategy_code);
+    console.log('strategy_code', strategy_code);
 
     // console.log("parsedCreateMyStrategy", parsedCreateMyStrategy);
     const crops = strategyState.formStateTickerSelected;
@@ -92,7 +92,7 @@ const ScreatePropterties = () => {
     addUniversalInput.push({
       ticker: crops && crops[0] && crops[0]?.ticker,
       trading_strategy_name: Object.keys(
-        strategyState.formStateTradingSetting || { None: "" }
+        strategyState.formStateTradingSetting || { None: '' },
       )[0] as StrategyName,
       start_date:
         createMyStrategyMutationRes.data.memberStrategy?.investProfitInfo
@@ -103,18 +103,18 @@ const ScreatePropterties = () => {
       setting_json: strategyState.formStateTradingSetting,
       strategy_code,
     });
-    console.log("addUniversalInput", addUniversalInput);
+    console.log('addUniversalInput', addUniversalInput);
 
     if (strategy_code) {
       const addUniversalMutationRes = await addUniversalMutation.mutateAsync({
         body: addUniversalInput[0] as AddUniversalInput,
         strategy_code: String(strategy_code),
       });
-      console.log("addUniversalMutationRes", addUniversalMutationRes);
+      console.log('addUniversalMutationRes', addUniversalMutationRes);
     }
     if (strategy_code) {
       const res = await pushBackTestQMutation.mutateAsync({ strategy_code });
-      console.log("pushBackTestQMutationRes", res);
+      console.log('pushBackTestQMutationRes', res);
     }
 
     return {
@@ -140,7 +140,7 @@ const ScreatePropterties = () => {
       <article className="articleCol searchCol">
         <form
           className="tickerSettingForm"
-          style={{ display: "flex", flexFlow: "column nowrap" }}
+          style={{ display: 'flex', flexFlow: 'column nowrap' }}
           onSubmit={handleSubmit((data) => {
             console.log(data);
           })}
@@ -150,7 +150,7 @@ const ScreatePropterties = () => {
             placeholder="매매 전략을 입력하시오"
           ></input>
         </form>
-        <div> {baseTradingStrategyListLoading && "loading..."} </div>
+        <div> {baseTradingStrategyListLoading && 'loading...'} </div>
         <List>
           {baseTradingStrategyList &&
             baseTradingStrategyList.map((i: any, idx: any) => (
@@ -162,7 +162,7 @@ const ScreatePropterties = () => {
                   setInputs({});
                 }}
               >
-                <span className="companyCode">{i.trading_strategy_code}</span>{" "}
+                <span className="companyCode">{i.trading_strategy_code}</span>{' '}
                 {i.trading_strategy_name}
               </RadioItem>
             ))}
@@ -201,7 +201,7 @@ const ScreatePropterties = () => {
                         <div>{key}</div>
                         <input
                           type="text"
-                          placeholder={value + "" || "0"}
+                          placeholder={value + '' || '0'}
                           name={key}
                           onChange={handleInputs}
                         ></input>

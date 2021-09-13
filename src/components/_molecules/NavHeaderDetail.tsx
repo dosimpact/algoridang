@@ -1,7 +1,7 @@
-import { IconArrowLeft } from "assets/icons";
-import React from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
+import { IconArrowLeft } from 'assets/icons';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 
 interface INavHeaderDetail {
   headerTitle: string;
@@ -14,7 +14,7 @@ const NavHeaderDetail: React.FC<INavHeaderDetail> = ({
 }) => {
   return (
     <SNavHeaderDetail>
-      <Link to={linkTo || process.env.PUBLIC_URL + "/takers/strategy-search"}>
+      <Link to={linkTo || process.env.PUBLIC_URL + '/takers/strategy-search'}>
         <div className="col1">
           <IconArrowLeft />
         </div>

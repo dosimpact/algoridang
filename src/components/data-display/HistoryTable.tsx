@@ -1,6 +1,6 @@
-import FNumber from "components/_atoms/FNumber";
-import React from "react";
-import styled from "styled-components";
+import FNumber from 'components/_atoms/FNumber';
+import React from 'react';
+import styled from 'styled-components';
 
 /**
  * @param header 테이블의 상단
@@ -20,7 +20,7 @@ const HistoryTable: React.FC<{
 }> = ({ header, keyMap, body, style, skip, take, ...props }) => {
   skip = skip || 0;
   take = take || 30;
-  console.log("skip take", skip, take);
+  console.log('skip take', skip, take);
 
   return (
     <HistoryTableS style={{ ...style }} {...props}>
@@ -37,7 +37,7 @@ const HistoryTable: React.FC<{
       <div className="historyTableBody">
         {body.slice(skip, skip + take).map((el, key) =>
           keyMap.map((hkey) => {
-            if (hkey === "profit_loss_rate") {
+            if (hkey === 'profit_loss_rate') {
               return (
                 <div className="body flexCenter" key={key + hkey + el[hkey]}>
                   {el[hkey] ? (
@@ -55,7 +55,7 @@ const HistoryTable: React.FC<{
                 {el[hkey]}
               </div>
             );
-          })
+          }),
         )}
       </div>
     </HistoryTableS>

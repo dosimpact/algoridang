@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { useUpdateTodo } from "states/apollo/useTodoMutations";
-import { useTodo } from "states/apollo/useTodoQueries";
-import { UpdateTodoInput } from "__generated__/globalTypes";
+import React, { useState } from 'react';
+import { useUpdateTodo } from 'states/apollo/useTodoMutations';
+import { useTodo } from 'states/apollo/useTodoQueries';
+import { UpdateTodoInput } from '__generated__/globalTypes';
 
 // update todo
 const GqlPrac06 = () => {
   const [getTodo] = useTodo({
     onCompleted: (data) => {
-      console.log("check valid todo", data.getTodo);
+      console.log('check valid todo', data.getTodo);
 
       if (data.getTodo.ok && tmpTodo) {
         updateTodo({
@@ -22,19 +22,19 @@ const GqlPrac06 = () => {
   const [updateTodo, { data }] = useUpdateTodo();
   const [tmpTodo, setTmpTodo] = useState<UpdateTodoInput>({
     id: 0,
-    content: "",
+    content: '',
     finished: false,
   });
 
   const handleOnChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;
-    if (name === "id") {
+    if (name === 'id') {
       setTmpTodo((prev) => ({ ...prev, id: Number(e.target.value) }));
     }
-    if (name === "content") {
+    if (name === 'content') {
       setTmpTodo((prev) => ({ ...prev, content: e.target.value }));
     }
-    if (name === "finished") {
+    if (name === 'finished') {
       setTmpTodo((prev) => ({ ...prev, finished: Boolean(e.target.checked) }));
     }
   };
@@ -54,7 +54,7 @@ const GqlPrac06 = () => {
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        id :{" "}
+        id :{' '}
         <input
           type="text"
           value={tmpTodo?.id}
@@ -65,7 +65,7 @@ const GqlPrac06 = () => {
         <input
           type="text"
           name="content"
-          value={tmpTodo?.content || ""}
+          value={tmpTodo?.content || ''}
           onChange={handleOnChange}
         ></input>
         finished :

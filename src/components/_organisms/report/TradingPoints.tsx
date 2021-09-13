@@ -1,21 +1,21 @@
-import { Title } from "components/_atoms/Typos";
-import LineSeriesChartPointing from "components/light-weight/LineSeriesChartPointing";
-import { SeriesMarker, Time } from "lightweight-charts";
-import React, { useCallback, useMemo, useState } from "react";
-import { History } from "states/interface/backtest/entities";
-import useBackTestHistory from "states/react-query/backtest/useBackTestHistory";
-import useDailyStock from "states/react-query/finance/useDailyStock";
-import styled from "styled-components";
-import { UTCtoDate } from "utils/parse";
-import WhiteSpace from "components/_atoms/WhiteSpace";
-import FNumber from "components/_atoms/FNumber";
+import { Title } from 'components/_atoms/Typos';
+import LineSeriesChartPointing from 'components/light-weight/LineSeriesChartPointing';
+import { SeriesMarker, Time } from 'lightweight-charts';
+import React, { useCallback, useMemo, useState } from 'react';
+import { History } from 'states/interface/backtest/entities';
+import useBackTestHistory from 'states/react-query/backtest/useBackTestHistory';
+import useDailyStock from 'states/react-query/finance/useDailyStock';
+import styled from 'styled-components';
+import { UTCtoDate } from 'utils/parse';
+import WhiteSpace from 'components/_atoms/WhiteSpace';
+import FNumber from 'components/_atoms/FNumber';
 
 // 매매시점 컴포넌트의 차트
 const ChartBuySelPoint: React.FC<{ ticker: string; strategyCode: string }> = ({
   ticker,
   strategyCode,
 }) => {
-  const { dayilStocks } = useDailyStock(ticker, 3650, 0, "ASC");
+  const { dayilStocks } = useDailyStock(ticker, 3650, 0, 'ASC');
   const { historiesQuery } = useBackTestHistory(strategyCode);
   const [currentMarkerId, setMarkerId] = useState<null | number>(null);
 
@@ -34,22 +34,22 @@ const ChartBuySelPoint: React.FC<{ ticker: string; strategyCode: string }> = ({
         // 매도(판매)
         if (h.profit_loss_rate) {
           return {
-            id: "" + h.history_code,
+            id: '' + h.history_code,
             time: UTCtoDate(h.history_date),
-            position: "belowBar",
-            color: "#e91e63",
-            shape: "arrowUp",
+            position: 'belowBar',
+            color: '#e91e63',
+            shape: 'arrowUp',
             text: `Sell@ ${h.profit_loss_rate}%`,
           };
         } //매수
         else {
           return {
-            id: "" + h.history_code,
+            id: '' + h.history_code,
             time: UTCtoDate(h.history_date),
-            position: "aboveBar",
-            color: "#2196F3",
-            shape: "arrowDown",
-            text: "Buy",
+            position: 'aboveBar',
+            color: '#2196F3',
+            shape: 'arrowDown',
+            text: 'Buy',
           };
         }
       }) as SeriesMarker<Time>[];
@@ -76,13 +76,13 @@ const ChartBuySelPoint: React.FC<{ ticker: string; strategyCode: string }> = ({
 
   return (
     <div>
-      <div style={{ fontSize: "1.2rem" }}>
+      <div style={{ fontSize: '1.2rem' }}>
         {currnetHistory &&
           `${currnetHistory.history_date.slice(0, 10)} |   
           ${currnetHistory.ticker} |
           ${currnetHistory.buy_sale_price} | `}
         {currnetHistory && currnetHistory.profit_loss_rate === null
-          ? "매수"
+          ? '매수'
           : currnetHistory && (
               <span>
                 <FNumber val={currnetHistory.profit_loss_rate} />%
@@ -118,8 +118,8 @@ const TradingPoints: React.FC<ITradingPoints> = ({
 }) => {
   return (
     <STradingPoints {...props}>
-      <div className="flexRow" style={{ marginTop: "50px" }}>
-        <Title title={title || "매매 시점"} style={{ margin: "20px 0px" }} />
+      <div className="flexRow" style={{ marginTop: '50px' }}>
+        <Title title={title || '매매 시점'} style={{ margin: '20px 0px' }} />
       </div>
       <ChartBuySelPoint ticker={ticker} strategyCode={strategyCode} />
     </STradingPoints>

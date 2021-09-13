@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { Button, WhiteSpace, WingBlank } from "antd-mobile";
-import useMember from "states/react-query/useMember";
-import Tour from "reactour";
-import { atom, selector, useRecoilState, useRecoilValue } from "recoil";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Button, WhiteSpace, WingBlank } from 'antd-mobile';
+import useMember from 'states/react-query/useMember';
+import Tour from 'reactour';
+import { atom, selector, useRecoilState, useRecoilValue } from 'recoil';
 // import SampleMarker from "components/light-weight/SampleMarker";
 
 // todo : makers, takers 선택 저장하기
@@ -13,11 +13,11 @@ interface IAtomTodo {
   finished: boolean;
 }
 const atomTodo = atom<IAtomTodo[]>({
-  key: "atomTodo",
+  key: 'atomTodo',
   default: [
-    { name: "hello1", finished: true },
-    { name: "hello2", finished: true },
-    { name: "hello3", finished: true },
+    { name: 'hello1', finished: true },
+    { name: 'hello2', finished: true },
+    { name: 'hello3', finished: true },
   ],
 });
 
@@ -27,7 +27,7 @@ const LandingPage = () => {
   const [todo, setTodo] = useRecoilState(atomTodo);
   const handleChangeTodo = (idx: number) => {
     setTodo((prev) => {
-      prev[idx] = { name: "hacked", finished: false };
+      prev[idx] = { name: 'hacked', finished: false };
       return [...prev];
     });
   };
@@ -45,8 +45,8 @@ const LandingPage = () => {
       <Button
         onClick={() => {
           logIn({
-            email_id: "ypd03008@gmail.com",
-            password: "ypd03008",
+            email_id: 'ypd03008@gmail.com',
+            password: 'ypd03008',
           });
         }}
       >
@@ -69,15 +69,15 @@ const LandingPage = () => {
         maskClassName="mask"
         className="helper"
         rounded={5}
-        accentColor={"#5cb7b7"}
+        accentColor={'#5cb7b7'}
         // onAfterOpen={this.disableBody}
         // onBeforeClose={this.enableBody}
       />
       <WhiteSpace />
-      <h1 style={{ fontSize: "20px" }}>
+      <h1 style={{ fontSize: '20px' }}>
         알고리당에 오신것을 환영합니다.
         <br />
-        {!me.isLoading && me?.data?.email_id} 님 ({" "}
+        {!me.isLoading && me?.data?.email_id} 님 ({' '}
         {!me.isLoading && me?.data?.email_id})
       </h1>
       <WhiteSpace />

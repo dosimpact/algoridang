@@ -1,10 +1,10 @@
-import React from "react";
-import { SegmentedControl, WingBlank, WhiteSpace } from "antd-mobile";
-import styled from "styled-components";
+import React from 'react';
+import { SegmentedControl, WingBlank, WhiteSpace } from 'antd-mobile';
+import styled from 'styled-components';
 
-import ScreateBasic from "./section/screate-basic";
-import ScreatePropterties from "./section/screate-propterties";
-import ScreateTickers from "./section/screate-tickers";
+import ScreateBasic from './section/screate-basic';
+import ScreatePropterties from './section/screate-propterties';
+import ScreateTickers from './section/screate-tickers';
 // import { useRecoilState } from "recoil";
 // import { atomStrategyState } from "states/recoil/strategy";
 
@@ -13,7 +13,7 @@ import ScreateTickers from "./section/screate-tickers";
 // type SegmentedControlTab = typeof (SegmentedControlValues as const)[number];
 
 const StrategyCreateC = () => {
-  const SegmentedControlValues = ["기본설정", "종목발굴", "매매전략"];
+  const SegmentedControlValues = ['기본설정', '종목발굴', '매매전략'];
   const [tab, setTab] = React.useState<string>(SegmentedControlValues[0]);
   // const [strategyState] = useRecoilState(atomStrategyState);
 
@@ -25,12 +25,12 @@ const StrategyCreateC = () => {
         <WhiteSpace size="lg" />
         <WhiteSpace size="lg" />
         <SegmentedControl
-          tintColor={"#F39C12"}
+          tintColor={'#F39C12'}
           style={{
-            height: "7rem",
-            width: "100%",
-            fontSize: "4rem",
-            cursor: "pointer",
+            height: '7rem',
+            width: '100%',
+            fontSize: '4rem',
+            cursor: 'pointer',
           }}
           values={SegmentedControlValues}
           selectedIndex={SegmentedControlValues.indexOf(tab)}

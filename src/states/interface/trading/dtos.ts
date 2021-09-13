@@ -1,10 +1,10 @@
-import { CoreOutput } from "../common/dtos";
+import { CoreOutput } from '../common/dtos';
 import {
   BaseTradingStrategy,
   SettingJSON,
   StrategyName,
   Universal,
-} from "./entities";
+} from './entities';
 
 // query DTOs
 export interface GetBaseTradingStrategyInput {

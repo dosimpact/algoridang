@@ -1,4 +1,4 @@
-import { atom, selector } from "recoil";
+import { atom, selector } from 'recoil';
 import {
   BackTestingSetting,
   BasicSettings,
@@ -6,11 +6,11 @@ import {
   TradingPropertySetting,
   TradingSetting,
   UniversalSetting,
-} from "components/_organisms/inspector";
-import { Corporation } from "states/interface/finance/entities";
-import MonoTickerSettingButton from "components/_organisms/dashboard/MonoTickerSettingButton";
-import SelectedTickerButton from "components/_organisms/dashboard/SelectedTickerButton";
-import { BaseTradingStrategy } from "states/interface/trading/entities";
+} from 'components/_organisms/inspector';
+import { Corporation } from 'states/interface/finance/entities';
+import MonoTickerSettingButton from 'components/_organisms/dashboard/MonoTickerSettingButton';
+import SelectedTickerButton from 'components/_organisms/dashboard/SelectedTickerButton';
+import { BaseTradingStrategy } from 'states/interface/trading/entities';
 /**
  * 전략 생성에 대한 클라이언트 상태관리 입니다.
  *
@@ -22,12 +22,12 @@ import { BaseTradingStrategy } from "states/interface/trading/entities";
 
 // 1.1 인스팩터 상태관리 interface & type
 export type IInspectorTypes =
-  | "default"
-  | "basicSetting"
-  | "universalSetting"
-  | "tradingSetting" // 매매 전략 추가 삭제
-  | "tradingPropertySetting" // 매매 전략 상세 설정
-  | "backTestingSetting";
+  | 'default'
+  | 'basicSetting'
+  | 'universalSetting'
+  | 'tradingSetting' // 매매 전략 추가 삭제
+  | 'tradingPropertySetting' // 매매 전략 상세 설정
+  | 'backTestingSetting';
 
 interface IInspector {
   isShow: boolean;
@@ -50,10 +50,10 @@ interface IInspector {
 // 1.1 인스팩터 상태관리 atom
 // 전략 생성 페이지의 인스펙터 상태 관리
 export const atomInspector = atom<IInspector>({
-  key: "Inspector",
+  key: 'Inspector',
   default: {
     isShow: true,
-    inspectorType: "basicSetting",
+    inspectorType: 'basicSetting',
     inspectorState: {
       basicSetting: {},
       universalSetting: {
@@ -70,20 +70,20 @@ export const atomInspector = atom<IInspector>({
 // 1.1 인스팩터 상태관리 Selector
 // 인스펙터 JSX Selector
 export const selectorInspectorFC = selector<React.FC<IInspectorSettings>>({
-  key: "selectorInspectorFC",
+  key: 'selectorInspectorFC',
   get: ({ get }) => {
     const inspectorState = get(atomInspector);
-    if (inspectorState.inspectorType === "default") {
+    if (inspectorState.inspectorType === 'default') {
       return BasicSettings;
-    } else if (inspectorState.inspectorType === "basicSetting") {
+    } else if (inspectorState.inspectorType === 'basicSetting') {
       return BasicSettings;
-    } else if (inspectorState.inspectorType === "universalSetting") {
+    } else if (inspectorState.inspectorType === 'universalSetting') {
       return UniversalSetting;
-    } else if (inspectorState.inspectorType === "tradingSetting") {
+    } else if (inspectorState.inspectorType === 'tradingSetting') {
       return TradingSetting;
-    } else if (inspectorState.inspectorType === "tradingPropertySetting") {
+    } else if (inspectorState.inspectorType === 'tradingPropertySetting') {
       return TradingPropertySetting;
-    } else if (inspectorState.inspectorType === "backTestingSetting") {
+    } else if (inspectorState.inspectorType === 'backTestingSetting') {
       return BackTestingSetting;
     } else {
       return BasicSettings;
@@ -108,15 +108,15 @@ interface IBasicSetting {
 // 2.1 전략 기본 설정 상태관리 - atom
 // 전략 기본 설정 입력 form 저장 atom
 export const atomBasicSetting = atom<IBasicSetting>({
-  key: "BasicSetting",
+  key: 'BasicSetting',
   default: {
-    strategy_name: "",
-    strategy_explanation: "",
-    tags: [""],
+    strategy_name: '',
+    strategy_explanation: '',
+    tags: [''],
     open_yes_no: true,
-    invest_principal: "",
-    invest_start_date: "",
-    securities_corp_fee: "",
+    invest_principal: '',
+    invest_start_date: '',
+    securities_corp_fee: '',
   },
 });
 
@@ -136,7 +136,7 @@ interface IUniversalSettingState {
   // 퀀트 필터들
 }
 export const atomUniversalSettingState = atom<IUniversalSettingState>({
-  key: "UniversalSettingState",
+  key: 'UniversalSettingState',
   default: {
     selected: [],
   },
@@ -146,7 +146,7 @@ export const atomUniversalSettingState = atom<IUniversalSettingState>({
 // (선택된 종목리스트)
 
 export const selectedTickerElementListJSX = selector({
-  key: "selectedTickerElementListJSX",
+  key: 'selectedTickerElementListJSX',
   get: ({ get }) => {
     const at = get(atomUniversalSettingState);
     return at.selected.map((data, idx) => (
@@ -162,7 +162,7 @@ export const selectedTickerElementListJSX = selector({
 // 1.3 선택된 단일 종목 매매전략 셋팅 버튼 , JSX 리스트 리턴
 // (개별 매매전략 셋팅 리스트)
 export const selectedMonoTickerSettingButtonListJSX = selector({
-  key: "selectedMonoTickerSettingButtonListJSX",
+  key: 'selectedMonoTickerSettingButtonListJSX',
   get: ({ get }) => {
     const at = get(atomUniversalSettingState);
     return at.selected.map((data, idx) => (

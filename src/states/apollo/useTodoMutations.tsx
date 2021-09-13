@@ -1,16 +1,16 @@
-import { gql, useMutation } from "@apollo/client";
+import { gql, useMutation } from '@apollo/client';
 import {
   MutationCreateTodo,
   MutationCreateTodoVariables,
-} from "__generated__/MutationCreateTodo";
+} from '__generated__/MutationCreateTodo';
 import {
   MutationUpdateTodo,
   MutationUpdateTodoVariables,
-} from "__generated__/MutationUpdateTodo";
+} from '__generated__/MutationUpdateTodo';
 import {
   MutationDeleteTodo,
   MutationDeleteTodoVariables,
-} from "__generated__/MutationDeleteTodo";
+} from '__generated__/MutationDeleteTodo';
 
 export const gql_MutationCreateTodo = gql`
   mutation MutationCreateTodo($createTodoInput: CreateTodoInput!) {
@@ -32,7 +32,7 @@ export const gql_MutationCreateTodo = gql`
 
 export const useCreateTodo = () => {
   return useMutation<MutationCreateTodo, MutationCreateTodoVariables>(
-    gql_MutationCreateTodo
+    gql_MutationCreateTodo,
   );
 };
 
@@ -56,7 +56,7 @@ export const gql_MutationUpdateTodo = gql`
 
 export const useUpdateTodo = () => {
   return useMutation<MutationUpdateTodo, MutationUpdateTodoVariables>(
-    gql_MutationUpdateTodo
+    gql_MutationUpdateTodo,
   );
 };
 
@@ -79,6 +79,6 @@ export const gql_MutationDeleteTodo = gql`
 `;
 export const useDeleteTodo = () => {
   return useMutation<MutationDeleteTodo, MutationDeleteTodoVariables>(
-    gql_MutationDeleteTodo
+    gql_MutationDeleteTodo,
   );
 };

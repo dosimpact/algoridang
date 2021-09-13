@@ -1,5 +1,5 @@
-import React from "react";
-import { atom, selector, useRecoilState, useRecoilValue } from "recoil";
+import React from 'react';
+import { atom, selector, useRecoilState, useRecoilValue } from 'recoil';
 
 // store Section
 // atoms
@@ -8,15 +8,15 @@ interface IspeechState {
   speak: string;
 }
 const atom_speech = atom<IspeechState>({
-  key: "speech_",
+  key: 'speech_',
   default: {
-    name: "",
-    speak: "",
+    name: '',
+    speak: '',
   },
 });
 // selector
 const select_speechToEn = selector({
-  key: "speechToEnSelect",
+  key: 'speechToEnSelect',
   get: ({ get }) => {
     const speech = get(atom_speech);
     return {
@@ -25,7 +25,7 @@ const select_speechToEn = selector({
   },
 });
 const select_speechToKo = selector({
-  key: "speechToKoSelect",
+  key: 'speechToKoSelect',
   get: ({ get }) => {
     const speech = get(atom_speech);
     return {
@@ -38,13 +38,13 @@ const select_speechToKo = selector({
 
 const Speaker = () => {
   const [speech, setSpeech] = useRecoilState(atom_speech);
-  const [name, setName] = React.useState("");
+  const [name, setName] = React.useState('');
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (name) {
       setSpeech((prev) => ({ ...prev, name }));
     }
-    setName("");
+    setName('');
   };
 
   return (

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useRecoilValue, useRecoilState, atom, selector } from "recoil";
+import React, { useState } from 'react';
+import { useRecoilValue, useRecoilState, atom, selector } from 'recoil';
 
 interface IMyTodo {
   content: string;
@@ -7,29 +7,29 @@ interface IMyTodo {
 }
 
 const atom_myTodos = atom<IMyTodo[]>({
-  key: "myTodos",
+  key: 'myTodos',
   default: [
     {
-      content: "algo",
+      content: 'algo',
       finished: false,
     },
     {
-      content: "ts-enum",
+      content: 'ts-enum',
       finished: true,
     },
     {
-      content: "motivation",
+      content: 'motivation',
       finished: true,
     },
     {
-      content: "workout",
+      content: 'workout',
       finished: false,
     },
   ],
 });
 
 const select_todosNotFin = selector({
-  key: "todosNotFin",
+  key: 'todosNotFin',
   get: ({ get }) => {
     const todos = get(atom_myTodos);
     return todos.filter((todo) => todo.finished === false);
@@ -37,7 +37,7 @@ const select_todosNotFin = selector({
 });
 
 const select_todosFin = selector({
-  key: "todosFin",
+  key: 'todosFin',
   get: ({ get }) => {
     const todos = get(atom_myTodos);
     return todos.filter((todo) => todo.finished === true);
@@ -46,12 +46,12 @@ const select_todosFin = selector({
 
 const TodoCreate = () => {
   const [todos, setTodos] = useRecoilState(atom_myTodos);
-  const [uinput, setUinput] = useState("");
+  const [uinput, setUinput] = useState('');
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (uinput) {
       setTodos((prev) => [...prev, { content: uinput, finished: false }]);
-      setUinput("");
+      setUinput('');
     }
   };
   return (

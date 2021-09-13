@@ -1,7 +1,7 @@
-import React from "react";
-import { SubTitle } from "components/_atoms/Typos";
-import styled from "styled-components";
-import WhiteSpace from "components/_atoms/WhiteSpace";
+import React from 'react';
+import { SubTitle } from 'components/_atoms/Typos';
+import styled from 'styled-components';
+import WhiteSpace from 'components/_atoms/WhiteSpace';
 
 interface IDescription {
   props?: any;

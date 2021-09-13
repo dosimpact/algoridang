@@ -3,13 +3,13 @@ import {
   useQuery,
   useLazyQuery,
   LazyQueryHookOptions,
-} from "@apollo/client";
-import { QueryTodo, QueryTodoVariables } from "__generated__/QueryTodo";
-import { QueryTodos } from "__generated__/QueryTodos";
+} from '@apollo/client';
+import { QueryTodo, QueryTodoVariables } from '__generated__/QueryTodo';
+import { QueryTodos } from '__generated__/QueryTodos';
 import {
   QueryTodosNMain,
   QueryTodosNMainVariables,
-} from "__generated__/QueryTodosNMain";
+} from '__generated__/QueryTodosNMain';
 
 export const gql_QueryTodo = gql`
   query QueryTodo($getTodoInput: GetTodoInput!) {
@@ -30,7 +30,7 @@ export const gql_QueryTodo = gql`
 `;
 
 export const useTodo = (
-  options?: LazyQueryHookOptions<QueryTodo, QueryTodoVariables>
+  options?: LazyQueryHookOptions<QueryTodo, QueryTodoVariables>,
 ) => {
   // 반환 타입, 입력변수 타입
   return useLazyQuery<QueryTodo, QueryTodoVariables>(gql_QueryTodo, options);
@@ -82,7 +82,7 @@ export const gql_QueryTodosNMain = gql`
 const useTodosNMain = () => {
   // <반환타입, 입력 타입>
   return useLazyQuery<QueryTodosNMain, QueryTodosNMainVariables>(
-    gql_QueryTodosNMain
+    gql_QueryTodosNMain,
   );
 };
 

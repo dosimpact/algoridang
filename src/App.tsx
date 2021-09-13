@@ -1,13 +1,13 @@
-import React from "react";
-import GlobalStyles from "styles/globalStyles";
-import { ThemeProvider } from "styled-components";
-import theme from "styles/theme";
-import Router from "components/Router";
-import { RecoilRoot } from "recoil";
-import { ApolloProvider } from "@apollo/client";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
-import { apolloClient } from "states/apollo/apollo";
+import React from 'react';
+import GlobalStyles from 'styles/globalStyles';
+import { ThemeProvider } from 'styled-components';
+import theme from 'styles/theme';
+import Router from 'components/Router';
+import { RecoilRoot } from 'recoil';
+import { ApolloProvider } from '@apollo/client';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
+import { apolloClient } from 'states/apollo/apollo';
 
 // - styles
 // GlobalStyles ( reset css + global css )

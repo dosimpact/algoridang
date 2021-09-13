@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 // 어제보다 -300(원) 0.38% 떨어졌네 를 표현
 const BadgePriceDelta: React.FC<{ today?: number; yesterday?: number }> = ({
@@ -12,7 +12,7 @@ const BadgePriceDelta: React.FC<{ today?: number; yesterday?: number }> = ({
       const diffPercentage = Number((today / yesterday) * 100 - 100).toFixed(2);
       return {
         diffValue,
-        diffPercentage: diffPercentage + "%",
+        diffPercentage: diffPercentage + '%',
       };
     } else {
       return {

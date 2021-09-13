@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import { randomDefaultThunmnail } from "utils/default-values";
-import BadgeCAGR from "components/_atoms/BadgeCAGR";
+import React from 'react';
+import styled from 'styled-components';
+import { randomDefaultThunmnail } from 'utils/default-values';
+import BadgeCAGR from 'components/_atoms/BadgeCAGR';
 
 /**
  * 박스형 전략탐색 카드
@@ -19,10 +19,10 @@ interface IStrategyCardBox {
 
 const StrategyCardBox: React.FC<IStrategyCardBox> = ({
   CAGR,
-  subTitle = "",
-  thumnail = "",
-  onErrorImg = "",
-  title = "Error",
+  subTitle = '',
+  thumnail = '',
+  onErrorImg = '',
+  title = 'Error',
   onClick,
   StrategyState,
 }) => {

@@ -1,4 +1,4 @@
-const select_platform = "select_platform";
+const select_platform = 'select_platform';
 
 export const getSelectPlatform = () =>
   JSON.parse(localStorage.getItem(select_platform) as string);

@@ -1,7 +1,7 @@
-import React, { useMemo } from "react";
-import styled from "styled-components";
-import { useForm } from "react-hook-form";
-import { Button } from "antd-mobile";
+import React, { useMemo } from 'react';
+import styled from 'styled-components';
+import { useForm } from 'react-hook-form';
+import { Button } from 'antd-mobile';
 
 type ISupdateBasicInput = {
   name: string;
@@ -11,51 +11,51 @@ type ISupdateBasicInput = {
   backtestFrom: string;
   backtestTo: string;
   fees: number;
-  openRange: "public" | "private";
+  openRange: 'public' | 'private';
 };
 
 const inputNameList = [
-  "name",
-  "description",
-  "tags",
-  "startMoney",
-  "backtestFrom",
-  "backtestTo",
-  "fees",
-  "openRange",
+  'name',
+  'description',
+  'tags',
+  'startMoney',
+  'backtestFrom',
+  'backtestTo',
+  'fees',
+  'openRange',
 ];
 
 const mapNameToDetail = {
-  name: "전략 이름",
-  description: "전략 설명",
-  tags: "전략 테그",
-  startMoney: "운용 자금",
-  backtestFrom: "백테스트 시작",
-  backtestTo: "백테스트 종료",
-  fees: "수수료",
-  openRange: "공개범위",
+  name: '전략 이름',
+  description: '전략 설명',
+  tags: '전략 테그',
+  startMoney: '운용 자금',
+  backtestFrom: '백테스트 시작',
+  backtestTo: '백테스트 종료',
+  fees: '수수료',
+  openRange: '공개범위',
 } as Record<string, string>;
 
 const mapNameToPlaceholder = {
-  name: "전략 이름",
-  description: "전략 설명",
-  tags: "전략 테그",
-  startMoney: "운용 자금",
-  backtestFrom: "백테스트 시작",
-  backtestTo: "백테스트 종료",
-  fees: "수수료",
-  openRange: "공개범위",
+  name: '전략 이름',
+  description: '전략 설명',
+  tags: '전략 테그',
+  startMoney: '운용 자금',
+  backtestFrom: '백테스트 시작',
+  backtestTo: '백테스트 종료',
+  fees: '수수료',
+  openRange: '공개범위',
 } as Record<string, string>;
 
 const mapNameToRemark = {
-  name: "",
-  description: "",
-  tags: "",
-  startMoney: "만원",
-  backtestFrom: "년",
-  backtestTo: "%",
-  fees: "",
-  openRange: "",
+  name: '',
+  description: '',
+  tags: '',
+  startMoney: '만원',
+  backtestFrom: '년',
+  backtestTo: '%',
+  fees: '',
+  openRange: '',
 } as Record<string, string>;
 
 const SupdateBasic = () => {
@@ -67,7 +67,7 @@ const SupdateBasic = () => {
     <SSupdateBasic>
       <form
         className="basicSettingForm"
-        style={{ display: "flex", flexFlow: "column nowrap" }}
+        style={{ display: 'flex', flexFlow: 'column nowrap' }}
         onSubmit={handleSubmit((data) => {
           console.log(data);
         })}
@@ -78,7 +78,7 @@ const SupdateBasic = () => {
           <div className="col remark">단위</div>
         </div>
         {inputNameListM
-          .filter((name) => name !== "openRange")
+          .filter((name) => name !== 'openRange')
           .map((name, key) => {
             return (
               <div className="inputRow" key={key}>
@@ -97,17 +97,17 @@ const SupdateBasic = () => {
             );
           })}
         <div className="inputRow">
-          <div className="col detail">{mapNameToDetail["openRange"]}</div>
+          <div className="col detail">{mapNameToDetail['openRange']}</div>
           <div className="col inputField">
-            <select {...register("openRange")}>
-              {["public", "private"].map((value) => (
+            <select {...register('openRange')}>
+              {['public', 'private'].map((value) => (
                 <option key={value} value={value}>
                   {value}
                 </option>
               ))}
             </select>
           </div>
-          <div className="col remark">{mapNameToRemark["openRange"]}</div>
+          <div className="col remark">{mapNameToRemark['openRange']}</div>
         </div>
         <Button
           type="primary"

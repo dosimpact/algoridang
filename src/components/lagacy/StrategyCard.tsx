@@ -1,8 +1,8 @@
-import BadgeCAGR from "components/_atoms/BadgeCAGR";
-import React from "react";
-import styled from "styled-components";
+import BadgeCAGR from 'components/_atoms/BadgeCAGR';
+import React from 'react';
+import styled from 'styled-components';
 // import FNumber from "components/_atoms/FNumber";
-import { randomDefaultThunmnail } from "utils/default-values";
+import { randomDefaultThunmnail } from 'utils/default-values';
 interface IStrategyCard {
   thumnail?: string;
   title: string;
@@ -14,9 +14,9 @@ interface IStrategyCard {
 
 const StrategyCard: React.FC<IStrategyCard> = ({
   CAGR,
-  subTitle = "",
-  thumnail = "",
-  title = "Error",
+  subTitle = '',
+  thumnail = '',
+  title = 'Error',
   onClick,
   StrategyState,
 }) => {

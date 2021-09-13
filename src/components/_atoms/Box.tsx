@@ -1,9 +1,9 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 // Box type :
 
-export type BoxType = "normal" | "gray" | "success" | "danger";
+export type BoxType = 'normal' | 'gray' | 'success' | 'danger';
 export const Box: React.FC<{
   type?: BoxType;
   className?: string;
@@ -12,9 +12,9 @@ export const Box: React.FC<{
 }> = ({ children, type, style, ...props }) => {
   return (
     <SBox
-      type={type || "normal"}
+      type={type || 'normal'}
       style={{
-        cursor: "pointer",
+        cursor: 'pointer',
         ...style,
       }}
       {...props}
@@ -31,16 +31,16 @@ const SBox = styled.div<{
   height: 3rem;
   border-radius: 0.4rem;
   color: ${(props) =>
-    (props.type === "normal" && props.theme.ColorMainWhite) ||
-    (props.type === "gray" && props.theme.ColorMainGray) ||
-    (props.type === "success" && props.theme.ColorMainGreen) ||
-    (props.type === "danger" && props.theme.ColorMainRed)};
+    (props.type === 'normal' && props.theme.ColorMainWhite) ||
+    (props.type === 'gray' && props.theme.ColorMainGray) ||
+    (props.type === 'success' && props.theme.ColorMainGreen) ||
+    (props.type === 'danger' && props.theme.ColorMainRed)};
 
   background-color: ${(props) =>
-    (props.type === "normal" && props.theme.ColorMainYellow) ||
-    (props.type === "gray" && props.theme.ColorMainLightGray) ||
-    (props.type === "success" && props.theme.ColorMainLightGreen) ||
-    (props.type === "danger" && props.theme.ColorMainLightRed)};
+    (props.type === 'normal' && props.theme.ColorMainYellow) ||
+    (props.type === 'gray' && props.theme.ColorMainLightGray) ||
+    (props.type === 'success' && props.theme.ColorMainLightGreen) ||
+    (props.type === 'danger' && props.theme.ColorMainLightRed)};
 
   display: flex;
   justify-content: center;

@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 // 수익률에 따라서 빨/회/파 의 색상을 가진다.
 const BadgeCAGR: React.FC<{
@@ -12,7 +12,7 @@ const BadgeCAGR: React.FC<{
       {val ? (
         <span>
           연수익 {Math.round(val * 100)}
-          {hasPercentage ? "%" : ""}
+          {hasPercentage ? '%' : ''}
         </span>
       ) : (
         <span>백테스팅 대기</span>
