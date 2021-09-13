@@ -10,6 +10,7 @@ import {
 import { Corporation } from "states/interface/finance/entities";
 import MonoTickerSettingButton from "components/_organisms/dashboard/MonoTickerSettingButton";
 import SelectedTickerButton from "components/_organisms/dashboard/SelectedTickerButton";
+import { BaseTradingStrategy } from "states/interface/trading/entities";
 /**
  * 전략 생성에 대한 클라이언트 상태관리 입니다.
  *
@@ -121,8 +122,17 @@ export const atomBasicSetting = atom<IBasicSetting>({
 
 // 2.2 종목 관리 상태관리 - atom
 interface IUniversalSettingState {
-  // 선택된 종목들
-  selected: { selectedCorporations: Corporation }[];
+  selected: {
+    // A: 선택된 종목들
+    selectedCorporations: Corporation;
+    // B: 선택된 종목에 대한 기술적 지표
+    selectedTechnical?: BaseTradingStrategy;
+    // A+B 의 Output ( BackTesting )
+    miniBacktestingResult?: {
+      CAGR: string;
+      MDD: string;
+    };
+  }[];
   // 퀀트 필터들
 }
 export const atomUniversalSettingState = atom<IUniversalSettingState>({
@@ -142,6 +152,7 @@ export const selectedTickerElementListJSX = selector({
     return at.selected.map((data, idx) => (
       <SelectedTickerButton
         key={idx}
+        selectedIndex={idx} // atomUniversalSettingState 배열 인덱스
         title={`${data.selectedCorporations.corp_name}`}
       />
     ));
@@ -157,6 +168,7 @@ export const selectedMonoTickerSettingButtonListJSX = selector({
     return at.selected.map((data, idx) => (
       <MonoTickerSettingButton
         key={idx}
+        selectedIndex={idx} // atomUniversalSettingState 배열 인덱스
         title={`${data.selectedCorporations.corp_name}`}
       />
     ));

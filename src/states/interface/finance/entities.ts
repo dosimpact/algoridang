@@ -1,4 +1,4 @@
-import { StockList } from "../strategy/entities";
+import { Universal } from "../trading/entities";
 
 // 기업과 카테고리의 N:M 매핑 테이블
 export interface CategoryList {
@@ -12,19 +12,14 @@ export interface CategoryList {
 export interface Corporation {
   ticker: string;
   corp_name: string;
-  // 1:N
   // (1) 회사의 일봉 데이터 리스트
-  dailyStocks?: DailyStock[];
-
-  // N:M
+  dailyStocks: DailyStock[];
+  // (2) 이 회사를 유니버셜로 쓰는 전략 매핑 테이블
+  universal: Universal[];
   // (1) 회사의 소속 카테고리 리스트
-  categoryList?: CategoryList[];
-
-  // (2) 이 회사를 참조하는 전략들
-  stragetyList?: StockList[];
-
-  // (3) 이 회사를 히스토리로 가지는 전략들 리스트 (참조 안함)
+  categoryList: CategoryList[];
 }
+
 export interface DailyStock {
   stock_date: string;
   open_price: number; //OHLCV

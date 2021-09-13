@@ -1,5 +1,5 @@
 import { Corporation } from "../finance/entities";
-import { MemberStrategy, StockList } from "../strategy/entities";
+import { MemberStrategy } from "../strategy/entities";
 
 export interface BaseTradingStrategy {
   trading_strategy_code: string;
@@ -7,12 +7,6 @@ export interface BaseTradingStrategy {
   setting_json: SettingJSON;
 }
 
-export interface CustomTradingStrategy {
-  trading_strategy_code: string;
-  trading_strategy_name: StrategyName;
-  setting_json: SettingJSON;
-  stock_lists: StockList[];
-}
 export enum StrategyName {
   None = "None",
   GoldenCross = "GoldenCross",

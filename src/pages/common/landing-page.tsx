@@ -3,15 +3,45 @@ import { Link } from "react-router-dom";
 import { Button, WhiteSpace, WingBlank } from "antd-mobile";
 import useMember from "states/react-query/useMember";
 import Tour from "reactour";
+import { atom, selector, useRecoilState, useRecoilValue } from "recoil";
 // import SampleMarker from "components/light-weight/SampleMarker";
 
 // todo : makers, takers 선택 저장하기
+
+interface IAtomTodo {
+  name: string;
+  finished: boolean;
+}
+const atomTodo = atom<IAtomTodo[]>({
+  key: "atomTodo",
+  default: [
+    { name: "hello1", finished: true },
+    { name: "hello2", finished: true },
+    { name: "hello3", finished: true },
+  ],
+});
+
 const LandingPage = () => {
   const { logIn, me } = useMember();
+
+  const [todo, setTodo] = useRecoilState(atomTodo);
+  const handleChangeTodo = (idx: number) => {
+    setTodo((prev) => {
+      prev[idx] = { name: "hacked", finished: false };
+      return [...prev];
+    });
+  };
 
   const [isTourOpen, setIsTourOpen] = useState(false);
   return (
     <WingBlank>
+      <div>todo test</div>
+      <>
+        {todo.map((e) => (
+          <div>{e.name}</div>
+        ))}
+      </>
+      <button onClick={() => handleChangeTodo(1)}>HACK</button>
       <Button
         onClick={() => {
           logIn({

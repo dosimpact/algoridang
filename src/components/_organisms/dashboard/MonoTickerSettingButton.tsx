@@ -1,16 +1,21 @@
 import React from "react";
 import { useRecoilState } from "recoil";
-import { atomInspector } from "states/recoil/strategy-create";
+import {
+  atomInspector,
+  atomUniversalSettingState,
+} from "states/recoil/strategy-create";
 import styled from "styled-components";
 
 interface IMonoTickerSettingButton {
   title?: string;
+  selectedIndex: number; // atomUniversalSettingState 배열 인덱스
 }
 
 // 대시보드 (col-2) : 개별 종목 매매전략 설정 및 매매전략상세설정 button
 const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
   children,
   title,
+  selectedIndex,
 }) => {
   const [inspector, setInspector] = useRecoilState(atomInspector);
 

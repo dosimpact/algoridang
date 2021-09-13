@@ -7,13 +7,12 @@ import {
   History,
   InvestProfitInfo,
 } from "../backtest/entities";
-import { Corporation } from "../finance/entities";
 import {
   LookupMemberList,
   MemberInfo,
   OperationMemberList,
 } from "../member/entities";
-import { CustomTradingStrategy, Universal } from "../trading/entities";
+import { Universal } from "../trading/entities";
 
 export enum InvestType {
   Unclassified = "Unclassified", // 0 - 미분류
@@ -87,18 +86,4 @@ export interface Hash {
   hash_code: number;
   hash_contents: string;
   strategyList: HashList[];
-}
-
-// 전략이 가지고 있는 티커들 매핑 테이블
-// (1) 어떤 전략 (2) 어떤 종목에 (3) 어떤 매매전략을 적용
-export interface StockList {
-  //(1) 어떤 전략
-  strategy_code: string;
-  strategy: MemberStrategy;
-  //(2) 어떤 종목에
-  ticker: string;
-  corporation: Corporation;
-  //(3) 어떤 매매전략을 적용
-  trading_strategy_code: string;
-  trading_strategy: CustomTradingStrategy;
 }

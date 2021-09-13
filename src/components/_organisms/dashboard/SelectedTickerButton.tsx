@@ -5,6 +5,7 @@ import styled from "styled-components";
 
 export interface ISelectedTickerButton {
   title?: string;
+  selectedIndex: number; // atomUniversalSettingState 배열 인덱스
 }
 // TODO 로고 변화율
 const SelectedTickerButton: React.FC<ISelectedTickerButton> = ({ title }) => {
