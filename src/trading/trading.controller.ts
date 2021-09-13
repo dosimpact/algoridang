@@ -10,17 +10,83 @@ export class TradingQueryController {
 
   //(2) 기본 매매전략리스트
   @Version('1')
-  @Get('base')
-  async getBaseTradingStrategyList() {
+  @Get('technicals')
+  async getBaseTechnicalStrategyList() {
     return this.tradingService.getBaseTradingStrategyList({});
   }
+
   //(1) 기본 매매전략
   @Version('1')
-  @Get('base/:code')
-  async getBaseTradingStrategy(@Param('code') code) {
+  @Get('technicals/:code')
+  async getBaseTechnicalStrategy(@Param('code') code) {
     return this.tradingService.getBaseTradingStrategy({
       trading_strategy_code: code,
     });
+  }
+
+  // TODO 목업 API를 마킹한 곳
+  // -----------------------
+
+  // 퀀트 필터 리스트를 주는 API
+  @Version('1')
+  @Get('filters')
+  async getFilterFactorList() {
+    return {
+      ok: true,
+      filters: {
+        sector: [
+          { name: '코스피', type: 'boolean' },
+          { name: '코스닥', type: 'boolean' },
+        ],
+        fundamental: [
+          { name: '시가총액', type: 'range' },
+          { name: '주가', type: 'range' },
+          { name: 'PER', type: 'range' },
+          { name: 'PCR', type: 'range' },
+          { name: 'PSR', type: 'range' },
+        ],
+      },
+    };
+  }
+  // 퀀트 필터를 통해 걸러진 종목을 주는 API
+  @Version('1')
+  @Post('filters')
+  async getFilterResultList(@Body() body) {
+    console.log('recived body', body);
+    return {
+      ok: true,
+      corporations: [
+        {
+          ticker: '035720',
+          corp_name: '카카오',
+        },
+        {
+          ticker: '006400',
+          corp_name: '삼성SDI',
+        },
+        {
+          ticker: '003550',
+          corp_name: 'LG',
+        },
+        {
+          ticker: '005930',
+          corp_name: '삼성전자',
+        },
+      ],
+    };
+  }
+
+  // 미니 백테스팅 요청 API (목업API제거시 > backtest )
+  @Version('1')
+  @Post('mini-backtest')
+  async requestMiniBacktesting() {
+    return {
+      ok: true,
+      result: {
+        CAGR: 0.5,
+        MDD: 0.1,
+      },
+    };
   }
 }
 

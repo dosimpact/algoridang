@@ -92,7 +92,6 @@ import { FinancialStatement } from './finance/entities/financial-statement.entit
         ],
         ...[
           // Trading(4/4)
-          // CustomTradingStrategy,
           BaseTradingStrategy,
           SimpleBacktest,
           Universal,

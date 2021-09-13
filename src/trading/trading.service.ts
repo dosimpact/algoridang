@@ -13,10 +13,10 @@ import {
 } from './dto/mutation.dtos';
 
 import {
-  getBaseTradingStrategyInput,
-  getBaseTradingStrategyListInput,
-  getBaseTradingStrategyListOutput,
-  getBaseTradingStrategyOutput,
+  GetBaseTradingStrategyInput,
+  GetBaseTradingStrategyListInput,
+  GetBaseTradingStrategyListOutput,
+  GetBaseTradingStrategyOutput,
 } from './dto/query.dtos';
 import {
   BaseTradingStrategy,
@@ -46,7 +46,7 @@ export class TradingService {
   //(1) 기본 매매전략
   async getBaseTradingStrategy({
     trading_strategy_code,
-  }: getBaseTradingStrategyInput): Promise<getBaseTradingStrategyOutput> {
+  }: GetBaseTradingStrategyInput): Promise<GetBaseTradingStrategyOutput> {
     const baseTradingStrategy = await this.baseTradingStRepo.findOneOrFail({
       where: { trading_strategy_code },
     });
@@ -54,8 +54,8 @@ export class TradingService {
   }
   //(2) 기본 매매전략리스트
   async getBaseTradingStrategyList(
-    getBaseTradingStrategyList: getBaseTradingStrategyListInput,
-  ): Promise<getBaseTradingStrategyListOutput> {
+    GetBaseTradingStrategyList: GetBaseTradingStrategyListInput,
+  ): Promise<GetBaseTradingStrategyListOutput> {
     const baseTradingStrategyList = await this.baseTradingStRepo.find({});
     return { ok: true, baseTradingStrategyList };
   }

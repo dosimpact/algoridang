@@ -2,15 +2,15 @@ import { IsNumber } from 'class-validator';
 import { CoreOutput } from 'src/common/dtos/output.dto';
 import { BaseTradingStrategy } from '../entities';
 
-export class getBaseTradingStrategyInput {
+export class GetBaseTradingStrategyInput {
   @IsNumber()
   trading_strategy_code: number;
 }
-export class getBaseTradingStrategyOutput extends CoreOutput {
+export class GetBaseTradingStrategyOutput extends CoreOutput {
   baseTradingStrategy?: BaseTradingStrategy;
 }
 
-export class getBaseTradingStrategyListInput {}
-export class getBaseTradingStrategyListOutput extends CoreOutput {
+export class GetBaseTradingStrategyListInput {}
+export class GetBaseTradingStrategyListOutput extends CoreOutput {
   baseTradingStrategyList?: BaseTradingStrategy[];
 }
