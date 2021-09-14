@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Param, Version } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Version,
+  Query,
+} from '@nestjs/common';
 import { AuthUser, Roles } from 'src/auth/auth.decorator';
 import { MemberInfo } from 'src/member/entities';
 import { AddUniversalInput } from './dto/mutation.dtos';
@@ -78,15 +86,65 @@ export class TradingQueryController {
 
   // 미니 백테스팅 요청 API (목업API제거시 > backtest )
   @Version('1')
-  @Post('mini-backtest')
-  async requestMiniBacktesting() {
-    return {
-      ok: true,
-      result: {
-        CAGR: 0.5,
-        MDD: 0.1,
-      },
-    };
+  @Post('mini-backtests/:ticker')
+  async requestMiniBacktesting(@Body() body, @Query('ticker') ticker) {
+    const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
+    await sleep(700);
+    if (body['trading_strategy_name']) {
+      return {
+        ok: true,
+        result: [
+          {
+            baseTradingStrategy: {
+              trading_strategy_code: 1,
+              trading_strategy_name: body['trading_strategy_name'],
+              setting_json: {
+                GoldenCross: {
+                  pfast: 5,
+                  pslow: 10,
+                },
+              },
+            },
+            CAGR: Number(Math.random()).toFixed(3),
+            MDD: Number(Math.random()).toFixed(3),
+            ticker,
+          },
+        ],
+      };
+    } else {
+      return {
+        ok: true,
+        result: [
+          {
+            baseTradingStrategy: {
+              trading_strategy_code: 1,
+              trading_strategy_name: 'GoldenCross',
+              setting_json: {
+                GoldenCross: {
+                  pfast: 5,
+                  pslow: 10,
+                },
+              },
+            },
+            CAGR: Number(Math.random()).toFixed(3),
+            MDD: Number(Math.random()).toFixed(3),
+          },
+          {
+            baseTradingStrategy: {
+              trading_strategy_code: 2,
+              trading_strategy_name: 'SMA',
+              setting_json: {
+                SMA: {
+                  SMA_A: 5,
+                },
+              },
+            },
+            CAGR: Number(Math.random()).toFixed(3),
+            MDD: Number(Math.random()).toFixed(3),
+          },
+        ],
+      };
+    }
   }
 }
 
