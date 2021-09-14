@@ -49,7 +49,7 @@ class databasepool(dbQuery):
 
 
 
-dbinit = databasepool(1)
+dbinit = databasepool(0)
 
 
 if __name__ == "__main__":
@@ -57,8 +57,8 @@ if __name__ == "__main__":
     print("test")
 
     key = t.getConn()
-    t.insertIntoData(key,"insert into teststock(ticker, corp_name) values(\'066570\',\'LG전자\');")
-    t.insertIntoData(key,"insert into teststock(ticker, corp_name) values(\'005930\',\'삼성전자\');")
+    t.insertIntoData(key, "insert into teststock(ticker, corp_name) values(\'066570\',\'LG전자\');")
+    t.insertIntoData(key, "insert into teststock(ticker, corp_name) values(\'005930\',\'삼성전자\');")
     print(t.selectData(key, "select * from teststock"))
     key.commit()
     t.putConn(key)

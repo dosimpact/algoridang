@@ -24,147 +24,173 @@ from backtesting.backTestQuery import backTestQuery
 
 
 class MockInvest(backTestQuery):
-    def __init__(self) -> None:
+    totalDailyData = []
+    totalreturn = []
+    invest = 0
+
+    queueId = 0
+    stratgy = 0
+
+    def __init__(self,id,stratgy) -> None:
+        self.queueId = id
+        self.stratgy = stratgy
         super().__init__()
 
 
-    def requestMockInvestStock(self,id):
+    def requestMockInvestStock(self):
         data = {}
         try:
-            print("["+str(id)+"] request strategyCode  ")
-            print("["+str(id)+"] Start Backtest")
-            print("["+str(id)+"] apply Strategy from DB...")
+            print("["+str(self.queueId)+"] request strategyCode  ")
+            print("["+str(self.queueId)+"] Start Backtest")
+            print("["+str(self.queueId)+"] apply Strategy from DB...")
 
             case = [("005930", SMACross, [5,20], 1, 20),("005380", SMACross, [5,20], 1, 20)]
 
             #error case : cerebro error
-            case = [("005930", SMACross, [5,20], 1, 0),("005380", SMACross, [5,20], 1, 20)]
+            case = [("005930", SMACross, [5,20], 1, 20),("005380", SMACross, [5,20], 1, 20)]
             if len(case) == 0 :
                 print("DB dose'not have any data in this field...")
                 return "error"
 
-            total = 0
 
 
-            data['investPrice'] = 100000
+            data['investPrice'] = 10000000
             data['startTime'] = '20200801'
-            data['endTime'] = '20200815'
+            data['endTime'] = '20210815'
 
-            for ticker , strategy, setting, weight ,minDate in case:
-                cerebro = bt.Cerebro()
-                cerebro.params.tradehistory = True
-
-                #loop 변수만 짧게 나머지는 길게
-                for i in range(len(strategy.param)):
-                    strategy.param[i] = setting[i]
-
-                cerebro.broker.setcash(int(data['investPrice']))
-                cerebro.broker.set_coc(True) # 구매 신청시 무조건 최대 금액으로 살 수 있음.
-
-                cerebro.addstrategy(strategy)
-                cerebro.addanalyzer(bt.analyzers.PyFolio, _name = 'PyFolio')
-                BarAnalysis.ticker = ticker
-                cerebro.addanalyzer(BarAnalysis, _name="bar_data")
-        
-                #pandas data inpute
-                cerebro.adddata(bt.feeds.PandasData(dataname = self._getDBData(ticker,minDate,data['startTime'],data['endTime'])),name=ticker)
-
-                print("["+str(id)+"] Start cerebro")
-            
-                results = cerebro.run()
-                #cerebro.plot()
-                strat = results[0]
-                total+= cerebro.broker.getvalue()
-
-                #####################################################################################
-                ### 일간 수익 로그
-                dailydata = self.daily_profit(data, strat)
-
-                ### 일간 수익률 
-                portfolio_stats = strat.analyzers.getbyname('PyFolio')
-                returns, positions, transactions, gross_lev = portfolio_stats.get_pf_items()
-                returns.index = returns.index.tz_convert(None)
-                
-                #for idx, data in returns.items():
-                #    print(idx, data)
-                metrics = quantstats.reports.metrics(returns, mode='full', display=False)
-                #print(metrics)
-                #print ("%%%%"*5)
-                #print(dailydata)
-
-                
-                # 거래 일수
-                if data['endTime'] != '':
-                    delta = datetime.datetime.strptime(data['endTime'],"%Y%m%d") - datetime.datetime.strptime(data['startTime'],"%Y%m%d")  # 두 날짜의 차이 구하기
-                else :
-                    delta = datetime.datetime.now() - datetime.datetime.strptime(data['startTime'],"%Y%m%d")  # 두 날짜의 차이 구하기
-                #print(delta.days)
-
-                # 월평균 수익률
-                monthlyCAGR = quantstats.stats.cagr(returns)
-                monthlyCAGR = round(monthlyCAGR,2)
+            tickerlen = len(case)
+            for ticker, strategy, setting, weight, minDate in case:           
+                self.tickerBackTest(data, tickerlen, ticker, strategy, setting, weight, minDate)
 
 
-                # 월간 변동성
-                
-                yearlyVolatility = quantstats.stats.volatility(returns)
-                yearlyVolatility = round(yearlyVolatility,2)
-
-                #월간 수익률 차트 데이터 
-                # 최대 상승 개월수 -> 상승개월수 
-                monthlyProfitRatioChartDataMeta = quantstats.stats.monthly_returns(returns)
-                monthlyProfitRatioChartData = []
-                monthlyProfitRatioRiseMonth = 0
-                RiseMonth = 0
-                for idx ,row in monthlyProfitRatioChartDataMeta.iterrows():
-                    for i in range(12):
-                        monthlydata = [str(idx)+str(i+1).zfill(2)+"01",round(row[i],2)]
-                        monthlyProfitRatioChartData.append(monthlydata)
-                        if monthlydata[1] > 0:
-                            monthlyProfitRatioRiseMonth += 1
-
-                print("monthlyProfitRatioChartData = ",monthlyProfitRatioChartData)
-
-                # 투자 수익 정보
-                investProfitInfo = [total, int(data['investPrice']), total- int(data['investPrice']), round(total / int(data['investPrice']),2)-1]
-
-                #백테스트 상세정보
-                backtestDetailInfo = self._makeBackTestInfo(metrics,delta, monthlyProfitRatioRiseMonth,monthlyCAGR,yearlyVolatility)
-                #backtestDetailInfo = [metrics.loc['CAGR%']['Strategy'], metrics.loc['Max Drawdown ']['Strategy'],math.ceil(delta.days/30), monthlyProfitRatioRiseMonth ,monthlyCAGR , yearlyVolatility,metrics.loc['Sharpe']['Strategy']]
-                print("backtestDetailInfo = ", backtestDetailInfo)
-
-
-                # 승수 출력
-                winCnt, loseCnt = strat.analyzers.bar_data.get_winloseCnt()
-                print(winCnt,loseCnt)
-
-
-                # 히스토리 출력하기
-                tradehitory = strat.analyzers.bar_data.get_tradehistory()
-                print("tradehitory = ",tradehitory)
-
-                break
-            return total
+            self.makePortpolio(data)
+            return self.invest
         except IndexError as e :
             print("cerebro run error ",e) 
             
 
         except :
             print("Unexpected error:", sys.exc_info()[0])
+
+    def makePortpolio(self, data):
+        metrics = quantstats.reports.metrics(self.totalreturn, mode='full', display=False)
+        dailydata = self.calDailyData(int(data['investPrice']))
+        print(dailydata)
+
+            # 거래 일수
+        if data['endTime'] != '':
+            delta = datetime.datetime.strptime(data['endTime'],"%Y%m%d") - datetime.datetime.strptime(data['startTime'],"%Y%m%d")  # 두 날짜의 차이 구하기
+        else :
+            delta = datetime.datetime.now() - datetime.datetime.strptime(data['startTime'],"%Y%m%d")  # 두 날짜의 차이 구하기
+            #print(delta.days)
+
+            # 월평균 수익률
+        monthlyCAGR = quantstats.stats.cagr(self.totalreturn)
+        monthlyCAGR = round(monthlyCAGR,2)
+
+
+            # 월간 변동성
+            
+        yearlyVolatility = quantstats.stats.volatility(self.totalreturn)
+        yearlyVolatility = round(yearlyVolatility,2)
+
+            #월간 수익률 차트 데이터 
+            # 최대 상승 개월수 -> 상승개월수 
+        monthlyProfitRatioChartDataMeta = quantstats.stats.monthly_returns(self.totalreturn)
+        monthlyProfitRatioChartData = []
+        monthlyProfitRatioRiseMonth = 0
+        RiseMonth = 0
+        for idx ,row in monthlyProfitRatioChartDataMeta.iterrows():
+            for i in range(12):
+                monthlydata = [str(idx)+str(i+1).zfill(2)+"01",round(row[i],2)]
+                monthlyProfitRatioChartData.append(monthlydata)
+                if monthlydata[1] > 0:
+                    monthlyProfitRatioRiseMonth += 1
+
+        print("monthlyProfitRatioChartData = ",monthlyProfitRatioChartData)
+
+            # 투자 수익 정보
+        investProfitInfo = [self.invest, int(data['investPrice']), self.invest- int(data['investPrice']), round(self.invest / int(data['investPrice']),2)-1]
+        print(investProfitInfo)
+            
+            #백테스트 상세정보
+        backtestDetailInfo = self._makeBackTestInfo(metrics,delta, monthlyProfitRatioRiseMonth,monthlyCAGR,yearlyVolatility)
+            #backtestDetailInfo = [metrics.loc['CAGR%']['Strategy'], metrics.loc['Max Drawdown ']['Strategy'],math.ceil(delta.days/30), monthlyProfitRatioRiseMonth ,monthlyCAGR , yearlyVolatility,metrics.loc['Sharpe']['Strategy']]
+        print("backtestDetailInfo = ", backtestDetailInfo)
+
+
+    def tickerBackTest(self, data, tickerlen, ticker, strategy, setting, weight, minDate):
+        
+        cerebro = bt.Cerebro()
+        BarAnalysis.ticker = ticker
+        cerebro.addanalyzer(BarAnalysis, _name="bar_data")
+        cerebro.addanalyzer(bt.analyzers.PyFolio, _name = 'PyFolio')
+        cerebro.broker.set_coc(True)
+        cerebro.params.tradehistory = True
+
+        for i in range(len(strategy.param)):
+            strategy.param[i] = setting[i]                
+        cerebro.addstrategy(strategy)
+                
+        cerebro.broker.setcash(int(data['investPrice'])/tickerlen * weight)
+                
+                #loop 변수만 짧게 나머지는 길게
+
+                # 구매 신청시 무조건 최대 금액으로 살 수 있음.
+
+                #pandas data inpute
+        cerebro.adddata(bt.feeds.PandasData(dataname = self._getDBData(ticker,minDate,data['startTime'],data['endTime'])),name=ticker)
+
+        print("["+str(self.queueId)+"] Start cerebro")
+            
+        results = cerebro.run()
+        strat = results[0]
+        self.invest += cerebro.broker.getvalue()
+                
+                #####################################################################################
+                # 일간 수익 로그
+        self.daily_profit(strat)
+
+                
+                # 일간 수익률 
+        portfolio_stats = strat.analyzers.getbyname('PyFolio')
+        returns, positions, transactions, gross_lev = portfolio_stats.get_pf_items()
+        returns.index = returns.index.tz_convert(None)
+        if len(self.totalreturn) == 0: 
+            self.totalreturn = returns
+        else:
+            self.totalreturn = self.totalreturn + returns
+                    
+                # returns.plot()
+                # totalreturn.plot()
+
+                # 승수 출력
+        winCnt, loseCnt = strat.analyzers.bar_data.get_winloseCnt()
+        print(winCnt,loseCnt)
+
+
+                # 히스토리 출력하기
+        tradehitory = strat.analyzers.bar_data.get_tradehistory()
+        print("tradehitory = ",tradehitory)
+
+                #cerebro.plot()
+
+        strat.analyzers.bar_data.init_tradehistory()
+        del cerebro
             
 
 
     def _makeBackTestInfo(self, metrics,delta, monthlyProfitRatioRiseMonth,monthlyCAGR,yearlyVolatility):
         CAGR = metrics.loc['CAGR%']['Strategy']
-        if CAGR == None or CAGR == ''or math.isnan(CAGR) :
+        if CAGR is None or CAGR == ''or math.isnan(CAGR) :
             CAGR = 0
 
         MDD = metrics.loc['Max Drawdown ']['Strategy']
-        if MDD == None or MDD == '' or math.isnan(MDD) :
+        if MDD is None or MDD == '' or math.isnan(MDD) :
             MDD = 0
 
         SHARP = metrics.loc['Sharpe']['Strategy']
-        if SHARP == None or SHARP == '' or math.isnan(SHARP) :
+        if SHARP is None or SHARP == '' or math.isnan(SHARP) :
             SHARP = 0
         
         backtestDetailInfo = [CAGR, MDD ,math.ceil(delta.days/30), monthlyProfitRatioRiseMonth ,monthlyCAGR , yearlyVolatility,SHARP]
@@ -216,13 +242,16 @@ class MockInvest(backTestQuery):
         return data
 
 
-    def daily_profit(self, data, strat):
+    def daily_profit(self, strat):
         bar_data_res = strat.analyzers.bar_data.get_analysis()
         dailydata = pd.DataFrame(bar_data_res)
-        dailydata = self.__setDailyAccumulate(dailydata,data['investPrice'])
+        if len(self.totalDailyData) == 0:
+            self.totalDailyData = dailydata
+        else:
+            self.totalDailyData = self.totalDailyData + dailydata
+        
+
+    def calDailyData(self, investPrice):
+        dailydata = self.__setDailyAccumulate(self.totalDailyData, investPrice)
         dailydata.to_csv('saleLog.txt', sep = '\t')
         return dailydata
-
-
-
-
