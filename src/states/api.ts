@@ -103,8 +103,15 @@ export const tradingApi = {
   GET: {
     getBaseTradingStrategy: () => axios.get(`trading/technicals/1`),
     getBaseTradingStrategyList: () => axios.get(`trading/technicals`),
+    // TODO (will deprecated) 필터 리스트 가져 오기
+    __mockGetFilterFactorList: () => axios.get(`trading/filters`),
   },
-  POST: {},
+  POST: {
+    // TODO (will deprecated) 필터 적용 결과 , 기업 리스트 반환
+    __mockGetFilterReulstList: () => axios.get(`trading/filters`),
+    // TODO (will deprecated) 빠른 백테스팅 기능
+    __mockRequestMiniBacktesting: () => axios.get(`trading/filters`),
+  },
   PATCH: {},
   DELETE: {},
 };

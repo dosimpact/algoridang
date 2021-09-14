@@ -3,7 +3,7 @@ import TickerSearch, {
 } from 'components/_atoms/TickerSearch';
 import WingBlank from 'components/_atoms/WingBlank';
 import InspectorHeaderDetail from 'components/_molecules/inspector/InspectorHeaderDetail';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useRecoilState } from 'recoil';
 import { Corporation } from 'states/interface/finance/entities';
 import {
@@ -14,6 +14,7 @@ import styled from 'styled-components';
 import { RemoveMultipleElements } from 'utils/parse';
 import { IInspectorSettings } from '.';
 import Modal from 'react-modal';
+import produce from 'immer';
 
 //https://velog.io/@seungsang00/React-React-Modal
 Modal.setAppElement('#root');
@@ -60,6 +61,8 @@ const UniversalSettingTabTickerSearch = () => {
         onSuccess={handleSearchedCorporations}
         onKeyDownEnter={(e) => {
           if (searchResultCorps.length >= 1) {
+            console.log('searchResultCorps', searchResultCorps);
+
             setUniversalSettingState((prev) => {
               return {
                 ...prev,
@@ -227,32 +230,21 @@ interface IUniversalSetting extends IInspectorSettings {}
 
 const UniversalSetting: React.FC<IUniversalSetting> = ({ headerTitle }) => {
   // 1 인스펙터 상태
-  const [inspectorState, setInspectorState] = useRecoilState(atomInspector);
+  const [inspector, setInspector] = useRecoilState(atomInspector);
 
   // 1.1 현재 인스팩터 상태
-  const inspectorUniversalSetting = React.useMemo(() => {
-    return inspectorState.inspectorState.universalSetting;
-  }, [inspectorState]);
+  const tab = useMemo(
+    () => inspector.inspectorState.universalSetting.tab,
+    [inspector.inspectorState.universalSetting],
+  );
 
-  // 1.1.1 TODO 탭 상태 - 중간 임시변수 없시, 바로 Recoil과 바인딩 하도록
-  const [tab, setTab] = React.useState(inspectorUniversalSetting.tab);
-
-  // 1.2 탭 상태 관리
   const handleTabIdx = (tabIdx: number) => {
-    setTab(tabIdx);
-    // TODO Recoild Setter ( depth level = 4) (using like immer.js)
-    setInspectorState((prev) => {
-      return {
-        ...prev,
-        inspectorState: {
-          ...prev.inspectorState,
-          universalSetting: {
-            ...prev.inspectorState.universalSetting,
-            tab: tabIdx,
-          },
-        },
-      };
-    });
+    setInspector((prev) =>
+      produce(prev, (draft) => {
+        draft.inspectorState.universalSetting.tab = tabIdx;
+        return draft;
+      }),
+    );
   };
 
   return (
