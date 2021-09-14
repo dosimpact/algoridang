@@ -187,7 +187,7 @@ const StrategyReport = () => {
             <Button
               style={{ width: '8rem' }}
               onClick={() => {
-                history.push('/takers/mock-invest/create/1');
+                history.push(`/takers/mock-invest/create/${strategyCode}`);
               }}
             >
               시작하기
