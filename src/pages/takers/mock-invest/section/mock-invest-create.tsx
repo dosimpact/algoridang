@@ -6,7 +6,7 @@ import StrategyCardBox from 'components/_molecules/StrategyCardBox';
 import React, { useMemo } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import useStrategyDetail from 'states/react-query/strategy/useStrategyDetail';
-import { toTagsString } from 'utils/parse';
+import { toTagsString, toTickerImage } from 'utils/parse';
 
 const Title: React.FC<{ title: string }> = ({ title }) => {
   return <h1 style={{ fontSize: '20px', fontWeight: 700 }}>{title}</h1>;
@@ -47,7 +47,12 @@ const MockInvestCreate = () => {
               memberStrategy?.backtestDetailInfo?.year_avg_profit_rate &&
               Number(memberStrategy?.backtestDetailInfo?.year_avg_profit_rate)
             }
-            thumnail={memberStrategy.image_url}
+            thumnail={
+              memberStrategy.universal.length >= 1
+                ? toTickerImage(memberStrategy.universal[0].ticker)
+                : ''
+            }
+            onErrorImg={memberStrategy.image_url}
           />
         )}
         <WingBlank>

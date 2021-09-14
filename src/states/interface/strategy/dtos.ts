@@ -62,3 +62,14 @@ export interface CreateMyStrategyInput {
 export interface CreateMyStrategyOutput extends CoreOutput {
   memberStrategy?: MemberStrategy;
 }
+
+export interface ForkStrategyInput {
+  strategy_code: string;
+  // 이름, 원금 , 수수료
+  strategy_name?: string;
+  invest_principal?: string; // 투자 원금
+  securities_corp_fee?: string; // 수수료
+}
+export interface ForkStrategyOutput extends CoreOutput {
+  memberStrategy?: MemberStrategy;
+}

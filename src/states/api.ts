@@ -7,7 +7,10 @@ import {
   GetDayilStocksInput,
 } from './interface/finance/dtos';
 import { LoginMemberInfoInput } from './interface/member/dtos';
-import { CreateMyStrategyInput } from './interface/strategy/dtos';
+import {
+  CreateMyStrategyInput,
+  ForkStrategyInput,
+} from './interface/strategy/dtos';
 import { AddUniversalInput } from './interface/trading/dtos';
 
 // base setttings ,  interceptors
@@ -61,12 +64,14 @@ export const strategyApi = {
   },
   POST: {
     createMyStrategy: (body: CreateMyStrategyInput) => {
-      return axios.post(`strategy/my`, body);
+      return axios.post(`strategies/my`, body);
     },
     addUniversal: (strategy_code: string, body: AddUniversalInput) => {
-      return axios.post(`strategy/my/${strategy_code}/universal`, body);
+      return axios.post(`strategies/my/${strategy_code}/universal`, body);
     },
-    test: (data: any) => axios.post(``, data),
+    forkStrategy: (body: ForkStrategyInput) => {
+      return axios.post(`strategies/fork`, body);
+    },
   },
   PUT: {},
   PATCH: {},
