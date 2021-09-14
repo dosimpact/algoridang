@@ -10,7 +10,7 @@ import {
   selectorInspectorFC,
 } from 'states/recoil/strategy-create';
 import DashBoardButton from 'components/_molecules/DashBoardButton';
-import { IconPlus, IconSetting } from 'assets/icons';
+import { IconPlus, IconSetting, IconTesting } from 'assets/icons';
 import DashBoardDebug from 'components/_molecules/DashBoardDebug';
 
 // 전략 생성 모듈
@@ -20,27 +20,39 @@ import DashBoardDebug from 'components/_molecules/DashBoardDebug';
 interface IStrategyCreateModule {
   // 현재 인스팩터 앨리먼트
   currentInspectorElement: React.ReactElement | null; //JSX.Element;
-  // 전략 셋팅 버튼 앨리먼트
-  baseSettingBtnElement: JSX.Element;
-  // 종목 셋팅 버튼 앨리먼트
-  universalSettingBtnElement: JSX.Element;
-  // 선택된 종목 리스트 표시 앨리먼트
-  selectedTickerElementList: JSX.Element[];
+  dashBoardCol1: {
+    // 전략 셋팅 버튼 앨리먼트
+    baseSettingBtnElement: JSX.Element;
+    // 종목 셋팅 버튼 앨리먼트
+    universalSettingBtnElement: JSX.Element;
+    // 선택된 종목 리스트 표시 앨리먼트
+    selectedTickerElementList: JSX.Element[];
+  };
   // 단일 종목 설정 앨리먼트
   selectedMonoTickerSettingButtonList: JSX.Element[];
   // 단일 종목 매매 결과 앨리먼트
   dashBoardCol3?: JSX.Element[];
   // 포트 백테스팅 결과 앨리먼트
-  dashBoardCol4?: JSX.Element[];
+  dashBoardCol4: {
+    // 포트 백테스트 버튼 앨리먼트
+    portBacktestBtnElement: JSX.Element;
+  };
 }
 const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
   currentInspectorElement,
-  baseSettingBtnElement,
-  universalSettingBtnElement,
-  selectedTickerElementList,
+  dashBoardCol1,
   selectedMonoTickerSettingButtonList,
   dashBoardCol3,
+  dashBoardCol4,
 }) => {
+  const {
+    baseSettingBtnElement,
+    universalSettingBtnElement,
+    selectedTickerElementList,
+  } = dashBoardCol1;
+
+  const { portBacktestBtnElement } = dashBoardCol4;
+
   const SegmentedControlValues = ['기본설정', '종목발굴', '매매전략'];
   const [tab, setTab] = React.useState<string>(SegmentedControlValues[0]);
   // const [strategyState] = useRecoilState(atomStrategyState);
@@ -62,6 +74,7 @@ const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
             <ul>{dashBoardCol3 && dashBoardCol3}</ul>
           </section>
           <section className="dashBoardCol4">
+            <div className="slot">{portBacktestBtnElement}</div>
             <div className="slot">포트 백테스팅 결과</div>
           </section>
         </article>
@@ -149,27 +162,40 @@ const StrategyCreateTemplate = () => {
     <StrategyCreateModule
       currentInspectorElement={<CurrentInspector />}
       // currentInspectorElement={CurrentInspector({})}
-      baseSettingBtnElement={
-        <DashBoardButton
-          Icon={IconSetting}
-          text="기본 설정"
-          onClick={() => {
-            handleChangeInspector('basicSetting');
-          }}
-        />
-      }
-      universalSettingBtnElement={
-        <DashBoardButton
-          Icon={IconPlus}
-          text="종목 관리"
-          onClick={() => {
-            handleChangeInspector('universalSetting');
-          }}
-        />
-      }
-      selectedTickerElementList={selectedTickerElementList}
+      dashBoardCol1={{
+        baseSettingBtnElement: (
+          <DashBoardButton
+            Icon={IconSetting}
+            text="기본 설정"
+            onClick={() => {
+              handleChangeInspector('basicSetting');
+            }}
+          />
+        ),
+        universalSettingBtnElement: (
+          <DashBoardButton
+            Icon={IconPlus}
+            text="종목 관리"
+            onClick={() => {
+              handleChangeInspector('universalSetting');
+            }}
+          />
+        ),
+        selectedTickerElementList: selectedTickerElementList,
+      }}
       selectedMonoTickerSettingButtonList={selectedMonoTickerSettingButtonList}
       dashBoardCol3={selecteMiniBacktestResultList}
+      dashBoardCol4={{
+        portBacktestBtnElement: (
+          <DashBoardButton
+            Icon={IconTesting}
+            text="포트 백테스트"
+            onClick={() => {
+              handleChangeInspector('backTestingSetting');
+            }}
+          />
+        ),
+      }}
     />
   );
 };

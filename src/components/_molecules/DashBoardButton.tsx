@@ -36,4 +36,5 @@ const SDashBoardButton = styled.div`
   align-items: center;
 
   cursor: pointer;
+  padding: 1rem;
 `;
