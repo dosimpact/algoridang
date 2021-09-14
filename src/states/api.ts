@@ -110,7 +110,10 @@ export const tradingApi = {
     // TODO (will deprecated) 필터 적용 결과 , 기업 리스트 반환
     __mockGetFilterReulstList: () => axios.post(`trading/filters`),
     // TODO (will deprecated) 빠른 백테스팅 기능
-    __mockRequestMiniBacktesting: () => axios.post(`trading/mini-backtest`),
+    __mockRequestMiniBacktesting: (
+      ticker: string,
+      body?: { trading_strategy_name: string },
+    ) => axios.post(`trading/mini-backtests/${ticker}`, body),
   },
   PATCH: {},
   DELETE: {},

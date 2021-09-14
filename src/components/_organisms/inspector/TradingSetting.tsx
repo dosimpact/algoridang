@@ -12,6 +12,7 @@ import { IInspectorSettings } from '.';
 import TechnicalSearch from 'components/_atoms/TechnicalSearch';
 import { useTechnicals } from 'states/react-query/trading/useTechnicals';
 import { BaseTradingStrategy } from 'states/interface/trading/entities';
+import { useRequestMiniBacktesting } from 'states/react-query/trading/useRequestMiniBacktesting';
 
 interface ITechnicalStrategyList {
   onSelect?: (e: BaseTradingStrategy) => void;
@@ -81,14 +82,90 @@ const TradingSettingTabTechnicalSearch = () => {
         선택된 매매 전략 :
         {currentUniversalSetting?.selectedTechnical?.trading_strategy_name}
       </div>
-      <TechnicalSearch />
+      <TechnicalSearch
+        onSuccess={(e) => {
+          console.log('TechnicalSearch onSuccess', e);
+        }}
+        onKeyDownEnter={(e) => {
+          console.log('TechnicalSearch onKeyDownEnter', e);
+        }}
+      />
       <TechnicalStrategyList onSelect={(e) => handleApplyTechinalToTicker(e)} />
     </div>
   );
 };
-
+/**
+ * 전략 발굴에 대한 검색
+ * - 종목 ticker에 대해서 , 가능한 모든 매매전략결과를 알려준다.
+ * @returns
+ */
 const TradingSettingTabQuantSearch = () => {
-  return <div>Tab2</div>;
+  const [inspector, setInspector] = useRecoilState(atomInspector);
+
+  const [currentUniversalSetting, setCurrentUniversalSetting] = useRecoilState(
+    selectedUniversalSetting,
+  );
+
+  // 선택한 전략을 해당 유니버스에 적용시킨다.
+  const handleApplyTechinalToTicker = (e: BaseTradingStrategy) => {
+    if (currentUniversalSetting)
+      setCurrentUniversalSetting({
+        ...currentUniversalSetting,
+        selectedTechnical: e,
+      });
+  };
+
+  const ticker = useMemo(() => {
+    return currentUniversalSetting?.selectedCorporations.ticker;
+  }, [currentUniversalSetting]);
+
+  const { RequestMiniBacktestingQuery } = useRequestMiniBacktesting();
+  // console.log(RequestMiniBacktestingQuery);
+  // RequestMiniBacktestingQuery.mutate
+
+  // TODO Refactoring
+  React.useEffect(() => {
+    const fetchBacktesting = async () => {
+      if (ticker) {
+        RequestMiniBacktestingQuery.mutate({ ticker });
+      }
+    };
+    fetchBacktesting();
+  }, [ticker]);
+
+  return (
+    <div>
+      <div>
+        {currentUniversalSetting?.selectedCorporations.corp_name}에 대한
+        매매전략 추천
+      </div>
+      <div>
+        <br />
+        <div>매매전략 이름| CAGR | MDD </div>
+        {RequestMiniBacktestingQuery.data?.data.result &&
+          RequestMiniBacktestingQuery.data?.data.result.map((e, idx) => {
+            return (
+              <div
+                key={idx}
+                style={{
+                  cursor: 'pointer',
+                  margin: '1rem',
+                  backgroundColor: 'AppWorkspace',
+                }}
+                onClick={() => {
+                  handleApplyTechinalToTicker(e.baseTradingStrategy);
+                }}
+              >
+                {e.baseTradingStrategy.trading_strategy_name} (결과)| {e.CAGR}|{' '}
+                {e.MDD}
+                <br />
+              </div>
+            );
+          })}
+      </div>
+      {/* <div>{RequestMiniBacktestingQuery.data?.data}</div> */}
+    </div>
+  );
 };
 
 interface ITradingSetting extends IInspectorSettings {}

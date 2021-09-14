@@ -249,13 +249,15 @@ export const selectedUniversalMiniBacktesting = selectorFamily({
         const target = universal.selected[universalIdx];
         if (target.selectedTechnical?.trading_strategy_name) {
           // console.log('[mini backtesting mock] target ', target);
-          const result = await tradingApi.POST.__mockRequestMiniBacktesting();
+          const result = await tradingApi.POST.__mockRequestMiniBacktesting(
+            '1234',
+          );
           const resData = result.data as {
             ok: boolean;
-            result: { CAGR: string; MDD: string };
+            result: { CAGR: string; MDD: string }[];
           };
           // console.log('[mini backtesting mock] result', result.data);
-          return resData.result;
+          return resData.result[0];
         }
       }
       return null;

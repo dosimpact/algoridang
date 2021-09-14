@@ -32,7 +32,7 @@ const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
       produce(prev, (draft) => {
         draft.inspectorType = 'tradingSetting';
         draft.inspectorState.tradingSetting = {
-          tab: 0,
+          tab: prev.inspectorState.tradingSetting.tab,
           selectedIndex,
         };
         return draft;
