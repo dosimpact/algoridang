@@ -1,4 +1,4 @@
-import { atom, selector } from 'recoil';
+import { atom, selector, selectorFamily } from 'recoil';
 import {
   BackTestingSetting,
   BasicSettings,
@@ -11,6 +11,11 @@ import { Corporation } from 'states/interface/finance/entities';
 import MonoTickerSettingButton from 'components/_organisms/dashboard/MonoTickerSettingButton';
 import SelectedTickerButton from 'components/_organisms/dashboard/SelectedTickerButton';
 import { BaseTradingStrategy } from 'states/interface/trading/entities';
+import produce from 'immer';
+import { tradingApi } from 'states/api';
+import MiniBacktestResultButton from 'components/_organisms/dashboard/MiniBacktestResultButton';
+import { Suspense } from 'react';
+import ErrorBoundary from 'components/_atoms/ErrorBoundary';
 /**
  * 전략 생성에 대한 클라이언트 상태관리 입니다.
  *
@@ -40,15 +45,21 @@ interface IInspector {
     };
     tradingSetting: {
       tab: number;
+      selectedIndex?: number; // 변경할 atomUniversalSettingState.selected의 idx
     };
-    tradingPropertySetting: {};
+    tradingPropertySetting: {
+      selectedIndex?: number; // 변경할 atomUniversalSettingState.selected의 idx
+    };
     backTestingSetting: {
       tab: number;
     };
   };
 }
-// 1.1 인스팩터 상태관리 atom
-// 전략 생성 페이지의 인스펙터 상태 관리
+/**
+* 1.1 인스팩터 상태관리 atom
+  전략 생성 페이지의 인스펙터 상태 관리
+*/
+
 export const atomInspector = atom<IInspector>({
   key: 'Inspector',
   default: {
@@ -67,8 +78,11 @@ export const atomInspector = atom<IInspector>({
   },
 });
 
-// 1.1 인스팩터 상태관리 Selector
-// 인스펙터 JSX Selector
+/**
+* 1.1 인스팩터 상태관리 Selector
+  get: @returns 선택된 인스펙터 JSX 리턴
+*/
+
 export const selectorInspectorFC = selector<React.FC<IInspectorSettings>>({
   key: 'selectorInspectorFC',
   get: ({ get }) => {
@@ -91,8 +105,6 @@ export const selectorInspectorFC = selector<React.FC<IInspectorSettings>>({
   },
 });
 
-// 1.1 인스팩터 상태관리 Selector
-// 전략 기본 설정 상태관리
 interface IBasicSetting {
   strategy_name: string; // 전략 이름
   strategy_explanation: string; // 전략 설명
@@ -105,8 +117,11 @@ interface IBasicSetting {
   open_yes_no: boolean; // 공개범위
 }
 
-// 2.1 전략 기본 설정 상태관리 - atom
-// 전략 기본 설정 입력 form 저장 atom
+/**
+ *  2.1 전략 기본 설정 상태관리 - atom
+ * 전략 기본 설정 입력 form 저장 atom
+   @returns {IBasicSetting}
+ */
 export const atomBasicSetting = atom<IBasicSetting>({
   key: 'BasicSetting',
   default: {
@@ -119,22 +134,24 @@ export const atomBasicSetting = atom<IBasicSetting>({
     securities_corp_fee: '',
   },
 });
-
-// 2.2 종목 관리 상태관리 - atom
-interface IUniversalSettingState {
-  selected: {
-    // A: 선택된 종목들
-    selectedCorporations: Corporation;
-    // B: 선택된 종목에 대한 기술적 지표
-    selectedTechnical?: BaseTradingStrategy;
-    // A+B 의 Output ( BackTesting )
-    miniBacktestingResult?: {
-      CAGR: string;
-      MDD: string;
-    };
-  }[];
-  // 퀀트 필터들
+export interface IUniversalSettingStateItem {
+  // A: 선택된 종목들
+  selectedCorporations: Corporation;
+  // B: 선택된 종목에 대한 기술적 지표
+  selectedTechnical?: BaseTradingStrategy;
+  // A+B 의 Output ( BackTesting )
+  miniBacktestingResult?: {
+    CAGR: string;
+    MDD: string;
+  };
 }
+interface IUniversalSettingState {
+  selected: IUniversalSettingStateItem[];
+}
+/**
+ * 3.1 종목 관리 상태관리 - atom
+   @returns {IUniversalSettingState}
+ */
 export const atomUniversalSettingState = atom<IUniversalSettingState>({
   key: 'UniversalSettingState',
   default: {
@@ -142,8 +159,10 @@ export const atomUniversalSettingState = atom<IUniversalSettingState>({
   },
 });
 
-// 1.2 선택된 종목 selectedTickerElementList - selector
-// (선택된 종목리스트)
+/**
+ * 3.2 종목 관리 상태관리 - selector
+  get : @returns 선택된 종목리스트 JSX[]
+ */
 
 export const selectedTickerElementListJSX = selector({
   key: 'selectedTickerElementListJSX',
@@ -159,8 +178,11 @@ export const selectedTickerElementListJSX = selector({
   },
 });
 
-// 1.3 선택된 단일 종목 매매전략 셋팅 버튼 , JSX 리스트 리턴
-// (개별 매매전략 셋팅 리스트)
+/**
+ * 3.3 종목 관리 상태관리 - selector
+  get : @returns 개별 매매전략 셋팅 리스트 JSX[]
+ */
+
 export const selectedMonoTickerSettingButtonListJSX = selector({
   key: 'selectedMonoTickerSettingButtonListJSX',
   get: ({ get }) => {
@@ -175,9 +197,90 @@ export const selectedMonoTickerSettingButtonListJSX = selector({
   },
 });
 
-// 2.3 단일 종목 매매전략 설정
-// interface ITradingSetting {}
-// interface ITradingPropertySetting {}
-// interface IBackTestingSetting {}
+/**
+ * 3.4  종목 관리 상태관리 - selector
+  get : @returns 현재 selectedIdx의 유니버스 리턴
+  set : @returns 현재 selectedIdx의 유니버스 매매전략 설정
+ */
+export const selectedUniversalSetting =
+  selector<IUniversalSettingStateItem | null>({
+    key: 'selectedUniversalSetting',
+    get: ({ get }) => {
+      const inspector = get(atomInspector);
+      const selectedIndex =
+        inspector.inspectorState.tradingSetting.selectedIndex;
+      const at = get(atomUniversalSettingState);
+      if (selectedIndex !== undefined) return at.selected[selectedIndex];
+      else return null;
+    },
+    set: ({ set, get }, newValue) => {
+      const inspector = get(atomInspector);
+      const selectedIndex =
+        inspector.inspectorState.tradingSetting.selectedIndex;
+      const at = get(atomUniversalSettingState);
+      if (selectedIndex !== undefined && newValue) {
+        const nextState = produce(at, (draft) => {
+          draft.selected[selectedIndex] = draft.selected[selectedIndex] =
+            newValue as IUniversalSettingStateItem;
+          return draft;
+        });
+        set(atomUniversalSettingState, nextState);
+      } else {
+        console.error(
+          '[Error]선택된 종목이 없는상태로 매매전략 추가 selectedIndex :',
+          selectedIndex,
+        );
+      }
+    },
+  });
 
-// TODO selector 에서 비동기 처리?
+/**
+ * 3.5  종목 관리 상태관리 - selectorFamily
+  get : @returns 개별종목에 매매전략이 셋팅되어 있다면, 미니 백테스팅 결과 리턴
+ */
+// TODO : selector cache가 작동 안한다 ..!
+export const selectedUniversalMiniBacktesting = selectorFamily({
+  key: 'selectedUniversalMiniBacktesting',
+  get:
+    ({ universalIdx }: { universalIdx: number }) =>
+    async ({ get }) => {
+      const universal = get(atomUniversalSettingState);
+      if (universalIdx < universal.selected.length) {
+        const target = universal.selected[universalIdx];
+        if (target.selectedTechnical?.trading_strategy_name) {
+          // console.log('[mini backtesting mock] target ', target);
+          const result = await tradingApi.POST.__mockRequestMiniBacktesting();
+          const resData = result.data as {
+            ok: boolean;
+            result: { CAGR: string; MDD: string };
+          };
+          // console.log('[mini backtesting mock] result', result.data);
+          return resData.result;
+        }
+      }
+      return null;
+    },
+});
+
+/**
+ * 3.6 종목 관리 상태관리 - selector
+  get : @returns 매매전략이 셋팅된 종목 백테 결과 JSX[]
+ */
+
+export const selecteMiniBacktestResultListJSX = selector({
+  key: 'selecteMiniBacktestResultListJSX',
+  get: ({ get }) => {
+    const at = get(atomUniversalSettingState);
+    return at.selected.map((data, idx) => (
+      <ErrorBoundary>
+        <Suspense fallback={<div>backtesting loading...</div>}>
+          <MiniBacktestResultButton
+            key={`MiniBt-${idx}`}
+            selectedIndex={idx} // atomUniversalSettingState 배열 인덱스
+            title={`${data.selectedCorporations.corp_name}`}
+          />
+        </Suspense>
+      </ErrorBoundary>
+    ));
+  },
+});

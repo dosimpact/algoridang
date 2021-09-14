@@ -1,24 +1,17 @@
 import React from 'react';
-import { SegmentedControl } from 'antd-mobile';
 import styled from 'styled-components';
-
-import ScreateBasic from './section/screate-basic';
-import ScreatePropterties from './section/screate-propterties';
-import ScreateTickers from './section/screate-tickers';
-import WhiteSpace from 'components/_atoms/WhiteSpace';
-import WingBlank from 'components/_atoms/WingBlank';
-import BasicSettings from 'components/_organisms/inspector/BaseSettings';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   atomInspector,
   IInspectorTypes,
   selectedMonoTickerSettingButtonListJSX,
   selectedTickerElementListJSX,
+  selecteMiniBacktestResultListJSX,
   selectorInspectorFC,
 } from 'states/recoil/strategy-create';
 import DashBoardButton from 'components/_molecules/DashBoardButton';
 import { IconPlus, IconSetting } from 'assets/icons';
-import SelectedTickerButton from 'components/_organisms/dashboard/SelectedTickerButton';
+import DashBoardDebug from 'components/_molecules/DashBoardDebug';
 
 // 전략 생성 모듈
 // DashBoard - Inspector
@@ -36,7 +29,9 @@ interface IStrategyCreateModule {
   // 단일 종목 설정 앨리먼트
   selectedMonoTickerSettingButtonList: JSX.Element[];
   // 단일 종목 매매 결과 앨리먼트
-  // 다종 종목 백테스팅 결과 앨리먼트
+  dashBoardCol3?: JSX.Element[];
+  // 포트 백테스팅 결과 앨리먼트
+  dashBoardCol4?: JSX.Element[];
 }
 const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
   currentInspectorElement,
@@ -44,6 +39,7 @@ const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
   universalSettingBtnElement,
   selectedTickerElementList,
   selectedMonoTickerSettingButtonList,
+  dashBoardCol3,
 }) => {
   const SegmentedControlValues = ['기본설정', '종목발굴', '매매전략'];
   const [tab, setTab] = React.useState<string>(SegmentedControlValues[0]);
@@ -54,6 +50,7 @@ const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
       <div className="wrapper">
         <article className="dashBoard">
           <section className="dashBoardCol1">
+            <DashBoardDebug />
             <div className="slot">{baseSettingBtnElement}</div>
             <div className="slot">{universalSettingBtnElement}</div>
             <div className="slot">{selectedTickerElementList}</div>
@@ -62,10 +59,7 @@ const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
             <ul className="slot">{selectedMonoTickerSettingButtonList}</ul>
           </section>
           <section className="dashBoardCol3">
-            <ul>
-              <div className="slot">종목1 매매전략 결과</div>
-              <div className="slot">종목2 매매전략 결과</div>
-            </ul>
+            <ul>{dashBoardCol3 && dashBoardCol3}</ul>
           </section>
           <section className="dashBoardCol4">
             <div className="slot">포트 백테스팅 결과</div>
@@ -138,6 +132,11 @@ const StrategyCreateTemplate = () => {
     selectedMonoTickerSettingButtonListJSX,
   );
 
+  // Selector : 선택된 단일 종목 매매전략 셋팅 버튼 , JSX 리스트 리턴
+  const selecteMiniBacktestResultList = useRecoilValue(
+    selecteMiniBacktestResultListJSX,
+  );
+
   // Handler
   const handleChangeInspector = (type: IInspectorTypes) => {
     setInsepctorState((prev) => ({
@@ -170,6 +169,7 @@ const StrategyCreateTemplate = () => {
       }
       selectedTickerElementList={selectedTickerElementList}
       selectedMonoTickerSettingButtonList={selectedMonoTickerSettingButtonList}
+      dashBoardCol3={selecteMiniBacktestResultList}
     />
   );
 };

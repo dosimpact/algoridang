@@ -108,9 +108,9 @@ export const tradingApi = {
   },
   POST: {
     // TODO (will deprecated) 필터 적용 결과 , 기업 리스트 반환
-    __mockGetFilterReulstList: () => axios.get(`trading/filters`),
+    __mockGetFilterReulstList: () => axios.post(`trading/filters`),
     // TODO (will deprecated) 빠른 백테스팅 기능
-    __mockRequestMiniBacktesting: () => axios.get(`trading/filters`),
+    __mockRequestMiniBacktesting: () => axios.post(`trading/mini-backtest`),
   },
   PATCH: {},
   DELETE: {},

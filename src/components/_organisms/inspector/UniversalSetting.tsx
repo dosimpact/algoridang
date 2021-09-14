@@ -61,8 +61,6 @@ const UniversalSettingTabTickerSearch = () => {
         onSuccess={handleSearchedCorporations}
         onKeyDownEnter={(e) => {
           if (searchResultCorps.length >= 1) {
-            console.log('searchResultCorps', searchResultCorps);
-
             setUniversalSettingState((prev) => {
               return {
                 ...prev,

@@ -1,4 +1,5 @@
-import React from 'react';
+import produce from 'immer';
+import React, { useMemo } from 'react';
 import { useRecoilState } from 'recoil';
 import {
   atomInspector,
@@ -19,22 +20,48 @@ const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
 }) => {
   const [inspector, setInspector] = useRecoilState(atomInspector);
 
+  const [universals] = useRecoilState(atomUniversalSettingState);
+
+  const currentUniversal = useMemo(() => {
+    if (universals && selectedIndex < universals.selected.length)
+      return universals.selected[selectedIndex];
+  }, [universals, selectedIndex]);
+
   const handleClickTicker = () => {
-    setInspector((prev) => ({ ...prev, inspectorType: 'tradingSetting' }));
+    setInspector((prev) =>
+      produce(prev, (draft) => {
+        draft.inspectorType = 'tradingSetting';
+        draft.inspectorState.tradingSetting = {
+          tab: 0,
+          selectedIndex,
+        };
+        return draft;
+      }),
+    );
   };
 
   const handleClickTradingSetting = () => {
-    setInspector((prev) => ({
-      ...prev,
-      inspectorType: 'tradingPropertySetting',
-    }));
+    setInspector((prev) =>
+      produce(prev, (draft) => {
+        draft.inspectorType = 'tradingPropertySetting';
+        draft.inspectorState.tradingPropertySetting = {
+          selectedIndex,
+        };
+        return draft;
+      }),
+    );
   };
 
   return (
     <SMonoTickerSettingButton>
       <div onClick={handleClickTicker}>{title}</div>
       <div>{' > '}</div>
-      <div onClick={handleClickTradingSetting}>매매전략 선택</div>
+      <div onClick={handleClickTradingSetting}>
+        {currentUniversal &&
+        currentUniversal.selectedTechnical?.trading_strategy_name
+          ? `${currentUniversal.selectedTechnical?.trading_strategy_name}`
+          : '매매전략선택'}
+      </div>
     </SMonoTickerSettingButton>
   );
 };

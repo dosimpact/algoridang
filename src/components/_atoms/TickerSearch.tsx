@@ -65,6 +65,7 @@ const TickerSearch: React.FC<ITickerSearch> = ({
           onKeyDown={(e) => {
             if (e.key === 'Enter' && onKeyDownEnter) {
               onKeyDownEnter(e);
+              setValue('term', '');
             }
           }}
         ></input>
