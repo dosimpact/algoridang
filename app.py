@@ -13,8 +13,6 @@ import sentry_sdk
 # sentry
 from sentry_sdk.integrations.flask import FlaskIntegration
 
-# cron
-from dailyfunction.daily import callDailyFunction
 
 sentry_sdk.init(
     dsn="https://9bcc130b93a649fb946adf4123664575@o986272.ingest.sentry.io/5942901",
@@ -48,6 +46,5 @@ api.add_namespace(Celerys, '/celery')
 api.add_namespace(DailyStock, '/datas')
 
 if __name__ == "__main__":
-    callDailyFunction()
-    app.run(host='0.0.0.0', port=5000)
-    # processor.Test___backtestTestCode(None, 2668)
+    #app.run(host='0.0.0.0', port=5000)
+    processor.Test___backtestTestCode(None, 2668)
