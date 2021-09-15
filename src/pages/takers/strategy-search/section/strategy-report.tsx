@@ -20,7 +20,14 @@ import WhiteSpace from 'components/_atoms/WhiteSpace';
 import StrategyCardBox from 'components/_molecules/StrategyCardBox';
 import { Button } from 'components/_atoms/Buttons';
 
-const StrategyReport = () => {
+interface IStrategyReport {
+  showForkButton?: boolean;
+}
+const StrategyReport: React.FC<IStrategyReport> = ({ showForkButton }) => {
+  // 모의 투자 버튼
+  showForkButton = showForkButton === undefined ? true : false;
+
+  // 전략 코드 얻어오기
   const history = useHistory();
   const params = useParams() as { id: string };
   const strategyCode = params?.id || 0;
@@ -159,7 +166,7 @@ const StrategyReport = () => {
           process.env.PUBLIC_URL +
           `/takers/strategy-search/details/${strategyCode}`
         }
-        headerTitle="상세 전략 리포트"
+        headerTitle="전략 상세 리포트"
       />
       <WingBlank>
         <WhiteSpace />
@@ -182,17 +189,19 @@ const StrategyReport = () => {
           />
         )}
         <>
-          <div className="flexRowSBt">
-            <Title title="모의 투자" style={{ marginRight: '15px' }}></Title>
-            <Button
-              style={{ width: '8rem' }}
-              onClick={() => {
-                history.push(`/takers/mock-invest/create/${strategyCode}`);
-              }}
-            >
-              시작하기
-            </Button>
-          </div>
+          {showForkButton && (
+            <div className="flexRowSBt">
+              <Title title="모의 투자" style={{ marginRight: '15px' }}></Title>
+              <Button
+                style={{ width: '8rem' }}
+                onClick={() => {
+                  history.push(`/takers/mock-invest/create/${strategyCode}`);
+                }}
+              >
+                시작하기
+              </Button>
+            </div>
+          )}
         </>
         {/* 4. 상세 리포트 DetailSummary.tsx  */}
         <DetailSummary body={reportBody} header={['name', 'val']} />

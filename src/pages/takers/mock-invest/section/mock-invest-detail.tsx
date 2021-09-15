@@ -11,38 +11,7 @@ import StrategyCardBox from 'components/_molecules/StrategyCardBox';
 import NavHeaderDetail from 'components/_molecules/NavHeaderDetail';
 import { Button } from 'components/_atoms/Buttons';
 import { useMyStrategyDetail } from 'states/react-query/strategy/useMyStrategyDetail';
-import Description from 'components/_molecules/report/Description';
 import TradingPoints from 'components/_organisms/report/TradingPoints';
-
-const dummyDatasHistory = {
-  header: ['날짜', '매수/매도', '가격', '수익/손실'],
-  body: [
-    {
-      날짜: '20-06-15',
-      '매수/매도': '삼성전자',
-      가격: '99,000',
-      '수익/손실': '12.7',
-    },
-    {
-      날짜: '20-06-10',
-      '매수/매도': '삼성전자',
-      가격: '88,000',
-      '수익/손실': '',
-    },
-    {
-      날짜: '20-06-05',
-      '매수/매도': '삼성전자',
-      가격: '88,900',
-      '수익/손실': '12.7',
-    },
-    {
-      날짜: '20-05-13',
-      '매수/매도': '삼성전자',
-      가격: '89,500',
-      '수익/손실': '',
-    },
-  ],
-};
 
 const MockInvestDetail = () => {
   const history = useHistory();
@@ -51,13 +20,8 @@ const MockInvestDetail = () => {
     history.push(process.env.PUBLIC_URL + '/takers/mock-invest');
   }
   const strategyCode = params.id;
-  const {
-    myStrategyDetailQuery,
-    firstUniversal,
-    histories,
-    investProfitInfo,
-    memberStrategy,
-  } = useMyStrategyDetail(strategyCode + '');
+  const { firstUniversal, histories, investProfitInfo, memberStrategy } =
+    useMyStrategyDetail(strategyCode + '');
 
   const todayHistories = useMemo(() => {
     if (histories) {

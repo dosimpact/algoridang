@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Button } from 'components/_atoms/Buttons';
 import InputListItem from 'components/_atoms/InputListItem';
 import { Title } from 'components/_atoms/Typos';

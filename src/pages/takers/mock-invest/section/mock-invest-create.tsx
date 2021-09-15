@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import { List, InputItem } from 'antd-mobile';
 import { Title } from 'components/_atoms/Typos';
 import WhiteSpace from 'components/_atoms/WhiteSpace';
 import WingBlank from 'components/_atoms/WingBlank';

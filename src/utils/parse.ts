@@ -1,5 +1,4 @@
 import { HashList } from 'states/interface/strategy/entities';
-import { cloneObject } from './funcs';
 
 export const hashListToString = (hashs: HashList[]) => {
   return hashs

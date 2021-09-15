@@ -53,8 +53,8 @@ const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
 
   const { portBacktestBtnElement } = dashBoardCol4;
 
-  const SegmentedControlValues = ['기본설정', '종목발굴', '매매전략'];
-  const [tab, setTab] = React.useState<string>(SegmentedControlValues[0]);
+  // const SegmentedControlValues = ['기본설정', '종목발굴', '매매전략'];
+  // const [tab, setTab] = React.useState<string>(SegmentedControlValues[0]);
   // const [strategyState] = useRecoilState(atomStrategyState);
 
   return (
