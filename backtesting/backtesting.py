@@ -22,9 +22,9 @@ from backtesting.backTestQuery import backTestQuery
 
 class CBackTtrader(backTestQuery):
     def __init__(self, id, stratgy) -> None:
+        super().__init__()
         self.queueId = id
         self.strategyCode = stratgy
-        super().__init__()
 
     # cerebor work
     def requestBacktestOneStock(self):
@@ -34,7 +34,7 @@ class CBackTtrader(backTestQuery):
             
             data = self._setInitData(self.strategyCode)
             if id is not None:
-                self._initQueue(id, "Running", "Queue", self.strategyCode)
+                self._setStatusMemberStrategy("Running", self.strategyCode)
 
             print("["+str(self.queueId)+"] apply Strategy from DB...")
 
@@ -70,15 +70,15 @@ class CBackTtrader(backTestQuery):
             print("["+str(self.queueId)+"] Complete data saving!")
             
             if id is not None:
-                self._initQueue(self.queueId, "Success", "Queue", self.strategyCode)
+                self._setStatusMemberStrategy( "Success", self.strategyCode)
             
         except IndexError as e:
             if id is not None:
-                self._initQueue(self.queueId, "Error", "cerebroRun", self.strategyCode)
+                self._setStatusMemberStrategy( "Error",  self.strategyCode)
             print("cerebro run error ", e) 
         except:
             if id is not None:
-                self._initQueue(self.queueId, "Error", "DBError", self.strategyCode)
+                self._setStatusMemberStrategy( "Error",  self.strategyCode)
             print("error data = ", self.error)
             print("Unexpected error:", sys.exc_info()[0])
         finally:

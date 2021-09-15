@@ -4,21 +4,23 @@ import pandas as pd
 from backtesting.SMACross import SMACross
 
 class backTestQuery(object):
-    error = ""
-    totalDailyData = []
-    totalreturn = []
-    invest = 0
+    def __init__(self) -> None:
+        super().__init__()
+        self.error = ""
+        self.totalDailyData = []
+        self.totalreturn = []
+        self.invest = 0
 
-    queueId = 0
-    strategyCode = 0
+        self.queueId = 0
+        self.strategyCode = 0
 
-    tradehitory = []
-    monthlyProfitRatioChartData = []
-    backtestDetailInfo = []
-    investProfitInfo = []
-    dailydata = []
-    win = 0
-    lose = 0
+        self.tradehitory = []
+        self.monthlyProfitRatioChartData = []
+        self.backtestDetailInfo = []
+        self.investProfitInfo = []
+        self.dailydata = []
+        self.win = 0
+        self.lose = 0
 
     def _setStrategy(self, strategyCode):
         strategyList = []
@@ -284,24 +286,21 @@ class backTestQuery(object):
         conn.commit()
         DBClass.putConn(conn)
 
-    def _initQueue(self, id , state, info, strategyCode):
+    def _setStatusMemberStrategy(self, state, strategyCode):
         DBClass = databasepool()
         conn = DBClass.getConn()
-        query = "select * from backtest_queue where queue_code = \'" + str(id) + "\';"
 
-        if len(DBClass.selectData(conn,query)) == 1:
-            query = "update backtest_queue set "
-            query += " state_info = \'" + str(state) + "\',"
-            query += " work_info = \'" + str(info) + "\'"
-            query += " where queue_code = \'" + str(id) + "\';"
+        query = "update member_strategy set "
+        query += " state_info = \'" + str(state) + "\'"
+        query += " where strategy_code = " + str(strategyCode) + ";"
+        try:
             DBClass.updateData(conn,query)
-        else:
-            query = "insert into backtest_queue(\"queue_code\",\"state_info\",\"work_info\",\"strategy_code\")"
-            query += " values(\'" + str(id) + "\',\'"+ str(state) +"\',\'" + str(info)+ "\'," + str(strategyCode) + ")"
-            DBClass.insertIntoData(conn,query)
+            conn.commit()
+            DBClass.putConn(conn)
+        except:
+            print("_initQueue query error!!")
+            DBClass.putConn(conn)
 
-        conn.commit()
-        DBClass.putConn(conn)
 
         
     def _setInitData(self, strategyCode):
