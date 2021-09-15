@@ -8,6 +8,9 @@ import { ApolloProvider } from '@apollo/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { apolloClient } from 'states/apollo/apollo';
+import { ToastContainer } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 // - styles
 // GlobalStyles ( reset css + global css )
@@ -31,6 +34,13 @@ function App() {
         <QueryClientProvider client={queryClient}>
           <ApolloProvider client={apolloClient}>
             <Router />
+            <ToastContainer
+              toastStyle={{
+                backgroundColor: '#87847D',
+                color: '#FFFFFF',
+                height: '4.5rem',
+              }}
+            />
             <GlobalStyles />
           </ApolloProvider>
           <ReactQueryDevtools initialIsOpen={true} />

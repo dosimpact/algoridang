@@ -24,7 +24,7 @@ export const Box: React.FC<{
   );
 };
 
-const SBox = styled.div<{
+export const SBox = styled.div<{
   type: BoxType;
 }>`
   width: 3rem;

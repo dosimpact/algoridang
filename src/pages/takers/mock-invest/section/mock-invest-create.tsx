@@ -12,6 +12,7 @@ import { Button } from 'components/_atoms/Buttons';
 import { useForm } from 'react-hook-form';
 import { useForkStrategy } from 'states/react-query/strategy/useForkStrategy';
 import InputListItem from 'components/_atoms/InputListItem';
+import { toast } from 'react-toastify';
 
 interface IForkStrategyForm {
   strategy_code: string; // "52",
@@ -37,16 +38,26 @@ const MockInvestCreate = () => {
   );
 
   // form 처리
-  const { register, handleSubmit, formState, getValues, setValue } =
+  const { register, handleSubmit, formState, getValues } =
     useForm<IForkStrategyForm>({
       defaultValues: {
         strategy_code: String(strategyCode),
+        securities_corp_fee: '0.1',
+        invest_principal: '10000000',
       },
     });
 
   // mutation 처리
   const { forkStrategyMutation } = useForkStrategy();
   console.log('formState.errors', formState.errors);
+
+  const handleForkStrategy = handleSubmit(async (data) => {
+    forkStrategyMutation.mutate(data);
+    toast.success('전략 생성 완료. 나의 모의투자에서 확인해보세요. ✨');
+    setTimeout(() => {
+      history.push(process.env.PUBLIC_URL + `/takers/mock-invest`);
+    }, 500);
+  });
 
   return (
     <>
@@ -59,7 +70,6 @@ const MockInvestCreate = () => {
       />
       <WingBlank>
         {strategyDetailQuery.isLoading && 'loading...'}
-        <WhiteSpace />
         {memberStrategy && (
           <StrategyCardBox
             title={memberStrategy.strategy_name}
@@ -80,6 +90,7 @@ const MockInvestCreate = () => {
         )}
         <WingBlank>
           <Title title={'기본 설정'} />
+          <WhiteSpace />
           <InputListItem>
             <label>전략 코드</label>
             <input disabled value={getValues('strategy_code')} />
@@ -94,17 +105,17 @@ const MockInvestCreate = () => {
               id="strategy_name"
               placeholder="eg) 1번 전략"
               {...register('strategy_name', {
-                required: true,
+                required: '* 전략 이름 필수',
                 validate: {
-                  lessThan: (v) => v.length <= 50 || '50자 이하',
-                  MoreThan: (v) => v.length >= 2 || '2자 이상',
+                  lessThan: (v) => v.length <= 50 || '* 50자 이하',
+                  MoreThan: (v) => v.length >= 2 || '* 2자 이상',
                 },
               })}
             />
           </InputListItem>
           <WhiteSpace />
-          <WhiteSpace />
           <Title title={'사용자 설정'} />
+          <WhiteSpace />
           <>
             <InputListItem
               error={!!formState.errors.invest_principal?.message}
@@ -116,25 +127,29 @@ const MockInvestCreate = () => {
                 id="invest_principal"
                 placeholder="투자 시작 금액을 입력해주세요"
                 {...register('invest_principal', {
-                  required: true,
+                  required: '* 투자 시작금액 입력 예) 1000만원',
                   validate: {
                     moreThan: (v) =>
-                      Number(v) >= 1000000 || '100만원 보다 큰 금액',
+                      Number(v) >= 1000000 || '* 100만원 보다 큰 금액',
                   },
                 })}
               />
             </InputListItem>
 
-            <InputListItem>
-              <label htmlFor="securities_corp_fee">수수료%</label>
+            <InputListItem
+              error={!!formState.errors.securities_corp_fee?.message}
+              errorMessage={formState.errors.securities_corp_fee?.message}
+            >
+              <label htmlFor="securities_corp_fee">수수료(%)</label>
               <input
                 type="text"
                 id="securities_corp_fee"
                 placeholder="거래당 발생하는 수수료"
                 {...register('securities_corp_fee', {
-                  required: true,
+                  required: '* 거래 수수료 입력 예) 0.01',
                   validate: {
-                    lessThan: (v) => Number(v) >= 100 || '100 보다 작은 금액',
+                    lessThan: (v) => Number(v) < 100 || '* 100 보다 작은 금액',
+                    moreThan: (v) => Number(v) > 0 || '* 0보다 큰 금액',
                   },
                 })}
               />
@@ -142,15 +157,14 @@ const MockInvestCreate = () => {
           </>
           <WhiteSpace />
         </WingBlank>
+
         <Button
           style={{
             height: '4.6rem',
             fontSize: '1.8rem',
             lineHeight: '1.6rem',
           }}
-          onClick={handleSubmit((data) => {
-            console.log('data', data);
-          })}
+          onClick={handleForkStrategy}
         >
           전략 생성 및 백테스팅 시작
         </Button>

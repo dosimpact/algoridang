@@ -10,6 +10,7 @@ import { LoginMemberInfoInput } from './interface/member/dtos';
 import {
   CreateMyStrategyInput,
   ForkStrategyInput,
+  UpdateMyStrategyByIdInput,
 } from './interface/strategy/dtos';
 import { AddUniversalInput } from './interface/trading/dtos';
 
@@ -74,7 +75,11 @@ export const strategyApi = {
     },
   },
   PUT: {},
-  PATCH: {},
+  PATCH: {
+    updateMyStrategy: (body: UpdateMyStrategyByIdInput) => {
+      return axios.patch(`strategies/my`, body);
+    },
+  },
   DELETE: {},
 };
 

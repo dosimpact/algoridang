@@ -26,9 +26,10 @@ const TickerSearch: React.FC<ITickerSearch> = ({
   onSuccess,
   onKeyDownEnter,
 }) => {
-  const { register, handleSubmit, setValue, control } = useForm<{
-    term: string;
-  }>();
+  const { register, handleSubmit, setValue, control } =
+    useForm<{
+      term: string;
+    }>();
   const term = useWatch({ control, name: 'term' });
   const { corporations, isLoading, refetch } = useCorporation({
     term,
@@ -62,12 +63,12 @@ const TickerSearch: React.FC<ITickerSearch> = ({
           onChange={debouncing((e: React.ChangeEvent<HTMLInputElement>) => {
             setValue('term', e.target.value);
           }, 100)}
-          onKeyDown={(e) => {
+          onKeyDown={debouncing((e: React.KeyboardEvent<HTMLInputElement>) => {
             if (e.key === 'Enter' && onKeyDownEnter) {
               onKeyDownEnter(e);
               setValue('term', '');
             }
-          }}
+          }, 100)}
         ></input>
       </form>
       {/* <div>{error && "error..."}</div> */}

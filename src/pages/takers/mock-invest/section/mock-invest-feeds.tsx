@@ -32,7 +32,7 @@ const MockInvestFeeds = () => {
       <WhiteSpace />
       {getMyStrategyListQuery.isLoading && 'loading...'}
       {strategyList &&
-        strategyList.slice(0, 3).map((data, key) => (
+        strategyList.map((data, key) => (
           <StrategyCardBox
             key={key}
             title={data.strategy_name}

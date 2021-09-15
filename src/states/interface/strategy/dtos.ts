@@ -73,3 +73,8 @@ export interface ForkStrategyInput {
 export interface ForkStrategyOutput extends CoreOutput {
   memberStrategy?: MemberStrategy;
 }
+
+export interface UpdateMyStrategyByIdInput extends Partial<ForkStrategyInput> {}
+export interface UpdateMyStrategyByIdOutput extends CoreOutput {
+  memberStrategy?: MemberStrategy;
+}

@@ -32,11 +32,15 @@ const SButton = styled.div<{
   border-radius: 0.5rem;
   color: ${(props) =>
     (props.type === 'normal' && props.theme.ColorMainWhite) ||
-    (props.type === 'gray' && props.theme.ColorMainGray)};
+    (props.type === 'gray' && props.theme.ColorMainGray) ||
+    (props.type === 'success' && props.theme.ColorMainGreen) ||
+    (props.type === 'danger' && props.theme.ColorMainRed)};
 
   background-color: ${(props) =>
     (props.type === 'normal' && props.theme.ColorMainYellow) ||
-    (props.type === 'gray' && props.theme.ColorMainLightGray)};
+    (props.type === 'gray' && props.theme.ColorMainLightGray) ||
+    (props.type === 'success' && props.theme.ColorMainLightGreen) ||
+    (props.type === 'danger' && props.theme.ColorMainLightRed)};
 
   display: flex;
   justify-content: center;
