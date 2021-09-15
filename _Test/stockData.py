@@ -380,36 +380,36 @@ class financialInformation(object):
 
             query += "values(\
                 \'"+str(quarterDate)+"\',\'"+str(ticker)+"\',\
-                "+str(int(self.fullTable.iloc[2,0] ))+",\
-                "+str(int(self.fullTable.iloc[3,0] ))+",\
-                "+str(int(self.fullTable.iloc[4,0] ))+",\
-                "+str(int(self.fullTable.iloc[5,0] ))+",\
+                "+str(self.fullTable.iloc[2,0] )+",\
+                "+str(self.fullTable.iloc[3,0] )+",\
+                "+str(self.fullTable.iloc[4,0] )+",\
+                "+str(self.fullTable.iloc[5,0] )+",\
                 "+str(self.fullTable.iloc[6,0] )+",\
                 "+str(self.fullTable.iloc[8,0] )+",\
                 "+str(self.fullTable.iloc[7,0] )+",\
                 "+str(self.fullTable.iloc[9,0] )+",\
                 "+str(self.fullTable.iloc[10,0])+",\
-                "+str(int(self.fullTable.iloc[11,0]))+",\
-                "+str(int(self.fullTable.iloc[12,0]))+",\
-                "+str(int(self.fullTable.iloc[13,0]))+",\
-                "+str(int(self.fullTable.iloc[14,0]))+",\
-                "+str(int(self.fullTable.iloc[15,0]))+",\
-                "+str(int(self.fullTable.iloc[16,0]))+",\
-                "+str(int(self.fullTable.iloc[17,0]))+",\
-                "+str(int(self.fullTable.iloc[18,0]))+",\
-                "+str(int(self.fullTable.iloc[19,0]))+",\
-                "+str(int(self.fullTable.iloc[20,0]))+",\
+                "+str(self.fullTable.iloc[11,0])+",\
+                "+str(self.fullTable.iloc[12,0])+",\
+                "+str(self.fullTable.iloc[13,0])+",\
+                "+str(self.fullTable.iloc[14,0])+",\
+                "+str(self.fullTable.iloc[15,0])+",\
+                "+str(self.fullTable.iloc[16,0])+",\
+                "+str(self.fullTable.iloc[17,0])+",\
+                "+str(self.fullTable.iloc[18,0])+",\
+                "+str(self.fullTable.iloc[19,0])+",\
+                "+str(self.fullTable.iloc[20,0])+",\
                 "+str(self.fullTable.iloc[21,0])+",\
                 "+str(self.fullTable.iloc[22,0])+",\
                 "+str(self.fullTable.iloc[23,0])+",\
                 "+str(self.fullTable.iloc[24,0])+",\
                 "+str(self.fullTable.iloc[25,0])+",\
                 "+str(self.fullTable.iloc[26,0])+",\
-                "+str(int(self.fullTable.iloc[27,0]))+",\
-                "+str(int(self.fullTable.iloc[28,0]))+",\
-                "+str(int(self.fullTable.iloc[29,0]))+",\
+                "+str(self.fullTable.iloc[27,0])+",\
+                "+str(self.fullTable.iloc[28,0])+",\
+                "+str(self.fullTable.iloc[29,0])+",\
                 "+str(self.fullTable.iloc[30,0])+",\
-                "+str(int(self.fullTable.iloc[31,0]))+",\
+                "+str(self.fullTable.iloc[31,0])+",\
                 "+str(self.fullTable.iloc[32,0])+")"
             
             db.insertIntoData(conn,query)
@@ -417,36 +417,36 @@ class financialInformation(object):
             
         else:
             query = "update financial_statement set "
-            query += " \"market_cap\" = "                       + str(int(self.fullTable.iloc[2,0]))+ ","
-            query += " \"revenue\" = "                          + str(int(self.fullTable.iloc[3,0]))+ ","
-            query += " \"operating_income\" = "                 + str(int(self.fullTable.iloc[4,0]))+ ","
-            query += " \"EPS\" = "                              + str(int(self.fullTable.iloc[5,0]))+ ","
+            query += " \"market_cap\" = "                       + str(self.fullTable.iloc[2,0])+ ","
+            query += " \"revenue\" = "                          + str(self.fullTable.iloc[3,0])+ ","
+            query += " \"operating_income\" = "                 + str(self.fullTable.iloc[4,0])+ ","
+            query += " \"EPS\" = "                              + str(self.fullTable.iloc[5,0])+ ","
             query += " \"PER\" = "                              + str(self.fullTable.iloc[6,0])+ ","
             query += " \"EV_per_EBITDA\" = "                    + str(self.fullTable.iloc[7,0])+ ","
             query += " \"ROE\" = "                              + str(self.fullTable.iloc[8,0])+ ","
             query += " \"dividend_yield\" = "                   + str(self.fullTable.iloc[9,0])+ ","
             query += " \"BETA\" = "                             + str(self.fullTable.iloc[10,0])+ ","
-            query += " \"revenue_Q\" = "                        + str(int(self.fullTable.iloc[11,0]))+ ","
-            query += " \"operating_income_Q\" = "               + str(int(self.fullTable.iloc[12,0]))+ ","
-            query += " \"net_income_Q\" = "                     + str(int(self.fullTable.iloc[13,0]))+ ","
-            query += " \"controlling_interest_Q\" = "           + str(int(self.fullTable.iloc[14,0]))+ ","
-            query += " \"non_controlling_interest_Q\" = "       + str(int(self.fullTable.iloc[15,0]))+ ","
-            query += " \"total_assets_Q\" = "                   + str(int(self.fullTable.iloc[16,0]))+ ","
-            query += " \"total_stock_holders_Q\" = "            + str(int(self.fullTable.iloc[17,0]))+ ","
-            query += " \"controlling_interest_share_Q\" = "     + str(int(self.fullTable.iloc[18,0]))+ ","
-            query += " \"non_controlling_interest_share_Q\" = " + str(int(self.fullTable.iloc[19,0]))+ ","
-            query += " \"capital_Q\" = "                        + str(int(self.fullTable.iloc[20,0]))+ ","
+            query += " \"revenue_Q\" = "                        + str(self.fullTable.iloc[11,0])+ ","
+            query += " \"operating_income_Q\" = "               + str(self.fullTable.iloc[12,0])+ ","
+            query += " \"net_income_Q\" = "                     + str(self.fullTable.iloc[13,0])+ ","
+            query += " \"controlling_interest_Q\" = "           + str(self.fullTable.iloc[14,0])+ ","
+            query += " \"non_controlling_interest_Q\" = "       + str(self.fullTable.iloc[15,0])+ ","
+            query += " \"total_assets_Q\" = "                   + str(self.fullTable.iloc[16,0])+ ","
+            query += " \"total_stock_holders_Q\" = "            + str(self.fullTable.iloc[17,0])+ ","
+            query += " \"controlling_interest_share_Q\" = "     + str(self.fullTable.iloc[18,0])+ ","
+            query += " \"non_controlling_interest_share_Q\" = " + str(self.fullTable.iloc[19,0])+ ","
+            query += " \"capital_Q\" = "                        + str(self.fullTable.iloc[20,0])+ ","
             query += " \"debt_ratio_Q\" = "                     + str(self.fullTable.iloc[21,0])+ ","
             query += " \"retention_rate_Q\" = "                 + str(self.fullTable.iloc[22,0])+ ","
             query += " \"operating_margin_Q\" = "               + str(self.fullTable.iloc[23,0])+ ","
             query += " \"controlling_interest_rate_Q\" = "      + str(self.fullTable.iloc[24,0])+ ","
             query += " \"ROA_Q\" = "                            + str(self.fullTable.iloc[25,0])+ ","
             query += " \"ROE_Q\" = "                            + str(self.fullTable.iloc[26,0])+ ","
-            query += " \"EPS_Q\" = "                            + str(int(self.fullTable.iloc[27,0]))+ ","
-            query += " \"BPS_Q\" = "                            + str(int(self.fullTable.iloc[28,0]))+ ","
-            query += " \"DPS_Q\" = "                            + str(int(self.fullTable.iloc[29,0]))+ ","
+            query += " \"EPS_Q\" = "                            + str(self.fullTable.iloc[27,0])+ ","
+            query += " \"BPS_Q\" = "                            + str(self.fullTable.iloc[28,0])+ ","
+            query += " \"DPS_Q\" = "                            + str(self.fullTable.iloc[29,0])+ ","
             query += " \"PBR_Q\" = "                            + str(self.fullTable.iloc[30,0])+ ","
-            query += " \"outstanding_shares_Q\" = "             + str(int(self.fullTable.iloc[31,0]))+ ","
+            query += " \"outstanding_shares_Q\" = "             + str(self.fullTable.iloc[31,0])+ ","
             query += " \"dividend_yield__Q\" = "                + str(self.fullTable.iloc[32,0])
             query += " where \"finance_date\" = \'" + str(quarterDate) + "\'"
             query += " and \"ticker\" = \'" + str(ticker) + "\'"

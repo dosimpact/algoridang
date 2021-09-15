@@ -11,7 +11,8 @@ def callDaily():
     fin = financialInformation()
     print(f'job : {time.strftime("%H:%M:%S")}')
     #print("dailyStockData END : ", dailyStockData(tickers))
-    print("dailyfinanceData END : ", fin.saveFinancialData(tickers))
+    print("dailyfinanceData END : ", fin.getFinancalDataNaver(tickers))
+    print(f'job : {time.strftime("%H:%M:%S")}')
 
 
 def dailyStockData(tickers):
@@ -40,7 +41,7 @@ def callDailyFunction():
     # sched.add_job(callDaily, 'cron', day_of_week='0-4', hour='0', minute='30')
 
     # test
-    sched.add_job(callDaily, 'cron', day_of_week='0-4', hour='18', minute='47')
+    sched.add_job(callDaily, 'cron', day_of_week='0-4', hour='0', minute='20')
 
     # apscheduler실행
     sched.start()
