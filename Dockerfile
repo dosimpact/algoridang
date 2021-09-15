@@ -12,8 +12,8 @@ RUN chmod +x startup.sh
 EXPOSE 5000
 
 
-CMD ["./startup.sh"]
-#CMD ["python","./app.py"]
+#CMD ["./startup.sh"]
+CMD ["python","./app.py"]
 
 
 # 뒷자리 숫자를 변경할 것
