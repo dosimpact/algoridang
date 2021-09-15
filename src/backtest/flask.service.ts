@@ -32,19 +32,27 @@ export class FlaskService {
   async healthCheck() {
     try {
       const { status } = await axios({
-        method: 'GET',
+        method: 'get',
         url: `${this.dataServerUrl}`,
-        timeout: 1,
+        timeout: 5000,
       });
       if (status === 200) {
-        this.logger.verbose('✔️ DataAnalysis Server connection check');
+        this.logger.verbose(
+          `✔️ DA Server connection check ${this.dataServerUrl}`,
+        );
         return true;
       } else {
-        this.logger.error('❌ DataAnalysis Server connection check');
+        this.logger.error(
+          `❌ DA Server connection check ${this.dataServerUrl}`,
+        );
         return false;
       }
     } catch (error) {
-      this.logger.error('❌ DataAnalysis Server connection check');
+      this.logger.error(
+        `❌️ DA Server connection AxiosError ${this.dataServerUrl}`,
+      );
+      console.log(error.message);
+
       return false;
     }
   }
@@ -62,7 +70,7 @@ export class FlaskService {
     }
   }
   // (2) backtest 실행, - strategyCode 입력
-  async __setBackTest(strategyCode: number): Promise<SetBackTestOutput> {
+  async __requestBackTest(strategyCode: number): Promise<SetBackTestOutput> {
     try {
       const { data, status } = await axios({
         method: 'post',
@@ -74,7 +82,7 @@ export class FlaskService {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
         },
-        timeout: 4,
+        timeout: 5000,
       });
       if (status !== 201) {
         return { ok: false, ...data };
@@ -85,7 +93,13 @@ export class FlaskService {
       throw e;
     }
   }
-  // (2) backtest 큐 넣기
+  /**
+   * (2) backtest 큐 넣기
+   * - email_id가 가진 전략인지 확인 후 큐 요청
+   * @param {string} email_id
+   * @param {PushBackTestQInput} pushBackTestQInput
+   * @returns
+   */
   async pushBackTestQ(
     email_id: string,
     { strategy_code }: PushBackTestQInput,
@@ -94,7 +108,7 @@ export class FlaskService {
       strategy_code,
     });
     if (res.ok) {
-      return this.__setBackTest(Number(strategy_code));
+      return this.__requestBackTest(Number(strategy_code));
     } else {
       throw new UnauthorizedException('cannot access strategy');
     }
