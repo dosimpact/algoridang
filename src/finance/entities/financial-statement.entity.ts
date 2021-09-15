@@ -20,22 +20,22 @@ export class FinancialStatement {
   // ---- 4
   @IsNumber()
   @IsOptional()
-  @Column()
+  @Column({ type: 'bigint', nullable: true })
   market_cap?: number;
 
   @IsNumber()
   @IsOptional()
-  @Column()
+  @Column({ type: 'bigint', nullable: true })
   revenue?: number;
 
   @IsNumber()
   @IsOptional()
-  @Column()
+  @Column({ type: 'bigint', nullable: true })
   operating_income?: number;
 
   @IsNumber()
   @IsOptional()
-  @Column()
+  @Column({ type: 'bigint', nullable: true })
   EPS?: number; // EPS 원
   // ---- 5
   @IsNumber()
@@ -66,52 +66,52 @@ export class FinancialStatement {
   // 분기 데이터 접미사 Q
   @IsNumber()
   @IsOptional()
-  @Column()
+  @Column({ type: 'bigint', nullable: true })
   revenue_Q?: number; // 매출액(분기)
 
   @IsNumber()
   @IsOptional()
-  @Column()
+  @Column({ type: 'bigint', nullable: true })
   operating_income_Q?: number; //영업이익(분기)
 
   @IsNumber()
   @IsOptional()
-  @Column()
+  @Column({ type: 'bigint', nullable: true })
   net_income_Q?: number; // 당기순이익
 
   @IsNumber()
   @IsOptional()
-  @Column()
+  @Column({ type: 'bigint', nullable: true })
   controlling_interest_Q?: number; // 지배주주순이익
 
   @IsNumber()
   @IsOptional()
-  @Column()
+  @Column({ type: 'bigint', nullable: true })
   non_controlling_interest_Q?: number; //비지배주주순이익
 
   @IsNumber()
   @IsOptional()
-  @Column()
+  @Column({ type: 'bigint', nullable: true })
   total_assets_Q?: number; // 자산총계
 
   @IsNumber()
   @IsOptional()
-  @Column()
+  @Column({ type: 'bigint', nullable: true })
   total_stock_holders_Q?: number; // 자본총계
 
   @IsNumber()
   @IsOptional()
-  @Column()
+  @Column({ type: 'bigint', nullable: true })
   controlling_interest_share_Q?: number; // 지배주주지분
 
   @IsNumber()
   @IsOptional()
-  @Column()
+  @Column({ type: 'bigint', nullable: true })
   non_controlling_interest_share_Q?: number; //비지배주주지분
 
   @IsNumber()
   @IsOptional()
-  @Column()
+  @Column({ type: 'bigint', nullable: true })
   capital_Q?: number; // 자본금
   // 분기 데이터 접미사 Q 6개
 
@@ -148,17 +148,17 @@ export class FinancialStatement {
 
   @IsNumber()
   @IsOptional()
-  @Column()
+  @Column({ type: 'bigint', nullable: true })
   EPS_Q?: number; // 분기 EPS
 
   @IsNumber()
   @IsOptional()
-  @Column()
+  @Column({ type: 'bigint', nullable: true })
   BPS_Q?: number; // 분기 BPS
 
   @IsNumber()
   @IsOptional()
-  @Column()
+  @Column({ type: 'bigint', nullable: true })
   DPS_Q?: number; // 분기 DPS
 
   @IsNumber()
@@ -169,7 +169,7 @@ export class FinancialStatement {
   // --- 2
   @IsNumber()
   @IsOptional()
-  @Column()
+  @Column({ type: 'bigint', nullable: true })
   outstanding_shares_Q?: number; // 지배주주순이익률
 
   @IsNumber()
