@@ -1,4 +1,5 @@
-import { InputType, PartialType } from '@nestjs/graphql';
+import { InputType } from '@nestjs/graphql';
+import { PartialType } from '@nestjs/mapped-types';
 import { Type } from 'class-transformer';
 import {
   IsBoolean,
@@ -77,11 +78,7 @@ export class ForkStrategyOutput extends CoreOutput {
 }
 
 // (POST) updateMyStrategyById		(2) 나의 전략 업데이트
-export class UpdateMyStrategyByIdInput extends PartialType(
-  CreateMyStrategyInput,
-) {
-  email_id: string;
-}
+export class UpdateMyStrategyByIdInput extends PartialType(ForkStrategyInput) {}
 export class UpdateMyStrategyByIdOutput extends CoreOutput {
   memberStrategy?: MemberStrategy;
 }

@@ -74,6 +74,7 @@ export class FlaskService {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
         },
+        timeout: 4,
       });
       if (status !== 201) {
         return { ok: false, ...data };

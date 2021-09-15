@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   Post,
   Query,
   UseInterceptors,
@@ -11,7 +12,11 @@ import {
 import { StrategyService } from './strategy.service';
 import { AuthUser, Roles } from 'src/auth/auth.decorator';
 import { HttpCacheInterceptor } from 'src/common/service/HttpCacheInterceptor';
-import { CreateMyStrategyInput, ForkStrategyInput } from './dto/mutation.dtos';
+import {
+  CreateMyStrategyInput,
+  ForkStrategyInput,
+  UpdateMyStrategyByIdInput,
+} from './dto/mutation.dtos';
 import { MemberInfo } from 'src/member/entities';
 import { TradingService } from 'src/trading/trading.service';
 import { AddUniversalInput } from 'src/trading/dto/mutation.dtos';
@@ -144,15 +149,23 @@ export class StrategyMutationController {
   }
 
   // (POST) updateMyStrategyById		(2) 나의 전략 업데이트
-  async updateMyStrategyById() {}
-  // (POST) deleteMyStrategyById	 	(3) 나의 전략 softdelete
+  @Roles(['Any'])
+  @Version('1')
+  @Patch('my')
+  async updateMyStrategyById(
+    @AuthUser() m: MemberInfo,
+    @Body() body: UpdateMyStrategyByIdInput,
+  ) {
+    return this.strategyService.updateMyStrategyById(m.email_id, body);
+  }
+  // TODO 🚀 (POST) deleteMyStrategyById	 	(3) 나의 전략 softdelete
   async deleteMyStrategyById() {}
-  // (POST) recoverStrategyById		(4) (관리자) 나의 전략 recover
+  // TODO 🚀 (POST) recoverStrategyById		(4) (관리자) 나의 전략 recover
   async recoverStrategyById() {}
-  // (POST) noticeMyStrategyById		(5) 나의 전략 알림기능
+  // TODO 🚀 (POST) noticeMyStrategyById		(5) 나의 전략 알림기능
   async noticeMyStrategyById() {}
-  // (POST) copyStrategy	id		(6) 투자 전략 복사  ( API )
+  // TODO 🚀 (POST) copyStrategy	id		(6) 투자 전략 복사  ( API )
   async copyStrategy() {}
-  // (POST) addLookupStrategy	id		(7) 투자 전략 조회자 추가  ( API )
+  // TODO 🚀 (POST) addLookupStrategy	id		(7) 투자 전략 조회자 추가  ( API )
   async addLookupStrategy() {}
 }

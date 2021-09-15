@@ -454,7 +454,12 @@ export class StrategyService {
     };
   }
 
-  // (POST) forkStrategy (2) 전략 복사
+  /**
+   * (POST) forkStrategy (2) 전략 복사
+   * @param {string} email_id
+   * @param {ForkStrategyInput} ForkStrategyInput
+   * @returns {Promise<ForkStrategyOutput>} ForkStrategyOutput
+   */
   async forkStrategy(
     email_id: string,
     {
@@ -585,11 +590,52 @@ export class StrategyService {
 
   // (POST) updateMyStrategyById		(2) 나의 전략 업데이트
   async updateMyStrategyById(
+    email_id: string,
     updateMyStrategyByIdInput: UpdateMyStrategyByIdInput,
   ): Promise<UpdateMyStrategyByIdOutput> {
-    // (1) 전략 업데이트
-    // (2) 투자 수익 정보 업데이트
-    return { ok: false };
+    // 1. 나의 전략인지 확인 및 가져오기
+    const sourceStrategy = await this.MemberStrategyRepo.findOneOrFail({
+      where: {
+        strategy_code: updateMyStrategyByIdInput.strategy_code,
+        operator_id: email_id,
+        // open_yes_no: true,
+      },
+      relations: ['investProfitInfo'],
+    });
+    // 2. 정보 업데이트
+    if (updateMyStrategyByIdInput.strategy_name)
+      sourceStrategy.strategy_name = updateMyStrategyByIdInput.strategy_name;
+
+    if (updateMyStrategyByIdInput.invest_principal)
+      sourceStrategy.investProfitInfo.invest_principal =
+        updateMyStrategyByIdInput.invest_principal;
+
+    if (updateMyStrategyByIdInput.securities_corp_fee)
+      sourceStrategy.investProfitInfo.securities_corp_fee =
+        updateMyStrategyByIdInput.securities_corp_fee;
+
+    // 3. 업데이트 정보  업데이트 후 저장
+    await this.MemberStrategyRepo.save(sourceStrategy);
+    await this.backtestService.__updateInvestProfitInfo(
+      sourceStrategy.investProfitInfo,
+    );
+    // 4. 백테스트 재요청
+    this.flaskService
+      .pushBackTestQ(email_id, {
+        strategy_code: sourceStrategy.strategy_code,
+      })
+      .then((e) => {
+        this.logger.verbose(
+          `✔ pushBackTestQ ok ${sourceStrategy.strategy_code}`,
+        );
+      })
+      .catch(() => {
+        this.logger.error(
+          `✔ pushBackTestQ fail ${sourceStrategy.strategy_code}`,
+        );
+      });
+
+    return { ok: true, memberStrategy: sourceStrategy };
   }
   // (POST) deleteMyStrategyById	 	(3) 나의 전략 softdelete
   async deleteMyStrategyById(
@@ -616,17 +662,4 @@ export class StrategyService {
     // 전략 알림 기능 on/off
     return { ok: false };
   }
-  // (POST) copyStrategy	id		(6) 투자 전략 복사  ( API )
-  async copyStrategy(
-    copyStrategyOutput: CopyStrategyInput,
-  ): Promise<CopyStrategyOutput> {
-    // 사용자 투자 전략 그대로 복제
-    // 하드 카피할 테이블 리스트
-    // 재설정 : 운용자 아이디, 무조건 비공개,
-    // 셋팅이 완료되면, 큐 요청을 flask에 한다.
-    // todo (큐 관련 모듈 제작 필요 )
-
-    return { ok: false };
-  }
-  async addLookupStrategy() {}
 }

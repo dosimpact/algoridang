@@ -245,4 +245,9 @@ export class BacktestService {
     }
     return res.map((r) => r.strategy_code);
   }
+
+  // update investProfitInfo
+  async __updateInvestProfitInfo(investProfitInfo: Partial<InvestProfitInfo>) {
+    return this.investProfitInfoRepo.save(investProfitInfo);
+  }
 }
