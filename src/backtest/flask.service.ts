@@ -2,11 +2,13 @@ import {
   forwardRef,
   Inject,
   Injectable,
+  Logger,
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
 import { StrategyService } from 'src/strategy/strategy.service';
+import { LeftHandSideExpressionedNode } from 'ts-morph';
 import {
   PushBackTestQInput,
   PushBackTestQOutput,
@@ -16,20 +18,33 @@ import {
 @Injectable()
 export class FlaskService {
   private readonly dataServerUrl: string;
+  private readonly logger = new Logger(FlaskService.name);
   constructor(
     private readonly configService: ConfigService,
     @Inject(forwardRef(() => StrategyService))
     private readonly strategyService: StrategyService,
   ) {
     this.dataServerUrl = this.configService.get('DATA_SERVER_URL');
+    // ✅ check flask server healtCheck notice
+    this.healthCheck();
   }
   // (0) health Check
   async healthCheck() {
     try {
-      const { status } = await axios.get(`${this.dataServerUrl}`);
-      if (status === 200) return true;
-      return false;
+      const { status } = await axios({
+        method: 'GET',
+        url: `${this.dataServerUrl}`,
+        timeout: 1,
+      });
+      if (status === 200) {
+        this.logger.verbose('✔️ DataAnalysis Server connection check');
+        return true;
+      } else {
+        this.logger.error('❌ DataAnalysis Server connection check');
+        return false;
+      }
     } catch (error) {
+      this.logger.error('❌ DataAnalysis Server connection check');
       return false;
     }
   }
