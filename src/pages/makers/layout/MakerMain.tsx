@@ -6,84 +6,156 @@ import StrategyMyC from '../strategy-my/strategy-myC';
 import StrategyPublicC from '../strategy-public/strategy-publicC';
 import { ErrorHandler } from 'states/recoil/error-state';
 import TickerSearch from '../ticker-search/ticker-searchC';
-import WhiteSpace from 'components/_atoms/WhiteSpace';
-import WingBlank from 'components/_atoms/WingBlank';
+import {
+  IconNavMyStrategyNormal,
+  IconNavPersonNormal,
+  IconNavStrategyCreateNormal,
+  IconNavStrategyPubilcNormal,
+  IconNavTickerSearchNormal,
+} from 'assets/icons';
+import useMember from 'states/react-query/useMember';
+
+const useLogin = () => {
+  // 사용자 정보
+  const { logIn, me } = useMember();
+  const email = React.useMemo(() => {
+    return me.data?.email_id;
+  }, [me]);
+
+  React.useEffect(() => {
+    logIn({
+      email_id: 'ypd03008@gmail.com',
+      password: 'ypd03008',
+    });
+    return () => {};
+  }, []);
+
+  const mockUpUserLogin = () => {
+    logIn({
+      email_id: 'ypd03008@gmail.com',
+      password: 'ypd03008',
+    });
+  };
+
+  return { email, mockUpUserLogin };
+};
 
 // TODO LOGIN 처리 ( Email , Google )
 const NavigationContainer = () => {
+  const { email, mockUpUserLogin } = useLogin();
   return (
-    <SNavigationContainer className="navigation">
-      <WhiteSpace />
-      <WhiteSpace />
-      <SHeader>
+    <SNavigationContainer>
+      <header>
         <Link to="/makers/ticker-search">
-          <WingBlank className="hwrapper">
-            {/* <div className="icon">🥞</div> */}
-            <div className="headerName">알고</div>
-            <div className="headerName">리당</div>
+          <div className="hwrapper">
+            <div className="headerName">{`알고`}</div>
+            <div className="headerName">{`리당`}</div>
             <div className="headerSubName">Makers</div>
-          </WingBlank>
+          </div>
         </Link>
-      </SHeader>
-      <WhiteSpace />
-      <SNav>
-        <Link to="/makers/ticker-search">
-          <div className="navItem flexCenter">종목 탐색</div>
-        </Link>
-        <Link to="/makers/strategy-create">
-          <div className="navItem flexCenter">전략 생성</div>
-        </Link>
-        <Link to="/makers/strategy-my">
-          <div className="navItem flexCenter">나의 전략</div>
-        </Link>
-        <Link to="/makers/strategy-public">
-          <div className="navItem flexCenter">공개 전략</div>
-        </Link>
-        <div style={{ marginTop: '10rem' }}>
-          <div className="navItem flexCenter">로그인</div>
+      </header>
+      <nav>
+        <article className="topNav">
+          <Link to="/makers/ticker-search">
+            <div className="navItem">
+              <IconNavTickerSearchNormal />
+              <div className="navName">종목 탐색</div>
+            </div>
+          </Link>
+          <Link to="/makers/strategy-create">
+            <div className="navItem">
+              <IconNavStrategyCreateNormal />
+              <div className="navName">전략 생성</div>
+            </div>
+          </Link>
+          <Link to="/makers/strategy-my">
+            <div className="navItem">
+              <IconNavMyStrategyNormal />
+              <div className="navName">나의 전략</div>
+            </div>
+          </Link>
+          <Link to="/makers/strategy-public">
+            <div className="navItem ">
+              <IconNavStrategyPubilcNormal />
+              <div className="navName">공개 전략</div>
+            </div>
+          </Link>
+        </article>
+      </nav>
+      <article className="bottomNav">
+        <div className="navItem">
+          <IconNavPersonNormal />
+          <div className="navName email">
+            {email ? (
+              email.split(/@/).join('\n@')
+            ) : (
+              <span onClick={mockUpUserLogin}>Login</span>
+            )}
+          </div>
         </div>
-      </SNav>
+      </article>
     </SNavigationContainer>
   );
 };
 
 const SNavigationContainer = styled.section`
   width: 100%;
-`;
+  max-width: 8rem;
+  display: grid;
+  grid-template-rows: 22.5rem 1fr 22.5rem;
+  grid-template-columns: 8rem;
 
-const SHeader = styled.header`
-  .hwrapper {
-    display: flex;
-    flex-flow: column nowrap;
-    align-items: center;
-    justify-content: space-between;
-    text-align: center;
-    .icon {
-    }
-    .headerName {
-      font-size: 0.75rem;
-      font-weight: 700;
-    }
-    .headerSubName {
-      font-size: 0.75rem;
+  header {
+    margin-top: 5rem;
+    .hwrapper {
+      text-align: center;
+      .headerName {
+        font-size: 1.4rem;
+        font-weight: 700;
+        white-space: pre-wrap;
+        text-align: center;
+      }
+      .headerSubName {
+        font-size: 1.4rem;
+        text-align: center;
+      }
     }
   }
-`;
-const SNav = styled.nav`
   .navItem {
-    height: 7rem;
-    font-size: 0.75rem;
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    min-height: 7rem;
+
+    font-size: 1.4rem;
+    text-align: center;
     background-color: ${(props) => props.theme.ColorWhite};
+
     cursor: pointer;
     transition: all 0.2s ease-in-out;
     border-radius: 1rem;
-    margin-bottom: 0.2rem;
-    text-align: center;
+    svg {
+      width: 3rem;
+      height: 3rem;
+      margin-bottom: 0.5rem;
+    }
+    div {
+      margin-top: 0.8rem;
+    }
+    .navName {
+      word-break: break-all;
+      white-space: pre-wrap;
+    }
+    .email {
+      font-size: 0.4rem;
+      font-weight: 400;
+    }
   }
   .navItem:hover {
     background-color: ${(props) => props.theme.ColorGrayL1};
   }
 `;
+
 const ContentContainer = () => {
   return (
     <section className="content">
