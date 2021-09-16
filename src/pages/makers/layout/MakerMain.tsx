@@ -13,32 +13,7 @@ import {
   IconNavStrategyPubilcNormal,
   IconNavTickerSearchNormal,
 } from 'assets/icons';
-import useMember from 'states/react-query/useMember';
-
-const useLogin = () => {
-  // 사용자 정보
-  const { logIn, me } = useMember();
-  const email = React.useMemo(() => {
-    return me.data?.email_id;
-  }, [me]);
-
-  React.useEffect(() => {
-    logIn({
-      email_id: 'ypd03008@gmail.com',
-      password: 'ypd03008',
-    });
-    return () => {};
-  }, []);
-
-  const mockUpUserLogin = () => {
-    logIn({
-      email_id: 'ypd03008@gmail.com',
-      password: 'ypd03008',
-    });
-  };
-
-  return { email, mockUpUserLogin };
-};
+import useLogin from 'hooks/useMockLogin';
 
 // TODO LOGIN 처리 ( Email , Google )
 const NavigationContainer = () => {
@@ -83,14 +58,10 @@ const NavigationContainer = () => {
         </article>
       </nav>
       <article className="bottomNav">
-        <div className="navItem">
+        <div className="navItem" onClick={mockUpUserLogin}>
           <IconNavPersonNormal />
           <div className="navName email">
-            {email ? (
-              email.split(/@/).join('\n@')
-            ) : (
-              <span onClick={mockUpUserLogin}>Login</span>
-            )}
+            {email ? email.split(/@/).join('\n@') : <span>Login</span>}
           </div>
         </div>
       </article>
@@ -102,7 +73,7 @@ const SNavigationContainer = styled.section`
   width: 100%;
   max-width: 8rem;
   display: grid;
-  grid-template-rows: 22.5rem 1fr 22.5rem;
+  grid-template-rows: 22.5rem calc(100vh - 50rem) 22.5rem;
   grid-template-columns: 8rem;
 
   header {

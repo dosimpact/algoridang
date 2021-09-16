@@ -3,30 +3,15 @@ import { Link } from 'react-router-dom';
 import { Button, WhiteSpace, WingBlank } from 'antd-mobile';
 import useMember from 'states/react-query/useMember';
 import Tour from 'reactour';
+import useLogin from 'hooks/useMockLogin';
 
 const LandingPage = () => {
-  const { logIn, me } = useMember();
-  React.useEffect(() => {
-    logIn({
-      email_id: 'ypd03008@gmail.com',
-      password: 'ypd03008',
-    });
-    return () => {};
-  }, []);
+  const { email, mockUpUserLogin } = useLogin();
 
   const [isTourOpen, setIsTourOpen] = useState(false);
   return (
     <WingBlank>
-      <Button
-        onClick={() => {
-          logIn({
-            email_id: 'ypd03008@gmail.com',
-            password: 'ypd03008',
-          });
-        }}
-      >
-        login
-      </Button>
+      <Button onClick={mockUpUserLogin}>login</Button>
       <WhiteSpace />
       <button
         onClick={() => {
@@ -52,8 +37,7 @@ const LandingPage = () => {
       <h1 style={{ fontSize: '20px' }}>
         알고리당에 오신것을 환영합니다.
         <br />
-        {!me.isLoading && me?.data?.email_id} 님 ({' '}
-        {!me.isLoading && me?.data?.email_id})
+        {email} 님
       </h1>
       <WhiteSpace />
       <nav>
