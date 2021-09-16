@@ -34,7 +34,8 @@ export type IInspectorTypes =
   | 'tradingPropertySetting' // 매매 전략 상세 설정
   | 'backTestingSetting';
 
-interface IInspector {
+// IAtom - 인스팩터 state
+interface IAtomInspector {
   isShow: boolean;
   inspectorType: IInspectorTypes;
   inspectorState: {
@@ -45,22 +46,53 @@ interface IInspector {
     };
     tradingSetting: {
       tab: number;
-      selectedIndex?: number; // 변경할 atomUniversalSettingState.selected의 idx
+      selectedIndex: number; // 변경할 atomUniversalSettingState.selected의 idx
     };
     tradingPropertySetting: {
-      selectedIndex?: number; // 변경할 atomUniversalSettingState.selected의 idx
+      selectedIndex: number; // 변경할 atomUniversalSettingState.selected의 idx
     };
     backTestingSetting: {
       tab: number;
     };
   };
 }
+// IAtom - 기본설정 FormState
+interface IAtomBasicSetting {
+  strategy_name: string; // 전략 이름
+  strategy_explanation: string; // 전략 설명
+  tags: string[];
+
+  invest_principal: string; // 투자 원금
+  invest_start_date: string; // 백테스트 시작일
+  securities_corp_fee: string; // 수수료
+
+  open_yes_no: boolean; // 공개범위
+}
+// IAtom 개별종목설정 State
+export interface IAtomUniversalSettingStateItem {
+  // A: 선택된 종목들
+  selectedCorporations: Corporation;
+  // B: 선택된 종목에 대한 기술적 지표
+  selectedTechnical?: BaseTradingStrategy;
+  // A+B 의 Output ( BackTesting )
+  miniBacktestingResult?: {
+    CAGR: string;
+    MDD: string;
+  };
+}
+// IAtom 개별종목설정리스트 State
+interface IAtomUniversalSettingState {
+  selected: IAtomUniversalSettingStateItem[];
+}
+
+// ---------------------------------------------------
+
 /**
 * 1.1 인스팩터 상태관리 atom
   전략 생성 페이지의 인스펙터 상태 관리
 */
 
-export const atomInspector = atom<IInspector>({
+export const atomInspector = atom<IAtomInspector>({
   key: 'Inspector',
   default: {
     isShow: true,
@@ -71,8 +103,8 @@ export const atomInspector = atom<IInspector>({
         isFilterModalOpen: false,
         tab: 0,
       },
-      tradingSetting: { tab: 0 },
-      tradingPropertySetting: {},
+      tradingSetting: { tab: 0, selectedIndex: -1 },
+      tradingPropertySetting: { selectedIndex: -1 },
       backTestingSetting: { tab: 0 },
     },
   },
@@ -105,24 +137,12 @@ export const selectorInspectorFC = selector<React.FC<IInspectorSettings>>({
   },
 });
 
-interface IBasicSetting {
-  strategy_name: string; // 전략 이름
-  strategy_explanation: string; // 전략 설명
-  tags: string[];
-
-  invest_principal: string; // 투자 원금
-  invest_start_date: string; // 백테스트 시작일
-  securities_corp_fee: string; // 수수료
-
-  open_yes_no: boolean; // 공개범위
-}
-
 /**
  *  2.1 전략 기본 설정 상태관리 - atom
  * 전략 기본 설정 입력 form 저장 atom
-   @returns {IBasicSetting}
+   @returns {IAtomBasicSetting}
  */
-export const atomBasicSetting = atom<IBasicSetting>({
+export const atomBasicSetting = atom<IAtomBasicSetting>({
   key: 'BasicSetting',
   default: {
     strategy_name: '',
@@ -134,25 +154,12 @@ export const atomBasicSetting = atom<IBasicSetting>({
     securities_corp_fee: '',
   },
 });
-export interface IUniversalSettingStateItem {
-  // A: 선택된 종목들
-  selectedCorporations: Corporation;
-  // B: 선택된 종목에 대한 기술적 지표
-  selectedTechnical?: BaseTradingStrategy;
-  // A+B 의 Output ( BackTesting )
-  miniBacktestingResult?: {
-    CAGR: string;
-    MDD: string;
-  };
-}
-interface IUniversalSettingState {
-  selected: IUniversalSettingStateItem[];
-}
+
 /**
  * 3.1 종목 관리 상태관리 - atom
    @returns {IUniversalSettingState}
  */
-export const atomUniversalSettingState = atom<IUniversalSettingState>({
+export const atomUniversalSettingState = atom<IAtomUniversalSettingState>({
   key: 'UniversalSettingState',
   default: {
     selected: [],
@@ -203,7 +210,7 @@ export const selectedMonoTickerSettingButtonListJSX = selector({
   set : @returns 현재 selectedIdx의 유니버스 매매전략 설정
  */
 export const selectedUniversalSetting =
-  selector<IUniversalSettingStateItem | null>({
+  selector<IAtomUniversalSettingStateItem | null>({
     key: 'selectedUniversalSetting',
     get: ({ get }) => {
       const inspector = get(atomInspector);
@@ -221,7 +228,7 @@ export const selectedUniversalSetting =
       if (selectedIndex !== undefined && newValue) {
         const nextState = produce(at, (draft) => {
           draft.selected[selectedIndex] = draft.selected[selectedIndex] =
-            newValue as IUniversalSettingStateItem;
+            newValue as IAtomUniversalSettingStateItem;
           return draft;
         });
         set(atomUniversalSettingState, nextState);
@@ -233,6 +240,38 @@ export const selectedUniversalSetting =
       }
     },
   });
+// refactoring...
+export const selectedUniversalSetting_R = selectorFamily<
+  IAtomUniversalSettingStateItem | null,
+  { universalIdx: number }
+>({
+  key: 'selectedUniversalSetting_R',
+  get:
+    ({ universalIdx }) =>
+    ({ get }) => {
+      const at = get(atomUniversalSettingState);
+      if (universalIdx < at.selected.length) return at.selected[universalIdx];
+      else return null;
+    },
+  set:
+    ({ universalIdx }: { universalIdx: number }) =>
+    ({ set, get }, newValue) => {
+      const at = get(atomUniversalSettingState);
+      if (universalIdx < at.selected.length && newValue) {
+        const nextState = produce(at, (draft) => {
+          draft.selected[universalIdx] = draft.selected[universalIdx] =
+            newValue as IAtomUniversalSettingStateItem;
+          return draft;
+        });
+        set(atomUniversalSettingState, nextState);
+      } else {
+        console.error(
+          '[Error]선택된 종목이 없는상태로 매매전략 추가 universalIdx :',
+          universalIdx,
+        );
+      }
+    },
+});
 
 /**
  * 3.5  종목 관리 상태관리 - selectorFamily
