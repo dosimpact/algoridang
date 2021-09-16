@@ -1,4 +1,4 @@
-import dart_fss as dart
+
 # from _Test.opendartAPIkey import key
 
 #open dart api 문제 : 연 1회 데이터.

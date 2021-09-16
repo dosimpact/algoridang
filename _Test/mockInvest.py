@@ -19,6 +19,7 @@ from dateutil.relativedelta import relativedelta
 
 from backtesting.BarAnalysis import BarAnalysis
 from backtesting.SMACross import SMACross
+from backtesting.RSI import RSI
 from backtesting.backTestQuery import backTestQuery
 
 
@@ -36,66 +37,62 @@ class MockInvest(backTestQuery):
         self.stratgy = stratgy
         super().__init__()
 
+    
+
+
 
     def requestMockInvestStock(self):
         data = {}
-        try:
-            print("["+str(self.queueId)+"] request strategyCode  ")
-            print("["+str(self.queueId)+"] Start Backtest")
-            print("["+str(self.queueId)+"] apply Strategy from DB...")
+        print("["+str(self.queueId)+"] request strategyCode  ")
+        print("["+str(self.queueId)+"] Start Backtest")
+        print("["+str(self.queueId)+"] apply Strategy from DB...")
 
-            case = [("005930", SMACross, [5,20], 1, 20),("005380", SMACross, [5,20], 1, 20)]
+        #case = [("005930", SMACross, [5,20], 1, 20),("005380", SMACross, [5,20], 1, 20)]
 
-            #error case : cerebro error
-            case = [("005930", SMACross, [5,20], 1, 20),("005380", SMACross, [5,20], 1, 20)]
-            if len(case) == 0 :
-                print("DB dose'not have any data in this field...")
-                return "error"
-
+        #error case : cerebro error
+        case = [("005930", RSI, [40,60], 1, 20),("005380", SMACross, [5,20], 1, 20)]
+        if len(case) == 0 :
+            print("DB dose'not have any data in this field...")
+            return "error"
 
 
-            data['investPrice'] = 10000000
-            data['startTime'] = '20200801'
-            data['endTime'] = '20210815'
 
-            tickerlen = len(case)
-            for ticker, strategy, setting, weight, minDate in case:           
-                self.tickerBackTest(data, tickerlen, ticker, strategy, setting, weight, minDate)
+        data['investPrice'] = 10000000
+        data['startTime'] = '20190801'
+        data['endTime'] = '20210815'
+
+        tickerlen = len(case)
+        for ticker, salestrategy, setting, weight, minDate in case:         
+            self.tickerBackTest(data, tickerlen, ticker, salestrategy, setting, weight, minDate)
 
 
-            self.makePortpolio(data)
-            return self.invest
-        except IndexError as e :
-            print("cerebro run error ",e) 
-            
-
-        except :
-            print("Unexpected error:", sys.exc_info()[0])
+        self.makePortpolio(data)
+        return self.invest
 
     def makePortpolio(self, data):
         metrics = quantstats.reports.metrics(self.totalreturn, mode='full', display=False)
         dailydata = self.calDailyData(int(data['investPrice']))
         print(dailydata)
 
-            # 거래 일수
+        # 거래 일수
         if data['endTime'] != '':
             delta = datetime.datetime.strptime(data['endTime'],"%Y%m%d") - datetime.datetime.strptime(data['startTime'],"%Y%m%d")  # 두 날짜의 차이 구하기
         else :
             delta = datetime.datetime.now() - datetime.datetime.strptime(data['startTime'],"%Y%m%d")  # 두 날짜의 차이 구하기
-            #print(delta.days)
+        #print(delta.days)
 
-            # 월평균 수익률
+        # 월평균 수익률
         monthlyCAGR = quantstats.stats.cagr(self.totalreturn)
         monthlyCAGR = round(monthlyCAGR,2)
 
 
-            # 월간 변동성
+        # 월간 변동성
             
         yearlyVolatility = quantstats.stats.volatility(self.totalreturn)
         yearlyVolatility = round(yearlyVolatility,2)
 
-            #월간 수익률 차트 데이터 
-            # 최대 상승 개월수 -> 상승개월수 
+        # 월간 수익률 차트 데이터 
+        # 최대 상승 개월수 -> 상승개월수 
         monthlyProfitRatioChartDataMeta = quantstats.stats.monthly_returns(self.totalreturn)
         monthlyProfitRatioChartData = []
         monthlyProfitRatioRiseMonth = 0
@@ -109,17 +106,17 @@ class MockInvest(backTestQuery):
 
         print("monthlyProfitRatioChartData = ",monthlyProfitRatioChartData)
 
-            # 투자 수익 정보
+        # 투자 수익 정보
         investProfitInfo = [self.invest, int(data['investPrice']), self.invest- int(data['investPrice']), round(self.invest / int(data['investPrice']),2)-1]
         print(investProfitInfo)
             
-            #백테스트 상세정보
+        #백테스트 상세정보
         backtestDetailInfo = self._makeBackTestInfo(metrics,delta, monthlyProfitRatioRiseMonth,monthlyCAGR,yearlyVolatility)
-            #backtestDetailInfo = [metrics.loc['CAGR%']['Strategy'], metrics.loc['Max Drawdown ']['Strategy'],math.ceil(delta.days/30), monthlyProfitRatioRiseMonth ,monthlyCAGR , yearlyVolatility,metrics.loc['Sharpe']['Strategy']]
+        # backtestDetailInfo = [metrics.loc['CAGR%']['Strategy'], metrics.loc['Max Drawdown ']['Strategy'],math.ceil(delta.days/30), monthlyProfitRatioRiseMonth ,monthlyCAGR , yearlyVolatility,metrics.loc['Sharpe']['Strategy']]
         print("backtestDetailInfo = ", backtestDetailInfo)
 
 
-    def tickerBackTest(self, data, tickerlen, ticker, strategy, setting, weight, minDate):
+    def tickerBackTest(self, data, tickerlen, ticker, salestrategy, setting, weight, minDate):
         
         cerebro = bt.Cerebro()
         BarAnalysis.ticker = ticker
@@ -128,18 +125,25 @@ class MockInvest(backTestQuery):
         cerebro.broker.set_coc(True)
         cerebro.params.tradehistory = True
 
-        for i in range(len(strategy.param)):
-            strategy.param[i] = setting[i]                
-        cerebro.addstrategy(strategy)
+        for i in range(len(salestrategy.param)):
+            salestrategy.param[i] = setting[i]                
+        cerebro.addstrategy(salestrategy)
                 
         cerebro.broker.setcash(int(data['investPrice'])/tickerlen * weight)
                 
-                #loop 변수만 짧게 나머지는 길게
+        #loop 변수만 짧게 나머지는 길게
 
-                # 구매 신청시 무조건 최대 금액으로 살 수 있음.
+        # 구매 신청시 무조건 최대 금액으로 살 수 있음.
+        tickerDateData, state = self._getDBData(ticker, minDate, data['startTime'], data['endTime'])
 
-                #pandas data inpute
-        cerebro.adddata(bt.feeds.PandasData(dataname = self._getDBData(ticker,minDate,data['startTime'],data['endTime'])),name=ticker)
+        #pandas data inpute
+        if state == 'pass':
+            print("["+str(self.queueId)+"] work Error")
+            self.invest += int(data['investPrice'])/tickerlen * weight
+            del cerebro
+            return
+
+        cerebro.adddata(bt.feeds.PandasData(dataname=tickerDateData), name=ticker)
 
         print("["+str(self.queueId)+"] Start cerebro")
             
@@ -147,12 +151,12 @@ class MockInvest(backTestQuery):
         strat = results[0]
         self.invest += cerebro.broker.getvalue()
                 
-                #####################################################################################
-                # 일간 수익 로그
+        #####################################################################################
+        # 일간 수익 로그
         self.daily_profit(strat)
 
                 
-                # 일간 수익률 
+        # 일간 수익률 
         portfolio_stats = strat.analyzers.getbyname('PyFolio')
         returns, positions, transactions, gross_lev = portfolio_stats.get_pf_items()
         returns.index = returns.index.tz_convert(None)
@@ -161,19 +165,19 @@ class MockInvest(backTestQuery):
         else:
             self.totalreturn = self.totalreturn + returns
                     
-                # returns.plot()
-                # totalreturn.plot()
+        # returns.plot()
+        # totalreturn.plot()
 
-                # 승수 출력
+        # 승수 출력
         winCnt, loseCnt = strat.analyzers.bar_data.get_winloseCnt()
         print(winCnt,loseCnt)
 
 
-                # 히스토리 출력하기
+        # 히스토리 출력하기
         tradehitory = strat.analyzers.bar_data.get_tradehistory()
         print("tradehitory = ",tradehitory)
 
-                #cerebro.plot()
+        cerebro.plot()
 
         strat.analyzers.bar_data.init_tradehistory()
         del cerebro
