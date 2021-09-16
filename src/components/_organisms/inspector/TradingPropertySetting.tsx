@@ -36,8 +36,8 @@ const TradingPropertySetting: React.FC<ITradingPropertySetting> = ({
   // 현재 변경할 unverisalSetting
 
   const handleSubmit = (e: unknown) => {
-    console.log('e', e);
-    console.log('currentUniversalSetting', currentUniversalSetting);
+    // console.log('e', e);
+    // console.log('currentUniversalSetting', currentUniversalSetting);
     const setting_json = e as SettingJSON;
     if (currentUniversalSetting && currentUniversalSetting.selectedTechnical) {
       setCurrentUniversalSetting({

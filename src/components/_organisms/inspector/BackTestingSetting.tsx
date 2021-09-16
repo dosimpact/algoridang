@@ -1,20 +1,59 @@
 import WingBlank from 'components/_atoms/WingBlank';
 import InspectorHeaderDetail from 'components/_molecules/inspector/InspectorHeaderDetail';
 import produce from 'immer';
-import React, { useMemo } from 'react';
+import MockInvestReport from 'pages/takers/mock-invest/section/mock-invest-report';
+import StrategyDetails from 'pages/takers/strategy-search/section/strategy-details';
+import React, { useEffect, useMemo } from 'react';
+import { Route, useHistory } from 'react-router';
 import { useRecoilState } from 'recoil';
 import { atomInspector } from 'states/recoil/strategy-create';
 import styled from 'styled-components';
 import { IInspectorSettings } from '.';
 
 const PortBacktestTabStart = () => {
-  return <div>PortBacktestTabStart</div>;
+  return (
+    <div>
+      <div> PortBacktestTabStart </div>
+    </div>
+  );
 };
 const PortBacktestTabDetail = () => {
-  return <div>PortBacktestTabDetail</div>;
+  const history = useHistory();
+  useEffect(() => {
+    history.push(
+      process.env.PUBLIC_URL + '/makers/strategy-create/details/2672',
+    );
+    return () => {};
+  }, [history]);
+
+  return (
+    <div>
+      <div>PortBacktestTabDetail</div>
+      <Route
+        path={process.env.PUBLIC_URL + '/makers/strategy-create/details/:id'}
+        component={StrategyDetails}
+      />
+    </div>
+  );
 };
 const PortBacktestTabReport = () => {
-  return <div>PortBacktestTabReport</div>;
+  const history = useHistory();
+  useEffect(() => {
+    history.push(
+      process.env.PUBLIC_URL + '/makers/strategy-create/report/2672',
+    );
+    return () => {};
+  }, [history]);
+
+  return (
+    <div>
+      <div>PortBacktestTabReport</div>
+      <Route
+        path={process.env.PUBLIC_URL + '/makers/strategy-create/report/:id'}
+        component={MockInvestReport}
+      />
+    </div>
+  );
 };
 
 interface IBackTestingSetting extends IInspectorSettings {}
@@ -41,37 +80,35 @@ const BackTestingSetting: React.FC<IBackTestingSetting> = ({ headerTitle }) => {
 
   return (
     <SBackTestingSetting>
-      <WingBlank>
-        <InspectorHeaderDetail
-          headerTitle={headerTitle || 'BackTestingSetting'}
-        />
-        <article className="tabContainer">
-          <div onClick={() => handleTabIdx(0)} className="tabItem">
-            백테스팅
-          </div>
-          <div onClick={() => handleTabIdx(1)} className="tabItem">
-            상세결과
-          </div>
-          <div onClick={() => handleTabIdx(2)} className="tabItem">
-            리포트
-          </div>
-        </article>
-        {tab === 0 && (
-          <>
-            <PortBacktestTabStart />
-          </>
-        )}
-        {tab === 1 && (
-          <>
-            <PortBacktestTabDetail />
-          </>
-        )}
-        {tab === 2 && (
-          <>
-            <PortBacktestTabReport />
-          </>
-        )}
-      </WingBlank>
+      <InspectorHeaderDetail
+        headerTitle={headerTitle || 'BackTestingSetting'}
+      />
+      <article className="tabContainer">
+        <div onClick={() => handleTabIdx(0)} className="tabItem">
+          백테스팅
+        </div>
+        <div onClick={() => handleTabIdx(1)} className="tabItem">
+          상세결과
+        </div>
+        <div onClick={() => handleTabIdx(2)} className="tabItem">
+          리포트
+        </div>
+      </article>
+      {tab === 0 && (
+        <>
+          <PortBacktestTabStart />
+        </>
+      )}
+      {tab === 1 && (
+        <>
+          <PortBacktestTabDetail />
+        </>
+      )}
+      {tab === 2 && (
+        <>
+          <PortBacktestTabReport />
+        </>
+      )}
     </SBackTestingSetting>
   );
 };
