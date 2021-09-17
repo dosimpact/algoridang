@@ -2,7 +2,6 @@ import {
   IsBoolean,
   IsDateString,
   IsEnum,
-  IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
@@ -28,13 +27,11 @@ import {
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 import { HashList } from './hash-list.entity';
 import { Universal } from 'src/trading/entities/universal';
 import { UniversalProducer } from '../json/universal_producer.entity';
 import { Type } from 'class-transformer';
-// import { StockList } from '../../trading/entities/stock-list.entity';
 
 export enum InvestType {
   Unclassified = 'Unclassified', // 0 - 미분류
@@ -50,25 +47,6 @@ export enum BacktestState {
   Success = 'Success', // 완료
   Error = 'Error', // 애러
 }
-
-// (1) relation 가능한 string을 주고 싶다.
-export type MemberStrategyFullRelation = Array<
-  | keyof Pick<
-      MemberStrategy,
-      | 'investProfitInfo'
-      | 'backtestDetailInfo'
-      | 'backtestWinRatio'
-      | 'queueList'
-      | 'maker'
-      | 'operator'
-      | 'accumulateProfitRateChart'
-      | 'backtestMontlyProfitRateChart'
-      | 'operationMemberList'
-      | 'lookupMemberList'
-      | 'hashList'
-      | 'histories'
-    >
->;
 
 @Entity({ name: 'member_strategy' })
 export class MemberStrategy {
@@ -117,13 +95,17 @@ export class MemberStrategy {
   @Column({ type: 'json', nullable: true })
   universal_producer?: UniversalProducer;
 
-  @IsString()
-  @Column({ type: 'enum', enum: BacktestState, default: BacktestState.New })
-  backtest_status: BacktestState; // 최근 백테스트 상황 ( )
+  // @IsString()
+  // @Column({ type: 'enum', enum: BacktestState, default: BacktestState.New })
+  // backtest_status: BacktestState; // 최근 백테스트 상황 ( )
 
   @IsString()
   @Column({ type: 'varchar', length: 255, nullable: true })
-  state_info: string; // 최근 백테스트 결과 - 응답 메시지
+  status_info: string; // 최근 백테스트 결과 - 응답 메시지
+
+  @IsString()
+  @Column({ type: 'varchar', length: 15, nullable: true })
+  status_code: string; // 최근 백테스트 결과 - 응답 메시지
   // 1:1 관계
 
   // (2) 투자 수익 정보
@@ -202,4 +184,42 @@ export class MemberStrategy {
   // (5) 전략의 유니버셜 매핑
   // @OneToMany(() => StockList, (sl) => sl.strategy)
   // stockList: StockList[];
+
+  // ----------------------- 유틸리티 객체
+
+  // async clone(
+  //   sourceStrategy: MemberStrategy,
+  //   patchProps: {
+  //     email_id: string;
+  //     strategy_name?: string;
+  //   },
+  // ) {
+  //   const { email_id, strategy_name } = patchProps;
+  //   // 1 전략 만들기
+  //   const templateStrategy = this.MemberStrategyRepo.create({});
+
+  //   // 1.1 전략 디폴트 데이터
+  //   templateStrategy.strategy_name = sourceStrategy.strategy_name;
+  //   templateStrategy.create_date = sourceStrategy.create_date;
+  //   templateStrategy.invest_type = sourceStrategy.invest_type;
+  //   templateStrategy.strategy_explanation = sourceStrategy.strategy_explanation;
+  //   templateStrategy.operation_yes_no = sourceStrategy.operation_yes_no;
+  //   templateStrategy.alarm_setting = sourceStrategy.alarm_setting;
+  //   // templateStrategy.deleteAt = sourceStrategy.deleteAt;
+  //   templateStrategy.open_yes_no = sourceStrategy.open_yes_no;
+  //   // templateStrategy.operator_id = sourceStrategy.operator_id;
+  //   templateStrategy.maker_id = sourceStrategy.maker_id;
+  //   templateStrategy.image_url = sourceStrategy.image_url;
+  //   templateStrategy.universal_producer = sourceStrategy.universal_producer;
+
+  //   // 1.2 전략 forked 데이터
+  //   if (strategy_name) templateStrategy.strategy_name = strategy_name;
+  //   templateStrategy.operator_id = email_id;
+  //   templateStrategy.open_yes_no = false;
+  //   templateStrategy.operation_yes_no = true;
+  //   delete templateStrategy.create_date; // ORM 처리
+
+  //   const newStrategy = await this.MemberStrategyRepo.save(templateStrategy);
+  //   return newStrategy;
+  // }
 }

@@ -20,7 +20,7 @@ async function bootstrap() {
 
   const getCorporations = await financeService.getCorporations();
   if (getCorporations.corporations) {
-    getCorporations.corporations.slice(10, 13).map(async (corp) => {
+    getCorporations.corporations.slice(100, 105).map(async (corp) => {
       const { ticker, corp_name } = corp;
       console.log('start...', ticker, corp_name);
       // 전략 만들기
@@ -33,8 +33,8 @@ async function bootstrap() {
             invest_end_date: '2021-08-19T06:58:48.421Z',
             invest_principal: '30000000',
           },
-          strategy_explanation: `기본 골든 크로스 전략 입니다.(${corp_name},${ticker}) 5,18 이평선을 활용한 매매 전략입니다.`,
-          strategy_name: `${corp_name} 6,16 골든 크로스 전략`,
+          strategy_explanation: `기본 골든 크로스 전략 입니다.(${corp_name},${ticker}) 5,15 이평선을 활용한 매매 전략입니다.`,
+          strategy_name: `${corp_name} 5,15 골든 크로스 전략`,
           open_yes_no: true,
           tags: ['기본전략', '골든크로스'],
         },
@@ -44,7 +44,7 @@ async function bootstrap() {
         strategy_code: newStrategy.memberStrategy.strategy_code,
         ticker,
         trading_strategy_name: StrategyName.GoldenCross,
-        setting_json: { GoldenCross: { pfast: 16, pslow: 6 } },
+        setting_json: { GoldenCross: { pfast: 5, pslow: 15 } },
         start_date: '2011-08-19T06:58:48.421Z',
       });
       // 백테스팅 요청
