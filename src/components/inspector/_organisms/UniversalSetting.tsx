@@ -2,7 +2,7 @@ import TickerSearch, {
   TickerSearchOnSuccessResult,
 } from 'components/_atoms/TickerSearch';
 import WingBlank from 'components/_atoms/WingBlank';
-import InspectorHeaderDetail from 'components/_molecules/inspector/InspectorHeaderDetail';
+import InspectorHeaderDetail from 'components/inspector/_molecules/InspectorHeaderDetail';
 import React, { useMemo } from 'react';
 import { useRecoilState } from 'recoil';
 import { Corporation } from 'states/interface/finance/entities';

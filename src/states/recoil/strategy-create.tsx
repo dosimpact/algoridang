@@ -6,7 +6,7 @@ import {
   TradingPropertySetting,
   TradingSetting,
   UniversalSetting,
-} from 'components/_organisms/inspector';
+} from 'components/inspector/_organisms';
 import { Corporation } from 'states/interface/finance/entities';
 import MonoTickerSettingButton from 'components/_organisms/dashboard/MonoTickerSettingButton';
 import SelectedTickerButton from 'components/_organisms/dashboard/SelectedTickerButton';

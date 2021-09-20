@@ -1,5 +1,5 @@
 // index inspector JSX.Element
-import InspectorHeaderDetail from 'components/_molecules/inspector/InspectorHeaderDetail';
+import InspectorHeaderDetail from 'components/inspector/_molecules/InspectorHeaderDetail';
 
 export { default as BackTestingSetting } from './BackTestingSetting';
 export { default as BasicSettings } from './BaseSettings';

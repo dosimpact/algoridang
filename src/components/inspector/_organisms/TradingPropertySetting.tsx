@@ -1,5 +1,5 @@
-import InspectorHeaderDetail from 'components/_molecules/inspector/InspectorHeaderDetail';
-import StPropsSetting from 'components/_molecules/inspector/StPropsSetting';
+import InspectorHeaderDetail from 'components/inspector/_molecules/InspectorHeaderDetail';
+import StPropsSetting from 'components/inspector/_molecules/StPropsSetting';
 import produce from 'immer';
 import React, { useMemo } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';

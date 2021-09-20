@@ -1,5 +1,5 @@
 import WingBlank from 'components/_atoms/WingBlank';
-import InspectorHeaderDetail from 'components/_molecules/inspector/InspectorHeaderDetail';
+import InspectorHeaderDetail from 'components/inspector/_molecules/InspectorHeaderDetail';
 import produce from 'immer';
 import MockInvestReport from 'pages/takers/mock-invest/section/mock-invest-report';
 import StrategyDetails from 'pages/takers/strategy-search/section/strategy-details';

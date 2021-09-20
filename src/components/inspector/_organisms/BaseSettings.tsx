@@ -1,4 +1,4 @@
-import InspectorHeaderDetail from 'components/_molecules/inspector/InspectorHeaderDetail';
+import InspectorHeaderDetail from 'components/inspector/_molecules/InspectorHeaderDetail';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useRecoilState } from 'recoil';

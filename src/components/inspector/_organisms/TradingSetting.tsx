@@ -1,5 +1,5 @@
 import WingBlank from 'components/_atoms/WingBlank';
-import InspectorHeaderDetail from 'components/_molecules/inspector/InspectorHeaderDetail';
+import InspectorHeaderDetail from 'components/inspector/_molecules/InspectorHeaderDetail';
 import produce from 'immer';
 import React, { useMemo } from 'react';
 import { useRecoilState } from 'recoil';
