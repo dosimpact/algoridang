@@ -8,7 +8,7 @@ import {
   toTickerImage,
 } from 'utils/parse';
 import styled from 'styled-components';
-import DetailSummary from 'components/_organisms/report/DetailSummary';
+import DetailSummary from 'components/report/_organisms/DetailSummary';
 import CumulativeReturn from 'components/report/_molecules/CumulativeReturn';
 import MonthlyReturn from 'components/report/_molecules/MonthlyReturn';
 import WinRatio from 'components/report/_molecules/WinRatio';
