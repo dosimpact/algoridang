@@ -1,4 +1,4 @@
-import ReportTable from 'components/_molecules/report/ReportTable';
+import ReportTable from 'components/report/_molecules/ReportTable';
 import { SubTitle } from 'components/_atoms/Typos';
 import React from 'react';
 import styled from 'styled-components';

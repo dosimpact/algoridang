@@ -6,9 +6,9 @@ import styled from 'styled-components';
 import ReturnsStatus from 'components/_organisms/report/ReturnsStatus';
 import TradingHistory from 'components/_organisms/report/TradingHistory';
 import DetailSummary from 'components/_organisms/report/DetailSummary';
-import CumulativeReturn from 'components/_molecules/report/CumulativeReturn';
-import MonthlyReturn from 'components/_molecules/report/MonthlyReturn';
-import WinRatio from 'components/_molecules/report/WinRatio';
+import CumulativeReturn from 'components/report/_molecules/CumulativeReturn';
+import MonthlyReturn from 'components/report/_molecules/MonthlyReturn';
+import WinRatio from 'components/report/_molecules/WinRatio';
 
 const dummyDatasReport = {
   header: ['항목', '결과값'],

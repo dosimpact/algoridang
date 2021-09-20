@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import TradingHistory from 'components/_organisms/report/TradingHistory';
 import TradingPoints from 'components/_organisms/report/TradingPoints';
 import ReturnsStatus from 'components/_organisms/report/ReturnsStatus';
-import Description from 'components/_molecules/report/Description';
+import Description from 'components/report/_molecules/Description';
 import useStrategyDetail from 'states/react-query/strategy/useStrategyDetail';
 import StrategyCardBox from 'components/_molecules/StrategyCardBox';
 import NavHeaderDetail from 'components/_molecules/NavHeaderDetail';

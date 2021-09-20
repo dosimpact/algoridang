@@ -9,9 +9,9 @@ import {
 } from 'utils/parse';
 import styled from 'styled-components';
 import DetailSummary from 'components/_organisms/report/DetailSummary';
-import CumulativeReturn from 'components/_molecules/report/CumulativeReturn';
-import MonthlyReturn from 'components/_molecules/report/MonthlyReturn';
-import WinRatio from 'components/_molecules/report/WinRatio';
+import CumulativeReturn from 'components/report/_molecules/CumulativeReturn';
+import MonthlyReturn from 'components/report/_molecules/MonthlyReturn';
+import WinRatio from 'components/report/_molecules/WinRatio';
 import useStrategyDetail from 'states/react-query/strategy/useStrategyDetail';
 import useBackTestReport from 'states/react-query/backtest/useBackTestReport';
 import NavHeaderDetail from 'components/_molecules/NavHeaderDetail';
