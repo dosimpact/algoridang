@@ -1,4 +1,4 @@
-import FNumber from 'components/_atoms/FNumber';
+import FNumber from 'components/common/_atoms/FNumber';
 import React from 'react';
 import styled from 'styled-components';
 

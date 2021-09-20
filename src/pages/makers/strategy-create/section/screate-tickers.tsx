@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Button, List, Checkbox, Icon } from 'antd-mobile';
-import TickerSearch from 'components/_atoms/TickerSearch';
+import TickerSearch from 'components/common/_atoms/TickerSearch';
 import { Corporation } from 'states/interface/finance/entities';
 import { useRecoilState } from 'recoil';
 import { atomStrategyState } from 'states/recoil/strategy';

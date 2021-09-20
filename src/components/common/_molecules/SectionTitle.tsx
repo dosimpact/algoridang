@@ -1,5 +1,5 @@
 import React from 'react';
-import { Title } from 'components/_atoms/Typos';
+import { Title } from 'components/common/_atoms/Typos';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 

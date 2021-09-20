@@ -1,5 +1,5 @@
 import React from 'react';
-import { SubTitle } from 'components/_atoms/Typos';
+import { SubTitle } from 'components/common/_atoms/Typos';
 import styled from 'styled-components';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 

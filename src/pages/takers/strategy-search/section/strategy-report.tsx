@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Title } from 'components/_atoms/Typos';
+import { Title } from 'components/common/_atoms/Typos';
 import { useHistory, useParams } from 'react-router-dom';
 import {
   toPercentage,

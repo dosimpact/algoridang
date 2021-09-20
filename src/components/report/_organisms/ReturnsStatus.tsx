@@ -1,5 +1,5 @@
-import FNumber from 'components/_atoms/FNumber';
-import { Title } from 'components/_atoms/Typos';
+import FNumber from 'components/common/_atoms/FNumber';
+import { Title } from 'components/common/_atoms/Typos';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import React from 'react';
 import styled from 'styled-components';

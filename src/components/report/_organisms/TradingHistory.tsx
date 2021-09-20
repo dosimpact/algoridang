@@ -1,5 +1,5 @@
 import { Box } from 'components/common/_atoms/Box';
-import { SubTitle } from 'components/_atoms/Typos';
+import { SubTitle } from 'components/common/_atoms/Typos';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import React from 'react';
 import styled from 'styled-components';

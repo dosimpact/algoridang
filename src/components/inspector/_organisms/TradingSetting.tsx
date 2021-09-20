@@ -9,7 +9,7 @@ import {
 } from 'states/recoil/strategy-create';
 import styled from 'styled-components';
 import { IInspectorSettings } from '.';
-import TechnicalSearch from 'components/_atoms/TechnicalSearch';
+import TechnicalSearch from 'components/common/_atoms/TechnicalSearch';
 import { useTechnicals } from 'states/react-query/trading/useTechnicals';
 import { BaseTradingStrategy } from 'states/interface/trading/entities';
 import { useRequestMiniBacktesting } from 'states/react-query/trading/useRequestMiniBacktesting';

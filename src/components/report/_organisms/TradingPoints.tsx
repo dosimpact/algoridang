@@ -1,4 +1,4 @@
-import { Title } from 'components/_atoms/Typos';
+import { Title } from 'components/common/_atoms/Typos';
 import LineSeriesChartPointing from 'components/light-weight/LineSeriesChartPointing';
 import { SeriesMarker, Time } from 'lightweight-charts';
 import React, { useCallback, useMemo, useState } from 'react';
@@ -8,7 +8,7 @@ import useDailyStock from 'states/react-query/finance/useDailyStock';
 import styled from 'styled-components';
 import { UTCtoDate } from 'utils/parse';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
-import FNumber from 'components/_atoms/FNumber';
+import FNumber from 'components/common/_atoms/FNumber';
 
 // 매매시점 컴포넌트의 차트
 const ChartBuySelPoint: React.FC<{ ticker: string; strategyCode: string }> = ({

@@ -1,5 +1,5 @@
 import { Button } from 'components/common/_atoms/Buttons';
-import InputListItem from 'components/_atoms/InputListItem';
+import InputListItem from 'components/common/_atoms/InputListItem';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { SettingJSON } from 'states/interface/trading/entities';

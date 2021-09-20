@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Title } from 'components/_atoms/Typos';
+import { Title } from 'components/common/_atoms/Typos';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import NavHeaderDetail from 'components/common/_molecules/NavHeaderDetail';
@@ -10,7 +10,7 @@ import { toTagsString, toTickerImage } from 'utils/parse';
 import { Button } from 'components/common/_atoms/Buttons';
 import { useForm } from 'react-hook-form';
 import { useForkStrategy } from 'states/react-query/strategy/useForkStrategy';
-import InputListItem from 'components/_atoms/InputListItem';
+import InputListItem from 'components/common/_atoms/InputListItem';
 import { toast } from 'react-toastify';
 
 interface IForkStrategyForm {

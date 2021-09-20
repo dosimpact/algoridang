@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { SubTitle, Title } from 'components/_atoms/Typos';
+import { SubTitle, Title } from 'components/common/_atoms/Typos';
 import { useHistory, useParams } from 'react-router-dom';
 import { getTodayDiff, toTagsString, toTickerImage } from 'utils/parse';
 import styled from 'styled-components';

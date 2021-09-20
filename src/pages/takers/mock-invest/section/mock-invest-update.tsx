@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Button } from 'components/common/_atoms/Buttons';
-import InputListItem from 'components/_atoms/InputListItem';
-import { Title } from 'components/_atoms/Typos';
+import InputListItem from 'components/common/_atoms/InputListItem';
+import { Title } from 'components/common/_atoms/Typos';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import NavHeaderDetail from 'components/common/_molecules/NavHeaderDetail';
