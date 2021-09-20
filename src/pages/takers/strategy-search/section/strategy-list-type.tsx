@@ -1,7 +1,7 @@
-import WhiteSpace from 'components/_atoms/WhiteSpace';
-import WingBlank from 'components/_atoms/WingBlank';
-import NavHeaderDetail from 'components/_molecules/NavHeaderDetail';
-import StrategyCardBox from 'components/_molecules/StrategyCardBox';
+import WhiteSpace from 'components/common/_atoms/WhiteSpace';
+import WingBlank from 'components/common/_atoms/WingBlank';
+import NavHeaderDetail from 'components/common/_molecules/NavHeaderDetail';
+import StrategyCardBox from 'components/common/_molecules/StrategyCardBox';
 import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import useStrategy from 'states/react-query/strategy/useStrategy';

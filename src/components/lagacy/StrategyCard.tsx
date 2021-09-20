@@ -1,4 +1,4 @@
-import BadgeCAGR from 'components/_atoms/BadgeCAGR';
+import BadgeCAGR from 'components/common/_atoms/BadgeCAGR';
 import React from 'react';
 import styled from 'styled-components';
 // import FNumber from "components/_atoms/FNumber";

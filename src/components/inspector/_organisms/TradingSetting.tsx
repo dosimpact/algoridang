@@ -1,4 +1,4 @@
-import WingBlank from 'components/_atoms/WingBlank';
+import WingBlank from 'components/common/_atoms/WingBlank';
 import InspectorHeaderDetail from 'components/inspector/_molecules/InspectorHeaderDetail';
 import produce from 'immer';
 import React, { useMemo } from 'react';

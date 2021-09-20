@@ -1,6 +1,6 @@
-import { Box } from 'components/_atoms/Box';
+import { Box } from 'components/common/_atoms/Box';
 import { SubTitle } from 'components/_atoms/Typos';
-import WhiteSpace from 'components/_atoms/WhiteSpace';
+import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import React from 'react';
 import styled from 'styled-components';
 import HistoryTable from '../../data-display/HistoryTable';

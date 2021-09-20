@@ -14,11 +14,11 @@ import MonthlyReturn from 'components/report/_molecules/MonthlyReturn';
 import WinRatio from 'components/report/_molecules/WinRatio';
 import useStrategyDetail from 'states/react-query/strategy/useStrategyDetail';
 import useBackTestReport from 'states/react-query/backtest/useBackTestReport';
-import NavHeaderDetail from 'components/_molecules/NavHeaderDetail';
-import WingBlank from 'components/_atoms/WingBlank';
-import WhiteSpace from 'components/_atoms/WhiteSpace';
-import StrategyCardBox from 'components/_molecules/StrategyCardBox';
-import { Button } from 'components/_atoms/Buttons';
+import NavHeaderDetail from 'components/common/_molecules/NavHeaderDetail';
+import WingBlank from 'components/common/_atoms/WingBlank';
+import WhiteSpace from 'components/common/_atoms/WhiteSpace';
+import StrategyCardBox from 'components/common/_molecules/StrategyCardBox';
+import { Button } from 'components/common/_atoms/Buttons';
 
 interface IStrategyReport {
   showForkButton?: boolean;

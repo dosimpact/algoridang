@@ -7,7 +7,7 @@ import useBackTestHistory from 'states/react-query/backtest/useBackTestHistory';
 import useDailyStock from 'states/react-query/finance/useDailyStock';
 import styled from 'styled-components';
 import { UTCtoDate } from 'utils/parse';
-import WhiteSpace from 'components/_atoms/WhiteSpace';
+import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import FNumber from 'components/_atoms/FNumber';
 
 // 매매시점 컴포넌트의 차트

@@ -1,6 +1,6 @@
 import FNumber from 'components/_atoms/FNumber';
 import { Title } from 'components/_atoms/Typos';
-import WhiteSpace from 'components/_atoms/WhiteSpace';
+import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import React from 'react';
 import styled from 'styled-components';
 import { toAddComma } from 'utils/parse';

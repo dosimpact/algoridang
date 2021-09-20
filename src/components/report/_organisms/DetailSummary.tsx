@@ -2,7 +2,7 @@ import ReportTable from 'components/report/_molecules/ReportTable';
 import { SubTitle } from 'components/_atoms/Typos';
 import React from 'react';
 import styled from 'styled-components';
-import WhiteSpace from 'components/_atoms/WhiteSpace';
+import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 
 interface Indexable {
   [idx: string]: string;

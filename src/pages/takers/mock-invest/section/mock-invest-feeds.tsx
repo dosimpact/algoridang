@@ -1,13 +1,13 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { toTagsString, toTickerImage } from 'utils/parse';
-import PageGuide from 'components/_molecules/PageGuide';
+import PageGuide from 'components/common/_molecules/PageGuide';
 import { IconMockInvest } from 'assets/icons';
 import { useMyStrategy } from 'states/react-query/strategy/useMyStrategy';
-import WingBlank from 'components/_atoms/WingBlank';
-import WhiteSpace from 'components/_atoms/WhiteSpace';
-import StrategyCardBox from 'components/_molecules/StrategyCardBox';
-import SectionTitle from 'components/_molecules/SectionTitle';
+import WingBlank from 'components/common/_atoms/WingBlank';
+import WhiteSpace from 'components/common/_atoms/WhiteSpace';
+import StrategyCardBox from 'components/common/_molecules/StrategyCardBox';
+import SectionTitle from 'components/common/_molecules/SectionTitle';
 
 const MockInvestFeeds = () => {
   const history = useHistory();

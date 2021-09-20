@@ -2,13 +2,13 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import useStrategy from 'states/react-query/strategy/useStrategy';
 import { toTagsString, toTickerImage } from 'utils/parse';
-import WingBlank from 'components/_atoms/WingBlank';
-import PageGuide from 'components/_molecules/PageGuide';
+import WingBlank from 'components/common/_atoms/WingBlank';
+import PageGuide from 'components/common/_molecules/PageGuide';
 
 import { IconSearchStrategy } from 'assets/icons';
-import SectionTitle from 'components/_molecules/SectionTitle';
-import WhiteSpace from 'components/_atoms/WhiteSpace';
-import StrategyCardBox from 'components/_molecules/StrategyCardBox';
+import SectionTitle from 'components/common/_molecules/SectionTitle';
+import WhiteSpace from 'components/common/_atoms/WhiteSpace';
+import StrategyCardBox from 'components/common/_molecules/StrategyCardBox';
 
 // todo:refactor CAGR 부분 DB Relation eager 처리 및 undefined 핸들링
 const StrategyFeeds = () => {

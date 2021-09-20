@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
-import TickerPrice from 'components/_organisms/ticker-price';
+import TickerPrice from 'components/common/_organisms/ticker-price';
 
 const TickerSearchC = () => {
   return (

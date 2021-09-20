@@ -1,13 +1,13 @@
 import React, { useMemo } from 'react';
 import { Title } from 'components/_atoms/Typos';
-import WhiteSpace from 'components/_atoms/WhiteSpace';
-import WingBlank from 'components/_atoms/WingBlank';
-import NavHeaderDetail from 'components/_molecules/NavHeaderDetail';
-import StrategyCardBox from 'components/_molecules/StrategyCardBox';
+import WhiteSpace from 'components/common/_atoms/WhiteSpace';
+import WingBlank from 'components/common/_atoms/WingBlank';
+import NavHeaderDetail from 'components/common/_molecules/NavHeaderDetail';
+import StrategyCardBox from 'components/common/_molecules/StrategyCardBox';
 import { useHistory, useParams } from 'react-router-dom';
 import useStrategyDetail from 'states/react-query/strategy/useStrategyDetail';
 import { toTagsString, toTickerImage } from 'utils/parse';
-import { Button } from 'components/_atoms/Buttons';
+import { Button } from 'components/common/_atoms/Buttons';
 import { useForm } from 'react-hook-form';
 import { useForkStrategy } from 'states/react-query/strategy/useForkStrategy';
 import InputListItem from 'components/_atoms/InputListItem';

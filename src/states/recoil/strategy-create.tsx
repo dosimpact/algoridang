@@ -8,14 +8,14 @@ import {
   UniversalSetting,
 } from 'components/inspector/_organisms';
 import { Corporation } from 'states/interface/finance/entities';
-import MonoTickerSettingButton from 'components/_organisms/dashboard/MonoTickerSettingButton';
-import SelectedTickerButton from 'components/_organisms/dashboard/SelectedTickerButton';
+import MonoTickerSettingButton from 'components/dashboard/_organisms/MonoTickerSettingButton';
+import SelectedTickerButton from 'components/dashboard/_organisms/SelectedTickerButton';
 import { BaseTradingStrategy } from 'states/interface/trading/entities';
 import produce from 'immer';
 import { tradingApi } from 'states/api';
-import MiniBacktestResultButton from 'components/_organisms/dashboard/MiniBacktestResultButton';
+import MiniBacktestResultButton from 'components/dashboard/_organisms/MiniBacktestResultButton';
 import { Suspense } from 'react';
-import ErrorBoundary from 'components/_atoms/ErrorBoundary';
+import ErrorBoundary from 'components/common/_atoms/ErrorBoundary';
 /**
  * 전략 생성에 대한 클라이언트 상태관리 입니다.
  *

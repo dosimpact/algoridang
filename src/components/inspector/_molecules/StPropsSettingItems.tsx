@@ -1,4 +1,4 @@
-import { Button } from 'components/_atoms/Buttons';
+import { Button } from 'components/common/_atoms/Buttons';
 import InputListItem from 'components/_atoms/InputListItem';
 import React from 'react';
 import { useForm } from 'react-hook-form';

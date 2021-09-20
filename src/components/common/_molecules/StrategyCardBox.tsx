@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { randomDefaultThunmnail } from 'utils/default-values';
-import BadgeCAGR from 'components/_atoms/BadgeCAGR';
+import BadgeCAGR from 'components/common/_atoms/BadgeCAGR';
 
 /**
  * 박스형 전략탐색 카드

@@ -9,9 +9,9 @@ import {
   selecteMiniBacktestResultListJSX,
   selectorInspectorFC,
 } from 'states/recoil/strategy-create';
-import DashBoardButton from 'components/_molecules/DashBoardButton';
+import DashBoardButton from 'components/common/_molecules/DashBoardButton';
 import { IconPlus, IconSetting, IconTesting } from 'assets/icons';
-import DashBoardDebug from 'components/_molecules/DashBoardDebug';
+import DashBoardDebug from 'components/common/_molecules/DashBoardDebug';
 
 // 전략 생성 모듈
 // DashBoard - Inspector

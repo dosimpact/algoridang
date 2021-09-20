@@ -5,8 +5,8 @@ import { useRecoilState } from 'recoil';
 import useDailyStock from 'states/react-query/finance/useDailyStock';
 import { atomCorporationState } from 'states/recoil/corporation';
 import styled from 'styled-components';
-import WingBlank from 'components/_atoms/WingBlank';
-import BadgePriceDelta from 'components/_atoms/BadgePriceDelta';
+import WingBlank from 'components/common/_atoms/WingBlank';
+import BadgePriceDelta from 'components/common/_atoms/BadgePriceDelta';
 
 // todo:refator onSuccess등 콜백함수에 usecallback안써도 되도록 하기
 const TickerPrice = () => {

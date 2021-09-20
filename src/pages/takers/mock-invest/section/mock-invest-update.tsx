@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Button } from 'components/_atoms/Buttons';
+import { Button } from 'components/common/_atoms/Buttons';
 import InputListItem from 'components/_atoms/InputListItem';
 import { Title } from 'components/_atoms/Typos';
-import WhiteSpace from 'components/_atoms/WhiteSpace';
-import WingBlank from 'components/_atoms/WingBlank';
-import NavHeaderDetail from 'components/_molecules/NavHeaderDetail';
-import StrategyCardBox from 'components/_molecules/StrategyCardBox';
+import WhiteSpace from 'components/common/_atoms/WhiteSpace';
+import WingBlank from 'components/common/_atoms/WingBlank';
+import NavHeaderDetail from 'components/common/_molecules/NavHeaderDetail';
+import StrategyCardBox from 'components/common/_molecules/StrategyCardBox';
 import { useForm } from 'react-hook-form';
 import { useHistory, useParams } from 'react-router';
 import { toast } from 'react-toastify';

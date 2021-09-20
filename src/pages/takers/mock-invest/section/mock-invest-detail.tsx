@@ -5,11 +5,11 @@ import { getTodayDiff, toTagsString, toTickerImage } from 'utils/parse';
 import styled from 'styled-components';
 import ReturnsStatus from 'components/report/_organisms/ReturnsStatus';
 import TradingHistory from 'components/report/_organisms/TradingHistory';
-import WingBlank from 'components/_atoms/WingBlank';
-import WhiteSpace from 'components/_atoms/WhiteSpace';
-import StrategyCardBox from 'components/_molecules/StrategyCardBox';
-import NavHeaderDetail from 'components/_molecules/NavHeaderDetail';
-import { Button } from 'components/_atoms/Buttons';
+import WingBlank from 'components/common/_atoms/WingBlank';
+import WhiteSpace from 'components/common/_atoms/WhiteSpace';
+import StrategyCardBox from 'components/common/_molecules/StrategyCardBox';
+import NavHeaderDetail from 'components/common/_molecules/NavHeaderDetail';
+import { Button } from 'components/common/_atoms/Buttons';
 import { useMyStrategyDetail } from 'states/react-query/strategy/useMyStrategyDetail';
 import TradingPoints from 'components/report/_organisms/TradingPoints';
 
