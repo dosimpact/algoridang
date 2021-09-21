@@ -10,7 +10,7 @@ Celerys = Namespace(
 )
 
 
-celeryFields = Celerys.model('Backtest', {  # Model 객체 생성
+celeryFields = Celerys.model('Celery', {  # Model 객체 생성
     'CeleryId': fields.String(description='a CeleryId ID', required=True),
 })
 

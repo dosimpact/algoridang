@@ -11,7 +11,7 @@ DailyStock = Namespace(
 )
 
 
-DailyStockFields = DailyStock.model('Backtest', {  # Model 객체 생성
+DailyStockFields = DailyStock.model('DailyStock', {  # Model 객체 생성
     'worker': fields.Integer(description='worker', required=True),
     'startdate': fields.String(description='startdate', required=False, example="20110101")
 })

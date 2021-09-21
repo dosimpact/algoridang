@@ -1,7 +1,7 @@
 from openAPI import pricePykrx
 from _Test.stockData import financialInformation
 
-
+from backtesting.MockInvestCtrl import MockInvestCtrl
 
 
 
@@ -12,5 +12,6 @@ if __name__ == '__main__':
     if 1:
         test = financialInformation()
         #print(test.eachTickerNaver(tickers))
-        print(test.eachTickerNaver([("005930","삼성전자")]))
-
+        #print(test.eachTickerNaver([("005930","삼성전자")]))
+        test = MockInvestCtrl()
+        test.searchMockInvest()
