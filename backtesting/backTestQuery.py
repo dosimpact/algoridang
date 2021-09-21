@@ -3,7 +3,6 @@ from openAPI.DB.connectionPool import databasepool
 import pandas as pd
 from backtesting.SMACross import SMACross
 from backtesting.RSI import RSI
-from backtesting.TradingStrategy import getTradingStrategy
 class backTestQuery(object):
     def __init__(self, id, stratgy) -> None:
         super().__init__()
