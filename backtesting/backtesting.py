@@ -22,34 +22,36 @@ from backtesting.backTestQuery import backTestQuery
 
 class CBackTtrader(backTestQuery):
     def __init__(self, id, stratgy) -> None:
-        super().__init__()
-        self.queueId = id
-        self.strategyCode = stratgy
+        super().__init__(id, stratgy)
 
     # cerebor work
     def requestBacktestOneStock(self):
+        
+        print("["+str(self.queueId)+"] request strategyCode  "+str(self.strategyCode))
+        print("["+str(self.queueId)+"] Start Backtest")
+        
+        data = self._setInitData(self.strategyCode)
+        
+        self._setStatusMemberStrategy("Running","start backtest", self.strategyCode)
+
+        print("["+str(self.queueId)+"] apply Strategy from DB...")
+
+        case = (self._setStrategy(data["strategyCode"]))
+        
+        if len(case) == 0:
+            self._setStatusMemberStrategy( "Error","DB dose'not have any data in this field...", self.strategyCode)
+            print("DB dose'not have any data in this field...")
+            return "error"
+
+        tickerlen = len(case)
+
+        for ticker, salestrategy, setting, weight, minDate in case:
+            print("["+str(self.queueId)+"] backtest " + str(ticker))
+            self.tickerBackTest(data, tickerlen, ticker, salestrategy, setting, weight, minDate)
+
+        
+        print("["+str(self.queueId)+"] make Portpolio")
         try:
-            print("["+str(self.queueId)+"] request strategyCode  "+str(self.strategyCode))
-            print("["+str(self.queueId)+"] Start Backtest")
-            
-            data = self._setInitData(self.strategyCode)
-            if id is not None:
-                self._setStatusMemberStrategy("Running", self.strategyCode)
-
-            print("["+str(self.queueId)+"] apply Strategy from DB...")
-
-            case = (self._setStrategy(data["strategyCode"]))
-            
-            if len(case) == 0:
-                print("DB dose'not have any data in this field...")
-                return "error"
-
-            tickerlen = len(case)
-
-            for ticker, salestrategy, setting, weight, minDate in case:
-                self.tickerBackTest(data, tickerlen, ticker, salestrategy, setting, weight, minDate)
-
-            print("["+str(self.queueId)+"] make Portpolio")
             self.makePortpolio(data)
             print("["+str(self.queueId)+"] Start data saving...")
             
@@ -68,22 +70,16 @@ class CBackTtrader(backTestQuery):
             self._saveAccumulateProfitRateChartTable()
 
             print("["+str(self.queueId)+"] Complete data saving!")
+        
             
-            if id is not None:
-                self._setStatusMemberStrategy( "Success", self.strategyCode)
-            
-        except IndexError as e:
-            if id is not None:
-                self._setStatusMemberStrategy( "Error",  self.strategyCode)
-            print("cerebro run error ", e) 
-        except:
-            if id is not None:
-                self._setStatusMemberStrategy( "Error",  self.strategyCode)
-            print("error data = ", self.error)
-            print("Unexpected error:", sys.exc_info()[0])
-        finally:
+            self._setStatusMemberStrategy( "Success","Success", self.strategyCode)
+
             return self.invest
-    
+        except:
+            self._setStatusMemberStrategy( "Error","makePortpolio Error", self.strategyCode)
+            print("makePortpolio Error")
+
+
     # 포트폴리오 만들기
     def makePortpolio(self, data):
         metrics = quantstats.reports.metrics(self.totalreturn, mode='full', display=False)
@@ -117,15 +113,16 @@ class CBackTtrader(backTestQuery):
                 if monthlydata[1] > 0:
                     monthlyProfitRatioRiseMonth += 1
 
-        print("monthlyProfitRatioChartData = ", self.monthlyProfitRatioChartData)
+        # print("monthlyProfitRatioChartData = ", self.monthlyProfitRatioChartData)
 
         # 투자 수익 정보
         self.investProfitInfo = [self.invest, int(data['investPrice']), self.invest - int(data['investPrice']), round(self.invest / int(data['investPrice']), 2)-1]
-        print(self.investProfitInfo)
+        # print(self.investProfitInfo)
             
         # 백테스트 상세정보
         self.backtestDetailInfo = self._makeBackTestInfo(metrics, delta, monthlyProfitRatioRiseMonth, monthlyCAGR, yearlyVolatility)
-        print("backtestDetailInfo = ", self.backtestDetailInfo)
+        # print("backtestDetailInfo = ", self.backtestDetailInfo)
+
 
     def tickerBackTest(self, data, tickerlen, ticker, salestrategy, setting, weight, minDate):
         cerebro = bt.Cerebro()
@@ -154,8 +151,16 @@ class CBackTtrader(backTestQuery):
         cerebro.adddata(bt.feeds.PandasData(dataname=tickerDateData), name=ticker)
 
         print("["+str(self.queueId)+"] Start cerebro")
-            
-        results = cerebro.run()
+
+        try:
+            results = cerebro.run()
+        except:
+            self._setStatusMemberStrategy( "Error",  "cerebro.run() error",self.strategyCode)
+            print("cerebro.run() error")
+            print(tickerDateData)
+            print(salestrategy)
+            return
+
         strat = results[0]
         self.invest += cerebro.broker.getvalue()
                 

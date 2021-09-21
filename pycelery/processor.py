@@ -14,8 +14,10 @@ from os.path import join, dirname
 
 
 from backtesting import backtesting
-
 from openAPI import pricePykrx
+
+from backtesting.MiniBacktest import MiniBacktest
+from backtesting.MakeMiniBackTest import MakeMiniBackTest
 
 # celery -A pycelery.processor.process worker --loglevel=info
 # celery -A pycelery.processor.process worker --loglevel=info --autoscale=3,3
@@ -119,8 +121,14 @@ def backtestTaskCall(self,strategyCode):
     return res
 
 
+
+def callMiniBacktest(miniBackData):
+    adapter = MakeMiniBackTest()
+    return (adapter.minibacktest(miniBackData))
+
+
+    
 def Test___backtestTestCode(id,strategyCode):
     bk = backtesting.CBackTtrader(None,strategyCode)
     res = bk.requestBacktestOneStock()
     return res
-

@@ -50,7 +50,7 @@ class MockInvest(backTestQuery):
         #case = [("005930", SMACross, [5,20], 1, 20),("005380", SMACross, [5,20], 1, 20)]
 
         #error case : cerebro error
-        case = [("005930", RSI, [40,60], 1, 20),("005380", SMACross, [5,20], 1, 20)]
+        case = [("096640", RSI, [40,60], 1, 20),("005380", SMACross, [5,20], 1, 20)]
         if len(case) == 0 :
             print("DB dose'not have any data in this field...")
             return "error"
