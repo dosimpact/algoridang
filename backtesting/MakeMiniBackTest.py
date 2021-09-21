@@ -3,9 +3,12 @@ from backtesting.MiniBacktest import MiniBacktest
 
 import backtrader as bt
 import quantstats
-from backtesting.SMACross import SMACross
 from openAPI.DB.connectionPool import databasepool
 import pandas as pd
+
+
+from backtesting.SMACross import SMACross
+from backtesting.RSI import RSI
 
 class MakeMiniBackTest(MiniBacktest):
     def __init__(self) -> None:
@@ -41,6 +44,10 @@ class MakeMiniBackTest(MiniBacktest):
         if salestrategy == 'GoldenCross':
             salestrategy = SMACross
             minDate = setting[1]
+
+        if salestrategy == 'RSI':
+            salestrategy = RSI
+            minDate = 21
 
         return self.miniTickerBackTest(data, ticker, salestrategy, setting, minDate)
 

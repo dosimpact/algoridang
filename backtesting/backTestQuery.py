@@ -2,7 +2,8 @@ import sys
 from openAPI.DB.connectionPool import databasepool
 import pandas as pd
 from backtesting.SMACross import SMACross
-
+from backtesting.RSI import RSI
+from backtesting.TradingStrategy import getTradingStrategy
 class backTestQuery(object):
     def __init__(self, id, stratgy) -> None:
         super().__init__()
@@ -35,6 +36,10 @@ class backTestQuery(object):
                     setting = [row[3]['GoldenCross']['pfast'],row[3]['GoldenCross']['pslow']]
                     minDate = row[3]['GoldenCross']['pslow']
                     strategyList.append((row[1], SMACross, setting, 1, minDate)) 
+                if row[2] == 'RSI':
+                    setting = [row[3]['RSI']['pfast'],row[3]['RSI']['pslow']]
+                    minDate = 21
+                    strategyList.append((row[1], RSI, setting, 1, minDate)) 
 
         return strategyList
         #(ticker, strategy, setting , weigth)
