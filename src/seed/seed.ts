@@ -45,7 +45,6 @@ async function bootstrap() {
         ticker,
         trading_strategy_name: StrategyName.GoldenCross,
         setting_json: { GoldenCross: { pfast: 5, pslow: 15 } },
-        start_date: '2011-08-19T06:58:48.421Z',
       });
       // 백테스팅 요청
       await flaskService.pushBackTestQ('ypd03008@gmail.com', {

@@ -87,13 +87,7 @@ export class TradingService {
   //(4) 전략에 티커 추가하기
   async addUniversalOnly(
     email_id: string,
-    {
-      strategy_code,
-      ticker,
-      end_date,
-      start_date,
-      select_yes_no,
-    }: AddUniversalOnlyInput,
+    { strategy_code, ticker }: AddUniversalOnlyInput,
   ): Promise<AddUniversalOnlyOutput> {
     // 티커 및 전략 존재성
     await this.financeService.getCorporation({
@@ -109,9 +103,6 @@ export class TradingService {
       this.universalRepo.create({
         ticker,
         strategy_code,
-        end_date,
-        start_date,
-        select_yes_no,
       }),
     );
     return { ok: true, universal };
@@ -150,20 +141,14 @@ export class TradingService {
     email_id,
     {
       setting_json,
-      start_date,
       strategy_code,
       ticker,
       trading_strategy_name,
-      end_date,
-      select_yes_no,
     }: AddUniversalInput,
   ): Promise<AddUniversalOutput> {
     const res = await this.addUniversalOnly(email_id, {
       strategy_code,
       ticker,
-      end_date,
-      start_date,
-      select_yes_no,
     });
     if (!res.ok) return res;
     const { universal } = await this.__upsertTradingStrategy(email_id, {

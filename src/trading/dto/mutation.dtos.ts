@@ -8,9 +8,6 @@ import { Universal } from '../entities';
 export class AddUniversalOnlyInput extends PickType(Universal, [
   'strategy_code',
   'ticker',
-  'start_date',
-  'end_date',
-  'select_yes_no',
 ]) {}
 export class AddUniversalOnlyOutput extends CoreOutput {
   universal?: Universal;

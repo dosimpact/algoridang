@@ -26,19 +26,19 @@ export class Universal {
   @PrimaryGeneratedColumn()
   universal_code: number;
   // 유니버셜의 종목 선택 여부
-  @IsBoolean()
-  @IsOptional()
-  @Column({ default: false })
-  select_yes_no?: boolean;
+  // @IsBoolean()
+  // @IsOptional()
+  // @Column({ default: false })
+  // select_yes_no?: boolean;
   // 시작 날짜와 끝 날짜
-  @IsDateString()
-  @Column({ type: 'timestamptz' })
-  start_date: string;
+  // @IsDateString()
+  // @Column({ type: 'timestamptz', nullable: true })
+  // start_date?: string;
 
-  @IsDateString()
-  @IsOptional()
-  @Column({ type: 'timestamptz', nullable: true })
-  end_date?: string;
+  // @IsDateString()
+  // @IsOptional()
+  // @Column({ type: 'timestamptz', nullable: true })
+  // end_date?: string;
   // 해당 종목을 돌릴 전략이름과 셋팅
   @IsEnum(StrategyName)
   @Column({
