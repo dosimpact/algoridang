@@ -39,9 +39,9 @@ export interface SimpleBacktest {
 
 export interface Universal {
   universal_code: number;
-  select_yes_no?: boolean;
-  start_date: Date;
-  end_date?: Date;
+  // select_yes_no?: boolean;
+  // start_date: Date;
+  // end_date?: Date;
   trading_strategy_name: StrategyName;
   setting_json: SettingJSON;
 
