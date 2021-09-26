@@ -7,7 +7,6 @@ import ReturnsStatus from 'components/report/_organisms/ReturnsStatus';
 import TradingHistory from 'components/report/_organisms/TradingHistory';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
-import StrategyCardBox from 'components/common/_molecules/StrategyCardBox';
 import StrategyCardInfo from 'components/common/_molecules/StrategyCardInfo';
 import NavHeaderDetail from 'components/common/_molecules/NavHeaderDetail';
 import { Button } from 'components/common/_atoms/Buttons';
@@ -43,24 +42,7 @@ const MockInvestDetail = () => {
       />
       <WingBlank>
         <WhiteSpace />
-        {memberStrategy && (
-          <StrategyCardBox
-            title={memberStrategy.strategy_name}
-            subTitle={toTagsString(
-              memberStrategy.hashList?.map((e) => e?.hash?.hash_contents),
-            )}
-            CAGR={
-              memberStrategy?.backtestDetailInfo?.year_avg_profit_rate &&
-              Number(memberStrategy?.backtestDetailInfo?.year_avg_profit_rate)
-            }
-            thumnail={
-              memberStrategy.universal.length >= 1
-                ? toTickerImage(memberStrategy.universal[0].ticker)
-                : ''
-            }
-            onErrorImg={memberStrategy.image_url}
-          />
-        )}
+        {memberStrategy && <StrategyCardInfo strategy={memberStrategy} />}
         <div className="flexRowSBt">
           <Title title="모의 투자" style={{ marginRight: '15px' }}></Title>
           <Button

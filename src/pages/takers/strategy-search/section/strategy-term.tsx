@@ -8,8 +8,6 @@ import PageGuide from 'components/common/_molecules/PageGuide';
 import { IconSearchStrategy } from 'assets/icons';
 import SectionTitle from 'components/common/_molecules/SectionTitle';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
-import StrategyCardBox from 'components/common/_molecules/StrategyCardBox';
-
 import StrategyCardInfo from 'components/common/_molecules/StrategyCardInfo';
 import StrategySearchInput from 'components/common/_organisms/StrategySearchInput';
 import useSearchStrategy from 'states/react-query/strategy/useSearchStrategy';
@@ -54,22 +52,9 @@ const StrategyTerm = () => {
         searchStrategyQueryTypeTicker?.data?.memberStrategyList &&
         searchStrategyQueryTypeTicker?.data?.memberStrategyList.map(
           (data, key) => (
-            <StrategyCardBox
+            <StrategyCardInfo
               key={key}
-              title={data.strategy_name}
-              subTitle={toTagsString(
-                data.hashList?.map((e) => e?.hash?.hash_contents),
-              )}
-              CAGR={
-                data?.backtestDetailInfo?.year_avg_profit_rate &&
-                Number(data?.backtestDetailInfo?.year_avg_profit_rate)
-              }
-              thumnail={
-                data.universal.length >= 1
-                  ? toTickerImage(data.universal[0].ticker)
-                  : ''
-              }
-              onErrorImg={data.image_url}
+              strategy={data}
               onClick={() => {
                 history.push(
                   `/takers/strategy-search/details/${data.strategy_code}`,
@@ -90,22 +75,9 @@ const StrategyTerm = () => {
         searchStrategyQueryTypeName?.data?.memberStrategyList &&
         searchStrategyQueryTypeName?.data?.memberStrategyList.map(
           (data, key) => (
-            <StrategyCardBox
+            <StrategyCardInfo
               key={key}
-              title={data.strategy_name}
-              subTitle={toTagsString(
-                data.hashList?.map((e) => e?.hash?.hash_contents),
-              )}
-              CAGR={
-                data?.backtestDetailInfo?.year_avg_profit_rate &&
-                Number(data?.backtestDetailInfo?.year_avg_profit_rate)
-              }
-              thumnail={
-                data.universal.length >= 1
-                  ? toTickerImage(data.universal[0].ticker)
-                  : ''
-              }
-              onErrorImg={data.image_url}
+              strategy={data}
               onClick={() => {
                 history.push(
                   `/takers/strategy-search/details/${data.strategy_code}`,

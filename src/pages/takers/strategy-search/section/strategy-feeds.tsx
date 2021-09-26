@@ -1,14 +1,12 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import useStrategy from 'states/react-query/strategy/useStrategy';
-import { toTagsString, toTickerImage } from 'utils/parse';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import PageGuide from 'components/common/_molecules/PageGuide';
 
 import { IconSearchStrategy } from 'assets/icons';
 import SectionTitle from 'components/common/_molecules/SectionTitle';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
-import StrategyCardBox from 'components/common/_molecules/StrategyCardBox';
 import StrategyCardInfo from 'components/common/_molecules/StrategyCardInfo';
 import StrategySearchInput from 'components/common/_organisms/StrategySearchInput';
 
@@ -42,6 +40,7 @@ const StrategyFeeds = () => {
       {strategyListNew &&
         strategyListNew.slice(0, 3).map((data, key) => (
           <StrategyCardInfo
+            key={key}
             strategy={data}
             onClick={() => {
               history.push(
@@ -62,6 +61,7 @@ const StrategyFeeds = () => {
       {strategyListHighView &&
         strategyListHighView.slice(0, 3).map((data, key) => (
           <StrategyCardInfo
+            key={key}
             strategy={data}
             onClick={() => {
               history.push(
@@ -81,6 +81,7 @@ const StrategyFeeds = () => {
       {strategyListRiskTaking &&
         strategyListRiskTaking.slice(0, 3).map((data, key) => (
           <StrategyCardInfo
+            key={key}
             strategy={data}
             onClick={() => {
               history.push(
@@ -98,6 +99,7 @@ const StrategyFeeds = () => {
       {strategyListNeutral &&
         strategyListNeutral.slice(0, 3).map((data, key) => (
           <StrategyCardInfo
+            key={key}
             strategy={data}
             onClick={() => {
               history.push(
@@ -117,6 +119,7 @@ const StrategyFeeds = () => {
       {strategyListStableIncome &&
         strategyListStableIncome.slice(0, 3).map((data, key) => (
           <StrategyCardInfo
+            key={key}
             strategy={data}
             onClick={() => {
               history.push(

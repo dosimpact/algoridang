@@ -5,7 +5,6 @@ import { Title } from 'components/common/_atoms/Typos';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import NavHeaderDetail from 'components/common/_molecules/NavHeaderDetail';
-import StrategyCardBox from 'components/common/_molecules/StrategyCardBox';
 import StrategyCardInfo from 'components/common/_molecules/StrategyCardInfo';
 import { useForm } from 'react-hook-form';
 import { useHistory, useParams } from 'react-router';
@@ -107,24 +106,7 @@ const MockInvestUpdate = () => {
       <WingBlank>
         {strategyDetailQuery.isLoading && 'loading...'}
 
-        {memberStrategy && (
-          <StrategyCardBox
-            title={memberStrategy.strategy_name}
-            subTitle={toTagsString(
-              memberStrategy.hashList?.map((e) => e?.hash?.hash_contents),
-            )}
-            CAGR={
-              memberStrategy?.backtestDetailInfo?.year_avg_profit_rate &&
-              Number(memberStrategy?.backtestDetailInfo?.year_avg_profit_rate)
-            }
-            thumnail={
-              memberStrategy.universal.length >= 1
-                ? toTickerImage(memberStrategy.universal[0].ticker)
-                : ''
-            }
-            onErrorImg={memberStrategy.image_url}
-          />
-        )}
+        {memberStrategy && <StrategyCardInfo strategy={memberStrategy} />}
         <WingBlank>
           <Title title={'기본 설정'} />
           <WhiteSpace />
