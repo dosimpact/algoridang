@@ -100,15 +100,21 @@ export class StrategyQueryController {
   async searchStrategy(
     @Param('term') term: string,
     @Query('type') type: string,
+    @Query('take') take: number,
+    @Query('skip') skip: number,
   ) {
     type = type || 'name';
-    console.log('type', type);
+
     if (type === 'name') {
-      return this.strategyService.searchStrategyByName({ term });
+      return this.strategyService.searchStrategyByName({ term, skip, take });
     } else if (type === 'ticker') {
-      return this.strategyService.searchStrategyByTickerName({ term });
+      return this.strategyService.searchStrategyByTickerName({
+        term,
+        skip,
+        take,
+      });
     } else {
-      return this.strategyService.searchStrategyByName({ term });
+      return this.strategyService.searchStrategyByName({ term, skip, take });
     }
   }
   // (GET) getStrategyById	(4)특정 Id로 전략 조회

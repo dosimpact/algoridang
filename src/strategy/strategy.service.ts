@@ -8,8 +8,6 @@ import {
   GetMyStrategyListOutput,
   GetStrategyByIdInput,
   GetStrategyByIdOutput,
-  SearchStrategyByNameInput,
-  SearchStrategyByNameOutput,
   GetStrategyListHighProfitInput,
   GetStrategyListHighProfitOutput,
   GetStrategyListHighViewInput,
@@ -20,6 +18,8 @@ import {
   GetStrategyListNewOutput,
   GetStrategyListTypeInput,
   GetStrategyListTypeOutput,
+  SearchStrategyInput,
+  SearchStrategyOutput,
 } from './dto/query.dtos';
 import {
   CopyStrategyInput,
@@ -89,7 +89,7 @@ export class StrategyService {
     take,
   }: GetStrategyListNewInput): Promise<GetStrategyListNewOutput> {
     skip = skip || 0;
-    take = skip || 7;
+    take = take || 7;
     const [memberStrategyList, totalResult] =
       await this.MemberStrategyRepo.findAndCount({
         where: {
@@ -115,7 +115,7 @@ export class StrategyService {
     take = 7,
   }: GetStrategyListHighViewInput): Promise<GetStrategyListHighViewOutput> {
     skip = skip || 0;
-    take = skip || 7;
+    take = take || 7;
     let [memberStrategyList, totalResult] =
       await this.MemberStrategyRepo.findAndCount({
         where: {
@@ -126,6 +126,8 @@ export class StrategyService {
         },
         relations: this.strategyListRelation,
         // join: { innerJoin: ['operationMemberList'] },
+        skip,
+        take,
       });
     memberStrategyList.sort(
       (a, b) => b.operationMemberList.length - a.operationMemberList.length,
@@ -151,7 +153,11 @@ export class StrategyService {
     ;
   */
 
-  async getStrategyListHighProfit({}: GetStrategyListHighProfitInput): Promise<GetStrategyListHighProfitOutput> {
+  // TODO skip,take, 쿼리빌더 적용
+  async getStrategyListHighProfit({
+    skip,
+    take,
+  }: GetStrategyListHighProfitInput): Promise<GetStrategyListHighProfitOutput> {
     // 높은 수익률의 전략 코드 리스트를 가져옴
     const strategyCodes =
       await this.backtestService.getHighProfitRateStrategyCodes();
@@ -223,6 +229,8 @@ export class StrategyService {
     skip,
     take,
   }: GetStrategyListInvestTypeInput): Promise<GetStrategyListInvestTypeOutput> {
+    skip = skip || 0;
+    take = take || 7;
     const memberStrategyList = await this.MemberStrategyRepo.find({
       order: {
         create_date: 'DESC',
@@ -232,6 +240,8 @@ export class StrategyService {
         invest_type: investType,
       },
       relations: this.strategyListRelation,
+      skip,
+      take,
     });
     return {
       ok: true,
@@ -241,7 +251,12 @@ export class StrategyService {
   // strategy_name ILIKE  조회
   async searchStrategyByName({
     term,
-  }: SearchStrategyByNameInput): Promise<SearchStrategyByNameOutput> {
+    skip,
+    take,
+  }: SearchStrategyInput): Promise<SearchStrategyOutput> {
+    term = term || '삼성';
+    skip = skip || 0;
+    take = take || 7;
     const memberStrategyList = await this.MemberStrategyRepo.find({
       where: [
         {
@@ -250,13 +265,21 @@ export class StrategyService {
           ),
         },
       ],
+      relations: this.strategyListRelation,
+      skip,
+      take,
     });
     return { memberStrategyList, ok: true };
   }
   // TickerName 보유한 전략  조회
   async searchStrategyByTickerName({
     term,
-  }: SearchStrategyByNameInput): Promise<SearchStrategyByNameOutput> {
+    skip,
+    take,
+  }: SearchStrategyInput): Promise<SearchStrategyOutput> {
+    term = term || '삼성';
+    skip = skip || 0;
+    take = take || 7;
     // step1   corpname > ticker
     const corps = await this.financeService.searchTickerByTerm(term);
     let tickers = corps.map((e) => e.ticker);
@@ -277,6 +300,9 @@ export class StrategyService {
           strategy_code: In(codes),
         },
       ],
+      relations: this.strategyListRelation,
+      skip,
+      take,
     });
     return { memberStrategyList, ok: true };
   }

@@ -63,3 +63,10 @@ export class SearchStrategyByNameInput {
 export class SearchStrategyByNameOutput extends CoreOutput {
   memberStrategyList?: MemberStrategy[];
 }
+
+export class SearchStrategyInput extends CorePaginationInput {
+  term: string;
+}
+export class SearchStrategyOutput extends CoreOutput {
+  memberStrategyList?: MemberStrategy[];
+}
