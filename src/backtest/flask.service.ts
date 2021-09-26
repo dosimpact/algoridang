@@ -14,6 +14,10 @@ import {
   PushBackTestQOutput,
   SetBackTestOutput,
 } from './dto/mutation.dtos';
+import {
+  RequestMiniBacktestingInput,
+  RequestMiniBacktestingOutput,
+} from './dto/query.dtos';
 
 @Injectable()
 export class FlaskService {
@@ -123,6 +127,36 @@ export class FlaskService {
     } catch (e) {
       console.error('[FAIL] GET test', e);
       return e;
+    }
+  }
+
+  /**
+   * 미니 백테스팅
+   * - email_id가 가진 전략인지 확인 후 큐 요청
+   * @param {RequestMiniBacktestingInput} pushBackTestQInput
+   * @returns {RequestMiniBacktestingOutput} RequestMiniBacktestingOutput
+   */
+  async __requestMiniBacktesting(
+    requestMiniBacktestingInput: RequestMiniBacktestingInput,
+  ): Promise<RequestMiniBacktestingOutput> {
+    try {
+      const { data, status } = await axios({
+        method: 'post',
+        url: `${this.dataServerUrl}/minibacktest/minibacktest`,
+        data: requestMiniBacktestingInput,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        timeout: 5000,
+      });
+      if (status !== 201) {
+        return { ok: false, ...data };
+      }
+      return { ok: true, ...data };
+    } catch (e) {
+      console.error('[FAIL] GET test', e);
+      throw e;
     }
   }
 }

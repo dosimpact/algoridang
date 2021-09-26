@@ -17,12 +17,16 @@ import {
   PushBackTestQInput,
   UpdateHistoryInput,
 } from './dto/mutation.dtos';
+import { RequestMiniBacktestingInput } from './dto/query.dtos';
 import { FlaskService } from './flask.service';
 
 @UseInterceptors(HttpCacheInterceptor)
 @Controller('/api/backtests/')
 export class BacktestQueryController {
-  constructor(private readonly backtestService: BacktestService) {}
+  constructor(
+    private readonly backtestService: BacktestService,
+    private readonly flaskService: FlaskService,
+  ) {}
 
   @Roles(['Any'])
   @Version('1')
@@ -60,6 +64,14 @@ export class BacktestQueryController {
   async getWinRatio(@Param() strategy_code: string) {
     return this.backtestService.getBacktestWinRatio({ strategy_code });
   }
+
+  // (2) 미니 백테스트 요청
+  @Version('1')
+  @Roles(['Any'])
+  @Post('miniBacktest')
+  async requestMiniBackTest(@Body() body: RequestMiniBacktestingInput) {
+    return this.flaskService.__requestMiniBacktesting(body);
+  }
 }
 
 @Controller('/api/backtests/')
@@ -80,7 +92,7 @@ export class BacktestMutationController {
     return this.flaskService.pushBackTestQ(MemberInfo.email_id, body);
   }
 
-  // (2) 히스토리 추가(Server)
+  // deprecated () 히스토리 추가(Server)
   @Version('1')
   @Roles(['DAServer'])
   @Post('addHistory')
@@ -88,14 +100,14 @@ export class BacktestMutationController {
     return this.backtestService.addHistory(addHistoryInput);
   }
 
-  // (3) 히스토리 삭제(Server)
+  // deprecated () 히스토리 삭제(Server)
   @Roles(['DAServer'])
   @Post('deleteHistory')
   async deleteHistory(@Body() deleteHistoryInput: DeleteHistoryInput) {
     return this.backtestService.deleteHistory(deleteHistoryInput);
   }
 
-  // (4) 히스토리 업데이트(Server)
+  // deprecated () 히스토리 업데이트(Server)
   @Roles(['DAServer'])
   @Post('updateHistory')
   async updateHistory(@Body() updateHistoryInput: UpdateHistoryInput) {

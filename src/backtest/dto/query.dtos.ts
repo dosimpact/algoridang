@@ -1,4 +1,4 @@
-import { IsNumber } from 'class-validator';
+import { IsArray, IsJSON, IsNumber, IsObject, IsString } from 'class-validator';
 import { CoreOutput } from 'src/common/dtos/output.dto';
 import {
   AccumulateProfitRateChart,
@@ -47,4 +47,28 @@ export class GetBacktestWinRatioInput {
 }
 export class GetBacktestWinRatioOutput extends CoreOutput {
   backtestWinRatio: BacktestWinRatio;
+}
+
+// 미니 백테스팅 DTO
+export class RequestMiniBacktestingInput {
+  @IsString()
+  ticker: string;
+  @IsString()
+  salestrategy: 'GoldenCross';
+  @IsArray()
+  setting: number[];
+  @IsObject()
+  data: {
+    startTime: string; //"20190101",
+    endTime: string; //""
+  };
+}
+export class RequestMiniBacktestingOutput extends CoreOutput {
+  message?: string;
+  code?: string;
+  res?: {
+    profit_rate: number;
+    year_avg_profit_rate: number;
+    mdd: number;
+  };
 }
