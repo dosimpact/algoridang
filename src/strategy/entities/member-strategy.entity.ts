@@ -106,6 +106,9 @@ export class MemberStrategy {
   @IsString()
   @Column({ type: 'varchar', length: 15, nullable: true })
   status_code: string; // 최근 백테스트 결과 - 응답 메시지
+  // TOOD : 상태 정의 문서
+  // - null , Running, Error, Success
+
   // 1:1 관계
 
   // (2) 투자 수익 정보
