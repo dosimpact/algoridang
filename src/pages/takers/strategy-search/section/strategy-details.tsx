@@ -9,6 +9,7 @@ import ReturnsStatus from 'components/report/_organisms/ReturnsStatus';
 import Description from 'components/report/_molecules/Description';
 import useStrategyDetail from 'states/react-query/strategy/useStrategyDetail';
 import StrategyCardBox from 'components/common/_molecules/StrategyCardBox';
+import StrategyCardInfo from 'components/common/_molecules/StrategyCardInfo';
 import NavHeaderDetail from 'components/common/_molecules/NavHeaderDetail';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import WingBlank from 'components/common/_atoms/WingBlank';

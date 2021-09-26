@@ -9,6 +9,8 @@ import { IconSearchStrategy } from 'assets/icons';
 import SectionTitle from 'components/common/_molecules/SectionTitle';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import StrategyCardBox from 'components/common/_molecules/StrategyCardBox';
+
+import StrategyCardInfo from 'components/common/_molecules/StrategyCardInfo';
 import StrategySearchInput from 'components/common/_organisms/StrategySearchInput';
 import useSearchStrategy from 'states/react-query/strategy/useSearchStrategy';
 

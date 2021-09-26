@@ -1,40 +1,49 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { randomDefaultThunmnail } from 'utils/default-values';
 import BadgeCAGR from 'components/common/_atoms/BadgeCAGR';
+import { MemberStrategy } from 'states/interface/strategy/entities';
+import { toTagsString, toTickerImage } from 'utils/parse';
 
 /**
  * 박스형 전략탐색 카드
  */
 
-interface IStrategyCardBox {
-  thumnail?: string;
-  onErrorImg?: string;
-  title: string;
-  subTitle?: string;
-  CAGR?: number;
+interface IStrategyCardInfo {
+  strategy: MemberStrategy;
   onClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
-  StrategyState?: string;
-  status_info?: string;
-  status_code?: string;
 }
 
-const StrategyCardBox: React.FC<IStrategyCardBox> = ({
-  CAGR,
-  subTitle = '',
-  thumnail = '',
-  onErrorImg = '',
-  title = 'Error',
+const StrategyCardInfo: React.FC<IStrategyCardInfo> = ({
+  strategy,
   onClick,
-  StrategyState,
-  status_code,
-  status_info,
 }) => {
-  if (!thumnail) thumnail = randomDefaultThunmnail(title);
+  strategy = useMemo(() => strategy, [strategy]);
+
+  const thumnail =
+    strategy.universal.length >= 1
+      ? toTickerImage(strategy.universal[0].ticker)
+      : randomDefaultThunmnail(strategy.strategy_name);
+
+  const CAGR = useMemo(() => {
+    return (
+      strategy?.backtestDetailInfo?.year_avg_profit_rate &&
+      Number(strategy?.backtestDetailInfo?.year_avg_profit_rate)
+    );
+  }, [strategy]);
+
+  const title = useMemo(() => strategy.strategy_name, [strategy]);
+
+  const subTitle = useMemo(() => {
+    return toTagsString(strategy.hashList?.map((e) => e?.hash?.hash_contents));
+  }, [strategy]);
+
+  let onErrorImg = strategy.image_url;
   if (!onErrorImg) onErrorImg = randomDefaultThunmnail(title);
+
   return (
     <>
-      <Card
+      <SStrategyCardInfo
         onClick={(e) => {
           if (onClick) onClick(e);
         }}
@@ -56,12 +65,12 @@ const StrategyCardBox: React.FC<IStrategyCardBox> = ({
             <BadgeCAGR val={CAGR} hasPercentage={true} />
           </div>
         </article>
-      </Card>
+      </SStrategyCardInfo>
     </>
   );
 };
 
-const Card = styled.section`
+const SStrategyCardInfo = styled.section`
   background-color: white;
   transition: box-shadow 0.2s ease-in-out;
   /* :hover {
@@ -117,4 +126,4 @@ const Card = styled.section`
   }
 `;
 
-export default StrategyCardBox;
+export default StrategyCardInfo;

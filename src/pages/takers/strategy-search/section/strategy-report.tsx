@@ -18,6 +18,7 @@ import NavHeaderDetail from 'components/common/_molecules/NavHeaderDetail';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import StrategyCardBox from 'components/common/_molecules/StrategyCardBox';
+import StrategyCardInfo from 'components/common/_molecules/StrategyCardInfo';
 import { Button } from 'components/common/_atoms/Buttons';
 
 interface IStrategyReport {

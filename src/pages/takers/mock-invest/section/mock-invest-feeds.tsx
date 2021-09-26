@@ -7,6 +7,7 @@ import { useMyStrategy } from 'states/react-query/strategy/useMyStrategy';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import StrategyCardBox from 'components/common/_molecules/StrategyCardBox';
+import StrategyCardInfo from 'components/common/_molecules/StrategyCardInfo';
 import SectionTitle from 'components/common/_molecules/SectionTitle';
 
 const MockInvestFeeds = () => {

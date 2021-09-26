@@ -9,6 +9,7 @@ import { IconSearchStrategy } from 'assets/icons';
 import SectionTitle from 'components/common/_molecules/SectionTitle';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import StrategyCardBox from 'components/common/_molecules/StrategyCardBox';
+import StrategyCardInfo from 'components/common/_molecules/StrategyCardInfo';
 import StrategySearchInput from 'components/common/_organisms/StrategySearchInput';
 
 // todo:refactor CAGR 부분 DB Relation eager 처리 및 undefined 핸들링
@@ -40,22 +41,8 @@ const StrategyFeeds = () => {
       <WhiteSpace />
       {strategyListNew &&
         strategyListNew.slice(0, 3).map((data, key) => (
-          <StrategyCardBox
-            key={key}
-            title={data.strategy_name}
-            subTitle={toTagsString(
-              data.hashList?.map((e) => e?.hash?.hash_contents),
-            )}
-            CAGR={
-              data?.backtestDetailInfo?.year_avg_profit_rate &&
-              Number(data?.backtestDetailInfo?.year_avg_profit_rate)
-            }
-            thumnail={
-              data.universal.length >= 1
-                ? toTickerImage(data.universal[0].ticker)
-                : ''
-            }
-            onErrorImg={data.image_url}
+          <StrategyCardInfo
+            strategy={data}
             onClick={() => {
               history.push(
                 `/takers/strategy-search/details/${data.strategy_code}`,
@@ -63,6 +50,7 @@ const StrategyFeeds = () => {
             }}
           />
         ))}
+
       <WhiteSpace />
       <SectionTitle
         title="조회수 높은 투자 전략"
@@ -73,22 +61,8 @@ const StrategyFeeds = () => {
       <WhiteSpace />
       {strategyListHighView &&
         strategyListHighView.slice(0, 3).map((data, key) => (
-          <StrategyCardBox
-            key={key}
-            title={data.strategy_name}
-            subTitle={toTagsString(
-              data.hashList?.map((e) => e?.hash?.hash_contents),
-            )}
-            CAGR={
-              data?.backtestDetailInfo?.year_avg_profit_rate &&
-              Number(data?.backtestDetailInfo?.year_avg_profit_rate)
-            }
-            thumnail={
-              data.universal.length >= 1
-                ? toTickerImage(data.universal[0].ticker)
-                : ''
-            }
-            onErrorImg={data.image_url}
+          <StrategyCardInfo
+            strategy={data}
             onClick={() => {
               history.push(
                 `/takers/strategy-search/details/${data.strategy_code}`,
@@ -106,22 +80,8 @@ const StrategyFeeds = () => {
       <WhiteSpace />
       {strategyListRiskTaking &&
         strategyListRiskTaking.slice(0, 3).map((data, key) => (
-          <StrategyCardBox
-            key={key}
-            title={data.strategy_name}
-            subTitle={toTagsString(
-              data.hashList?.map((e) => e?.hash?.hash_contents),
-            )}
-            CAGR={
-              data?.backtestDetailInfo?.year_avg_profit_rate &&
-              Number(data?.backtestDetailInfo?.year_avg_profit_rate)
-            }
-            thumnail={
-              data.universal.length >= 1
-                ? toTickerImage(data.universal[0].ticker)
-                : ''
-            }
-            onErrorImg={data.image_url}
+          <StrategyCardInfo
+            strategy={data}
             onClick={() => {
               history.push(
                 `/takers/strategy-search/details/${data.strategy_code}`,
@@ -137,22 +97,8 @@ const StrategyFeeds = () => {
       <WhiteSpace />
       {strategyListNeutral &&
         strategyListNeutral.slice(0, 3).map((data, key) => (
-          <StrategyCardBox
-            key={key}
-            title={data.strategy_name}
-            subTitle={toTagsString(
-              data.hashList?.map((e) => e?.hash?.hash_contents),
-            )}
-            CAGR={
-              data?.backtestDetailInfo?.year_avg_profit_rate &&
-              Number(data?.backtestDetailInfo?.year_avg_profit_rate)
-            }
-            thumnail={
-              data.universal.length >= 1
-                ? toTickerImage(data.universal[0].ticker)
-                : ''
-            }
-            onErrorImg={data.image_url}
+          <StrategyCardInfo
+            strategy={data}
             onClick={() => {
               history.push(
                 `/takers/strategy-search/details/${data.strategy_code}`,
@@ -170,22 +116,8 @@ const StrategyFeeds = () => {
       <WhiteSpace />
       {strategyListStableIncome &&
         strategyListStableIncome.slice(0, 3).map((data, key) => (
-          <StrategyCardBox
-            key={key}
-            title={data.strategy_name}
-            subTitle={toTagsString(
-              data.hashList?.map((e) => e?.hash?.hash_contents),
-            )}
-            CAGR={
-              data?.backtestDetailInfo?.year_avg_profit_rate &&
-              Number(data?.backtestDetailInfo?.year_avg_profit_rate)
-            }
-            thumnail={
-              data.universal.length >= 1
-                ? toTickerImage(data.universal[0].ticker)
-                : ''
-            }
-            onErrorImg={data.image_url}
+          <StrategyCardInfo
+            strategy={data}
             onClick={() => {
               history.push(
                 `/takers/strategy-search/details/${data.strategy_code}`,
