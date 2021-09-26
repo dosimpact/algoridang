@@ -12,11 +12,13 @@ import { toTagsString, toTickerImage } from 'utils/parse';
 interface IStrategyCardInfo {
   strategy: MemberStrategy;
   onClick?: (e: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+  isDisplayMock?: boolean;
 }
 
 const StrategyCardInfo: React.FC<IStrategyCardInfo> = ({
   strategy,
   onClick,
+  isDisplayMock = false,
 }) => {
   strategy = useMemo(() => strategy, [strategy]);
 
@@ -57,9 +59,15 @@ const StrategyCardInfo: React.FC<IStrategyCardInfo> = ({
               e.currentTarget.src = onErrorImg;
             }}
           ></img>
+          {isDisplayMock &&
+            (strategy.operation_yes_no ? (
+              <div className="bottomBadge operation">운용중</div>
+            ) : (
+              <div className="bottomBadge not_operation">운용 중지</div>
+            ))}
         </article>
         <article className="right">
-          <div className="title">{title}</div>
+          <div className="title text_ellipsis">{title}</div>
           {subTitle && <div className="subTitle">{subTitle}</div>}
           <div className="CAGR">
             <BadgeCAGR val={CAGR} hasPercentage={true} />
@@ -105,10 +113,33 @@ const SStrategyCardInfo = styled.section`
       object-fit: scale-down;
       padding: 1rem;
     }
+    position: relative;
+    .bottomBadge {
+      position: absolute;
+      bottom: 0;
+
+      height: 2.4rem;
+      width: 100%;
+      font-size: 1rem;
+      line-height: 1.2rem;
+      border-bottom-left-radius: 0.7rem;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .operation {
+      background: ${(props) => props.theme.ColorMainRed};
+      color: #ffffff;
+    }
+    .not_operation {
+      background: ${(props) => props.theme.ColorMainLightGray};
+      color: ${(props) => props.theme.ColorMainYellow};
+    }
   }
   .right {
     width: 100%;
-    padding-left: 0.4rem;
+    padding-left: 3rem;
     padding-top: 1.9rem;
     .title {
       font-size: 1.3rem;

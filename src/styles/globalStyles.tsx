@@ -81,5 +81,12 @@ export default createGlobalStyle`
         pointer-events: none;
         color: #fff;
     }
+    .text_ellipsis{
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 90%;
+        display: block;
+    }
 
 `;

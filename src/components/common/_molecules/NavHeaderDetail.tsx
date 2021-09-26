@@ -32,6 +32,7 @@ const SNavHeaderDetail = styled.header`
   grid-template-columns: 8rem 1fr 8rem;
   grid-template-rows: 2rem;
   padding: 2.7rem 0rem;
+
   .col1 {
     svg {
       fill: ${(props) => props.theme.ColorMainGray};

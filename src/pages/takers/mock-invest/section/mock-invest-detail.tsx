@@ -42,7 +42,9 @@ const MockInvestDetail = () => {
       />
       <WingBlank>
         <WhiteSpace />
-        {memberStrategy && <StrategyCardInfo strategy={memberStrategy} />}
+        {memberStrategy && (
+          <StrategyCardInfo isDisplayMock={true} strategy={memberStrategy} />
+        )}
         <div className="flexRowSBt">
           <Title title="모의 투자" style={{ marginRight: '15px' }}></Title>
           <Button

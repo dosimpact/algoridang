@@ -17,8 +17,13 @@ const ReportTableCell: React.FC<{
 export default ReportTableCell;
 
 const SReportTableCell = styled.div`
+  padding-top: 1rem;
   width: 100%;
   height: 8rem;
+  transition: background-color 0.3s ease-in-out;
+  &:hover {
+    background-color: ${(props) => props.theme.ColorMainLightGray};
+  }
   /* display: flex; */
   /* flex-flow: column nowrap; */
   .title {

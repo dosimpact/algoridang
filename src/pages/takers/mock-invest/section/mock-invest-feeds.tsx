@@ -36,6 +36,7 @@ const MockInvestFeeds = () => {
           <StrategyCardInfo
             key={key}
             strategy={data}
+            isDisplayMock={true}
             onClick={() => {
               history.push(`/takers/mock-invest/details/${data.strategy_code}`);
             }}

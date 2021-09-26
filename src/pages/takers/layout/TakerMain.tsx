@@ -63,19 +63,24 @@ const TopNavigation = () => {
     </STopNavigation>
   );
 };
+
 const STopNavigation = styled.header`
   position: fixed;
   top: 0;
   left: 0;
-  background-color: ${(props) => props.theme.ColorMainDarkGray};
+
   height: 4.5rem;
   width: 100%;
   padding: 0px 2.8rem;
+
   display: grid;
   grid-template-columns: 1fr 1fr;
   justify-content: center;
   align-content: center;
+  background-color: ${(props) => props.theme.ColorMainDarkGray};
   color: ${(props) => props.theme.ColorMainWhite};
+  z-index: 99999;
+
   svg {
     fill: ${(props) => props.theme.ColorMainWhite};
   }
