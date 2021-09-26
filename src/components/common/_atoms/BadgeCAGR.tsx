@@ -15,7 +15,7 @@ const BadgeCAGR: React.FC<{
           {hasPercentage ? '%' : ''}
         </span>
       ) : (
-        <span>백테스팅 대기</span>
+        <span>백테스팅 성공</span>
       )}
     </SBadgeCAGR>
   );

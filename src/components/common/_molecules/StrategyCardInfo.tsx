@@ -4,6 +4,7 @@ import { randomDefaultThunmnail } from 'utils/default-values';
 import BadgeCAGR from 'components/common/_atoms/BadgeCAGR';
 import { MemberStrategy } from 'states/interface/strategy/entities';
 import { toTagsString, toTickerImage } from 'utils/parse';
+import RoundBadge from '../_atoms/RoundBadge';
 
 /**
  * 박스형 전략탐색 카드
@@ -70,7 +71,15 @@ const StrategyCardInfo: React.FC<IStrategyCardInfo> = ({
           <div className="title text_ellipsis">{title}</div>
           {subTitle && <div className="subTitle">{subTitle}</div>}
           <div className="CAGR">
-            <BadgeCAGR val={CAGR} hasPercentage={true} />
+            {strategy.status_code === 'Success' ? (
+              <BadgeCAGR val={CAGR} hasPercentage={true} />
+            ) : strategy.status_code === 'Running' ? (
+              <RoundBadge type="Green">백테스트 진행중</RoundBadge>
+            ) : (
+              strategy.status_code === 'Error' && (
+                <RoundBadge type="Yellow">백테스트 오류</RoundBadge>
+              )
+            )}
           </div>
         </article>
       </SStrategyCardInfo>

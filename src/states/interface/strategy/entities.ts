@@ -32,6 +32,9 @@ export interface MemberStrategy {
   image_url: string;
   create_date: Date;
   deleteAt: Date;
+  universal_producer?: string;
+  status_info: string;
+  status_code: string;
   // 1:1 관계
   // (2) 투자 수익 정보
   investProfitInfo: InvestProfitInfo;
