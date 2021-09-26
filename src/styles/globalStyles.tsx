@@ -30,7 +30,23 @@ export default createGlobalStyle`
     }
     input {
         border:unset;
+        background: rgba(255, 255, 255, 0.53);
+        /* box-shadow: 0px 0.3px 2px rgba(0, 0, 0, 0.25); */
+        border-radius: 9px;
+        width: 100%;
+        height: 4.6rem;
+        border: ${(props) => props.theme.Border};
+        padding: 1.5rem 2.8rem;
+
+        background: rgba(255, 255, 255, 0.53);
+        box-shadow: 0px 0.3px 2px rgba(0, 0, 0, 0.25);
+        border-radius: 9px;
+        font-size: 1.3rem;
     }
+    input::placeholder {
+            color: rgba(122, 122, 122, 0.67);
+    }
+    
     .flexRow{
         display: flex;
         flex-flow:row nowarp;

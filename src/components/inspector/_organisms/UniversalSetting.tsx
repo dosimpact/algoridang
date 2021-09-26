@@ -1,6 +1,6 @@
 import TickerSearch, {
   TickerSearchOnSuccessResult,
-} from 'components/common/_atoms/TickerSearch';
+} from 'components/common/_molecules/TickerSearch';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import InspectorHeaderDetail from 'components/inspector/_molecules/InspectorHeaderDetail';
 import React, { useMemo } from 'react';

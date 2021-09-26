@@ -9,6 +9,7 @@ import { IconSearchStrategy } from 'assets/icons';
 import SectionTitle from 'components/common/_molecules/SectionTitle';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import StrategyCardBox from 'components/common/_molecules/StrategyCardBox';
+import StrategySearchInput from 'components/common/_organisms/StrategySearchInput';
 
 // todo:refactor CAGR 부분 DB Relation eager 처리 및 undefined 핸들링
 const StrategyFeeds = () => {
@@ -28,6 +29,10 @@ const StrategyFeeds = () => {
         title="전략 탐색"
         subTitle="수익률을 확인하고 원하는 전략으로 모의투자를 시작해 보세요."
       />
+      <SectionTitle title="전략 검색" />
+      <StrategySearchInput />
+
+      <WhiteSpace />
       <SectionTitle
         title="신규 투자 전략"
         linkTo={process.env.PUBLIC_URL + '/takers/strategy-search/list/new'}

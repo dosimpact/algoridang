@@ -94,12 +94,6 @@ const ScreatePropterties = () => {
       trading_strategy_name: Object.keys(
         strategyState.formStateTradingSetting || { None: '' },
       )[0] as StrategyName,
-      start_date:
-        createMyStrategyMutationRes.data.memberStrategy?.investProfitInfo
-          .invest_start_date,
-      end_date:
-        createMyStrategyMutationRes.data.memberStrategy?.investProfitInfo
-          .invest_end_date,
       setting_json: strategyState.formStateTradingSetting,
       strategy_code,
     });

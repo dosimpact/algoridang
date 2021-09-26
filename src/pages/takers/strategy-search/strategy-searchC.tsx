@@ -5,6 +5,7 @@ import StrategyTypes from './section/strategy-types';
 import StrategyDetails from './section/strategy-details';
 import StrategyReport from './section/strategy-report';
 import StrategyListType from './section/strategy-list-type';
+import StrategyTerm from './section/strategy-term';
 
 const StrategySearchC = () => {
   return (
@@ -14,6 +15,11 @@ const StrategySearchC = () => {
         exact
         path={process.env.PUBLIC_URL + '/takers/strategy-search'}
         component={StrategyFeeds}
+      />
+      <Route
+        exact
+        path={process.env.PUBLIC_URL + '/takers/strategy-search/term/:term'}
+        component={StrategyTerm}
       />
       <Route
         path={process.env.PUBLIC_URL + '/takers/strategy-search/details/:id'}

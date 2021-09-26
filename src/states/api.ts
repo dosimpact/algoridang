@@ -62,6 +62,9 @@ export const strategyApi = {
     getMyStrategyById: (strategy_code: string) => {
       return axios.get(`strategies/my/${strategy_code}`);
     },
+    searchStrategy: (term: string, type: 'name' | 'ticker') => {
+      return axios.get(`strategies/search/${term}?type=${type}`);
+    },
   },
   POST: {
     createMyStrategy: (body: CreateMyStrategyInput) => {

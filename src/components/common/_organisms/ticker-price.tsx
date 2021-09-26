@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useCallback, useEffect } from 'react';
-import TickerSearch from 'components/common/_atoms/TickerSearch';
+import TickerSearch from 'components/common/_molecules/TickerSearch';
 import LineSeriesChart from 'components/light-weight/LineSeriesChart';
 import { useRecoilState } from 'recoil';
 import useDailyStock from 'states/react-query/finance/useDailyStock';

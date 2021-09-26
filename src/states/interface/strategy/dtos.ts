@@ -42,6 +42,14 @@ export interface GetMyStrategyByIdOutput extends CoreOutput {
   memberStrategy?: MemberStrategy;
 }
 
+// 전략 검색하기 API
+export interface SearchStrategyInput {
+  term: string;
+}
+export interface SearchStrategyOutput extends CoreOutput {
+  memberStrategyList?: MemberStrategy[];
+}
+
 //mutation
 
 // (POST) createMyStrategy	(1) 전략 만들기
