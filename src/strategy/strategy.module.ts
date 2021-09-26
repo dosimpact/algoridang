@@ -18,6 +18,7 @@ import * as redisStore from 'cache-manager-redis-store';
 import { StrategyHashService } from './strategy-hash.service';
 import { TradingModule } from 'src/trading/trading.module';
 import { BacktestModule } from 'src/backtest/backtest.module';
+import { FinanceModule } from 'src/finance/finance.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { BacktestModule } from 'src/backtest/backtest.module';
     ]),
     forwardRef(() => TradingModule),
     forwardRef(() => BacktestModule),
+    forwardRef(() => FinanceModule),
   ],
   controllers: [StrategyMutationController, StrategyQueryController],
   providers: [StrategyService, StrategyHashService, StrategyResolver],

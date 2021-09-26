@@ -2,7 +2,7 @@ import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FinanceService } from 'src/finance/finance.service';
 import { StrategyService } from 'src/strategy/strategy.service';
-import { Repository } from 'typeorm';
+import { Raw, Repository } from 'typeorm';
 import {
   AddUniversalInput,
   AddUniversalOutput,
@@ -158,5 +158,14 @@ export class TradingService {
       universal_code: res.universal.universal_code,
     });
     return { ok: true, universal };
+  }
+  // (7) 특정 종목을가진 전략 코드들 반환
+  async searchStrategyCodeByTicker(term: string) {
+    return await this.universalRepo.find({
+      where: {
+        ticker: Raw((ticker) => `${ticker} ILIKE '${term}'`),
+      },
+      select: ['strategy_code'],
+    });
   }
 }

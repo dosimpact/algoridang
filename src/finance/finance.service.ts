@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { EntityNotFoundError, Like, Repository } from 'typeorm';
+import { EntityNotFoundError, Like, Raw, Repository } from 'typeorm';
 import {
   GetCorporationInput,
   GetCorporationOutput,
@@ -118,5 +118,15 @@ export class FinanceService {
       ok: true,
       dailyStocks,
     };
+  }
+
+  // (7) 특정 종목을가진 전략 코드들 반환
+  async searchTickerByTerm(term: string) {
+    return await this.CorporationRepo.find({
+      where: [
+        { ticker: Raw((ticker) => `${ticker} ILIKE '${term}'`) },
+        { corp_name: Raw((corp_name) => `${corp_name} ILIKE '${term}'`) },
+      ],
+    });
   }
 }

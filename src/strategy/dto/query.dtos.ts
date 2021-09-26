@@ -55,3 +55,11 @@ export class GetMyStrategyByIdInput {
 export class GetMyStrategyByIdOutput extends CoreOutput {
   memberStrategy?: MemberStrategy;
 }
+
+// (GET) getStrategyByTerm	(4)검색어로 전략 조회
+export class SearchStrategyByNameInput {
+  term: string;
+}
+export class SearchStrategyByNameOutput extends CoreOutput {
+  memberStrategyList?: MemberStrategy[];
+}

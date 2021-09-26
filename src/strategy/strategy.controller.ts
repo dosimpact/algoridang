@@ -94,7 +94,23 @@ export class StrategyQueryController {
       strategy_code,
     });
   }
-
+  // (GET) getStrategyByTerm
+  @Version('1')
+  @Get('search/:term')
+  async searchStrategy(
+    @Param('term') term: string,
+    @Query('type') type: string,
+  ) {
+    type = type || 'name';
+    console.log('type', type);
+    if (type === 'name') {
+      return this.strategyService.searchStrategyByName({ term });
+    } else if (type === 'ticker') {
+      return this.strategyService.searchStrategyByTickerName({ term });
+    } else {
+      return this.strategyService.searchStrategyByName({ term });
+    }
+  }
   // (GET) getStrategyById	(4)특정 Id로 전략 조회
   @Version('1')
   @Get(':strategy_code')

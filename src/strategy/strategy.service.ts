@@ -1,6 +1,6 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Raw, Repository } from 'typeorm';
 import {
   GetMyStrategyByIdInput,
   GetMyStrategyByIdOutput,
@@ -8,6 +8,8 @@ import {
   GetMyStrategyListOutput,
   GetStrategyByIdInput,
   GetStrategyByIdOutput,
+  SearchStrategyByNameInput,
+  SearchStrategyByNameOutput,
   GetStrategyListHighProfitInput,
   GetStrategyListHighProfitOutput,
   GetStrategyListHighViewInput,
@@ -44,6 +46,7 @@ import { BacktestService } from 'src/backtest/backtest.service';
 import { TradingService } from 'src/trading/trading.service';
 import { FlaskService } from 'src/backtest/flask.service';
 import { Universal } from 'src/trading/entities';
+import { FinanceService } from 'src/finance/finance.service';
 // todo : 맴버필드 -> 소문자
 
 @Injectable()
@@ -73,6 +76,8 @@ export class StrategyService {
 
     @Inject(forwardRef(() => TradingService))
     private readonly tradingService: TradingService,
+    @Inject(forwardRef(() => FinanceService))
+    private readonly financeService: FinanceService,
     @Inject(forwardRef(() => FlaskService))
     private readonly flaskService: FlaskService,
   ) {}
@@ -233,7 +238,48 @@ export class StrategyService {
       memberStrategyList,
     };
   }
+  // strategy_name ILIKE  조회
+  async searchStrategyByName({
+    term,
+  }: SearchStrategyByNameInput): Promise<SearchStrategyByNameOutput> {
+    const memberStrategyList = await this.MemberStrategyRepo.find({
+      where: [
+        {
+          strategy_name: Raw(
+            (strategy_name) => `${strategy_name} ILIKE '%${term}%'`,
+          ),
+        },
+      ],
+    });
+    return { memberStrategyList, ok: true };
+  }
+  // TickerName 보유한 전략  조회
+  async searchStrategyByTickerName({
+    term,
+  }: SearchStrategyByNameInput): Promise<SearchStrategyByNameOutput> {
+    // step1   corpname > ticker
+    const corps = await this.financeService.searchTickerByTerm(term);
+    let tickers = corps.map((e) => e.ticker);
+    tickers = [...new Set(tickers)];
 
+    // step2  tickers > unversals
+    const univList = await Promise.all(
+      tickers.map((ticker) => {
+        return this.tradingService.searchStrategyCodeByTicker(ticker);
+      }),
+    );
+    const flattenUnivList = univList.reduce((acc, val) => acc.concat(val), []);
+    const codes = flattenUnivList.map((e) => e.strategy_code);
+    // step3  where in strategy_code
+    const memberStrategyList = await this.MemberStrategyRepo.find({
+      where: [
+        {
+          strategy_code: In(codes),
+        },
+      ],
+    });
+    return { memberStrategyList, ok: true };
+  }
   // (GET) getStrategyById	(4)특정 Id로 전략 조회
   // 공개전략만 조회 가능
   async getStrategyById({
