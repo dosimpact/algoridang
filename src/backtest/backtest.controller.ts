@@ -68,7 +68,7 @@ export class BacktestQueryController {
   // (2) 미니 백테스트 요청
   @Version('1')
   @Roles(['Any'])
-  @Post('miniBacktest')
+  @Post('mini-backtest')
   async requestMiniBackTest(@Body() body: RequestMiniBacktestingInput) {
     return this.flaskService.__requestMiniBacktesting(body);
   }
