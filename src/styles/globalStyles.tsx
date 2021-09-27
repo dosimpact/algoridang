@@ -28,7 +28,7 @@ export default createGlobalStyle`
         /* background: linear-gradient(0deg, #fff2d2 0%, rgba(255, 255, 255, 0) 100%); */
 
     }
-    input {
+    input[type="text"] {
         border:unset;
         background: rgba(255, 255, 255, 0.53);
         /* box-shadow: 0px 0.3px 2px rgba(0, 0, 0, 0.25); */
