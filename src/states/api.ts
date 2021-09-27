@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getLocalMemberInfo } from 'states/local-state';
+import { RequestMiniBacktestingInput } from './interface/backtest/dtos';
 import { PushBackTestQInput } from './interface/backtest/entities';
 import {
   GetCorporationInput,
@@ -155,6 +156,9 @@ export const backtestApi = {
   POST: {
     pushBackTestQ: (body: PushBackTestQInput) => {
       return axios.post(`backtests/backtest-q`, body);
+    },
+    requestMiniBackTest: (body: RequestMiniBacktestingInput) => {
+      return axios.post(`backtests/mini-backtest`, body);
     },
   },
   PATCH: {},

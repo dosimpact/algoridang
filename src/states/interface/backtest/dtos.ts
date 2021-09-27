@@ -47,6 +47,26 @@ export interface GetBacktestWinRatioOutput extends CoreOutput {
   backtestWinRatio: BacktestWinRatio;
 }
 
+// 미니 백테스팅 DTO
+export interface RequestMiniBacktestingInput {
+  ticker: string;
+  salestrategy: 'GoldenCross';
+  setting: number[];
+  data: {
+    startTime: string; //"20190101",
+    endTime: string; //""
+  };
+}
+export interface RequestMiniBacktestingOutput extends CoreOutput {
+  message?: string;
+  code?: string;
+  res?: {
+    profit_rate: number;
+    year_avg_profit_rate: number;
+    mdd: number;
+  };
+}
+
 /**
  * Mutation
  */

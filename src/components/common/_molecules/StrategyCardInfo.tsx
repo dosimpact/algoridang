@@ -148,7 +148,7 @@ const SStrategyCardInfo = styled.section`
   }
   .right {
     width: 100%;
-    padding-left: 3rem;
+    padding-left: 1rem;
     padding-top: 1.9rem;
     .title {
       font-size: 1.3rem;
