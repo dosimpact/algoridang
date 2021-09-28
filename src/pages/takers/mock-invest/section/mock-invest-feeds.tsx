@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { toTagsString, toTickerImage } from 'utils/parse';
 import PageGuide from 'components/common/_molecules/PageGuide';
 import { IconMockInvest } from 'assets/icons';
-import { useMyStrategy } from 'states/react-query/strategy/useMyStrategy';
+import { useMyStrategy } from 'states/strategy/query/useMyStrategy';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import StrategyCardInfo from 'components/common/_molecules/StrategyCardInfo';

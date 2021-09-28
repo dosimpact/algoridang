@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Button, List, Checkbox, Icon } from 'antd-mobile';
 import TickerSearch from 'components/common/_molecules/TickerSearch';
-import { Corporation } from 'states/interface/finance/entities';
+import { Corporation } from 'states/finance/interface/entities';
 import { useRecoilState } from 'recoil';
-import { atomStrategyState } from 'states/recoil/strategy';
+import { atomStrategyState } from 'states/strategy/recoil/strategy';
 
 const CheckboxItem = Checkbox.CheckboxItem;
 

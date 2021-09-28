@@ -1,6 +1,6 @@
 import StrategyMakerList from 'components/strategy/strategy-maker-list';
 import React from 'react';
-import { useMyStrategy } from 'states/react-query/strategy/useMyStrategy';
+import { useMyStrategy } from 'states/strategy/query/useMyStrategy';
 
 const StrategyListC = () => {
   const { getMyStrategyListQuery } = useMyStrategy();

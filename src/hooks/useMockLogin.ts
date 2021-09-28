@@ -1,5 +1,5 @@
 import React from 'react';
-import useMember from 'states/react-query/useMember';
+import useMember from 'states/member/query/useMember';
 
 const useLogin = () => {
   // 사용자 정보

@@ -8,7 +8,7 @@ import {
   selectedTickerElementListJSX,
   selecteMiniBacktestResultListJSX,
   selectorInspectorFC,
-} from 'states/recoil/strategy-create';
+} from 'states/strategy/recoil/strategy-create';
 import DashBoardButton from 'components/common/_molecules/DashBoardButton';
 import { IconPlus, IconSetting, IconTesting } from 'assets/icons';
 import DashBoardDebug from 'components/common/_molecules/DashBoardDebug';

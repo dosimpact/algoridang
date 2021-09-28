@@ -2,7 +2,7 @@ import InspectorHeaderDetail from 'components/inspector/_molecules/InspectorHead
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
-import { atomBasicSetting } from 'states/recoil/strategy-create';
+import { atomBasicSetting } from 'states/strategy/recoil/strategy-create';
 import { IInspectorSettings } from './index';
 
 interface IFormBasicSetting {

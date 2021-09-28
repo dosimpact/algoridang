@@ -3,7 +3,7 @@ import { useRecoilState } from 'recoil';
 import {
   atomInspector,
   atomUniversalSettingState,
-} from 'states/recoil/strategy-create';
+} from 'states/strategy/recoil/strategy-create';
 import styled from 'styled-components';
 
 // DashBoardDebug

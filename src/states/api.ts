@@ -1,19 +1,22 @@
 import axios from 'axios';
 import { getLocalMemberInfo } from 'states/local-state';
-import { RequestMiniBacktestingInput } from './interface/backtest/dtos';
-import { PushBackTestQInput } from './interface/backtest/entities';
+import {
+  PushBackTestQInput,
+  RequestMiniBacktestingInput,
+} from './backtest/interface/dtos';
+
 import {
   GetCorporationInput,
   GetCorporationsWithTermInput,
   GetDayilStocksInput,
-} from './interface/finance/dtos';
-import { LoginMemberInfoInput } from './interface/member/dtos';
+} from './finance/interface/dtos';
+import { LoginMemberInfoInput } from './member/interface/dtos';
 import {
   CreateMyStrategyInput,
   ForkStrategyInput,
   UpdateMyStrategyByIdInput,
-} from './interface/strategy/dtos';
-import { AddUniversalInput } from './interface/trading/dtos';
+} from './strategy/interface/dtos';
+import { AddUniversalInput } from './trading/interface/dtos';
 
 // base setttings ,  interceptors
 

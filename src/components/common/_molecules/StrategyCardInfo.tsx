@@ -2,9 +2,9 @@ import React, { useMemo } from 'react';
 import styled from 'styled-components';
 import { randomDefaultThunmnail } from 'utils/default-values';
 import BadgeCAGR from 'components/common/_atoms/BadgeCAGR';
-import { MemberStrategy } from 'states/interface/strategy/entities';
 import { toTagsString, toTickerImage } from 'utils/parse';
 import RoundBadge from '../_atoms/RoundBadge';
+import { MemberStrategy } from 'states/strategy/interface/entities';
 
 /**
  * 박스형 전략탐색 카드

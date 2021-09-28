@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
-import { Corporation } from 'states/interface/finance/entities';
-import useCorporation from 'states/react-query/finance/useCorporation';
+import { Corporation } from 'states/finance/interface/entities';
+import useCorporation from 'states/finance/query/useCorporation';
 import styled from 'styled-components';
 import { debouncing } from 'utils/funcs';
 

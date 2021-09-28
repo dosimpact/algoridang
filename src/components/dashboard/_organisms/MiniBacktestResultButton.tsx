@@ -3,7 +3,7 @@ import { useRecoilValue } from 'recoil';
 import {
   atomUniversalSettingState,
   selectedUniversalMiniBacktesting,
-} from 'states/recoil/strategy-create';
+} from 'states/strategy/recoil/strategy-create';
 import styled from 'styled-components';
 
 interface IMiniBacktestResultButton {

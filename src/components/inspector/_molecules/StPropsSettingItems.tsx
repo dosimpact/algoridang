@@ -2,7 +2,7 @@ import { Button } from 'components/common/_atoms/Buttons';
 import InputListItem from 'components/common/_atoms/InputListItem';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import { SettingJSON } from 'states/interface/trading/entities';
+import { SettingJSON } from 'states/trading/interface/entities';
 
 interface IStProps {
   onSubmit?: (e: SettingJSON) => void;

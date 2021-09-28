@@ -2,7 +2,7 @@ import ChartWinRatio from 'components/data-display/ChartWinRatio';
 import { SubTitle } from 'components/common/_atoms/Typos';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import useBackTestReport from 'states/react-query/backtest/useBackTestReport';
+import useBackTestReport from 'states/backtest/query/useBackTestReport';
 import styled from 'styled-components';
 
 interface IWinRatio {

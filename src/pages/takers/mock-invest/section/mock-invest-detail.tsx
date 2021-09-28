@@ -10,7 +10,7 @@ import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import StrategyCardInfo from 'components/common/_molecules/StrategyCardInfo';
 import NavHeaderDetail from 'components/common/_molecules/NavHeaderDetail';
 import { Button } from 'components/common/_atoms/Buttons';
-import { useMyStrategyDetail } from 'states/react-query/strategy/useMyStrategyDetail';
+import { useMyStrategyDetail } from 'states/strategy/query/useMyStrategyDetail';
 import TradingPoints from 'components/report/_organisms/TradingPoints';
 
 const MockInvestDetail = () => {

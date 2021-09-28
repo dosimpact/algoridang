@@ -6,7 +6,7 @@ import StrategyDetails from 'pages/takers/strategy-search/section/strategy-detai
 import React, { useEffect, useMemo } from 'react';
 import { Route, useHistory } from 'react-router';
 import { useRecoilState } from 'recoil';
-import { atomInspector } from 'states/recoil/strategy-create';
+import { atomInspector } from 'states/strategy/recoil/strategy-create';
 import styled from 'styled-components';
 import { IInspectorSettings } from '.';
 

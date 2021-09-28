@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
-import { atomStrategyState } from 'states/recoil/strategy';
-import { CreateMyStrategyInput } from 'states/interface/strategy/dtos';
+import { atomStrategyState } from 'states/strategy/recoil/strategy';
+import { CreateMyStrategyInput } from 'states/strategy/interface/dtos';
 
 // 폼 인터페이스
 export interface IformStateBasicSetting {

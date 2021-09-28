@@ -3,7 +3,7 @@ import MockInvest from '../mock-invest/mock-investC';
 import StrategySearch from '../strategy-search/strategy-searchC';
 import TickerSearch from '../ticker-search/ticker-searchC';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import useMember from 'states/react-query/useMember';
+import useMember from 'states/member/query/useMember';
 import styled from 'styled-components';
 import {
   IconMockInvest,
@@ -13,7 +13,7 @@ import {
 } from 'assets/icons';
 import Helmet from 'react-helmet';
 import useMobileSetting from 'hooks/useMobileSetting';
-import { ErrorHandler } from 'states/recoil/error-state';
+import { ErrorHandler } from 'states/common/recoil/error-state';
 
 export const URLList = {
   tickerSearch: {

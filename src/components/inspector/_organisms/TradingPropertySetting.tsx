@@ -1,15 +1,12 @@
 import InspectorHeaderDetail from 'components/inspector/_molecules/InspectorHeaderDetail';
 import StPropsSetting from 'components/inspector/_molecules/StPropsSetting';
-import produce from 'immer';
 import React, { useMemo } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { SettingJSON } from 'states/interface/trading/entities';
 import {
   atomInspector,
-  atomUniversalSettingState,
-  selectedUniversalSetting,
   selectedUniversalSetting_R,
-} from 'states/recoil/strategy-create';
+} from 'states/strategy/recoil/strategy-create';
+import { SettingJSON } from 'states/trading/interface/entities';
 import { IInspectorSettings } from '.';
 
 interface ITradingPropertySetting extends IInspectorSettings {}

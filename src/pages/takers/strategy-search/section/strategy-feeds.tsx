@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import useStrategy from 'states/react-query/strategy/useStrategy';
+import useStrategy from 'states/strategy/query/useStrategy';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import PageGuide from 'components/common/_molecules/PageGuide';
 

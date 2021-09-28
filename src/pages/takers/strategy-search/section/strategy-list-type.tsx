@@ -4,7 +4,7 @@ import NavHeaderDetail from 'components/common/_molecules/NavHeaderDetail';
 import StrategyCardInfo from 'components/common/_molecules/StrategyCardInfo';
 import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import useStrategy from 'states/react-query/strategy/useStrategy';
+import useStrategy from 'states/strategy/query/useStrategy';
 
 // 더보기 버튼에서 온 인피니트 스크롤링 페이지
 

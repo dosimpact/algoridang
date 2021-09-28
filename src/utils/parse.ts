@@ -1,4 +1,4 @@
-import { HashList } from 'states/interface/strategy/entities';
+import { HashList } from 'states/strategy/interface/entities';
 
 export const hashListToString = (hashs: HashList[]) => {
   return hashs

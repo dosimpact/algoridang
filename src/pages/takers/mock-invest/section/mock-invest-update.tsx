@@ -9,9 +9,9 @@ import StrategyCardInfo from 'components/common/_molecules/StrategyCardInfo';
 import { useForm } from 'react-hook-form';
 import { useHistory, useParams } from 'react-router';
 import { toast } from 'react-toastify';
-import useStrategyDetail from 'states/react-query/strategy/useStrategyDetail';
+import useStrategyDetail from 'states/strategy/query/useStrategyDetail';
 import { toTagsString, toTickerImage } from 'utils/parse';
-import { useUpdateMyStrategy } from 'states/react-query/strategy/useUpdateMyStrategy';
+import { useUpdateMyStrategy } from 'states/strategy/query/useUpdateMyStrategy';
 
 interface IForkStrategyForm {
   strategy_code: string; // "52",

@@ -3,7 +3,7 @@ import StrategyCard from 'components/lagacy/StrategyCard';
 import useBackButton from 'components/lagacy/useBackButton';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import useStrategy from 'states/react-query/strategy/useStrategy';
+import useStrategy from 'states/strategy/query/useStrategy';
 import { toTagsString } from 'utils/parse';
 
 const Title: React.FC<{ title: string }> = ({ title }) => {

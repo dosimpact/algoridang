@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { SettingJSON, StrategyName } from 'states/interface/trading/entities';
+import { SettingJSON, StrategyName } from 'states/trading/interface/entities';
 import { StPropsSMA, StPropsGoldenCross } from './StPropsSettingItems';
 
 interface IStPropsSetting {

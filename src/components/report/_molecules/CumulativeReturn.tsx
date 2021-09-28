@@ -3,7 +3,7 @@ import CumulativeReturnChart, {
   ILineData,
 } from 'components/light-weight/CumulativeReturnChart';
 import React, { useMemo } from 'react';
-import useBackTestReport from 'states/react-query/backtest/useBackTestReport';
+import useBackTestReport from 'states/backtest/query/useBackTestReport';
 import styled from 'styled-components';
 import { toPercentage } from 'utils/parse';
 

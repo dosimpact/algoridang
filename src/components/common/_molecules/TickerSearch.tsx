@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
-import { Corporation } from 'states/interface/finance/entities';
-import useCorporation from 'states/react-query/finance/useCorporation';
+import { Corporation } from 'states/finance/interface/entities';
+import useCorporation from 'states/finance/query/useCorporation';
 import styled from 'styled-components';
 import { debouncing } from 'utils/funcs';
 
@@ -26,10 +26,9 @@ const TickerSearch: React.FC<ITickerSearch> = ({
   onSuccess,
   onKeyDownEnter,
 }) => {
-  const { register, handleSubmit, setValue, control } =
-    useForm<{
-      term: string;
-    }>();
+  const { register, handleSubmit, setValue, control } = useForm<{
+    term: string;
+  }>();
   const term = useWatch({ control, name: 'term' });
   const { corporations, isLoading, refetch } = useCorporation({
     term,

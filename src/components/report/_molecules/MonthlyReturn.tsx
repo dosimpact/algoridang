@@ -1,7 +1,7 @@
 import ChartMonthlyReturn from 'components/data-display/ChartMonthlyReturn';
 import { SubTitle } from 'components/common/_atoms/Typos';
 import React, { useMemo } from 'react';
-import useBackTestReport from 'states/react-query/backtest/useBackTestReport';
+import useBackTestReport from 'states/backtest/query/useBackTestReport';
 import styled from 'styled-components';
 import { toPercentage } from 'utils/parse';
 

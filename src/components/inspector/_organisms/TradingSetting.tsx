@@ -6,13 +6,13 @@ import { useRecoilState } from 'recoil';
 import {
   atomInspector,
   selectedUniversalSetting,
-} from 'states/recoil/strategy-create';
+} from 'states/strategy/recoil/strategy-create';
 import styled from 'styled-components';
 import { IInspectorSettings } from '.';
 import TechnicalSearch from 'components/common/_atoms/TechnicalSearch';
-import { useTechnicals } from 'states/react-query/trading/useTechnicals';
-import { BaseTradingStrategy } from 'states/interface/trading/entities';
-import { useRequestMiniBacktesting } from 'states/react-query/trading/useRequestMiniBacktesting';
+import { useTechnicals } from 'states/trading/query/useTechnicals';
+import { useRequestMiniBacktesting } from 'states/trading/query/useRequestMiniBacktesting';
+import { BaseTradingStrategy } from 'states/trading/interface/entities';
 
 interface ITechnicalStrategyList {
   onSelect?: (e: BaseTradingStrategy) => void;

@@ -4,7 +4,7 @@ import { Link, Redirect, Route, Switch } from 'react-router-dom';
 import StrategyCreateTemplate from '../strategy-create/strategy-create-template';
 import StrategyMyC from '../strategy-my/strategy-myC';
 import StrategyPublicC from '../strategy-public/strategy-publicC';
-import { ErrorHandler } from 'states/recoil/error-state';
+import { ErrorHandler } from 'states/common/recoil/error-state';
 import TickerSearch from '../ticker-search/ticker-searchC';
 import {
   IconNavMyStrategyNormal,

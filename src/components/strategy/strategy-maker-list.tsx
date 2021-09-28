@@ -2,8 +2,8 @@ import React from 'react';
 import StrategyCardImg from 'components/strategy/StrategyCardImg';
 import styled from 'styled-components';
 import { useHistory } from 'react-router-dom';
-import { MemberStrategy } from 'states/interface/strategy/entities';
 import { hashListToString } from 'utils/parse';
+import { MemberStrategy } from 'states/strategy/interface/entities';
 // 1. get my Strategies
 // 2. view list
 // - grid layout

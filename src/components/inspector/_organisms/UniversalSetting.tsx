@@ -5,11 +5,11 @@ import WingBlank from 'components/common/_atoms/WingBlank';
 import InspectorHeaderDetail from 'components/inspector/_molecules/InspectorHeaderDetail';
 import React, { useMemo } from 'react';
 import { useRecoilState } from 'recoil';
-import { Corporation } from 'states/interface/finance/entities';
+import { Corporation } from 'states/finance/interface/entities';
 import {
   atomInspector,
   atomUniversalSettingState,
-} from 'states/recoil/strategy-create';
+} from 'states/strategy/recoil/strategy-create';
 import styled from 'styled-components';
 import { RemoveMultipleElements } from 'utils/parse';
 import { IInspectorSettings } from '.';

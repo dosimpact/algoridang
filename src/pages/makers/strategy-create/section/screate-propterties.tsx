@@ -2,13 +2,13 @@ import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import { Button, List, Radio } from 'antd-mobile';
-import useTrading from 'states/react-query/useTrading';
-import { StrategyName, StrategyValue } from 'states/interface/trading/entities';
+import useTrading from 'states/trading/query/useTrading';
 import { useRecoilState } from 'recoil';
-import { atomStrategyState } from 'states/recoil/strategy';
-import { AddUniversalInput } from 'states/interface/trading/dtos';
-import useCreateStrategy from 'states/react-query/strategy/useCreateStrategy';
-import useBackTestMutation from 'states/react-query/backtest/useBackTestMutation';
+import { atomStrategyState } from 'states/strategy/recoil/strategy';
+import { AddUniversalInput } from 'states/trading/interface/dtos';
+import useCreateStrategy from 'states/strategy/query/useCreateStrategy';
+import useBackTestMutation from 'states/backtest/query/useBackTestMutation';
+import { StrategyName, StrategyValue } from 'states/trading/interface/entities';
 
 const RadioItem = Radio.RadioItem;
 

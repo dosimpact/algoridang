@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRecoilState } from 'recoil';
-import { atomInspector } from 'states/recoil/strategy-create';
+import { atomInspector } from 'states/strategy/recoil/strategy-create';
 import styled from 'styled-components';
 
 export interface ISelectedTickerButton {

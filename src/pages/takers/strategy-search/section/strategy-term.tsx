@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import useStrategy from 'states/react-query/strategy/useStrategy';
+import useStrategy from 'states/strategy/query/useStrategy';
 import { toTagsString, toTickerImage } from 'utils/parse';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import PageGuide from 'components/common/_molecules/PageGuide';
@@ -10,7 +10,7 @@ import SectionTitle from 'components/common/_molecules/SectionTitle';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import StrategyCardInfo from 'components/common/_molecules/StrategyCardInfo';
 import StrategySearchInput from 'components/common/_organisms/StrategySearchInput';
-import useSearchStrategy from 'states/react-query/strategy/useSearchStrategy';
+import useSearchStrategy from 'states/strategy/query/useSearchStrategy';
 
 // todo:refactor CAGR 부분 DB Relation eager 처리 및 undefined 핸들링
 const StrategyTerm = () => {

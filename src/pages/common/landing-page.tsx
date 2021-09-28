@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, WhiteSpace, WingBlank } from 'antd-mobile';
-import useMember from 'states/react-query/useMember';
+import useMember from 'states/member/query/useMember';
 import Tour from 'reactour';
 import useLogin from 'hooks/useMockLogin';
 
