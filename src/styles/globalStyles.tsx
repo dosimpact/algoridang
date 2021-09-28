@@ -28,23 +28,9 @@ export default createGlobalStyle`
         /* background: linear-gradient(0deg, #fff2d2 0%, rgba(255, 255, 255, 0) 100%); */
 
     }
-    input[type="text"] {
-        border:unset;
-        background: rgba(255, 255, 255, 0.53);
-        /* box-shadow: 0px 0.3px 2px rgba(0, 0, 0, 0.25); */
-        border-radius: 9px;
-        width: 100%;
-        height: 4.6rem;
-        border: ${(props) => props.theme.Border};
-        padding: 1.5rem 2.8rem;
-
-        background: rgba(255, 255, 255, 0.53);
-        box-shadow: 0px 0.3px 2px rgba(0, 0, 0, 0.25);
-        border-radius: 9px;
-        font-size: 1.3rem;
-    }
-    input::placeholder {
-            color: rgba(122, 122, 122, 0.67);
+    /* Transition */
+    .select:hover::after {
+        color: #f39c12;
     }
     
     .flexRow{
@@ -88,5 +74,82 @@ export default createGlobalStyle`
         width: 90%;
         display: block;
     }
+    /* input css reset */
+    input[type="text"] {
+        border:unset;
+        border-radius: 0.9rem;
+        /* border: ${(props) => props.theme.Border}; */
+        width: 100%;
+        height: 4.6rem;
+        font-size: 1.3rem;
+
+        padding: 1.5rem 2.8rem;
+
+        background: rgba(255, 255, 255, 0.53);
+        /* box-shadow: 0px 0.3px 2px rgba(0, 0, 0, 0.25); */
+        border-radius: 9px;
+    }
+    input::placeholder {
+            color: rgba(122, 122, 122, 0.67);
+    }
+    
+    input[type="date"] {
+        display:block;
+        position:relative;
+        padding: 0.2rem 2.8rem;
+        
+        background:
+            white
+            url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='22' viewBox='0 0 20 22'%3E%3Cg fill='none' fill-rule='evenodd' stroke='%23688EBB' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' transform='translate(1 1)'%3E%3Crect width='18' height='18' y='2' rx='2'/%3E%3Cpath d='M13 0L13 4M5 0L5 4M0 8L18 8'/%3E%3C/g%3E%3C/svg%3E")
+            right 1rem
+            center
+            no-repeat;
+    
+        cursor:pointer;
+        border:unset;
+        border-radius: 9px;
+        border: ${(props) => props.theme.Border};
+
+        width: 100%;
+        height: 4.6rem;
+        font-size: 1.3rem;
+    }
+    input[type="date"]:focus {
+        outline:none;
+        border-color:#3acfff;
+        box-shadow:0 0 0 0.25rem rgba(0, 120, 250, 0.1);
+    }
+    
+    ::-webkit-datetime-edit {}
+    ::-webkit-datetime-edit-fields-wrapper {}
+    ::-webkit-datetime-edit-month-field:hover,
+    ::-webkit-datetime-edit-day-field:hover,
+    ::-webkit-datetime-edit-year-field:hover {
+        background:rgba(0, 120, 250, 0.1);
+    }
+    ::-webkit-datetime-edit-text {
+        opacity:0;
+    }
+    ::-webkit-clear-button,
+    ::-webkit-inner-spin-button {
+        display:none;
+    }
+    ::-webkit-calendar-picker-indicator {
+        position:absolute;
+        /* width:2.5rem; */
+        height:100%;
+        top:0;
+        right:0;
+        bottom:0;
+        opacity:0;
+        cursor:pointer;
+        
+        color:rgba(0, 120, 250, 1);
+        background:rgba(0, 120, 250, 1);
+    
+    }
+
+    input[type="date"]:hover::-webkit-calendar-picker-indicator { opacity:0.05; }
+    input[type="date"]:hover::-webkit-calendar-picker-indicator:hover { opacity:0.15; }
 
 `;

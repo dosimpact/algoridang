@@ -6,12 +6,12 @@ import NavHeaderDetail from 'components/common/_molecules/NavHeaderDetail';
 import StrategyCardInfo from 'components/common/_molecules/StrategyCardInfo';
 import { useHistory, useParams } from 'react-router-dom';
 import useStrategyDetail from 'states/strategy/query/useStrategyDetail';
-import { toTagsString, toTickerImage } from 'utils/parse';
 import { Button } from 'components/common/_atoms/Buttons';
 import { useForm } from 'react-hook-form';
 import { useForkStrategy } from 'states/strategy/query/useForkStrategy';
 import InputListItem from 'components/common/_atoms/InputListItem';
 import { toast } from 'react-toastify';
+import styled from 'styled-components';
 
 interface IForkStrategyForm {
   strategy_code: string; // "52",
@@ -59,7 +59,7 @@ const MockInvestCreate = () => {
   });
 
   return (
-    <>
+    <SMockInvestCreate>
       <NavHeaderDetail
         linkTo={
           process.env.PUBLIC_URL +
@@ -151,8 +151,14 @@ const MockInvestCreate = () => {
           전략 생성 및 백테스팅 시작
         </Button>
       </WingBlank>
-    </>
+    </SMockInvestCreate>
   );
 };
 
 export default MockInvestCreate;
+
+const SMockInvestCreate = styled.section`
+  input[type='text'] {
+    all: unset;
+  }
+`;

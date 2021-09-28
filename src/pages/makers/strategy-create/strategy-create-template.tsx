@@ -98,7 +98,6 @@ const SStrategyCreateModule = styled.section`
     grid-template-columns: minmax(70rem, 1fr) 40rem;
     min-height: 100vh;
   }
-
   .dashBoard {
     background-color: white;
     min-height: 80vh;
@@ -120,17 +119,9 @@ const SStrategyCreateModule = styled.section`
       border: 1px solid red;
       min-height: 80vh;
     }
-    /* .dashBoardCol3 {
-      background-color: rgb(227, 255, 219);
-      min-height: 80vh;
-    }
-    .dashBoardCol4 {
-      background-color: rgb(219, 236, 255);
-      min-height: 80vh;
-    } */
   }
   .inspector {
-    background-color: azure;
+    background-color: ${(props) => props.theme.ColorGrayL2};
   }
 `;
 

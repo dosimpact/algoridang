@@ -1,4 +1,5 @@
 import { IconInfo } from 'assets/icons';
+import WingBlank from 'components/common/_atoms/WingBlank';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -42,14 +43,10 @@ const SInspectorHeaderDetail = styled.header`
     cursor: pointer;
   }
   .col2 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 1.8rem;
     line-height: 1.8rem;
-    text-align: center;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 2rem;
   }
   .col3 {
     display: flex;

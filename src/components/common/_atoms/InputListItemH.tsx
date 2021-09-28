@@ -5,31 +5,29 @@ import styled from 'styled-components';
  * 입력 아이템에 대한 상태
  * - 애러 표시
  */
-interface IInputListItem {
+interface IInputListItemH {
   error?: boolean;
   errorMessage?: string;
 }
-const InputListItem: React.FC<IInputListItem> = ({
+const InputListItemH: React.FC<IInputListItemH> = ({
   children,
   error,
   errorMessage,
 }) => {
   return (
-    <SInputListItem error={error}>
+    <SInputListItemH error={error}>
       <div className="inputItem">{children}</div>
       <div className="errorMessage">{errorMessage}</div>
-    </SInputListItem>
+    </SInputListItemH>
   );
 };
 
-export default InputListItem;
+export default InputListItemH;
 
-const SInputListItem = styled.div<IInputListItem>`
+const SInputListItemH = styled.div<IInputListItemH>`
   .inputItem {
-    height: 4rem;
-
     display: grid;
-    grid-template-columns: 8.5rem 1fr;
+    grid-template-columns: 1fr;
     align-items: center;
 
     ${(props) =>
@@ -42,6 +40,4 @@ const SInputListItem = styled.div<IInputListItem>`
     font-size: 1.3rem;
     height: 1.5rem;
   }
-  padding-left: 1.5rem;
-  height: 5.5rem;
 `;
