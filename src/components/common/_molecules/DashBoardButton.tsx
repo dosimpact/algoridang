@@ -22,7 +22,7 @@ const DashBoardButton: React.FC<IDashBoardButton> = ({
       }}
     >
       <Icon></Icon>
-      <div>{text}</div>
+      <div className="text">{text}</div>
     </SDashBoardButton>
   );
 };
@@ -37,4 +37,16 @@ const SDashBoardButton = styled.div`
 
   cursor: pointer;
   padding: 1rem;
+
+  background-color: ${(props) => props.theme.ColorMainLightYellow};
+  min-height: 6rem;
+  width: 18rem;
+  border-radius: 1rem;
+  .text {
+    font-size: 1.8rem;
+  }
+  svg {
+    width: 3rem;
+    height: 3rem;
+  }
 `;

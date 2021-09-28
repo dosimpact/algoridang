@@ -1,11 +1,11 @@
 import { atom } from 'recoil';
 
-// 애러 state를 가지고 있는 atom
 interface ICorporation {
   ticker: string;
   corp_name: string;
 }
 
+// 현재 고른 종목 (글로벌)
 export const atomCorporationState = atom<ICorporation>({
   key: 'CorporationStatus',
   default: {

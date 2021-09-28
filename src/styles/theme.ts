@@ -43,6 +43,7 @@ const Theme = {
   ColorMain: 'gray',
   ColorDark: '#263238',
   ColorWhite: '#ffffff',
+  ColorGrayL2: '#F6F6F6',
   ColorGrayL1: '#ECECEC',
   ColorGray: '#546E7A',
   ColorGrayD1: '#87847D',

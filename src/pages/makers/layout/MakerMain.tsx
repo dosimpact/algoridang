@@ -75,6 +75,7 @@ const SNavigationContainer = styled.section`
   display: grid;
   grid-template-rows: 22.5rem calc(100vh - 50rem) 22.5rem;
   grid-template-columns: 8rem;
+  background-color: ${(props) => props.theme.ColorGrayL2};
 
   header {
     margin-top: 5rem;
@@ -100,11 +101,10 @@ const SNavigationContainer = styled.section`
 
     font-size: 1.4rem;
     text-align: center;
-    background-color: ${(props) => props.theme.ColorWhite};
 
+    background-color: ${(props) => props.theme.ColorGrayL2};
     cursor: pointer;
     transition: all 0.2s ease-in-out;
-    border-radius: 1rem;
     svg {
       width: 3rem;
       height: 3rem;
@@ -123,7 +123,7 @@ const SNavigationContainer = styled.section`
     }
   }
   .navItem:hover {
-    background-color: ${(props) => props.theme.ColorGrayL1};
+    background-color: ${(props) => props.theme.ColorWhite};
   }
 `;
 

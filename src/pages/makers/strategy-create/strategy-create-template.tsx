@@ -10,8 +10,10 @@ import {
   selectorInspectorFC,
 } from 'states/strategy/recoil/strategy-create';
 import DashBoardButton from 'components/common/_molecules/DashBoardButton';
-import { IconPlus, IconSetting, IconTesting } from 'assets/icons';
+import { IconPlusNormal, IconSettingNormal, IconTesting } from 'assets/icons';
 import DashBoardDebug from 'components/common/_molecules/DashBoardDebug';
+import TickerPrice from 'components/common/_organisms/ticker-price';
+import WingBlank from 'components/common/_atoms/WingBlank';
 
 // 전략 생성 모듈
 // DashBoard - Inspector
@@ -21,10 +23,8 @@ interface IStrategyCreateModule {
   // 현재 인스팩터 앨리먼트
   currentInspectorElement: React.ReactElement | null; //JSX.Element;
   dashBoardCol1: {
-    // 전략 셋팅 버튼 앨리먼트
-    baseSettingBtnElement: JSX.Element;
-    // 종목 셋팅 버튼 앨리먼트
-    universalSettingBtnElement: JSX.Element;
+    // 전략 셋팅, 종목 셋팅, 백테스트 셋팅
+    baseSettingBtnElements: JSX.Element[];
     // 선택된 종목 리스트 표시 앨리먼트
     selectedTickerElementList: JSX.Element[];
   };
@@ -45,11 +45,7 @@ const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
   dashBoardCol3,
   dashBoardCol4,
 }) => {
-  const {
-    baseSettingBtnElement,
-    universalSettingBtnElement,
-    selectedTickerElementList,
-  } = dashBoardCol1;
+  const { baseSettingBtnElements, selectedTickerElementList } = dashBoardCol1;
 
   const { portBacktestBtnElement } = dashBoardCol4;
 
@@ -62,21 +58,29 @@ const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
       <div className="wrapper">
         <article className="dashBoard">
           <section className="dashBoardCol1">
-            <DashBoardDebug />
-            <div className="slot">{baseSettingBtnElement}</div>
-            <div className="slot">{universalSettingBtnElement}</div>
-            <div className="slot">{selectedTickerElementList}</div>
+            <WingBlank>
+              <div className="baseSettingBtnSlot">
+                {baseSettingBtnElements}
+                {<DashBoardDebug />}
+              </div>
+            </WingBlank>
+            <div className="charSlot">
+              <TickerPrice />
+            </div>
+            {/* <div className="slot">{baseSettingBtnElement}</div> */}
+            {/* <div className="slot">{universalSettingBtnElement}</div> */}
+            {/* <div className="slot">{selectedTickerElementList}</div> */}
           </section>
           <section className="dashBoardCol2">
             <ul className="slot">{selectedMonoTickerSettingButtonList}</ul>
           </section>
-          <section className="dashBoardCol3">
+          {/* <section className="dashBoardCol3">
             <ul>{dashBoardCol3 && dashBoardCol3}</ul>
-          </section>
-          <section className="dashBoardCol4">
+          </section> */}
+          {/* <section className="dashBoardCol4">
             <div className="slot">{portBacktestBtnElement}</div>
             <div className="slot">포트 백테스팅 결과</div>
-          </section>
+          </section> */}
         </article>
         <article className="inspector">
           {currentInspectorElement && currentInspectorElement}
@@ -88,6 +92,7 @@ const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
 
 const SStrategyCreateModule = styled.section`
   min-height: 100vh;
+
   .wrapper {
     display: grid;
     grid-template-columns: minmax(70rem, 1fr) 40rem;
@@ -95,28 +100,34 @@ const SStrategyCreateModule = styled.section`
   }
 
   .dashBoard {
-    background-color: aliceblue;
+    background-color: white;
     min-height: 80vh;
-    padding: 1rem;
+    padding: 2rem;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-gap: 1rem;
+    grid-template-columns: 2fr 1fr;
+    grid-gap: 2rem;
     .dashBoardCol1 {
-      background-color: rgb(255, 238, 219);
       min-height: 80vh;
+      .baseSettingBtnSlot {
+        display: flex;
+        flex-flow: row nowrap;
+        & > div {
+          margin-right: 1rem;
+        }
+      }
     }
     .dashBoardCol2 {
-      background-color: rgb(255, 219, 227);
+      border: 1px solid red;
       min-height: 80vh;
     }
-    .dashBoardCol3 {
+    /* .dashBoardCol3 {
       background-color: rgb(227, 255, 219);
       min-height: 80vh;
     }
     .dashBoardCol4 {
       background-color: rgb(219, 236, 255);
       min-height: 80vh;
-    }
+    } */
   }
   .inspector {
     background-color: azure;
@@ -163,24 +174,29 @@ const StrategyCreateTemplate = () => {
       currentInspectorElement={<CurrentInspector />}
       // currentInspectorElement={CurrentInspector({})}
       dashBoardCol1={{
-        baseSettingBtnElement: (
+        baseSettingBtnElements: [
           <DashBoardButton
-            Icon={IconSetting}
-            text="기본 설정"
+            Icon={IconSettingNormal}
+            text="기본설정"
             onClick={() => {
               handleChangeInspector('basicSetting');
             }}
-          />
-        ),
-        universalSettingBtnElement: (
+          />,
           <DashBoardButton
-            Icon={IconPlus}
-            text="종목 관리"
+            Icon={IconPlusNormal}
+            text="종목관리"
             onClick={() => {
               handleChangeInspector('universalSetting');
             }}
-          />
-        ),
+          />,
+          <DashBoardButton
+            Icon={IconPlusNormal}
+            text="백테스트"
+            onClick={() => {
+              handleChangeInspector('backTestingSetting');
+            }}
+          />,
+        ],
         selectedTickerElementList: selectedTickerElementList,
       }}
       selectedMonoTickerSettingButtonList={selectedMonoTickerSettingButtonList}
