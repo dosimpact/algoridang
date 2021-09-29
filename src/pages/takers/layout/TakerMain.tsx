@@ -188,19 +188,21 @@ const SBottomGradient = styled.div`
   }
 `;
 
-const SBottomNavigation = styled.section`
+const SBottomNavigation = styled.section<{ isDown?: boolean }>`
   position: fixed;
   bottom: 0rem;
   width: 100%;
-  height: 7.8rem;
+  height: 5.6rem;
   background-color: ${(props) => props.theme.ColorMainDarkGray};
-  border-top-left-radius: 1.5rem;
-  border-top-right-radius: 1.5rem;
+  /* border-top-left-radius: 1.5rem; */
+  /* border-top-right-radius: 1.5rem; */
   z-index: 10;
+  ${(props) => (props.isDown ? `transform: translate(0, 5.6rem);` : '')}
   .navList {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     height: 100%;
+    padding: 0.5rem;
     .navItemLink {
       height: 100%;
     }
