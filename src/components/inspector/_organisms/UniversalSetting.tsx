@@ -364,7 +364,7 @@ const SUniversalSetting = styled.section`
     }
   }
 `;
-const StabItem = styled.div<{ selected?: boolean }>`
+export const StabItem = styled.div<{ selected?: boolean }>`
   min-height: 6rem;
   background-color: ${(props) =>
     props.selected ? props.theme.ColorMainYellow : props.theme.ColorWhite};

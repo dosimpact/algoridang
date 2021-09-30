@@ -1,3 +1,5 @@
+import { Button } from 'components/common/_atoms/Buttons';
+import WideLine from 'components/common/_atoms/WideLine';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import InspectorHeaderDetail from 'components/inspector/_molecules/InspectorHeaderDetail';
 import produce from 'immer';
@@ -5,18 +7,48 @@ import MockInvestReport from 'pages/takers/mock-invest/section/mock-invest-repor
 import StrategyDetails from 'pages/takers/strategy-search/section/strategy-details';
 import React, { useEffect, useMemo } from 'react';
 import { Route, useHistory } from 'react-router';
+import { toast } from 'react-toastify';
 import { useRecoilState } from 'recoil';
 import { atomInspector } from 'states/strategy/recoil/strategy-create';
 import styled from 'styled-components';
 import { IInspectorSettings } from '.';
+import { StabItem } from './UniversalSetting';
 
 const PortBacktestTabStart = () => {
+  const handleBacktestStart = () => {
+    toast.info('백테스트 시작 ✨', {
+      position: 'bottom-right',
+    });
+  };
+  const handleCreateStrategy = () => {
+    toast.success('전략 생성 완료. 나의 전략에서 확인해보세요. ✨', {
+      position: 'bottom-right',
+    });
+  };
+
   return (
-    <div>
-      <div> PortBacktestTabStart </div>
-    </div>
+    <SPortBacktestTabStart>
+      <WingBlank>
+        <Button onClick={handleBacktestStart} className="btn" type="info">
+          백테스트 시작
+        </Button>
+        <Button onClick={handleCreateStrategy} className="btn" type="success">
+          전략 생성 완료
+        </Button>
+      </WingBlank>
+    </SPortBacktestTabStart>
   );
 };
+
+const SPortBacktestTabStart = styled.div`
+  margin: 5rem 0rem;
+  .btn {
+    height: 5rem;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+  }
+`;
+
 const PortBacktestTabDetail = () => {
   const history = useHistory();
   useEffect(() => {
@@ -28,7 +60,6 @@ const PortBacktestTabDetail = () => {
 
   return (
     <div>
-      <div>PortBacktestTabDetail</div>
       <Route
         path={process.env.PUBLIC_URL + '/makers/strategy-create/details/:id'}
         component={StrategyDetails}
@@ -47,7 +78,6 @@ const PortBacktestTabReport = () => {
 
   return (
     <div>
-      <div>PortBacktestTabReport</div>
       <Route
         path={process.env.PUBLIC_URL + '/makers/strategy-create/report/:id'}
         component={MockInvestReport}
@@ -80,20 +110,21 @@ const BackTestingSetting: React.FC<IBackTestingSetting> = ({ headerTitle }) => {
 
   return (
     <SBackTestingSetting>
-      <InspectorHeaderDetail
-        headerTitle={headerTitle || 'BackTestingSetting'}
-      />
-      <article className="tabContainer">
-        <div onClick={() => handleTabIdx(0)} className="tabItem">
-          백테스팅
-        </div>
-        <div onClick={() => handleTabIdx(1)} className="tabItem">
-          상세결과
-        </div>
-        <div onClick={() => handleTabIdx(2)} className="tabItem">
-          리포트
-        </div>
-      </article>
+      <InspectorHeaderDetail headerTitle={headerTitle || '백테스팅'} />
+      <WingBlank>
+        <WideLine style={{ margin: '0 0 1.3rem 0' }} />
+        <article className="tabContainer">
+          <StabItem selected={tab === 0} onClick={() => handleTabIdx(0)}>
+            백테스팅
+          </StabItem>
+          <StabItem selected={tab === 1} onClick={() => handleTabIdx(1)}>
+            상세결과
+          </StabItem>
+          <StabItem selected={tab === 2} onClick={() => handleTabIdx(2)}>
+            리포트
+          </StabItem>
+        </article>
+      </WingBlank>
       {tab === 0 && (
         <>
           <PortBacktestTabStart />
@@ -119,12 +150,14 @@ const SBackTestingSetting = styled.section`
   .tabContainer {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-gap: 1rem;
     cursor: pointer;
-    .tabItem {
-      min-height: 4rem;
-      background-color: bisque;
-      text-align: center;
+    & div:first-child {
+      border-top-left-radius: 0.6rem;
+      border-bottom-left-radius: 0.6rem;
+    }
+    & div:last-child {
+      border-top-right-radius: 0.6rem;
+      border-bottom-right-radius: 0.6rem;
     }
   }
 `;
