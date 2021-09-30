@@ -14,6 +14,7 @@ import { IconPlusNormal, IconSettingNormal, IconTesting } from 'assets/icons';
 import DashBoardDebug from 'components/common/_molecules/DashBoardDebug';
 import TickerPrice from 'components/common/_organisms/ticker-price';
 import WingBlank from 'components/common/_atoms/WingBlank';
+import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 
 // 전략 생성 모듈
 // DashBoard - Inspector
@@ -71,9 +72,15 @@ const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
             {/* <div className="slot">{universalSettingBtnElement}</div> */}
             {/* <div className="slot">{selectedTickerElementList}</div> */}
           </section>
-          <section className="dashBoardCol2">
-            <ul className="slot">{selectedMonoTickerSettingButtonList}</ul>
+          <section>
+            <WhiteSpace />
+            <div style={{ textAlign: 'start' }}>관심 종목 리스트</div>
+            <WhiteSpace />
+            <article className="dashBoardCol2">
+              <ul className="slot">{selectedMonoTickerSettingButtonList}</ul>
+            </article>
           </section>
+
           {/* <section className="dashBoardCol3">
             <ul>{dashBoardCol3 && dashBoardCol3}</ul>
           </section> */}
@@ -116,8 +123,9 @@ const SStrategyCreateModule = styled.section`
       }
     }
     .dashBoardCol2 {
-      border: 1px solid red;
-      min-height: 80vh;
+      /* border: 1px solid red; */
+      height: 95vh;
+      overflow-y: scroll;
     }
   }
   .inspector {
@@ -138,9 +146,9 @@ const StrategyCreateTemplate = () => {
   const CurrentInspector = useRecoilValue(selectorInspectorFC);
 
   // Selector: 현재 선택된 종목 - JSX.Element 리스트를 선택
-  const selectedTickerElementList = useRecoilValue(
-    selectedTickerElementListJSX,
-  );
+  // const selectedTickerElementList = useRecoilValue(
+  //   selectedTickerElementListJSX,
+  // );
 
   // Selector : 선택된 단일 종목 매매전략 셋팅 버튼 , JSX 리스트 리턴
   const selectedMonoTickerSettingButtonList = useRecoilValue(

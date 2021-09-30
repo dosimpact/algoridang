@@ -1,3 +1,5 @@
+import WideLine from 'components/common/_atoms/WideLine';
+import WingBlank from 'components/common/_atoms/WingBlank';
 import InspectorHeaderDetail from 'components/inspector/_molecules/InspectorHeaderDetail';
 import StPropsSetting from 'components/inspector/_molecules/StPropsSetting';
 import React, { useMemo } from 'react';
@@ -10,7 +12,11 @@ import { SettingJSON } from 'states/trading/interface/entities';
 import { IInspectorSettings } from '.';
 
 interface ITradingPropertySetting extends IInspectorSettings {}
-
+/**
+ * 인스팩터 - 매매전략 상세설정(TradingPropertySetting)
+ * @param {ITradingPropertySetting} ITradingPropertySetting
+ * @returns {JSX.Element} TradingPropertySetting
+ */
 const TradingPropertySetting: React.FC<ITradingPropertySetting> = ({
   headerTitle,
 }) => {
@@ -65,27 +71,30 @@ const TradingPropertySetting: React.FC<ITradingPropertySetting> = ({
   return (
     <div>
       <InspectorHeaderDetail
-        headerTitle={headerTitle || 'TradingPropertySetting'}
+        headerTitle={headerTitle || '매매 전략 상세설정'}
       />
+      <WideLine style={{ margin: '0 0 1.3rem 0' }} />
+      <WingBlank>
+        {!currentUniversalSetting?.selectedTechnical && (
+          <div>매매전략을 설정해주세요</div>
+        )}
 
-      {!currentUniversalSetting?.selectedTechnical && (
-        <div>매매전략을 설정해주세요</div>
-      )}
-
-      {currentUniversalSetting?.selectedTechnical && setting_json && (
-        <>
-          <div>매매 전략 상세 설정</div>
-          <div>
-            <StPropsSetting
-              trading_strategy_name={
-                currentUniversalSetting?.selectedTechnical.trading_strategy_name
-              }
-              onSubmit={handleSubmit}
-              setting_json={setting_json}
-            />
-          </div>
-        </>
-      )}
+        {currentUniversalSetting?.selectedTechnical && setting_json && (
+          <>
+            <div>매매 전략 상세 설정</div>
+            <div>
+              <StPropsSetting
+                trading_strategy_name={
+                  currentUniversalSetting?.selectedTechnical
+                    .trading_strategy_name
+                }
+                onSubmit={handleSubmit}
+                setting_json={setting_json}
+              />
+            </div>
+          </>
+        )}
+      </WingBlank>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import { IconArrowRight } from 'assets/icons';
 import produce from 'immer';
 import React, { useMemo } from 'react';
 import { useRecoilState } from 'recoil';
@@ -52,14 +53,18 @@ const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
 
   return (
     <SMonoTickerSettingButton>
-      <div onClick={handleClickTicker}>{title}</div>
-      <div>{' > '}</div>
-      <div onClick={handleClickTradingSetting}>
+      <div className="settingListItem" onClick={handleClickTicker}>
+        {title}
+      </div>
+      <IconArrowRight />
+      <div className="settingListItem" onClick={handleClickTradingSetting}>
         {currentUniversal &&
         currentUniversal.selectedTechnical?.trading_strategy_name
           ? `${currentUniversal.selectedTechnical?.trading_strategy_name}`
           : '매매전략선택'}
       </div>
+      <IconArrowRight />
+      <div className="settingListItem">미니 백테스팅</div>
     </SMonoTickerSettingButton>
   );
 };
@@ -68,12 +73,24 @@ export default MonoTickerSettingButton;
 
 const SMonoTickerSettingButton = styled.section`
   display: grid;
-  grid-template-columns: 1fr 0.3fr 1fr;
-  border: 1px solid black;
+  grid-template-columns: 1fr 3rem 1fr 3rem 1fr;
+  justify-content: center;
+  align-content: center;
+
+  border: 1px solid ${(props) => props.theme.ColorMainLightGray};
   cursor: pointer;
-  min-height: 5rem;
+  height: 8rem;
 
   :hover {
-    border: 1px solid red;
+    border: 1px solid ${(props) => props.theme.ColorMainLightBlue};
+  }
+  svg {
+    fill: ${(props) => props.theme.ColorMainLightGray};
+  }
+  .settingListItem {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
   }
 `;

@@ -78,6 +78,25 @@ export default createGlobalStyle`
         width: 90%;
         display: block;
     }
+    /* sroll */
+      /* width */
+    ::-webkit-scrollbar {
+        width: 0.5rem;
+    }
+    /* Track */
+    ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 0.5rem;
+    }
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #aaa;
+        border-radius: 0.5rem;
+    }
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: #aaa;
+    }
     /* input[type=checkbox] */
     /* input[type="checkbox"]{
         display:none;

@@ -202,7 +202,7 @@ const TradingSetting: React.FC<ITradingSetting> = ({ headerTitle }) => {
 
   return (
     <STradingSetting>
-      <InspectorHeaderDetail headerTitle={headerTitle || '매매전략 설정'} />
+      <InspectorHeaderDetail headerTitle={headerTitle || '매매 전략 설정'} />
       <WingBlank>
         <WideLine style={{ margin: '0 0 1.3rem 0' }} />
         <article className="tabContainer">
