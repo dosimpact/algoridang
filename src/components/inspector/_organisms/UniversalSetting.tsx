@@ -157,39 +157,38 @@ const UniversalSettingTabQuantSearch = () => {
   const [modalIsOpen, setModalIsOpen] = React.useState(false);
 
   return (
-    <>
-      <div>UniversalSettingTabQuantSearch</div>
-
-      <div>----</div>
-      <div>
-        <button
+    <SUniversalSettingTabQuantSearch>
+      <WhiteSpace style={{ marginTop: '1rem' }} />
+      <div className="filterButtonList">
+        <Button
+          type="info"
           onClick={() => {
             setModalIsOpen(true);
           }}
         >
           필터 추가
-        </button>
-        <button>종목 추출</button>
+        </Button>
+        <Button type="success">종목 추출</Button>
       </div>
-      <div>종목 추가 하기</div>
-      <ul>
-        <li>
+      <WhiteSpace style={{ marginTop: '1rem' }} />
+      <FilterList>
+        <FilterListItem>
           <div className="title">거래량 ( 단위: )</div>
-          <div style={{ display: 'flex' }}>
+          <div className="fields">
             <input type="text" name="" id="" placeholder="0" />
-            <span>~</span>
+            <span className="tail">~</span>
             <input type="text" name="" id="" placeholder="100" />
           </div>
-        </li>
-        <li>
+        </FilterListItem>
+        <FilterListItem>
           <div className="title">ROE ( 단위: )</div>
-          <div style={{ display: 'flex' }}>
+          <div className="fields">
             <input type="text" name="" id="" placeholder="0" />
-            <span>~</span>
+            <span className="tail">~</span>
             <input type="text" name="" id="" placeholder="100" />
           </div>
-        </li>
-      </ul>
+        </FilterListItem>
+      </FilterList>
       <Modal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)}>
         <QuantFilter />
         <button
@@ -200,9 +199,33 @@ const UniversalSettingTabQuantSearch = () => {
           close
         </button>
       </Modal>
-    </>
+    </SUniversalSettingTabQuantSearch>
   );
 };
+
+const SUniversalSettingTabQuantSearch = styled.section`
+  .filterButtonList {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1rem;
+  }
+`;
+
+const FilterList = styled.ul``;
+const FilterListItem = styled.li`
+  margin-bottom: 2rem;
+  .title {
+    margin-bottom: 1rem;
+  }
+  .fields {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    .tail {
+      margin: 0rem 1rem;
+    }
+  }
+`;
 
 const QuantFilter = () => {
   return (
@@ -257,6 +280,7 @@ const SQuantFilter = styled.section`
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 1rem;
   min-height: 80%;
+  z-index: 99999;
   .col1 {
     background-color: aliceblue;
   }

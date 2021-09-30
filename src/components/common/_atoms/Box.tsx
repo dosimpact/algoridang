@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 // Box type :
 
-export type BoxType = 'normal' | 'gray' | 'success' | 'danger';
+export type BoxType = 'normal' | 'gray' | 'success' | 'danger' | 'info';
 export const Box: React.FC<{
   type?: BoxType;
   className?: string;

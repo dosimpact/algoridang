@@ -28,11 +28,15 @@ export default createGlobalStyle`
         /* background: linear-gradient(0deg, #fff2d2 0%, rgba(255, 255, 255, 0) 100%); */
 
     }
+    /* override */
+    .ReactModal__Overlay {
+        z-index:99
+    }
     /* Transition */
     .select:hover::after {
         color: #f39c12;
     }
-    
+    /* layout */
     .flexRow{
         display: flex;
         flex-flow:row nowarp;
@@ -49,7 +53,7 @@ export default createGlobalStyle`
         align-items:center;
         justify-content:center;
     }
-
+    /* preset */
     .tooltip {
         width: 120px;
         height: 24px;
