@@ -13,6 +13,9 @@ import TechnicalSearch from 'components/common/_atoms/TechnicalSearch';
 import { useTechnicals } from 'states/trading/query/useTechnicals';
 import { useRequestMiniBacktesting } from 'states/trading/query/useRequestMiniBacktesting';
 import { BaseTradingStrategy } from 'states/trading/interface/entities';
+import WideLine from 'components/common/_atoms/WideLine';
+import WhiteSpace from 'components/common/_atoms/WhiteSpace';
+import { Button } from 'components/common/_atoms/Buttons';
 
 interface ITechnicalStrategyList {
   onSelect?: (e: BaseTradingStrategy) => void;
@@ -25,31 +28,35 @@ const TechnicalStrategyList: React.FC<ITechnicalStrategyList> = ({
   const { GetTechnicalStrategyListQuery } = useTechnicals();
 
   return (
-    <div>
+    <STechnicalStrategyList>
       {GetTechnicalStrategyListQuery.isLoading && 'loading...'}
       {!GetTechnicalStrategyListQuery.isLoading && (
-        <ul>
+        <ul className="strategyList">
           {GetTechnicalStrategyListQuery.data?.map((st, idx) => (
-            <li
-              style={{
-                cursor: 'pointer',
-                backgroundColor: 'ActiveCaption',
-                margin: '1rem',
-              }}
+            <Button
+              type="info"
+              className="strategyListItem"
               key={`${idx}-${st.trading_strategy_name}`}
               onClick={() => {
                 if (onSelect) onSelect(st);
               }}
             >
               {st.trading_strategy_name}
-            </li>
+            </Button>
           ))}
         </ul>
       )}
-    </div>
+    </STechnicalStrategyList>
   );
 };
-
+const STechnicalStrategyList = styled.article`
+  .strategyList {
+  }
+  .strategyListItem {
+    cursor: pointer;
+    margin-top: 1rem;
+  }
+`;
 /**
  * -매매전략 검색
  * -매매 전략 리스트
@@ -73,13 +80,16 @@ const TradingSettingTabTechnicalSearch = () => {
   };
 
   return (
-    <div>
-      <div>
-        선택된 종목 : {currentUniversalSetting?.selectedCorporations.corp_name}
+    <STradingSettingTabTechnicalSearch>
+      <WhiteSpace />
+      <WideLine style={{ margin: '0 0 1.3rem 0' }} />
+      <div className="info">
+        "{currentUniversalSetting?.selectedCorporations.corp_name}" 매매전략을
+        선택해 주세요.
       </div>
-      <div> --- </div>
-      <div>
-        선택된 매매 전략 :
+      <WhiteSpace />
+      <div className="info">
+        선택된 매매 전략 :{' '}
         {currentUniversalSetting?.selectedTechnical?.trading_strategy_name}
       </div>
       <TechnicalSearch
@@ -90,10 +100,14 @@ const TradingSettingTabTechnicalSearch = () => {
           console.log('TechnicalSearch onKeyDownEnter', e);
         }}
       />
+      <WhiteSpace />
+      <WideLine style={{ margin: '0 0 1.3rem 0' }} />
       <TechnicalStrategyList onSelect={(e) => handleApplyTechinalToTicker(e)} />
-    </div>
+    </STradingSettingTabTechnicalSearch>
   );
 };
+const STradingSettingTabTechnicalSearch = styled.section``;
+
 /**
  * 전략 발굴에 대한 검색
  * - 종목 ticker에 대해서 , 가능한 모든 매매전략결과를 알려준다.
@@ -188,15 +202,16 @@ const TradingSetting: React.FC<ITradingSetting> = ({ headerTitle }) => {
 
   return (
     <STradingSetting>
+      <InspectorHeaderDetail headerTitle={headerTitle || '매매전략 설정'} />
       <WingBlank>
-        <InspectorHeaderDetail headerTitle={headerTitle || 'TradingSetting'} />
+        <WideLine style={{ margin: '0 0 1.3rem 0' }} />
         <article className="tabContainer">
-          <div onClick={() => handleTabIdx(0)} className="tabItem">
+          <StabItem selected={tab === 0} onClick={() => handleTabIdx(0)}>
             전략 검색
-          </div>
-          <div onClick={() => handleTabIdx(1)} className="tabItem">
+          </StabItem>
+          <StabItem selected={tab === 1} onClick={() => handleTabIdx(1)}>
             전략 발굴
-          </div>
+          </StabItem>
         </article>
         {tab === 0 && (
           <>
@@ -218,13 +233,27 @@ export default TradingSetting;
 const STradingSetting = styled.section`
   .tabContainer {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 1rem;
+    grid-template-columns: repeat(2, 1fr);
     cursor: pointer;
-    .tabItem {
-      min-height: 4rem;
-      background-color: bisque;
-      text-align: center;
+    & div:first-child {
+      border-top-left-radius: 0.6rem;
+      border-bottom-left-radius: 0.6rem;
+    }
+    & div:last-child {
+      border-top-right-radius: 0.6rem;
+      border-bottom-right-radius: 0.6rem;
     }
   }
+`;
+
+const StabItem = styled.div<{ selected?: boolean }>`
+  min-height: 6rem;
+  background-color: ${(props) =>
+    props.selected ? props.theme.ColorMainYellow : props.theme.ColorWhite};
+  color: ${(props) =>
+    props.selected ? props.theme.ColorWhite : props.theme.ColorDark};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.8rem;
 `;

@@ -12,7 +12,6 @@ import { useRecoilState } from 'recoil';
 import { atomInspector } from 'states/strategy/recoil/strategy-create';
 import styled from 'styled-components';
 import { IInspectorSettings } from '.';
-import { StabItem } from './UniversalSetting';
 
 const PortBacktestTabStart = () => {
   const handleBacktestStart = () => {
@@ -160,4 +159,15 @@ const SBackTestingSetting = styled.section`
       border-bottom-right-radius: 0.6rem;
     }
   }
+`;
+const StabItem = styled.div<{ selected?: boolean }>`
+  min-height: 6rem;
+  background-color: ${(props) =>
+    props.selected ? props.theme.ColorMainYellow : props.theme.ColorWhite};
+  color: ${(props) =>
+    props.selected ? props.theme.ColorWhite : props.theme.ColorDark};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.8rem;
 `;

@@ -26,28 +26,28 @@ interface IStrategyCreateModule {
     // 전략 셋팅, 종목 셋팅, 백테스트 셋팅
     baseSettingBtnElements: JSX.Element[];
     // 선택된 종목 리스트 표시 앨리먼트
-    selectedTickerElementList: JSX.Element[];
+    // selectedTickerElementList: JSX.Element[];
   };
   // 단일 종목 설정 앨리먼트
   selectedMonoTickerSettingButtonList: JSX.Element[];
   // 단일 종목 매매 결과 앨리먼트
-  dashBoardCol3?: JSX.Element[];
-  // 포트 백테스팅 결과 앨리먼트
-  dashBoardCol4: {
-    // 포트 백테스트 버튼 앨리먼트
-    portBacktestBtnElement: JSX.Element;
-  };
+  // dashBoardCol3?: JSX.Element[];
+  // // 포트 백테스팅 결과 앨리먼트
+  // dashBoardCol4: {
+  //   // 포트 백테스트 버튼 앨리먼트
+  //   portBacktestBtnElement: JSX.Element;
+  // };
 }
 const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
   currentInspectorElement,
   dashBoardCol1,
   selectedMonoTickerSettingButtonList,
-  dashBoardCol3,
-  dashBoardCol4,
+  // dashBoardCol3,
+  // dashBoardCol4,
 }) => {
-  const { baseSettingBtnElements, selectedTickerElementList } = dashBoardCol1;
+  const { baseSettingBtnElements } = dashBoardCol1;
 
-  const { portBacktestBtnElement } = dashBoardCol4;
+  // const { portBacktestBtnElement } = dashBoardCol4;
 
   // const SegmentedControlValues = ['기본설정', '종목발굴', '매매전략'];
   // const [tab, setTab] = React.useState<string>(SegmentedControlValues[0]);
@@ -148,9 +148,9 @@ const StrategyCreateTemplate = () => {
   );
 
   // Selector : 선택된 단일 종목 매매전략 셋팅 버튼 , JSX 리스트 리턴
-  const selecteMiniBacktestResultList = useRecoilValue(
-    selecteMiniBacktestResultListJSX,
-  );
+  // const selecteMiniBacktestResultList = useRecoilValue(
+  //   selecteMiniBacktestResultListJSX,
+  // );
 
   // Handler
   const handleChangeInspector = (type: IInspectorTypes) => {
@@ -188,21 +188,21 @@ const StrategyCreateTemplate = () => {
             }}
           />,
         ],
-        selectedTickerElementList: selectedTickerElementList,
+        // selectedTickerElementList: selectedTickerElementList,
       }}
       selectedMonoTickerSettingButtonList={selectedMonoTickerSettingButtonList}
-      dashBoardCol3={selecteMiniBacktestResultList}
-      dashBoardCol4={{
-        portBacktestBtnElement: (
-          <DashBoardButton
-            Icon={IconTesting}
-            text="포트 백테스트"
-            onClick={() => {
-              handleChangeInspector('backTestingSetting');
-            }}
-          />
-        ),
-      }}
+      // dashBoardCol3={selecteMiniBacktestResultList}
+      // dashBoardCol4={{
+      //   portBacktestBtnElement: (
+      //     <DashBoardButton
+      //       Icon={IconTesting}
+      //       text="포트 백테스트"
+      //       onClick={() => {
+      //         handleChangeInspector('backTestingSetting');
+      //       }}
+      //     />
+      //   ),
+      // }}
     />
   );
 };

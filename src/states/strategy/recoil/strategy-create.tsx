@@ -22,7 +22,7 @@ import { BaseTradingStrategy } from 'states/trading/interface/entities';
  * 주요 상태 관리 대상  - atom,selector 이용
  * 1. 전략 생성에 필요한 대시보드 + 인스펙터의 View 상태 관리
  * 2. 사용자입력 (Form 및 HTMLInputElement) 에 대한 데이터 바인딩
- * 3. API 호출시 Body조립을 위한
+ * 3. API 호출시 Body조립을 위한 JSX 리턴
  */
 
 // 1.1 인스팩터 상태관리 interface & type
@@ -155,6 +155,8 @@ export const atomBasicSetting = atom<IAtomBasicSetting>({
   },
 });
 
+// ------------------------------------------------------------------------
+
 /**
  * 3.1 종목 관리 상태관리 - atom
    @returns {IUniversalSettingState}
@@ -167,7 +169,7 @@ export const atomUniversalSettingState = atom<IAtomUniversalSettingState>({
 });
 
 /**
- * 3.2 종목 관리 상태관리 - selector
+ * (deprecated) 종목 관리 상태관리 - selector
   get : @returns 선택된 종목리스트 JSX[]
  */
 
@@ -304,7 +306,7 @@ export const selectedUniversalMiniBacktesting = selectorFamily({
 });
 
 /**
- * 3.6 종목 관리 상태관리 - selector
+ * (deprecated) 종목 관리 상태관리 - selector
   get : @returns 매매전략이 셋팅된 종목 백테 결과 JSX[]
  */
 
