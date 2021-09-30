@@ -7,6 +7,7 @@ import { atomCorporationState } from 'states/finance/recoil/corporation';
 import styled from 'styled-components';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import BadgePriceDelta from 'components/common/_atoms/BadgePriceDelta';
+import WhiteSpace from '../_atoms/WhiteSpace';
 
 // todo:refator onSuccess등 콜백함수에 usecallback안써도 되도록 하기
 const TickerPrice = () => {
@@ -46,6 +47,7 @@ const TickerPrice = () => {
   return (
     <TickerPriceS>
       <WingBlank>
+        <WhiteSpace style={{ marginTop: '1rem' }} />
         <TickerSearch
           onSuccess={useCallback(
             (e) => {

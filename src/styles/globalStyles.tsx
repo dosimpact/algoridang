@@ -74,6 +74,13 @@ export default createGlobalStyle`
         width: 90%;
         display: block;
     }
+    /* input[type=checkbox] */
+    /* input[type="checkbox"]{
+        display:none;
+    } */
+    /* input[type="checkbox"] + label{
+        display:none;
+    } */
     /* input css reset */
     input[type="text"] {
         border:unset;

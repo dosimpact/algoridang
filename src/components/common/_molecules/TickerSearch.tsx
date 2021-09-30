@@ -84,7 +84,7 @@ const TickerSearch: React.FC<ITickerSearch> = ({
 export default TickerSearch;
 
 const STickerSearch = styled.section`
-  margin-top: 3.7rem;
+  /* margin-top: 3rem; */
   width: 100%;
   .tickerInput {
     background: rgba(255, 255, 255, 0.53);

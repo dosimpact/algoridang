@@ -16,6 +16,8 @@ import { IInspectorSettings } from '.';
 import Modal from 'react-modal';
 import produce from 'immer';
 import WideLine from 'components/common/_atoms/WideLine';
+import WhiteSpace from 'components/common/_atoms/WhiteSpace';
+import { Button } from 'components/common/_atoms/Buttons';
 
 //https://velog.io/@seungsang00/React-React-Modal
 Modal.setAppElement('#root');
@@ -57,7 +59,8 @@ const UniversalSettingTabTickerSearch = () => {
   );
 
   return (
-    <>
+    <SUniversalSettingTabTickerSearch>
+      <WhiteSpace style={{ marginTop: '1rem' }} />
       <TickerSearch
         onSuccess={handleSearchedCorporations}
         onKeyDownEnter={(e) => {
@@ -76,13 +79,23 @@ const UniversalSettingTabTickerSearch = () => {
           }
         }}
       />
-      <div>---</div>
-      <button onClick={handleWillDelTickerClick}>종목삭제</button>
-      <div>선택된 종목 {willDelCorpIdxs.size} 개 삭제하기</div>
-      <div>
+      <WhiteSpace />
+      <WideLine style={{ margin: '0 0 1.3rem 0' }} />
+      <div className="searchedTableHeader">
+        <div className="name">
+          선택된 종목 {willDelCorpIdxs.size} 개 삭제하기
+        </div>
+        <Button className="btn" onClick={handleWillDelTickerClick}>
+          종목삭제
+        </Button>
+      </div>
+      <WhiteSpace />
+
+      <div className="selectedUnivList">
         {universalSettingState.selected.map((data, idx) => {
           return (
             <div
+              className="selectedUnivItem"
               key={`willDel-${idx}${data.selectedCorporations.ticker}`}
               style={{ display: 'flex' }}
             >
@@ -100,16 +113,44 @@ const UniversalSettingTabTickerSearch = () => {
                 id={`willDel-${idx}${data.selectedCorporations.ticker}`}
                 type="checkbox"
               ></input>
-              <label htmlFor={`willDel-${idx}`}>
+              <label
+                htmlFor={`willDel-${idx}${data.selectedCorporations.ticker}`}
+              >
                 <div key={idx}>{data.selectedCorporations.corp_name}</div>
               </label>
             </div>
           );
         })}
       </div>
-    </>
+    </SUniversalSettingTabTickerSearch>
   );
 };
+const SUniversalSettingTabTickerSearch = styled.section`
+  .searchedTableHeader {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    .name {
+      margin-right: 1rem;
+    }
+    .btn {
+    }
+  }
+  .selectedUnivList {
+    .selectedUnivItem {
+      font-size: 2rem;
+      line-height: 2.9rem;
+      display: flex;
+      flex-flow: row nowrap;
+      align-items: center;
+      input {
+        margin-right: 3rem;
+      }
+      label {
+      }
+    }
+  }
+`;
 
 const UniversalSettingTabQuantSearch = () => {
   // 1. 모달창 open/close 상태
