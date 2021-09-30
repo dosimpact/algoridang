@@ -15,6 +15,7 @@ import { RemoveMultipleElements } from 'utils/parse';
 import { IInspectorSettings } from '.';
 import Modal from 'react-modal';
 import produce from 'immer';
+import WideLine from 'components/common/_atoms/WideLine';
 
 //https://velog.io/@seungsang00/React-React-Modal
 Modal.setAppElement('#root');
@@ -228,6 +229,12 @@ const SQuantFilter = styled.section`
 
 interface IUniversalSetting extends IInspectorSettings {}
 
+/**
+ * 인스팩터 - 종목관리(UniversalSetting)
+ * @param {IUniversalSetting} IUniversalSetting
+ * @returns {JSX.Element}
+ */
+
 const UniversalSetting: React.FC<IUniversalSetting> = ({ headerTitle }) => {
   // 1 인스펙터 상태
   const [inspector, setInspector] = useRecoilState(atomInspector);
@@ -249,17 +256,16 @@ const UniversalSetting: React.FC<IUniversalSetting> = ({ headerTitle }) => {
 
   return (
     <SUniversalSetting>
+      <InspectorHeaderDetail headerTitle={headerTitle || '종목관리'} />
       <WingBlank>
-        <InspectorHeaderDetail
-          headerTitle={headerTitle || 'UniversalSetting'}
-        />
+        <WideLine style={{ margin: '0 0 1.3rem 0' }} />
         <article className="tabContainer">
-          <div onClick={() => handleTabIdx(0)} className="tabItem">
+          <StabItem selected={tab === 0} onClick={() => handleTabIdx(0)}>
             종목 검색
-          </div>
-          <div onClick={() => handleTabIdx(1)} className="tabItem">
+          </StabItem>
+          <StabItem selected={tab === 1} onClick={() => handleTabIdx(1)}>
             퀀트 발굴
-          </div>
+          </StabItem>
         </article>
         {tab === 0 && (
           <>
@@ -282,12 +288,25 @@ const SUniversalSetting = styled.section`
   .tabContainer {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-gap: 1rem;
     cursor: pointer;
-    .tabItem {
-      min-height: 4rem;
-      background-color: bisque;
-      text-align: center;
+    & div:first-child {
+      border-top-left-radius: 0.6rem;
+      border-bottom-left-radius: 0.6rem;
+    }
+    & div:last-child {
+      border-top-right-radius: 0.6rem;
+      border-bottom-right-radius: 0.6rem;
     }
   }
+`;
+const StabItem = styled.div<{ selected?: boolean }>`
+  min-height: 6rem;
+  background-color: ${(props) =>
+    props.selected ? props.theme.ColorMainYellow : props.theme.ColorWhite};
+  color: ${(props) =>
+    props.selected ? props.theme.ColorWhite : props.theme.ColorDark};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.8rem;
 `;

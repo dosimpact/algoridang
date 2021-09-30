@@ -5,11 +5,9 @@ import {
   selectedUniversalMiniBacktesting,
 } from 'states/strategy/recoil/strategy-create';
 import styled from 'styled-components';
+import { IBaseSettingButton } from './BaseSettingButton';
 
-interface IMiniBacktestResultButton {
-  title?: string;
-  selectedIndex: number; // atomUniversalSettingState 배열 인덱스
-}
+interface IMiniBacktestResultButton extends IBaseSettingButton {}
 
 // 대시보드 (col-2) : 개별 종목 매매전략 설정 및 매매전략상세설정 button
 const MiniBacktestResultButton: React.FC<IMiniBacktestResultButton> = ({

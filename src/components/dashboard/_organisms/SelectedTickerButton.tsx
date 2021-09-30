@@ -2,11 +2,9 @@ import React from 'react';
 import { useRecoilState } from 'recoil';
 import { atomInspector } from 'states/strategy/recoil/strategy-create';
 import styled from 'styled-components';
+import { IBaseSettingButton } from './BaseSettingButton';
 
-export interface ISelectedTickerButton {
-  title?: string;
-  selectedIndex: number; // atomUniversalSettingState 배열 인덱스
-}
+export interface ISelectedTickerButton extends IBaseSettingButton {}
 // TODO 로고 변화율
 const SelectedTickerButton: React.FC<ISelectedTickerButton> = ({ title }) => {
   const [inspector, setInspector] = useRecoilState(atomInspector);
