@@ -25,10 +25,10 @@ export class HttpHostCacheInterceptor extends CacheInterceptor {
 
 // (Deprecated) POST 요청을 캐시한다는것은 - 비즈니스로직 접근을 막겠다는 뜻 ( 모순 )
 // (3) 캐시정책 : originalUrl (Params/query) + Body 동일하면 캐슁
-// @Injectable()
-// export class HttpBodyCacheInterceptor extends CacheInterceptor {
-//   trackBy(context: ExecutionContext) {
-//     const request = context.switchToHttp().getRequest<Request>();
-//     return request.originalUrl + JSON.stringify(request.body);
-//   }
-// }
+@Injectable()
+export class HttpBodyCacheInterceptor extends CacheInterceptor {
+  trackBy(context: ExecutionContext) {
+    const request = context.switchToHttp().getRequest<Request>();
+    return request.originalUrl + JSON.stringify(request.body);
+  }
+}

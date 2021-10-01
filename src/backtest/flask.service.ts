@@ -148,9 +148,10 @@ export class FlaskService {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
         },
-        timeout: 5000,
+        timeout: 15000,
       });
       if (status !== 201) {
+        this.logger.verbose('❌ requestMiniBacktesting');
         return { ok: false, ...data };
       }
       this.logger.verbose('✔ requestMiniBacktesting');

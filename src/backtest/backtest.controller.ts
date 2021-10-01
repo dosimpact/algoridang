@@ -8,7 +8,10 @@ import {
   Version,
 } from '@nestjs/common';
 import { AuthUser, Roles } from 'src/auth/auth.decorator';
-import { HttpCacheInterceptor } from 'src/common/service/HttpCacheInterceptor';
+import {
+  HttpBodyCacheInterceptor,
+  HttpCacheInterceptor,
+} from 'src/common/service/HttpCacheInterceptor';
 import { MemberInfo } from 'src/member/entities';
 import { BacktestService } from './backtest.service';
 import {
@@ -64,14 +67,6 @@ export class BacktestQueryController {
   async getWinRatio(@Param() strategy_code: string) {
     return this.backtestService.getBacktestWinRatio({ strategy_code });
   }
-
-  // (2) 미니 백테스트 요청
-  @Version('1')
-  @Roles(['Any'])
-  @Post('mini-backtest')
-  async requestMiniBackTest(@Body() body: RequestMiniBacktestingInput) {
-    return this.flaskService.__requestMiniBacktesting(body);
-  }
 }
 
 @Controller('/api/backtests/')
@@ -112,5 +107,14 @@ export class BacktestMutationController {
   @Post('updateHistory')
   async updateHistory(@Body() updateHistoryInput: UpdateHistoryInput) {
     return this.backtestService.updateHistory(updateHistoryInput);
+  }
+
+  // (2) 미니 백테스트 요청
+  @Version('1')
+  @Roles(['Any'])
+  @Post('mini-backtest')
+  @UseInterceptors(HttpBodyCacheInterceptor)
+  async requestMiniBackTest(@Body() body: RequestMiniBacktestingInput) {
+    return this.flaskService.__requestMiniBacktesting(body);
   }
 }
