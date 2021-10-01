@@ -97,7 +97,7 @@ const SStrategyCreateModule = styled.section`
   .dashBoard {
     display: grid;
     grid-template-columns: 1fr 38rem;
-    height: 100vh;
+    min-height: 100vh;
   }
   .interestTickersHeader {
     text-align: start;
@@ -125,7 +125,7 @@ const SStrategyCreateModule = styled.section`
   }
   .inspector {
     background-color: ${(props) => props.theme.ColorGrayL2};
-    height: 100vh;
+    min-height: 100vh;
   }
   .interestTickers {
     /* border: 1px solid red; */
