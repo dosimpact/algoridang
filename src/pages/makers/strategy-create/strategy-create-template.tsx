@@ -5,8 +5,6 @@ import {
   atomInspector,
   IInspectorTypes,
   selectedMonoTickerSettingButtonListJSX,
-  selectedTickerElementListJSX,
-  selecteMiniBacktestResultListJSX,
   selectorInspectorFC,
 } from 'states/strategy/recoil/strategy-create';
 import DashBoardButton from 'components/common/_molecules/DashBoardButton';
@@ -15,6 +13,7 @@ import DashBoardDebug from 'components/common/_molecules/DashBoardDebug';
 import TickerPrice from 'components/common/_organisms/ticker-price';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
+import ReactTooltip from 'react-tooltip';
 
 // 전략 생성 모듈
 // DashBoard - Inspector
@@ -48,46 +47,46 @@ const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
 }) => {
   const { baseSettingBtnElements } = dashBoardCol1;
 
-  // const { portBacktestBtnElement } = dashBoardCol4;
-
-  // const SegmentedControlValues = ['기본설정', '종목발굴', '매매전략'];
-  // const [tab, setTab] = React.useState<string>(SegmentedControlValues[0]);
-  // const [strategyState] = useRecoilState(atomStrategyState);
-
   return (
     <SStrategyCreateModule>
-      <article className="columns">
-        <section className="dashBoardCol1">
-          <WingBlank>
-            <div className="baseSettingBtnSlot">
-              {baseSettingBtnElements}
-              {<DashBoardDebug />}
+      <div className="dashBoard">
+        <article className="columns">
+          <section className="dashBoardCol1">
+            <WingBlank>
+              <div className="baseSettingBtnSlot">
+                {baseSettingBtnElements}
+                {<DashBoardDebug />}
+              </div>
+            </WingBlank>
+            <div className="charSlot">
+              <TickerPrice />
             </div>
-          </WingBlank>
-          <div className="charSlot">
-            <TickerPrice />
-          </div>
-          {/* <div className="slot">{baseSettingBtnElement}</div> */}
-          {/* <div className="slot">{universalSettingBtnElement}</div> */}
-          {/* <div className="slot">{selectedTickerElementList}</div> */}
-        </section>
-        <section className="dashBoardCol2">
-          <WhiteSpace />
-          <div className="interestTickersHeader">
-            관심 종목 리스트
-            <span className="iconInfo">
-              <IconInfo />
-            </span>
-          </div>
-          <WhiteSpace />
-          <article className="interestTickers">
-            <ul className="slot">{selectedMonoTickerSettingButtonList}</ul>
-          </article>
-        </section>
+          </section>
+          <section className="dashBoardCol2">
+            <WhiteSpace />
+            <div className="interestTickersHeader">
+              관심 종목 리스트
+              <span
+                data-tip="interestTickerInfo"
+                data-for="interestTickerInfo"
+                className="iconInfo"
+              >
+                <IconInfo />
+              </span>
+            </div>
+            <ReactTooltip id="interestTickerInfo">
+              전략에 포함되는 종목들 입니다.
+            </ReactTooltip>
+            <WhiteSpace />
+            <article className="interestTickers">
+              <ul className="slot">{selectedMonoTickerSettingButtonList}</ul>
+            </article>
+          </section>
+        </article>
         <section className="inspector">
           {currentInspectorElement && currentInspectorElement}
         </section>
-      </article>
+      </div>
     </SStrategyCreateModule>
   );
 };
@@ -95,6 +94,11 @@ const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
 const SStrategyCreateModule = styled.section`
   min-height: 100vh;
 
+  .dashBoard {
+    display: grid;
+    grid-template-columns: 1fr 38rem;
+    height: 100vh;
+  }
   .interestTickersHeader {
     text-align: start;
     display: flex;
@@ -113,7 +117,7 @@ const SStrategyCreateModule = styled.section`
     min-height: 80vh;
     padding: 2rem;
     display: grid;
-    grid-template-columns: 80rem minmax(35rem, 1fr) 38rem;
+    grid-template-columns: 80rem minmax(35rem, 1fr);
     grid-gap: 2rem;
     .dashBoardCol1 {
       min-height: 80vh;
@@ -121,10 +125,11 @@ const SStrategyCreateModule = styled.section`
   }
   .inspector {
     background-color: ${(props) => props.theme.ColorGrayL2};
+    height: 100vh;
   }
   .interestTickers {
     /* border: 1px solid red; */
-    height: 95vh;
+    height: 80vh;
     overflow-y: scroll;
   }
   .baseSettingBtnSlot {
