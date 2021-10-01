@@ -10,7 +10,7 @@ import {
   selectorInspectorFC,
 } from 'states/strategy/recoil/strategy-create';
 import DashBoardButton from 'components/common/_molecules/DashBoardButton';
-import { IconPlusNormal, IconSettingNormal, IconTesting } from 'assets/icons';
+import { IconPlusNormal, IconSettingNormal, IconInfo } from 'assets/icons';
 import DashBoardDebug from 'components/common/_molecules/DashBoardDebug';
 import TickerPrice from 'components/common/_organisms/ticker-price';
 import WingBlank from 'components/common/_atoms/WingBlank';
@@ -73,7 +73,12 @@ const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
         </section>
         <section className="dashBoardCol2">
           <WhiteSpace />
-          <div style={{ textAlign: 'start' }}>관심 종목 리스트</div>
+          <div className="interestTickersHeader">
+            관심 종목 리스트
+            <span className="iconInfo">
+              <IconInfo />
+            </span>
+          </div>
           <WhiteSpace />
           <article className="interestTickers">
             <ul className="slot">{selectedMonoTickerSettingButtonList}</ul>
@@ -89,6 +94,19 @@ const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
 
 const SStrategyCreateModule = styled.section`
   min-height: 100vh;
+
+  .interestTickersHeader {
+    text-align: start;
+    display: flex;
+    align-items: center;
+    .iconInfo {
+      margin-left: 1rem;
+      svg {
+        fill: ${(props) => props.theme.ColorMainGray};
+        width: 2rem;
+      }
+    }
+  }
 
   .columns {
     background-color: white;
