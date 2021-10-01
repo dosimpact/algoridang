@@ -61,7 +61,7 @@ const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
 
   const { reqMiniBTMutation } = useMiniBacktest();
 
-  const handleRequestMiniBT = useCallback(async () => {
+  const handleRequestMiniBT = async () => {
     if (thisUnivSetting && thisUnivSetting.selectedTechnical) {
       reqMiniBTMutation.mutate(
         miniBacktestAdaptor({
@@ -70,13 +70,22 @@ const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
         }),
       );
     }
-  }, []);
+  };
   // 조건이 만족되면 ~ miniBacktesting
   useEffect(() => {
-    handleRequestMiniBT();
+    const requestMiniBT = async () => {
+      if (thisUnivSetting && thisUnivSetting.selectedTechnical) {
+        reqMiniBTMutation.mutate(
+          miniBacktestAdaptor({
+            selectedCorporations: thisUnivSetting.selectedCorporations,
+            selectedTechnical: thisUnivSetting.selectedTechnical,
+          }),
+        );
+      }
+    };
+    requestMiniBT();
     return () => {};
   }, [
-    handleRequestMiniBT,
     thisUnivSetting?.selectedTechnical?.setting_json,
     thisUnivSetting?.selectedTechnical?.trading_strategy_name,
   ]);
@@ -111,9 +120,10 @@ const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
           reqMiniBTMutation.data.data.res && (
             <div>
               <div>
-                CAGR : {reqMiniBTMutation.data.data.res.year_avg_profit_rate}
+                CAGR :{' '}
+                {reqMiniBTMutation.data.data.res.year_avg_profit_rate * 100}%
               </div>
-              <div>MDD : {reqMiniBTMutation.data.data.res.mdd}</div>
+              <div>MDD : {reqMiniBTMutation.data.data.res.mdd * 100}%</div>
             </div>
           )}
         {isIdle && '모의테스트'}

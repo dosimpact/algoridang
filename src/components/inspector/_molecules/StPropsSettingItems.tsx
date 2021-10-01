@@ -38,7 +38,13 @@ export const StPropsSMA: React.FC<IStPropsSMA> = ({
       <form onSubmit={submitHandler}>
         <InputListItem>
           <label htmlFor="SMA_A">단순이평선 정배열</label>
-          <input type="text" id="SMA_A" {...register('SMA_A')} />
+          <input
+            type="text"
+            id="SMA_A"
+            {...register('SMA_A', {
+              setValueAs: (v) => Number(v),
+            })}
+          />
         </InputListItem>
         <Button type="success" onClick={submitHandler}>
           적용
@@ -58,13 +64,12 @@ export const StPropsGoldenCross: React.FC<IStPropsGoldenCross> = ({
   onSubmit,
   setting_json,
 }) => {
-  const { register, formState, handleSubmit } =
-    useForm<IStPropsGoldenCrossForm>({
-      defaultValues: {
-        pfast: setting_json?.GoldenCross?.pfast || 20,
-        pslow: setting_json?.GoldenCross?.pslow || 5,
-      },
-    });
+  const { register, handleSubmit } = useForm<IStPropsGoldenCrossForm>({
+    defaultValues: {
+      pfast: setting_json?.GoldenCross?.pfast || 20,
+      pslow: setting_json?.GoldenCross?.pslow || 5,
+    },
+  });
 
   const submitHandler = handleSubmit((data) => {
     toast.success('적용 완료', {
@@ -80,11 +85,23 @@ export const StPropsGoldenCross: React.FC<IStPropsGoldenCross> = ({
       <form onSubmit={submitHandler}>
         <InputListItem>
           <label htmlFor="pfast">장기</label>
-          <input type="text" id="pfast" {...register('pfast')} />
+          <input
+            type="text"
+            id="pfast"
+            {...register('pfast', {
+              setValueAs: (v) => Number(v),
+            })}
+          />
         </InputListItem>
         <InputListItem>
           <label htmlFor="pslow">단기</label>
-          <input type="text" id="pslow" {...register('pslow')} />
+          <input
+            type="text"
+            id="pslow"
+            {...register('pslow', {
+              setValueAs: (v) => Number(v),
+            })}
+          />
         </InputListItem>
         <Button type="success" onClick={submitHandler}>
           적용
