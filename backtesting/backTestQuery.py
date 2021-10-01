@@ -303,7 +303,9 @@ class backTestQuery(object):
         conn = DBClass.getConn()
         try:
             for idx, row in data.iterrows():
-                    
+                
+                if type(row[0]) != type([]):
+                    continue
                 query = "select * from accumulate_profit_rate_chart where strategy_code = " + str(strategyCode)
                 query += " and chart_date = \'" + str(idx)+"\';"
                 

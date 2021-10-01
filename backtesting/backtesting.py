@@ -175,7 +175,7 @@ class CBackTtrader(backTestQuery):
         if len(self.totalreturn) == 0:
             self.totalreturn = returns
         else:
-            self.totalreturn = self.totalreturn + returns
+            self.totalreturn.add(returns,fill_value=0)
                     
         # 승수 출력
         winCnt, loseCnt = strat.analyzers.bar_data.get_winloseCnt()
@@ -245,6 +245,9 @@ class CBackTtrader(backTestQuery):
         sum = []
         for idx, row in data.iterrows():
             sumdata = 0
+            if type(row[0]) != type([]):
+                sum.append(0)
+                continue
 
             for i in range(len(row[0])):
                 sumdata += row[0][i][7]
