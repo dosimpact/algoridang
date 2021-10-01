@@ -31,9 +31,9 @@ const StrategyReport: React.FC<IStrategyReport> = ({ showForkButton }) => {
   const history = useHistory();
   const params = useParams() as { id: string };
   const strategyCode = params?.id || 0;
-  if (strategyCode === 0) {
-    history.push('/');
-  }
+  // if (strategyCode === 0) {
+  //   history.push('/');
+  // }
   const { strategyDetailQuery } = useStrategyDetail(strategyCode + '');
   const {
     winRatioQuery,
@@ -158,6 +158,14 @@ const StrategyReport: React.FC<IStrategyReport> = ({ showForkButton }) => {
       },
     ];
   }, [investProfitInfo, backtestDetailInfo, winRatio]);
+
+  if (strategyCode === 0) {
+    return (
+      <div>
+        <WingBlank>전략이 없습니다.</WingBlank>
+      </div>
+    );
+  }
 
   return (
     <PStrategyDetail>

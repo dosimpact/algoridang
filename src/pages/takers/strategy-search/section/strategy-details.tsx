@@ -19,10 +19,13 @@ const StrategyDetails = () => {
   const history = useHistory();
   // 현재 전략 코드 알아오기
   const params = useParams() as { id: string };
+  console.log('params', params);
+
   const strategyCode = params?.id || 0;
-  if (strategyCode === 0) {
-    history.push('/');
-  }
+
+  // if (strategyCode === 0) {
+  // history.push('/');
+  // }
   // 현재 전략코드로 데이터 API 요청
   const {
     strategyDetailQuery,
@@ -32,41 +35,13 @@ const StrategyDetails = () => {
     memberStrategy,
   } = useStrategyDetail(strategyCode + '');
 
-  // // 받아온 데이터중 memberStrategy 에 관한 데이터 메모
-  // const memberStrategy = useMemo(
-  //   () => strategyDetailQuery?.data?.memberStrategy,
-  //   [strategyDetailQuery?.data]
-  // );
-  // // const backtestDetailInfo = useMemo(
-  // //   () => strategyDetailQuery?.data?.memberStrategy?.backtestDetailInfo,
-  // //   [strategyDetailQuery?.data]
-  // // );
-  // // 아온 데이터중 universal 에 관한 데이터 메모
-  // const firstUniversal = useMemo(
-  //   () =>
-  //     strategyDetailQuery?.data?.memberStrategy &&
-  //     strategyDetailQuery?.data?.memberStrategy.universal &&
-  //     strategyDetailQuery?.data?.memberStrategy?.universal.length >= 1 &&
-  //     strategyDetailQuery?.data?.memberStrategy?.universal[0],
-  //   [strategyDetailQuery?.data]
-  // );
-
-  // const investProfitInfo = useMemo(
-  //   () => strategyDetailQuery?.data?.memberStrategy?.investProfitInfo,
-  //   [strategyDetailQuery?.data]
-  // );
-
-  // const histories = useMemo(
-  //   () =>
-  //     strategyDetailQuery?.data?.memberStrategy?.histories.map((history) => ({
-  //       ...history,
-  //       history_date: String(history.history_date).substr(0, 10),
-  //     })),
-  //   [strategyDetailQuery?.data]
-  // );
-  // // console.log("histories", histories);
-  // // console.log("investProfitInfo", investProfitInfo);
-  // // console.log("firstUniversal", firstUniversal);
+  if (strategyCode === 0) {
+    return (
+      <div>
+        <WingBlank>전략이 없습니다.</WingBlank>
+      </div>
+    );
+  }
 
   return (
     <PStrategyDetail>

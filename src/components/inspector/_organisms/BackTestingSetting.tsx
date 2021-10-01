@@ -15,11 +15,18 @@ import {
   makeAddUniversals,
   makeCreateMyStrategy,
 } from 'states/strategy/recoil/selectors';
-import { atomInspector } from 'states/strategy/recoil/strategy-create';
+import {
+  atomInspector,
+  atomCurrentStrategyCode,
+} from 'states/strategy/recoil/strategy-create';
 import styled from 'styled-components';
 import { IInspectorSettings } from '.';
 
 const PortBacktestTabStart = () => {
+  const [currentStrategyCode, setCurrentStrategyCode] = useRecoilState(
+    atomCurrentStrategyCode,
+  );
+
   const makeCreateMyStrategyValue = useRecoilValue(makeCreateMyStrategy);
   const makeAddUniversalsValue = useRecoilValue(makeAddUniversals);
   const { addUniversalMutation, createMyStrategyMutation } =
@@ -39,6 +46,7 @@ const PortBacktestTabStart = () => {
       toast.info('전략 생성 ...', {
         position: 'bottom-right',
       });
+      setCurrentStrategyCode(strategy_code);
 
       await Promise.all(
         makeAddUniversalsValue.map(async (e) => {
@@ -60,9 +68,12 @@ const PortBacktestTabStart = () => {
         position: 'bottom-right',
       });
 
-      toast.success('전략 생성 완료. 나의 전략에서 확인해보세요. ✨', {
-        position: 'bottom-right',
-      });
+      toast.success(
+        `전략 생성 완료(${strategy_code}). 나의 전략에서 확인해보세요. ✨`,
+        {
+          position: 'bottom-right',
+        },
+      );
     } catch (error) {
       toast.warning(`${error.message}`, {
         position: 'bottom-right',
@@ -76,9 +87,8 @@ const PortBacktestTabStart = () => {
         <Button onClick={handleCreateStrategy} className="btn" type="success">
           전략 생성 하기
         </Button>
-        {/* <Button onClick={handleBacktestStart} className="btn" type="info">
-          백테스트 시작
-        </Button> */}
+        {currentStrategyCode &&
+          `전략생성 완료 - 전략코드: ${currentStrategyCode}`}
       </WingBlank>
     </SPortBacktestTabStart>
   );
@@ -94,10 +104,12 @@ const SPortBacktestTabStart = styled.div`
 `;
 
 const PortBacktestTabDetail = () => {
+  const [currentStrategyCode] = useRecoilState(atomCurrentStrategyCode);
   const history = useHistory();
   useEffect(() => {
     history.push(
-      process.env.PUBLIC_URL + '/makers/strategy-create/details/2672',
+      process.env.PUBLIC_URL +
+        `/makers/strategy-create/details/${currentStrategyCode}`,
     );
     return () => {};
   }, [history]);
@@ -105,17 +117,21 @@ const PortBacktestTabDetail = () => {
   return (
     <div>
       <Route
-        path={process.env.PUBLIC_URL + '/makers/strategy-create/details/:id'}
-        component={StrategyDetails}
-      />
+        path={process.env.PUBLIC_URL + `/makers/strategy-create/details/:id`}
+      >
+        <StrategyDetails />
+      </Route>
     </div>
   );
 };
 const PortBacktestTabReport = () => {
+  const [currentStrategyCode] = useRecoilState(atomCurrentStrategyCode);
+
   const history = useHistory();
   useEffect(() => {
     history.push(
-      process.env.PUBLIC_URL + '/makers/strategy-create/report/2672',
+      process.env.PUBLIC_URL +
+        `/makers/strategy-create/report/${currentStrategyCode}`,
     );
     return () => {};
   }, [history]);
@@ -123,9 +139,10 @@ const PortBacktestTabReport = () => {
   return (
     <div>
       <Route
-        path={process.env.PUBLIC_URL + '/makers/strategy-create/report/:id'}
-        component={MockInvestReport}
-      />
+        path={process.env.PUBLIC_URL + `/makers/strategy-create/report/:id`}
+      >
+        <MockInvestReport />
+      </Route>
     </div>
   );
 };

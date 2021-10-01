@@ -306,3 +306,12 @@ export const selecteMiniBacktestResultListJSX = selector({
     ));
   },
 });
+
+/**
+ * 4.1  관심있는 백테스팅 전략 코드
+ */
+
+export const atomCurrentStrategyCode = atom<string>({
+  key: 'atomCurrentStrategyCode',
+  default: '',
+});
