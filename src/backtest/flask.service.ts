@@ -153,6 +153,7 @@ export class FlaskService {
       if (status !== 201) {
         return { ok: false, ...data };
       }
+      this.logger.verbose('✔ requestMiniBacktesting');
       return { ok: true, ...data };
     } catch (e) {
       console.error('[FAIL] GET test', e);

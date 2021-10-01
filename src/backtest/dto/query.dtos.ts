@@ -1,5 +1,6 @@
 import { IsArray, IsJSON, IsNumber, IsObject, IsString } from 'class-validator';
 import { CoreOutput } from 'src/common/dtos/output.dto';
+import { StrategyName } from 'src/trading/constant/strategy-setting';
 import {
   AccumulateProfitRateChart,
   BacktestDailyProfitRateChart,
@@ -54,7 +55,7 @@ export class RequestMiniBacktestingInput {
   @IsString()
   ticker: string;
   @IsString()
-  salestrategy: 'GoldenCross';
+  salestrategy: StrategyName;
   @IsArray()
   setting: number[];
   @IsObject()
