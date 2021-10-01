@@ -8,32 +8,77 @@ import StrategyDetails from 'pages/takers/strategy-search/section/strategy-detai
 import React, { useEffect, useMemo } from 'react';
 import { Route, useHistory } from 'react-router';
 import { toast } from 'react-toastify';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import useBackTestMutation from 'states/backtest/query/useBackTestMutation';
+import useCreateStrategy from 'states/strategy/query/useCreateStrategy';
+import {
+  makeAddUniversals,
+  makeCreateMyStrategy,
+} from 'states/strategy/recoil/selectors';
 import { atomInspector } from 'states/strategy/recoil/strategy-create';
 import styled from 'styled-components';
 import { IInspectorSettings } from '.';
 
 const PortBacktestTabStart = () => {
-  const handleBacktestStart = () => {
-    toast.info('백테스트 시작 ✨', {
-      position: 'bottom-right',
-    });
-  };
-  const handleCreateStrategy = () => {
-    toast.success('전략 생성 완료. 나의 전략에서 확인해보세요. ✨', {
-      position: 'bottom-right',
-    });
+  const makeCreateMyStrategyValue = useRecoilValue(makeCreateMyStrategy);
+  const makeAddUniversalsValue = useRecoilValue(makeAddUniversals);
+  const { addUniversalMutation, createMyStrategyMutation } =
+    useCreateStrategy();
+  const { pushBackTestQMutation } = useBackTestMutation();
+
+  const handleCreateStrategy = async () => {
+    try {
+      const result = await createMyStrategyMutation.mutateAsync(
+        makeCreateMyStrategyValue,
+      );
+
+      if (!result.data.memberStrategy?.strategy_code)
+        throw new Error('전략 생성 실패');
+
+      const strategy_code = result.data.memberStrategy?.strategy_code;
+      toast.info('전략 생성 ...', {
+        position: 'bottom-right',
+      });
+
+      await Promise.all(
+        makeAddUniversalsValue.map(async (e) => {
+          return addUniversalMutation.mutateAsync({
+            strategy_code,
+            body: {
+              ...e,
+              strategy_code,
+            },
+          });
+        }),
+      );
+      toast.info('관심 종목 추가 ...', {
+        position: 'bottom-right',
+      });
+
+      await pushBackTestQMutation.mutateAsync({ strategy_code });
+      toast.info('백테스트 시작 ...', {
+        position: 'bottom-right',
+      });
+
+      toast.success('전략 생성 완료. 나의 전략에서 확인해보세요. ✨', {
+        position: 'bottom-right',
+      });
+    } catch (error) {
+      toast.warning(`${error.message}`, {
+        position: 'bottom-right',
+      });
+    }
   };
 
   return (
     <SPortBacktestTabStart>
       <WingBlank>
-        <Button onClick={handleBacktestStart} className="btn" type="info">
-          백테스트 시작
-        </Button>
         <Button onClick={handleCreateStrategy} className="btn" type="success">
-          전략 생성 완료
+          전략 생성 하기
         </Button>
+        {/* <Button onClick={handleBacktestStart} className="btn" type="info">
+          백테스트 시작
+        </Button> */}
       </WingBlank>
     </SPortBacktestTabStart>
   );

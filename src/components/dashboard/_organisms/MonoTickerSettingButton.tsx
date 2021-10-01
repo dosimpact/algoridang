@@ -120,10 +120,16 @@ const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
           reqMiniBTMutation.data.data.res && (
             <div>
               <div>
-                CAGR :{' '}
-                {reqMiniBTMutation.data.data.res.year_avg_profit_rate * 100}%
+                연수익 :{' '}
+                {Number(
+                  reqMiniBTMutation.data.data.res.year_avg_profit_rate * 100,
+                ).toFixed(1)}
+                %
               </div>
-              <div>MDD : {reqMiniBTMutation.data.data.res.mdd * 100}%</div>
+              <div>
+                최대낙폭 :{' '}
+                {Number(reqMiniBTMutation.data.data.res.mdd * 100).toFixed(1)}%
+              </div>
             </div>
           )}
         {isIdle && '모의테스트'}
@@ -155,6 +161,7 @@ const SMonoTickerSettingButton = styled.section`
     justify-content: center;
     align-items: center;
     height: 100%;
+    text-align: center;
   }
   .settingListItem:nth-child(1):hover {
     background-color: ${(props) => props.theme.ColorMainLightGreen};
