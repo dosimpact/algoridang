@@ -1,5 +1,5 @@
 from openAPI import pricePykrx
-from _Test.stockData import financialInformation
+from financial.financialInformation import financialInformation
 
 from backtesting.MockInvestCtrl import MockInvestCtrl
 

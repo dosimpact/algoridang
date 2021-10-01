@@ -39,7 +39,7 @@ class CBackTtrader(backTestQuery):
         case = (self._setStrategy(data["strategyCode"]))
         
         if len(case) == 0:
-            self._setStatusMemberStrategy( "Error","DB dose'not have any data in this field...", self.strategyCode)
+            self._setStatusMemberStrategy( "Error","DB dose not have any data in this field...", self.strategyCode)
             print("DB dose'not have any data in this field...")
             return "error"
 

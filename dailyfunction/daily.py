@@ -1,7 +1,7 @@
 from openAPI import pricePykrx
 from financial.financialInformation import financialInformation
 import time
-
+from backtesting.MockInvestCtrl import MockInvestCtrl
 # cron
 from apscheduler.schedulers.background import BackgroundScheduler    # apscheduler 라이브러리 선언
 
@@ -9,9 +9,11 @@ def callDaily():
     pykrx = pricePykrx.CPricePykrx()
     tickers = pykrx.getAllTickerFromDB()
     fin = financialInformation()
+    mock = MockInvestCtrl()
     print(f'job : {time.strftime("%H:%M:%S")}')
-    #print("dailyStockData END : ", dailyStockData(tickers))
-    print("dailyfinanceData END : ", fin.getFinancalDataNaver(tickers))
+    print("dailyStockData END : ", dailyStockData(tickers))
+    #print("dailyfinanceData END : ", fin.getFinancalDataNaver(tickers))
+    print("dailyfinanceData END : ", mock.searchMockInvest())
     print(f'job : {time.strftime("%H:%M:%S")}')
 
 
@@ -41,7 +43,7 @@ def callDailyFunction():
     # sched.add_job(callDaily, 'cron', day_of_week='0-4', hour='0', minute='30')
 
     # test
-    sched.add_job(callDaily, 'cron', day_of_week='0-4', hour='0', minute='20')
+    sched.add_job(callDaily, 'cron', day_of_week='0-4', hour='0', minute='30')
 
     # apscheduler실행
     sched.start()

@@ -69,7 +69,7 @@ class backTestQuery(object):
             
             alllen = len(df)
             backtestlen = len(df[str(pd.to_datetime(start, format='%Y-%m-%d')):])
-            getDataPosStr = alllen - backtestlen - mindatalen
+            getDataPosStr = alllen - backtestlen - mindatalen - 1
             if getDataPosStr > 0:
                 if end is None or end == '':
                     res = df[getDataPosStr:]
@@ -359,13 +359,18 @@ class backTestQuery(object):
             print("_setInitData Unexpected error:", sys.exc_info()[0]) 
             DBClass.putConn(conn)
 
-
-        data['startTime'] = str(res[0][0])[:10].replace("-","")
-        data['investPrice'] = res[0][1]
-        data['securitiesCorpFee'] = float(res[0][3])
-        if res[0][4] != None:
-            data['endTime'] = str(res[0][4])[:10].replace("-","")
+        if len(res) != 0 :
+            data['startTime'] = str(res[0][0])[:10].replace("-","")
+            data['investPrice'] = res[0][1]
+            data['securitiesCorpFee'] = float(res[0][3])
+            if res[0][4] != None:
+                data['endTime'] = str(res[0][4])[:10].replace("-","")
+            else:
+                data['endTime'] = ""
         else:
-            data['endTime'] = ""
+            data['startTime'] = '20200101'
+            data['investPrice'] = 1000
+            data['securitiesCorpFee'] = 0.1
+            data['endTime'] = '20200102'
 
         return data

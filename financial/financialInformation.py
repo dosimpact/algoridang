@@ -8,15 +8,16 @@ import time
 from selenium import webdriver
 import sys
 
+
 class financialInformation(object):
     def __init__(self) -> None:
         super().__init__()
         self.fullTable = []
 
     def getFinancalDataNaver(self, tickers):
-            
+        global f
         webdriver_options = webdriver.ChromeOptions()
-        webdriver_options .add_argument('headless')
+        #webdriver_options .add_argument('headless')
  
         chromedriver = "E:\\chromedriver.exe"
         driver = webdriver.Chrome(chromedriver,options=webdriver_options )
@@ -24,7 +25,11 @@ class financialInformation(object):
         
         total = len(tickers)
         idx = 0
+        
         for ticker, name in tickers:
+            
+            f = open("새파일.txt", 'a')
+            self.fullTable = []
             idx += 1
             # DB 틀만들기
             #날짜 티커 정보 만들기 
@@ -33,6 +38,7 @@ class financialInformation(object):
             time.sleep(1)
             self.crowling(driver,ticker)
             print(f"dailyStockData progress ({idx}/{total})")
+            f.close()
 
     def dataAfterTreatment(self,additionalfinanceData, timedata, financeData, ticker):
         self.fullTable.append(timedata[-2][0:-1])       # 0 finance_date
@@ -68,7 +74,15 @@ class financialInformation(object):
         self.fullTable.append(financeData[28][-2])      # 0 PBR(원)
         self.fullTable.append(financeData[32][-2])      # 1 발행주식수
         self.fullTable.append(financeData[30][-2])      # 2 배당수익률
+        global f
+        
+        f.write('----------------------------\n')
+        f.write(str(self.fullTable))
+        f.write('\n')
+        f.write('----------------------------\n')
+        print(len(self.fullTable))
 
+        
     def crowling(self,driver,ticker):
         try:
             iframe = driver.find_element_by_id('coinfo_cp')
@@ -128,7 +142,13 @@ class financialInformation(object):
             self.saveDBNaver()
         
         except :
+
             print(ticker)
+            f.write('----------------------------\n')
+            f.write(str(ticker)+"has an errror\n" )
+            f.write("Unexpected error:" + str(sys.exc_info()[0]))
+            f.write('\n')
+            f.write('----------------------------\n')
             print("Unexpected error:", sys.exc_info()[0])
 
 
@@ -140,104 +160,113 @@ class financialInformation(object):
 
         for idx in range(len(self.fullTable)):
             val = self.fullTable[idx]
-            if val is None or val == '':
+            if val is None or val == ''or val == 'N/A':
                 self.fullTable[idx] = 'Null'
                 #print(self.fullTable)
         quarterDate = str(self.fullTable[0]) + "T15:30:00+09:00"
         ticker = self.fullTable[1]
 
         query = "select * from financial_statement where \"finance_date\" =\'"+str(quarterDate)+"\'and \"ticker\" = \'"+str(ticker)+"\'"
-        
-        if len(db.selectData(conn,query)) == 0:
-            query = "insert into financial_statement(\
-                \"finance_date\", \"ticker\", \"market_cap\",\
-                \"revenue\", \"operating_income\", \"EPS\",\
-                \"PER\", \"EV_per_EBITDA\", \"ROE\",\
-                \"dividend_yield\", \"BETA\", \"revenue_Q\",\
-                \"operating_income_Q\", \"net_income_Q\", \"controlling_interest_Q\",\
-                \"non_controlling_interest_Q\", \"total_assets_Q\", \"total_stock_holders_Q\",\
-                \"controlling_interest_share_Q\", \"non_controlling_interest_share_Q\", \"capital_Q\",\
-                \"debt_ratio_Q\", \"retention_rate_Q\", \"operating_margin_Q\",\
-                \"controlling_interest_rate_Q\", \"ROA_Q\", \"ROE_Q\",\
-                \"EPS_Q\", \"BPS_Q\", \"DPS_Q\",\
-                \"PBR_Q\", \"outstanding_shares_Q\", \"dividend_yield__Q\") "
+        try:
+            if len(db.selectData(conn,query)) == 0:
+                query = "insert into financial_statement(\
+                    \"finance_date\", \"ticker\", \"market_cap\",\
+                    \"revenue\", \"operating_income\", \"EPS\",\
+                    \"PER\", \"EV_per_EBITDA\", \"ROE\",\
+                    \"dividend_yield\", \"BETA\", \"revenue_Q\",\
+                    \"operating_income_Q\", \"net_income_Q\", \"controlling_interest_Q\",\
+                    \"non_controlling_interest_Q\", \"total_assets_Q\", \"total_stock_holders_Q\",\
+                    \"controlling_interest_share_Q\", \"non_controlling_interest_share_Q\", \"capital_Q\",\
+                    \"debt_ratio_Q\", \"retention_rate_Q\", \"operating_margin_Q\",\
+                    \"controlling_interest_rate_Q\", \"ROA_Q\", \"ROE_Q\",\
+                    \"EPS_Q\", \"BPS_Q\", \"DPS_Q\",\
+                    \"PBR_Q\", \"outstanding_shares_Q\", \"dividend_yield__Q\") "
 
-            query += "values(\
-                \'"+str(quarterDate)+"\',\'"+str(ticker)+"\',\
-                "+str(self.fullTable[2] )+",\
-                "+str(self.fullTable[3] )+",\
-                "+str(self.fullTable[4] )+",\
-                "+str(self.fullTable[5] )+",\
-                "+str(self.fullTable[6] )+",\
-                "+str(self.fullTable[8] )+",\
-                "+str(self.fullTable[7] )+",\
-                "+str(self.fullTable[9] )+",\
-                "+str(self.fullTable[10])+",\
-                "+str(self.fullTable[11])+",\
-                "+str(self.fullTable[12])+",\
-                "+str(self.fullTable[13])+",\
-                "+str(self.fullTable[14])+",\
-                "+str(self.fullTable[15])+",\
-                "+str(self.fullTable[16])+",\
-                "+str(self.fullTable[17])+",\
-                "+str(self.fullTable[18])+",\
-                "+str(self.fullTable[19])+",\
-                "+str(self.fullTable[20])+",\
-                "+str(self.fullTable[21])+",\
-                "+str(self.fullTable[22])+",\
-                "+str(self.fullTable[23])+",\
-                "+str(self.fullTable[24])+",\
-                "+str(self.fullTable[25])+",\
-                "+str(self.fullTable[26])+",\
-                "+str(self.fullTable[27])+",\
-                "+str(self.fullTable[28])+",\
-                "+str(self.fullTable[29])+",\
-                "+str(self.fullTable[30])+",\
-                "+str(self.fullTable[31])+",\
-                "+str(self.fullTable[32])+")"
+                query += "values(\
+                    \'"+str(quarterDate)+"\',\'"+str(ticker)+"\',\
+                    "+str(self.fullTable[2] )+",\
+                    "+str(self.fullTable[3] )+",\
+                    "+str(self.fullTable[4] )+",\
+                    "+str(self.fullTable[5] )+",\
+                    "+str(self.fullTable[6] )+",\
+                    "+str(self.fullTable[8] )+",\
+                    "+str(self.fullTable[7] )+",\
+                    "+str(self.fullTable[9] )+",\
+                    "+str(self.fullTable[10])+",\
+                    "+str(self.fullTable[11])+",\
+                    "+str(self.fullTable[12])+",\
+                    "+str(self.fullTable[13])+",\
+                    "+str(self.fullTable[14])+",\
+                    "+str(self.fullTable[15])+",\
+                    "+str(self.fullTable[16])+",\
+                    "+str(self.fullTable[17])+",\
+                    "+str(self.fullTable[18])+",\
+                    "+str(self.fullTable[19])+",\
+                    "+str(self.fullTable[20])+",\
+                    "+str(self.fullTable[21])+",\
+                    "+str(self.fullTable[22])+",\
+                    "+str(self.fullTable[23])+",\
+                    "+str(self.fullTable[24])+",\
+                    "+str(self.fullTable[25])+",\
+                    "+str(self.fullTable[26])+",\
+                    "+str(self.fullTable[27])+",\
+                    "+str(self.fullTable[28])+",\
+                    "+str(self.fullTable[29])+",\
+                    "+str(self.fullTable[30])+",\
+                    "+str(self.fullTable[31])+",\
+                    "+str(self.fullTable[32])+")"
+                    
+
+                db.insertIntoData(conn,query)
+                conn.commit()
                 
+            else:
+                query = "update financial_statement set "
+                query += " \"market_cap\" = "                       + str(self.fullTable[2])+ ","
+                query += " \"revenue\" = "                          + str(self.fullTable[3])+ ","
+                query += " \"operating_income\" = "                 + str(self.fullTable[4])+ ","
+                query += " \"EPS\" = "                              + str(self.fullTable[5])+ ","
+                query += " \"PER\" = "                              + str(self.fullTable[6])+ ","
+                query += " \"EV_per_EBITDA\" = "                    + str(self.fullTable[7])+ ","
+                query += " \"ROE\" = "                              + str(self.fullTable[8])+ ","
+                query += " \"dividend_yield\" = "                   + str(self.fullTable[9])+ ","
+                query += " \"BETA\" = "                             + str(self.fullTable[10])+ ","
+                query += " \"revenue_Q\" = "                        + str(self.fullTable[11])+ ","
+                query += " \"operating_income_Q\" = "               + str(self.fullTable[12])+ ","
+                query += " \"net_income_Q\" = "                     + str(self.fullTable[13])+ ","
+                query += " \"controlling_interest_Q\" = "           + str(self.fullTable[14])+ ","
+                query += " \"non_controlling_interest_Q\" = "       + str(self.fullTable[15])+ ","
+                query += " \"total_assets_Q\" = "                   + str(self.fullTable[16])+ ","
+                query += " \"total_stock_holders_Q\" = "            + str(self.fullTable[17])+ ","
+                query += " \"controlling_interest_share_Q\" = "     + str(self.fullTable[18])+ ","
+                query += " \"non_controlling_interest_share_Q\" = " + str(self.fullTable[19])+ ","
+                query += " \"capital_Q\" = "                        + str(self.fullTable[20])+ ","
+                query += " \"debt_ratio_Q\" = "                     + str(self.fullTable[21])+ ","
+                query += " \"retention_rate_Q\" = "                 + str(self.fullTable[22])+ ","
+                query += " \"operating_margin_Q\" = "               + str(self.fullTable[23])+ ","
+                query += " \"controlling_interest_rate_Q\" = "      + str(self.fullTable[24])+ ","
+                query += " \"ROA_Q\" = "                            + str(self.fullTable[25])+ ","
+                query += " \"ROE_Q\" = "                            + str(self.fullTable[26])+ ","
+                query += " \"EPS_Q\" = "                            + str(self.fullTable[27])+ ","
+                query += " \"BPS_Q\" = "                            + str(self.fullTable[28])+ ","
+                query += " \"DPS_Q\" = "                            + str(self.fullTable[29])+ ","
+                query += " \"PBR_Q\" = "                            + str(self.fullTable[30])+ ","
+                query += " \"outstanding_shares_Q\" = "             + str(self.fullTable[31])+ ","
+                query += " \"dividend_yield__Q\" = "                + str(self.fullTable[32])
+                query += " where \"finance_date\" = \'" + str(quarterDate) + "\'"
+                query += " and \"ticker\" = \'" + str(ticker) + "\'"
+        
 
-            db.insertIntoData(conn,query)
-            conn.commit()
-            
-        else:
-            query = "update financial_statement set "
-            query += " \"market_cap\" = "                       + str(self.fullTable[2])+ ","
-            query += " \"revenue\" = "                          + str(self.fullTable[3])+ ","
-            query += " \"operating_income\" = "                 + str(self.fullTable[4])+ ","
-            query += " \"EPS\" = "                              + str(self.fullTable[5])+ ","
-            query += " \"PER\" = "                              + str(self.fullTable[6])+ ","
-            query += " \"EV_per_EBITDA\" = "                    + str(self.fullTable[7])+ ","
-            query += " \"ROE\" = "                              + str(self.fullTable[8])+ ","
-            query += " \"dividend_yield\" = "                   + str(self.fullTable[9])+ ","
-            query += " \"BETA\" = "                             + str(self.fullTable[10])+ ","
-            query += " \"revenue_Q\" = "                        + str(self.fullTable[11])+ ","
-            query += " \"operating_income_Q\" = "               + str(self.fullTable[12])+ ","
-            query += " \"net_income_Q\" = "                     + str(self.fullTable[13])+ ","
-            query += " \"controlling_interest_Q\" = "           + str(self.fullTable[14])+ ","
-            query += " \"non_controlling_interest_Q\" = "       + str(self.fullTable[15])+ ","
-            query += " \"total_assets_Q\" = "                   + str(self.fullTable[16])+ ","
-            query += " \"total_stock_holders_Q\" = "            + str(self.fullTable[17])+ ","
-            query += " \"controlling_interest_share_Q\" = "     + str(self.fullTable[18])+ ","
-            query += " \"non_controlling_interest_share_Q\" = " + str(self.fullTable[19])+ ","
-            query += " \"capital_Q\" = "                        + str(self.fullTable[20])+ ","
-            query += " \"debt_ratio_Q\" = "                     + str(self.fullTable[21])+ ","
-            query += " \"retention_rate_Q\" = "                 + str(self.fullTable[22])+ ","
-            query += " \"operating_margin_Q\" = "               + str(self.fullTable[23])+ ","
-            query += " \"controlling_interest_rate_Q\" = "      + str(self.fullTable[24])+ ","
-            query += " \"ROA_Q\" = "                            + str(self.fullTable[25])+ ","
-            query += " \"ROE_Q\" = "                            + str(self.fullTable[26])+ ","
-            query += " \"EPS_Q\" = "                            + str(self.fullTable[27])+ ","
-            query += " \"BPS_Q\" = "                            + str(self.fullTable[28])+ ","
-            query += " \"DPS_Q\" = "                            + str(self.fullTable[29])+ ","
-            query += " \"PBR_Q\" = "                            + str(self.fullTable[30])+ ","
-            query += " \"outstanding_shares_Q\" = "             + str(self.fullTable[31])+ ","
-            query += " \"dividend_yield__Q\" = "                + str(self.fullTable[32])
-            query += " where \"finance_date\" = \'" + str(quarterDate) + "\'"
-            query += " and \"ticker\" = \'" + str(ticker) + "\'"
-    
-
-            db.updateData(conn,query)
-            conn.commit()
-        db.putConn(conn)
+                db.updateData(conn,query)
+                conn.commit()
+            db.putConn(conn)
+        except:
+            f.write('----------------------------\n')
+            f.write(str(ticker)+"has an errror\n" )
+            f.write("DB write error:" + str(sys.exc_info()[0]))
+            f.write('\n')
+            f.write(str(self.fullTable))
+            f.write('\n')
+            f.write('----------------------------\n')
+            db.putConn(conn)
 
