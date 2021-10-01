@@ -84,6 +84,9 @@ export interface IAtomUniversalSettingStateItem {
 interface IAtomUniversalSettingState {
   selected: IAtomUniversalSettingStateItem[];
 }
+interface IAtomUniversalSettingStateIdx {
+  selectedIndex: number; // 변경할 atomUniversalSettingState.selected의 idx
+}
 
 // ---------------------------------------------------
 
@@ -167,6 +170,15 @@ export const atomUniversalSettingState = atom<IAtomUniversalSettingState>({
     selected: [],
   },
 });
+/**
+ * 3.1.1 종목 관리 상태관리 - atom
+ * 세팅할 인덱스 넘버
+   @returns {IUniversalSettingState}
+ */
+export const atomUniversalSettingStateIdx = atom<number>({
+  key: 'AtomUniversalSettingStateIdx',
+  default: -1,
+});
 
 /**
  * (deprecated) 종목 관리 상태관리 - selector
@@ -242,6 +254,7 @@ export const selectedUniversalSetting =
       }
     },
   });
+
 // refactoring...
 export const selectedUniversalSetting_R = selectorFamily<
   IAtomUniversalSettingStateItem | null,

@@ -56,43 +56,33 @@ const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
 
   return (
     <SStrategyCreateModule>
-      <div className="wrapper">
-        <article className="dashBoard">
-          <section className="dashBoardCol1">
-            <WingBlank>
-              <div className="baseSettingBtnSlot">
-                {baseSettingBtnElements}
-                {<DashBoardDebug />}
-              </div>
-            </WingBlank>
-            <div className="charSlot">
-              <TickerPrice />
+      <article className="columns">
+        <section className="dashBoardCol1">
+          <WingBlank>
+            <div className="baseSettingBtnSlot">
+              {baseSettingBtnElements}
+              {<DashBoardDebug />}
             </div>
-            {/* <div className="slot">{baseSettingBtnElement}</div> */}
-            {/* <div className="slot">{universalSettingBtnElement}</div> */}
-            {/* <div className="slot">{selectedTickerElementList}</div> */}
-          </section>
-          <section>
-            <WhiteSpace />
-            <div style={{ textAlign: 'start' }}>관심 종목 리스트</div>
-            <WhiteSpace />
-            <article className="dashBoardCol2">
-              <ul className="slot">{selectedMonoTickerSettingButtonList}</ul>
-            </article>
-          </section>
-
-          {/* <section className="dashBoardCol3">
-            <ul>{dashBoardCol3 && dashBoardCol3}</ul>
-          </section> */}
-          {/* <section className="dashBoardCol4">
-            <div className="slot">{portBacktestBtnElement}</div>
-            <div className="slot">포트 백테스팅 결과</div>
-          </section> */}
-        </article>
-        <article className="inspector">
+          </WingBlank>
+          <div className="charSlot">
+            <TickerPrice />
+          </div>
+          {/* <div className="slot">{baseSettingBtnElement}</div> */}
+          {/* <div className="slot">{universalSettingBtnElement}</div> */}
+          {/* <div className="slot">{selectedTickerElementList}</div> */}
+        </section>
+        <section className="dashBoardCol2">
+          <WhiteSpace />
+          <div style={{ textAlign: 'start' }}>관심 종목 리스트</div>
+          <WhiteSpace />
+          <article className="interestTickers">
+            <ul className="slot">{selectedMonoTickerSettingButtonList}</ul>
+          </article>
+        </section>
+        <section className="inspector">
           {currentInspectorElement && currentInspectorElement}
-        </article>
-      </div>
+        </section>
+      </article>
     </SStrategyCreateModule>
   );
 };
@@ -100,36 +90,31 @@ const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
 const SStrategyCreateModule = styled.section`
   min-height: 100vh;
 
-  .wrapper {
-    display: grid;
-    grid-template-columns: minmax(70rem, 1fr) 40rem;
-    min-height: 100vh;
-  }
-  .dashBoard {
+  .columns {
     background-color: white;
     min-height: 80vh;
     padding: 2rem;
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 80rem minmax(35rem, 1fr) 38rem;
     grid-gap: 2rem;
     .dashBoardCol1 {
       min-height: 80vh;
-      .baseSettingBtnSlot {
-        display: flex;
-        flex-flow: row nowrap;
-        & > div {
-          margin-right: 1rem;
-        }
-      }
-    }
-    .dashBoardCol2 {
-      /* border: 1px solid red; */
-      height: 95vh;
-      overflow-y: scroll;
     }
   }
   .inspector {
     background-color: ${(props) => props.theme.ColorGrayL2};
+  }
+  .interestTickers {
+    /* border: 1px solid red; */
+    height: 95vh;
+    overflow-y: scroll;
+  }
+  .baseSettingBtnSlot {
+    display: flex;
+    flex-flow: row nowrap;
+    & > div {
+      margin-right: 1rem;
+    }
   }
 `;
 

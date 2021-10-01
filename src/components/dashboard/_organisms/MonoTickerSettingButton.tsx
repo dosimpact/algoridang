@@ -1,13 +1,14 @@
 import { IconArrowRight } from 'assets/icons';
 import produce from 'immer';
 import React, { useMemo, useEffect } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import useMiniBacktest, {
   miniBacktestAdaptor,
 } from 'states/backtest/query/useMiniBacktest';
 import {
   atomInspector,
   atomUniversalSettingState,
+  atomUniversalSettingStateIdx,
 } from 'states/strategy/recoil/strategy-create';
 import styled from 'styled-components';
 import { IBaseSettingButton } from './BaseSettingButton';
@@ -23,13 +24,18 @@ const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
   const [inspector, setInspector] = useRecoilState(atomInspector);
 
   const [universals] = useRecoilState(atomUniversalSettingState);
+  const [currentUnivIdx, setCurrentUnivIdx] = useRecoilState(
+    atomUniversalSettingStateIdx,
+  );
 
   const currentUniversal = useMemo(() => {
     if (universals && selectedIndex < universals.selected.length)
       return universals.selected[selectedIndex];
   }, [universals, selectedIndex]);
 
+  // 티커를 클릭했을때,
   const handleClickTicker = () => {
+    // 인스펙터를 변화
     setInspector((prev) =>
       produce(prev, (draft) => {
         draft.inspectorType = 'tradingSetting';
@@ -40,6 +46,7 @@ const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
         return draft;
       }),
     );
+    setCurrentUnivIdx(selectedIndex);
   };
 
   const handleClickTradingSetting = () => {
@@ -52,6 +59,7 @@ const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
         return draft;
       }),
     );
+    setCurrentUnivIdx(selectedIndex);
   };
 
   console.log('currentUniversal', currentUniversal);
@@ -75,6 +83,7 @@ const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
     handleRequestMiniBT();
     return () => {};
   }, []);
+
   console.log('reqMiniBTMutation.data?.data', reqMiniBTMutation.data?.data);
 
   return (

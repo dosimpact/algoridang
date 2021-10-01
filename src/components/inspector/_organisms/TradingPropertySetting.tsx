@@ -7,6 +7,7 @@ import React, { useMemo } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   atomInspector,
+  atomUniversalSettingStateIdx,
   selectedUniversalSetting_R,
 } from 'states/strategy/recoil/strategy-create';
 import { SettingJSON } from 'states/trading/interface/entities';
@@ -22,26 +23,17 @@ const TradingPropertySetting: React.FC<ITradingPropertySetting> = ({
   headerTitle,
 }) => {
   // 현재 변경 타겟의 seletedIdx
-  const inspector = useRecoilValue(atomInspector);
-  const selectedIndex = useMemo(
-    () => inspector.inspectorState.tradingPropertySetting.selectedIndex,
-    [inspector],
-  );
-  // console.log('selectedIndex', selectedIndex);
 
+  const currentIdx = useRecoilValue(atomUniversalSettingStateIdx);
   const [currentUniversalSetting, setCurrentUniversalSetting] = useRecoilState(
-    selectedUniversalSetting_R({ universalIdx: selectedIndex }),
+    selectedUniversalSetting_R({ universalIdx: currentIdx }),
   );
   const setting_json = useMemo(() => {
     return currentUniversalSetting?.selectedTechnical?.setting_json;
   }, [currentUniversalSetting]);
-  // console.log('currentUniversalSetting', currentUniversalSetting);
 
   // 현재 변경할 unverisalSetting
-
   const handleSubmit = (e: unknown) => {
-    // console.log('e', e);
-    // console.log('currentUniversalSetting', currentUniversalSetting);
     const setting_json = e as SettingJSON;
     if (currentUniversalSetting && currentUniversalSetting.selectedTechnical) {
       setCurrentUniversalSetting({
@@ -52,21 +44,6 @@ const TradingPropertySetting: React.FC<ITradingPropertySetting> = ({
         },
       });
     }
-    // TODO 왜 안될까?
-    // setCurrentUniversalSetting((prev) =>
-    //   produce(prev, (draft) => {
-    //     console.log(draft);
-    //     console.log(draft?.selectedTechnical?.setting_json);
-    //     const setting_json = e as SettingJSON;
-    //     if (
-    //       currentUniversalSetting &&
-    //       currentUniversalSetting.selectedTechnical
-    //     ) {
-    //       draft?.selectedTechnical?.setting_json = setting_json;
-    //     }
-    //     return draft;
-    //   }),
-    // );
   };
 
   return (

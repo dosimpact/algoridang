@@ -2,10 +2,12 @@ import WingBlank from 'components/common/_atoms/WingBlank';
 import InspectorHeaderDetail from 'components/inspector/_molecules/InspectorHeaderDetail';
 import produce from 'immer';
 import React, { useMemo } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   atomInspector,
+  atomUniversalSettingStateIdx,
   selectedUniversalSetting,
+  selectedUniversalSetting_R,
 } from 'states/strategy/recoil/strategy-create';
 import styled from 'styled-components';
 import { IInspectorSettings } from '.';
@@ -63,12 +65,10 @@ const STechnicalStrategyList = styled.article`
  * -개별 종목에 매매 전략 적용
  */
 const TradingSettingTabTechnicalSearch = () => {
-  const [inspector, setInspector] = useRecoilState(atomInspector);
+  const currentIdx = useRecoilValue(atomUniversalSettingStateIdx);
   const [currentUniversalSetting, setCurrentUniversalSetting] = useRecoilState(
-    selectedUniversalSetting,
+    selectedUniversalSetting_R({ universalIdx: currentIdx }),
   );
-
-  // 셋팅 대상이 되는 ticker index
 
   // 선택한 전략을 해당 유니버스에 적용시킨다.
   const handleApplyTechinalToTicker = (e: BaseTradingStrategy) => {
