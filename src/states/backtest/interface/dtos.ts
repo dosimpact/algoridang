@@ -2,6 +2,7 @@
  * Query
  */
 
+import { StrategyName } from 'states/trading/interface/entities';
 import { CoreOutput } from '../../common/interface/dtos';
 import {
   AccumulateProfitRateChart,
@@ -50,7 +51,7 @@ export interface GetBacktestWinRatioOutput extends CoreOutput {
 // 미니 백테스팅 DTO
 export interface RequestMiniBacktestingInput {
   ticker: string;
-  salestrategy: 'GoldenCross';
+  salestrategy: StrategyName;
   setting: number[];
   data: {
     startTime: string; //"20190101",

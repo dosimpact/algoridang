@@ -1,7 +1,10 @@
 import { IconArrowRight } from 'assets/icons';
 import produce from 'immer';
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
+import useMiniBacktest, {
+  miniBacktestAdaptor,
+} from 'states/backtest/query/useMiniBacktest';
 import {
   atomInspector,
   atomUniversalSettingState,
@@ -51,20 +54,50 @@ const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
     );
   };
 
+  console.log('currentUniversal', currentUniversal);
+
+  const { reqMiniBTMutation } = useMiniBacktest();
+
+  const handleRequestMiniBT = async () => {
+    console.log('handleRequestMiniBT');
+
+    if (currentUniversal && currentUniversal.selectedTechnical) {
+      reqMiniBTMutation.mutate(
+        miniBacktestAdaptor({
+          selectedCorporations: currentUniversal.selectedCorporations,
+          selectedTechnical: currentUniversal.selectedTechnical,
+        }),
+      );
+    }
+  };
+  // 조건이 만족되면 ~ miniBacktesting
+  useEffect(() => {
+    handleRequestMiniBT();
+    return () => {};
+  }, []);
+  console.log('reqMiniBTMutation.data?.data', reqMiniBTMutation.data?.data);
+
   return (
     <SMonoTickerSettingButton>
       <div className="settingListItem" onClick={handleClickTicker}>
         {title}
       </div>
-      <IconArrowRight />
+      <div className="settingListItem">
+        <IconArrowRight />
+      </div>
+
       <div className="settingListItem" onClick={handleClickTradingSetting}>
         {currentUniversal &&
         currentUniversal.selectedTechnical?.trading_strategy_name
           ? `${currentUniversal.selectedTechnical?.trading_strategy_name}`
-          : '매매전략선택'}
+          : '전략상세설정'}
       </div>
-      <IconArrowRight />
-      <div className="settingListItem">미니 백테스팅</div>
+      <div className="settingListItem">
+        <IconArrowRight />
+      </div>
+      <div className="settingListItem" onClick={handleRequestMiniBT}>
+        미니 백테스팅
+      </div>
     </SMonoTickerSettingButton>
   );
 };
@@ -74,15 +107,15 @@ export default MonoTickerSettingButton;
 const SMonoTickerSettingButton = styled.section`
   display: grid;
   grid-template-columns: 1fr 3rem 1fr 3rem 1fr;
-  justify-content: center;
-  align-content: center;
+  /* justify-content: center; */
+  /* align-content: center; */
 
   border: 1px solid ${(props) => props.theme.ColorMainLightGray};
   cursor: pointer;
   height: 8rem;
-
+  margin-bottom: 0.5rem;
   :hover {
-    border: 1px solid ${(props) => props.theme.ColorMainLightBlue};
+    border: 1px solid ${(props) => props.theme.ColorMainBlue};
   }
   svg {
     fill: ${(props) => props.theme.ColorMainLightGray};
@@ -92,5 +125,14 @@ const SMonoTickerSettingButton = styled.section`
     justify-content: center;
     align-items: center;
     height: 100%;
+  }
+  .settingListItem:nth-child(1):hover {
+    background-color: ${(props) => props.theme.ColorMainLightGreen};
+  }
+  .settingListItem:nth-child(3):hover {
+    background-color: ${(props) => props.theme.ColorMainLightBlue};
+  }
+  .settingListItem:nth-child(5):hover {
+    background-color: ${(props) => props.theme.ColorMainLightRed};
   }
 `;

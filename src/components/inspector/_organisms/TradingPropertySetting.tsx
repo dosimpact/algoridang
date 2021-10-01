@@ -1,3 +1,4 @@
+import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import WideLine from 'components/common/_atoms/WideLine';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import InspectorHeaderDetail from 'components/inspector/_molecules/InspectorHeaderDetail';
@@ -76,12 +77,11 @@ const TradingPropertySetting: React.FC<ITradingPropertySetting> = ({
       <WideLine style={{ margin: '0 0 1.3rem 0' }} />
       <WingBlank>
         {!currentUniversalSetting?.selectedTechnical && (
-          <div>매매전략을 설정해주세요</div>
+          <div>매매 전략을 우선 선택해주세요</div>
         )}
-
         {currentUniversalSetting?.selectedTechnical && setting_json && (
           <>
-            <div>매매 전략 상세 설정</div>
+            <WhiteSpace />
             <div>
               <StPropsSetting
                 trading_strategy_name={

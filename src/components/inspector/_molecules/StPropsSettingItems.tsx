@@ -12,7 +12,11 @@ interface IStProps {
 interface IStPropsSMAForm {
   SMA_A: number;
 }
+
+// 늘어나는 상세 전략에 대해 상속을 통해 구현합니다.
+
 interface IStPropsSMA extends IStProps {}
+
 export const StPropsSMA: React.FC<IStPropsSMA> = ({
   children,
   onSubmit,
@@ -35,7 +39,9 @@ export const StPropsSMA: React.FC<IStPropsSMA> = ({
           <label htmlFor="SMA_A">단순이평선 정배열</label>
           <input type="text" id="SMA_A" {...register('SMA_A')} />
         </InputListItem>
-        <Button onClick={submitHandler}>적용</Button>
+        <Button type="success" onClick={submitHandler}>
+          적용
+        </Button>
       </form>
     </div>
   );

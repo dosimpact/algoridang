@@ -1,3 +1,4 @@
+import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import React, { useCallback, useMemo } from 'react';
 import { SettingJSON, StrategyName } from 'states/trading/interface/entities';
 import { StPropsSMA, StPropsGoldenCross } from './StPropsSettingItems';
@@ -32,11 +33,12 @@ const StPropsSetting: React.FC<IStPropsSetting> = ({
       );
     }
     return <div>Error</div>;
-  }, [trading_strategy_name, handleSubmit]);
+  }, [trading_strategy_name, handleSubmit, setting_json]);
 
   return (
     <div>
-      <div>매매전략 이름 : {trading_strategy_name}</div>
+      <div>"{trading_strategy_name}"에 지표값을 설정해 주세요</div>
+      <WhiteSpace />
       {children}
       {SelectedStSettingItem}
     </div>
