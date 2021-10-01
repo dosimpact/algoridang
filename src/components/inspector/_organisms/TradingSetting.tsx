@@ -6,7 +6,6 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   atomInspector,
   atomUniversalSettingStateIdx,
-  selectedUniversalSetting,
   selectedUniversalSetting_R,
 } from 'states/strategy/recoil/strategy-create';
 import styled from 'styled-components';
@@ -114,10 +113,9 @@ const STradingSettingTabTechnicalSearch = styled.section``;
  * @returns
  */
 const TradingSettingTabQuantSearch = () => {
-  const [inspector, setInspector] = useRecoilState(atomInspector);
-
+  const currentIdx = useRecoilValue(atomUniversalSettingStateIdx);
   const [currentUniversalSetting, setCurrentUniversalSetting] = useRecoilState(
-    selectedUniversalSetting,
+    selectedUniversalSetting_R({ universalIdx: currentIdx }),
   );
 
   // 선택한 전략을 해당 유니버스에 적용시킨다.

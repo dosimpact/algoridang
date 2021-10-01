@@ -1,37 +1,33 @@
 import { IconArrowRight } from 'assets/icons';
 import produce from 'immer';
-import React, { useMemo, useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import useMiniBacktest, {
   miniBacktestAdaptor,
 } from 'states/backtest/query/useMiniBacktest';
 import {
   atomInspector,
-  atomUniversalSettingState,
   atomUniversalSettingStateIdx,
+  selectedUniversalSetting_R,
 } from 'states/strategy/recoil/strategy-create';
 import styled from 'styled-components';
 import { IBaseSettingButton } from './BaseSettingButton';
-
 interface IMonoTickerSettingButton extends IBaseSettingButton {}
 
 // 대시보드 (col-2) : 개별 종목 매매전략 설정 및 매매전략상세설정 button
 const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
-  children,
   title,
   selectedIndex,
 }) => {
-  const [inspector, setInspector] = useRecoilState(atomInspector);
+  const thisUnivIdx = selectedIndex;
 
-  const [universals] = useRecoilState(atomUniversalSettingState);
+  const [inspector, setInspector] = useRecoilState(atomInspector);
   const [currentUnivIdx, setCurrentUnivIdx] = useRecoilState(
     atomUniversalSettingStateIdx,
   );
-
-  const currentUniversal = useMemo(() => {
-    if (universals && selectedIndex < universals.selected.length)
-      return universals.selected[selectedIndex];
-  }, [universals, selectedIndex]);
+  const thisUnivSetting = useRecoilValue(
+    selectedUniversalSetting_R({ universalIdx: thisUnivIdx }),
+  );
 
   // 티커를 클릭했을때,
   const handleClickTicker = () => {
@@ -41,49 +37,51 @@ const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
         draft.inspectorType = 'tradingSetting';
         draft.inspectorState.tradingSetting = {
           tab: prev.inspectorState.tradingSetting.tab,
-          selectedIndex,
+          // selectedIndex: -1,
         };
         return draft;
       }),
     );
-    setCurrentUnivIdx(selectedIndex);
+    setCurrentUnivIdx(thisUnivIdx);
   };
 
+  //
   const handleClickTradingSetting = () => {
     setInspector((prev) =>
       produce(prev, (draft) => {
         draft.inspectorType = 'tradingPropertySetting';
-        draft.inspectorState.tradingPropertySetting = {
-          selectedIndex,
-        };
+        // draft.inspectorState.tradingPropertySetting = {
+        //   selectedIndex,
+        // };
         return draft;
       }),
     );
     setCurrentUnivIdx(selectedIndex);
   };
 
-  console.log('currentUniversal', currentUniversal);
-
   const { reqMiniBTMutation } = useMiniBacktest();
 
-  const handleRequestMiniBT = async () => {
-    console.log('handleRequestMiniBT');
-
-    if (currentUniversal && currentUniversal.selectedTechnical) {
+  const handleRequestMiniBT = useCallback(async () => {
+    if (thisUnivSetting && thisUnivSetting.selectedTechnical) {
       reqMiniBTMutation.mutate(
         miniBacktestAdaptor({
-          selectedCorporations: currentUniversal.selectedCorporations,
-          selectedTechnical: currentUniversal.selectedTechnical,
+          selectedCorporations: thisUnivSetting.selectedCorporations,
+          selectedTechnical: thisUnivSetting.selectedTechnical,
         }),
       );
     }
-  };
+  }, []);
   // 조건이 만족되면 ~ miniBacktesting
   useEffect(() => {
     handleRequestMiniBT();
     return () => {};
-  }, []);
+  }, [
+    handleRequestMiniBT,
+    thisUnivSetting?.selectedTechnical?.setting_json,
+    thisUnivSetting?.selectedTechnical?.trading_strategy_name,
+  ]);
 
+  const { isSuccess, isError, isLoading, isIdle } = reqMiniBTMutation;
   console.log('reqMiniBTMutation.data?.data', reqMiniBTMutation.data?.data);
 
   return (
@@ -96,16 +94,29 @@ const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
       </div>
 
       <div className="settingListItem" onClick={handleClickTradingSetting}>
-        {currentUniversal &&
-        currentUniversal.selectedTechnical?.trading_strategy_name
-          ? `${currentUniversal.selectedTechnical?.trading_strategy_name}`
+        {thisUnivSetting &&
+        thisUnivSetting.selectedTechnical?.trading_strategy_name
+          ? `${thisUnivSetting.selectedTechnical?.trading_strategy_name}`
           : '전략상세설정'}
       </div>
       <div className="settingListItem">
         <IconArrowRight />
       </div>
       <div className="settingListItem" onClick={handleRequestMiniBT}>
-        미니 백테스팅
+        {isLoading && 'loading...'}
+        {!isLoading && isError && 'Error'}
+        {!isLoading &&
+          isSuccess &&
+          reqMiniBTMutation.data &&
+          reqMiniBTMutation.data.data.res && (
+            <div>
+              <div>
+                CAGR : {reqMiniBTMutation.data.data.res.year_avg_profit_rate}
+              </div>
+              <div>MDD : {reqMiniBTMutation.data.data.res.mdd}</div>
+            </div>
+          )}
+        {isIdle && '모의테스트'}
       </div>
     </SMonoTickerSettingButton>
   );

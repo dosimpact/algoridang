@@ -46,10 +46,10 @@ interface IAtomInspector {
     };
     tradingSetting: {
       tab: number;
-      selectedIndex: number; // 변경할 atomUniversalSettingState.selected의 idx
+      // selectedIndex: number; // 변경할 atomUniversalSettingState.selected의 idx
     };
     tradingPropertySetting: {
-      selectedIndex: number; // 변경할 atomUniversalSettingState.selected의 idx
+      // selectedIndex: number; // 변경할 atomUniversalSettingState.selected의 idx
     };
     backTestingSetting: {
       tab: number;
@@ -84,9 +84,6 @@ export interface IAtomUniversalSettingStateItem {
 interface IAtomUniversalSettingState {
   selected: IAtomUniversalSettingStateItem[];
 }
-interface IAtomUniversalSettingStateIdx {
-  selectedIndex: number; // 변경할 atomUniversalSettingState.selected의 idx
-}
 
 // ---------------------------------------------------
 
@@ -106,8 +103,8 @@ export const atomInspector = atom<IAtomInspector>({
         isFilterModalOpen: false,
         tab: 0,
       },
-      tradingSetting: { tab: 0, selectedIndex: -1 },
-      tradingPropertySetting: { selectedIndex: -1 },
+      tradingSetting: { tab: 0 },
+      tradingPropertySetting: {},
       backTestingSetting: { tab: 0 },
     },
   },
@@ -223,39 +220,44 @@ export const selectedMonoTickerSettingButtonListJSX = selector({
   get : @returns 현재 selectedIdx의 유니버스 리턴
   set : @returns 현재 selectedIdx의 유니버스 매매전략 설정
  */
-export const selectedUniversalSetting =
-  selector<IAtomUniversalSettingStateItem | null>({
-    key: 'selectedUniversalSetting',
-    get: ({ get }) => {
-      const inspector = get(atomInspector);
-      const selectedIndex =
-        inspector.inspectorState.tradingSetting.selectedIndex;
-      const at = get(atomUniversalSettingState);
-      if (selectedIndex !== undefined) return at.selected[selectedIndex];
-      else return null;
-    },
-    set: ({ set, get }, newValue) => {
-      const inspector = get(atomInspector);
-      const selectedIndex =
-        inspector.inspectorState.tradingSetting.selectedIndex;
-      const at = get(atomUniversalSettingState);
-      if (selectedIndex !== undefined && newValue) {
-        const nextState = produce(at, (draft) => {
-          draft.selected[selectedIndex] = draft.selected[selectedIndex] =
-            newValue as IAtomUniversalSettingStateItem;
-          return draft;
-        });
-        set(atomUniversalSettingState, nextState);
-      } else {
-        console.error(
-          '[Error]선택된 종목이 없는상태로 매매전략 추가 selectedIndex :',
-          selectedIndex,
-        );
-      }
-    },
-  });
+// export const selectedUniversalSetting =
+//   selector<IAtomUniversalSettingStateItem | null>({
+//     key: 'selectedUniversalSetting',
+//     get: ({ get }) => {
+//       const inspector = get(atomInspector);
+//       const selectedIndex =
+//         inspector.inspectorState.tradingSetting.selectedIndex;
+//       const at = get(atomUniversalSettingState);
+//       if (selectedIndex !== undefined) return at.selected[selectedIndex];
+//       else return null;
+//     },
+//     set: ({ set, get }, newValue) => {
+//       const inspector = get(atomInspector);
+//       const selectedIndex =
+//         inspector.inspectorState.tradingSetting.selectedIndex;
+//       const at = get(atomUniversalSettingState);
+//       if (selectedIndex !== undefined && newValue) {
+//         const nextState = produce(at, (draft) => {
+//           draft.selected[selectedIndex] = draft.selected[selectedIndex] =
+//             newValue as IAtomUniversalSettingStateItem;
+//           return draft;
+//         });
+//         set(atomUniversalSettingState, nextState);
+//       } else {
+//         console.error(
+//           '[Error]선택된 종목이 없는상태로 매매전략 추가 selectedIndex :',
+//           selectedIndex,
+//         );
+//       }
+//     },
+//   });
 
-// refactoring...
+/**
+ * 3.4  종목 관리 상태관리 - selector
+  get : @returns 현재 selectedIdx의 유니버스 리턴
+  set : @returns 현재 selectedIdx의 유니버스 매매전략 설정
+ */
+
 export const selectedUniversalSetting_R = selectorFamily<
   IAtomUniversalSettingStateItem | null,
   { universalIdx: number }

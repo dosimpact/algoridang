@@ -1,7 +1,6 @@
 import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import useStrategy from 'states/strategy/query/useStrategy';
-import { toTagsString, toTickerImage } from 'utils/parse';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import PageGuide from 'components/common/_molecules/PageGuide';
 

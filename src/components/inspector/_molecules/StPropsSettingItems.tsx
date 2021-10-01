@@ -2,6 +2,7 @@ import { Button } from 'components/common/_atoms/Buttons';
 import InputListItem from 'components/common/_atoms/InputListItem';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import { SettingJSON } from 'states/trading/interface/entities';
 
 interface IStProps {
@@ -66,6 +67,9 @@ export const StPropsGoldenCross: React.FC<IStPropsGoldenCross> = ({
     });
 
   const submitHandler = handleSubmit((data) => {
+    toast.success('적용 완료', {
+      position: 'bottom-right',
+    });
     if (onSubmit) {
       onSubmit({ GoldenCross: data });
     }
@@ -82,7 +86,9 @@ export const StPropsGoldenCross: React.FC<IStPropsGoldenCross> = ({
           <label htmlFor="pslow">단기</label>
           <input type="text" id="pslow" {...register('pslow')} />
         </InputListItem>
-        <Button onClick={submitHandler}>적용</Button>
+        <Button type="success" onClick={submitHandler}>
+          적용
+        </Button>
       </form>
     </div>
   );

@@ -6,7 +6,6 @@ import {
   RequestMiniBacktestingInput,
   RequestMiniBacktestingOutput,
 } from 'states/backtest/interface/dtos';
-import { IAtomUniversalSettingStateItem } from 'states/strategy/recoil/strategy-create';
 import { Corporation } from 'states/finance/interface/entities';
 import { BaseTradingStrategy } from 'states/trading/interface/entities';
 
@@ -15,18 +14,17 @@ export const miniBacktestAdaptor = (currentUniversal: {
   selectedTechnical: BaseTradingStrategy;
 }): RequestMiniBacktestingInput => {
   const { selectedCorporations, selectedTechnical } = currentUniversal;
-  const setting = new Array<number>();
+  let setting = new Array<number>();
 
   if (selectedTechnical?.setting_json) {
     const settingJSON = selectedTechnical.setting_json as Record<
       string,
       Record<string, number>
     >;
-
     // Object는 index 시그니처가 없어서 순회불가
     for (let key in settingJSON) {
       const obj = settingJSON[key];
-      setting.concat(Object.values(obj));
+      setting = setting.concat(Object.values(obj));
     }
   }
 

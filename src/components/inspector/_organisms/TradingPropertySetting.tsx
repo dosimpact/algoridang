@@ -6,7 +6,6 @@ import StPropsSetting from 'components/inspector/_molecules/StPropsSetting';
 import React, { useMemo } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
-  atomInspector,
   atomUniversalSettingStateIdx,
   selectedUniversalSetting_R,
 } from 'states/strategy/recoil/strategy-create';
