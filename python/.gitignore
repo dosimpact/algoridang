@@ -1,0 +1,12 @@
+.env
+.vscode
+__pycache__
+
+identification.py
+celeryconfig.py
+
+algoridang/
+logo/
+testenv/
+_Test/opendartAPIkey.py
+__venvalgo/
