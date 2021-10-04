@@ -1,0 +1,2 @@
+- Common Entity
+- Common OutputDto
