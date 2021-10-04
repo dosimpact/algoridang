@@ -9,7 +9,9 @@ export class LookupMemberList {
   @PrimaryColumn()
   strategy_code: string;
 
-  @ManyToOne(() => MemberStrategy, (ms) => ms.lookupMemberList)
+  @ManyToOne(() => MemberStrategy, (ms) => ms.lookupMemberList, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'strategy_code' })
   strategy: MemberStrategy;
 
@@ -17,7 +19,9 @@ export class LookupMemberList {
   @PrimaryColumn({ type: 'varchar', length: 255 })
   lookup_customer_id: string;
 
-  @ManyToOne(() => MemberInfo, (mi) => mi.lookupStragetyList)
+  @ManyToOne(() => MemberInfo, (mi) => mi.lookupStragetyList, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'lookup_customer_id' })
   lookup_customer: MemberInfo;
 }

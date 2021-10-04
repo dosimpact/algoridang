@@ -1,4 +1,4 @@
-// example - 디렉터리 순회하기 + 파일읽기
+// example - 디렉터리 순회하기 + 파일읽어서 + formData로 전송 -> S3 업로드 하기
 
 // readdir 의 {withFileTypes: true} 옵션을 주어 fs.Dirent[]객체를 반환 하도록 함
 // 객체 안에는 isDirectory 함수가 있음

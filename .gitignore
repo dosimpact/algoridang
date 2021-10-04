@@ -2,6 +2,9 @@
 .env.test
 .env.prod
 
+# logo
+utils/logo
+
 # compiled output
 /dist
 /node_modules

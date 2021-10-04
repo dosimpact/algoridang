@@ -12,7 +12,9 @@ export class OperationMemberList {
   @PrimaryColumn()
   strategy_code: string;
 
-  @ManyToOne(() => MemberStrategy, (ms) => ms.operationMemberList)
+  @ManyToOne(() => MemberStrategy, (ms) => ms.operationMemberList, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'strategy_code' })
   strategy: MemberStrategy;
 
@@ -20,7 +22,13 @@ export class OperationMemberList {
   @PrimaryColumn({ type: 'varchar', length: 255 })
   operation_customer_id: string;
 
-  @ManyToOne(() => MemberInfo, (memberInfo) => memberInfo.operationStragetyList)
+  @ManyToOne(
+    () => MemberInfo,
+    (memberInfo) => memberInfo.operationStragetyList,
+    {
+      onDelete: 'CASCADE',
+    },
+  )
   @JoinColumn({ name: 'operation_customer_id' })
   operation_customer: MemberInfo;
 }
