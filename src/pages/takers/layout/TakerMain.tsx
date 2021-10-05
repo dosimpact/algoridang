@@ -244,7 +244,7 @@ const SNavItem = styled.li<{ selected?: boolean }>`
 
 const TakerMainSection = () => {
   return (
-    <section style={{ marginBottom: '7.8rem' }}>
+    <STakerMainSection>
       <section>
         <TickerSearch />
       </section>
@@ -257,9 +257,18 @@ const TakerMainSection = () => {
       <section>
         <UserProfile />
       </section>
-    </section>
+    </STakerMainSection>
   );
 };
+
+const STakerMainSection = styled.section`
+  /* margin-bottom: 7.8rem; */
+  background-color: ${(props) => props.theme.ColorGrayL2};
+  min-height: 100vh;
+  padding-top: 4.5rem;
+  padding-bottom: 8rem;
+`;
+
 const TakerConfig = () => {
   useMobileSetting();
   return (
@@ -279,12 +288,7 @@ const TakerMainContainer = () => {
     <section>
       <TakerConfig />
       <TopNavigation />
-      <div
-        style={{
-          paddingTop: '4.5rem',
-          paddingBottom: '8rem',
-        }}
-      >
+      <div>
         <ErrorHandler>
           <TakerMainSection />
         </ErrorHandler>

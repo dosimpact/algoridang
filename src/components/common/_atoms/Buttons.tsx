@@ -36,6 +36,7 @@ const SButton = styled.div<{
     (props.type === 'gray' && props.theme.ColorMainLightGray) ||
     (props.type === 'success' && props.theme.ColorMainLightGreen) ||
     (props.type === 'info' && props.theme.ColorMainLightBlue) ||
+    (props.type === 'blue' && props.theme.ColorMainBlue) ||
     (props.type === 'danger' && props.theme.ColorMainLightRed)};
 
   color: ${(props) =>
@@ -43,6 +44,7 @@ const SButton = styled.div<{
     (props.type === 'gray' && props.theme.ColorMainGray) ||
     (props.type === 'success' && props.theme.ColorMainGreen) ||
     (props.type === 'info' && props.theme.ColorMainBlue) ||
+    (props.type === 'blue' && props.theme.ColorWhite) ||
     (props.type === 'danger' && props.theme.ColorMainRed)};
 
   display: flex;

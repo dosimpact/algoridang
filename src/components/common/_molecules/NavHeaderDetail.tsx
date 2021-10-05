@@ -15,9 +15,11 @@ const NavHeaderDetail: React.FC<INavHeaderDetail> = ({
   return (
     <SNavHeaderDetail>
       <Link to={linkTo || process.env.PUBLIC_URL + '/takers/strategy-search'}>
-        <div className="col1">
-          <IconArrowLeft />
-        </div>
+        {linkTo && (
+          <div className="col1">
+            <IconArrowLeft />
+          </div>
+        )}
       </Link>
       <div className="col2">{headerTitle}</div>
       <div className="col3">{/* <IconArrowLeft /> */}</div>

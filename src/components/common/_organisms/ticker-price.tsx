@@ -116,5 +116,8 @@ const TickerPriceS = styled.section`
   }
   .chartBox {
     margin-top: 4.8rem;
+    background-color: white;
+    border-radius: 1rem;
+    padding: 1.2rem 0rem;
   }
 `;

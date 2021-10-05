@@ -13,8 +13,7 @@ import { setLocalMemberInfo } from 'states/local-state';
 
 // Mutation
 // (1) 로그인을 날리는
-//
-//
+
 const useMember = () => {
   const queryClient = useQueryClient();
   const refresh = () => {
@@ -61,6 +60,7 @@ const useMember = () => {
 
   const logOut = () => {
     setLocalMemberInfo({ token: '' });
+    refresh();
   };
 
   return {

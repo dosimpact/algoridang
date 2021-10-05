@@ -142,8 +142,8 @@ const SStrategyCardInfo = styled.section`
       color: #ffffff;
     }
     .not_operation {
-      background: ${(props) => props.theme.ColorMainLightGray};
-      color: ${(props) => props.theme.ColorMainYellow};
+      background: ${(props) => props.theme.ColorMainYellow};
+      color: ${(props) => props.theme.ColorMainWhite};
     }
   }
   .right {
