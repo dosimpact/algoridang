@@ -14,6 +14,7 @@ import {
 import Helmet from 'react-helmet';
 import useMobileSetting from 'hooks/useMobileSetting';
 import { ErrorHandler } from 'states/common/recoil/error-state';
+import UserProfile from '../user-profile/user-profileC';
 
 export const URLList = {
   tickerSearch: {
@@ -24,6 +25,9 @@ export const URLList = {
   },
   mockInvest: {
     url: '/takers/mock-invest',
+  },
+  userProfile: {
+    url: '/takers/user-profile',
   },
 } as const;
 
@@ -42,6 +46,10 @@ const TopNavigation = () => {
     });
   };
 
+  const handleUserProfileLink = () => {
+    history.push(process.env.PUBLIC_URL + '/takers/user-profile');
+  };
+
   return (
     <STopNavigation>
       <div
@@ -56,7 +64,7 @@ const TopNavigation = () => {
         <span className="email">
           {email ? email : <span onClick={mockUpUserLogin}>Login</span>}
         </span>
-        <span onClick={mockUpUserLogin}>
+        <span onClick={handleUserProfileLink}>
           <IconPerson />
         </span>
       </div>
@@ -245,6 +253,9 @@ const TakerMainSection = () => {
       </section>
       <section>
         <MockInvest />
+      </section>
+      <section>
+        <UserProfile />
       </section>
     </section>
   );

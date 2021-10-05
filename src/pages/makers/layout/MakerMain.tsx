@@ -21,7 +21,7 @@ const NavigationContainer = () => {
   return (
     <SNavigationContainer>
       <header>
-        <Link to="/makers/ticker-search">
+        <Link to="/">
           <div className="hwrapper">
             <div className="headerName">{`알고`}</div>
             <div className="headerName">{`리당`}</div>
