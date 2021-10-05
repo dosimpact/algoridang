@@ -8,13 +8,13 @@ const useLogin = () => {
     return me.data?.email_id;
   }, [me]);
 
-  React.useEffect(() => {
-    logIn({
-      email_id: 'ypd03008@gmail.com',
-      password: 'ypd03008',
-    });
-    return () => {};
-  }, []);
+  // React.useEffect(() => {
+  //   logIn({
+  //     email_id: 'ypd03008@gmail.com',
+  //     password: 'ypd03008',
+  //   });
+  //   return () => {};
+  // }, []);
 
   const mockUpUserLogin = () => {
     logIn({

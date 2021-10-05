@@ -280,7 +280,7 @@ const SQuantFilter = styled.section`
   grid-template-columns: 1fr 1fr 1fr;
   grid-gap: 1rem;
   min-height: 80%;
-  z-index: 99999;
+  z-index: 1000;
   .col1 {
     background-color: aliceblue;
   }

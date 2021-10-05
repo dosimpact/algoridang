@@ -87,7 +87,7 @@ const STopNavigation = styled.header`
   align-content: center;
   background-color: ${(props) => props.theme.ColorMainDarkGray};
   color: ${(props) => props.theme.ColorMainWhite};
-  z-index: 99999;
+  z-index: 1000;
 
   svg {
     fill: ${(props) => props.theme.ColorMainWhite};

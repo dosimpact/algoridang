@@ -2,6 +2,8 @@ import { AxiosError, AxiosResponse } from 'axios';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { memberApi } from 'states/api';
 import {
+  CreateMemberInfoInput,
+  CreateMemberInfoOutput,
   LoginMemberInfoInput,
   LoginMemberInfoOutput,
   MeOutput,
@@ -34,8 +36,12 @@ const useMember = () => {
   //LoginMemberInfoOutput
   // AxiosError
   // LoginMemberInfoInput
-  const logInMutation = useMutation(
-    'login',
+  const logInMutation = useMutation<
+    AxiosResponse<LoginMemberInfoOutput>,
+    AxiosError,
+    LoginMemberInfoInput
+  >(
+    'logInMutation',
     (body: LoginMemberInfoInput) => {
       return memberApi.POST.loginMemberInfo(body);
     },
@@ -63,10 +69,31 @@ const useMember = () => {
     refresh();
   };
 
+  const createMemberMutation = useMutation<
+    AxiosResponse<CreateMemberInfoOutput>,
+    AxiosError,
+    CreateMemberInfoInput
+  >(
+    'createMemberMutation',
+    (body) => {
+      return memberApi.POST.createMemberInfo(body);
+    },
+    {
+      onSuccess: () => {
+        // refresh();
+      },
+      onError: (error) => {
+        console.log('error:createMember', error);
+      },
+    },
+  );
+
   return {
     me,
     logIn: logInMutation.mutate,
+    logInMutation,
     logOut,
+    createMemberMutation,
   };
 };
 

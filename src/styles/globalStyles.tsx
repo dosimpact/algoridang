@@ -105,7 +105,7 @@ export default createGlobalStyle`
         display:none;
     } */
     /* input css reset */
-    input[type="text"] {
+    input[type="text"],input[type="password"] {
         border:unset;
         border-radius: 0.9rem;
         /* border: ${(props) => props.theme.Border}; */
