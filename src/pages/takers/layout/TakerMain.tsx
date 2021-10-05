@@ -202,8 +202,8 @@ const SBottomNavigation = styled.section<{ isDown?: boolean }>`
   width: 100%;
   height: 5.6rem;
   background-color: ${(props) => props.theme.ColorMainDarkGray};
-  /* border-top-left-radius: 1.5rem; */
-  /* border-top-right-radius: 1.5rem; */
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
   z-index: 10;
   ${(props) => (props.isDown ? `transform: translate(0, 5.6rem);` : '')}
   .navList {

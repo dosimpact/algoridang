@@ -14,10 +14,17 @@ import {
   IconNavTickerSearchNormal,
 } from 'assets/icons';
 import useLogin from 'hooks/useMockLogin';
+import { useHistory } from 'react-router-dom';
+import UserProfileC from 'pages/makers/user-profile/user-profileC';
 
 // TODO LOGIN 처리 ( Email , Google )
 const NavigationContainer = () => {
   const { email, mockUpUserLogin } = useLogin();
+  const history = useHistory();
+  const handleClickProfile = () => {
+    // mockUpUserLogin();
+    history.push(process.env.PUBLIC_URL + '/makers/user-profile');
+  };
   return (
     <SNavigationContainer>
       <header>
@@ -58,7 +65,7 @@ const NavigationContainer = () => {
         </article>
       </nav>
       <article className="bottomNav">
-        <div className="navItem" onClick={mockUpUserLogin}>
+        <div className="navItem" onClick={handleClickProfile}>
           <IconNavPersonNormal />
           <div className="navName email">
             {email ? email.split(/@/).join('\n@') : <span>Login</span>}
@@ -138,6 +145,7 @@ const ContentContainer = () => {
         />
         <Route path="/makers/strategy-my" component={StrategyMyC} />
         <Route path="/makers/strategy-public" component={StrategyPublicC} />
+        <Route path="/makers/user-profile" component={UserProfileC} />
         <Redirect from="*" to="/makers/strategy-create" />
       </Switch>
     </section>

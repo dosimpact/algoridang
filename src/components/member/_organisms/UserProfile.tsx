@@ -3,8 +3,8 @@ import { useForm } from 'react-hook-form';
 import useMember from 'states/member/query/useMember';
 import styled from 'styled-components';
 import WingBlank from '../../common/_atoms/WingBlank';
-import LoggedOut from '../_organisms/LoggedOut';
-import LoggedIn from '../_organisms/LoggedIn';
+import LoggedOut from './LoggedOut';
+import LoggedIn from './LoggedIn';
 
 const UserProfile = () => {
   const { me } = useMember();

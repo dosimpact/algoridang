@@ -1,5 +1,5 @@
 import React from 'react';
-import UserProfile from 'components/member/_template/UserProfile';
+import UserProfile from 'components/member/_organisms/UserProfile';
 import { Redirect, Route, Switch } from 'react-router-dom';
 
 const UserProfileC = () => {
