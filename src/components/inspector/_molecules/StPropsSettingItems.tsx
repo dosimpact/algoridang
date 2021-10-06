@@ -64,12 +64,13 @@ export const StPropsGoldenCross: React.FC<IStPropsGoldenCross> = ({
   onSubmit,
   setting_json,
 }) => {
-  const { register, handleSubmit } = useForm<IStPropsGoldenCrossForm>({
-    defaultValues: {
-      pfast: setting_json?.GoldenCross?.pfast || 20,
-      pslow: setting_json?.GoldenCross?.pslow || 5,
-    },
-  });
+  const { register, handleSubmit, getValues, formState } =
+    useForm<IStPropsGoldenCrossForm>({
+      defaultValues: {
+        pfast: setting_json?.GoldenCross?.pfast || 20,
+        pslow: setting_json?.GoldenCross?.pslow || 5,
+      },
+    });
 
   const submitHandler = handleSubmit((data) => {
     toast.success('적용 완료', {
@@ -83,26 +84,43 @@ export const StPropsGoldenCross: React.FC<IStPropsGoldenCross> = ({
   return (
     <div>
       <form onSubmit={submitHandler}>
-        <InputListItem>
-          <label htmlFor="pfast">장기</label>
-          <input
-            type="text"
-            id="pfast"
-            {...register('pfast', {
-              setValueAs: (v) => Number(v),
-            })}
-          />
-        </InputListItem>
-        <InputListItem>
+        <InputListItem
+          error={!!formState.errors.pslow}
+          errorMessage={formState.errors.pslow?.message}
+        >
           <label htmlFor="pslow">단기</label>
           <input
             type="text"
             id="pslow"
             {...register('pslow', {
               setValueAs: (v) => Number(v),
+              validate: {
+                'lessThan-pfast': (v) =>
+                  Number(v) < getValues('pfast') ||
+                  '*단기지표값은 장기보다 작아야합니다.',
+              },
             })}
           />
         </InputListItem>
+        <InputListItem
+          error={!!formState.errors.pfast}
+          errorMessage={formState.errors.pfast?.message}
+        >
+          <label htmlFor="pfast">장기</label>
+          <input
+            type="text"
+            id="pfast"
+            {...register('pfast', {
+              setValueAs: (v) => Number(v),
+              validate: {
+                'moreThan-pslow': (v) =>
+                  Number(v) > getValues('pslow') ||
+                  '*장기 지표값은 단기보다 커야합니다.',
+              },
+            })}
+          />
+        </InputListItem>
+
         <Button type="success" onClick={submitHandler}>
           적용
         </Button>

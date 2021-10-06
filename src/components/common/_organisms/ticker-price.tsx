@@ -13,7 +13,7 @@ import WhiteSpace from '../_atoms/WhiteSpace';
 const TickerPrice = () => {
   const [corporation, setCorporation] = useRecoilState(atomCorporationState);
   // const [corporation, setCorporation] = useState<{ticker:string}>("005930");
-  const { dayilStocks } = useDailyStock(corporation.ticker, 365, 0, 'ASC');
+  const { dayilStocks } = useDailyStock(corporation.ticker, 1095, 0, 'ASC');
   const [price, setPrice] = useState(0);
 
   const datas = useMemo(() => {
