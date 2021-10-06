@@ -22,7 +22,7 @@ import { FinancialStatement } from './entities/financial-statement.entity';
     CacheModule.register({
       store: redisStore as CacheStoreFactory,
       url: process.env.REDIS_API_CACHE_URL,
-      ttl: +process.env.REDIS_API_CACHE_TTL, // 10초 캐슁
+      ttl: 86400 || +process.env.REDIS_API_CACHE_TTL, // 10초 캐슁
       // max: 3, // 3개의 key값 유지
     }),
     TypeOrmModule.forFeature([

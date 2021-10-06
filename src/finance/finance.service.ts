@@ -36,19 +36,7 @@ export class FinanceService {
     private readonly CorporationRepo: Repository<Corporation>,
     @InjectRepository(DailyStock)
     private readonly DailyStockRepo: Repository<DailyStock>,
-  ) {
-    const test = async () => {
-      try {
-        // const res = execSync(`node utils/getThemeStocks.js`);
-        // console.log(res);
-        // process.stdout.write(res.toString());
-        // console.log(res.toString());
-      } catch (error) {
-        // console.log(error);
-      }
-    };
-    // test();
-  }
+  ) {}
 
   // (1) 모든 회사들의 리스트를 리턴
   async getCorporations(): Promise<GetCorporationsOutput> {

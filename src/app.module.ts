@@ -50,6 +50,8 @@ import { AuthModule } from './auth/auth.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ErrorHandlerInterceptor } from './common/interceptor/ErrorHandlerInterceptor';
 import { FinancialStatement } from './finance/entities/financial-statement.entity';
+import { ScheduleModule } from '@nestjs/schedule';
+import { CronModule } from './common/cron.module';
 
 @Module({
   imports: [
@@ -125,6 +127,8 @@ import { FinancialStatement } from './finance/entities/financial-statement.entit
         ],
       ],
     }),
+    ScheduleModule.forRoot(),
+    CronModule,
     JwtModule.forRoot({ privateKey: process.env.JWT_SECRET_KEY }),
     UploadModule,
     CacheModule.register({
