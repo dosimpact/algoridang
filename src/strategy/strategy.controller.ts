@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { StrategyService } from './strategy.service';
 import { AuthUser, Roles } from 'src/auth/auth.decorator';
-import { HttpCacheInterceptor } from 'src/common/service/HttpCacheInterceptor';
+import { HttpCacheInterceptor } from 'src/common/interceptor/HttpCacheInterceptor';
 import {
   CreateMyStrategyInput,
   ForkStrategyInput,

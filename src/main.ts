@@ -1,7 +1,7 @@
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { LoggingInterceptor } from './common/service/LogginInterceptor';
+import { LoggingInterceptor } from './common/interceptor/LogginInterceptor';
 
 import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';

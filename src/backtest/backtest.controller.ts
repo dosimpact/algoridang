@@ -11,7 +11,7 @@ import { AuthUser, Roles } from 'src/auth/auth.decorator';
 import {
   HttpBodyCacheInterceptor,
   HttpCacheInterceptor,
-} from 'src/common/service/HttpCacheInterceptor';
+} from 'src/common/interceptor/HttpCacheInterceptor';
 import { MemberInfo } from 'src/member/entities';
 import { BacktestService } from './backtest.service';
 import {

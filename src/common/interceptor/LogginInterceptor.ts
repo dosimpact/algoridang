@@ -7,6 +7,8 @@ import {
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
+// 내부 서버의 Logggin
+// https://docs.nestjs.com/interceptors#binding-interceptors
 @Injectable()
 export class LoggingInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {

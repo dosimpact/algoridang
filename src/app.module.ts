@@ -48,8 +48,7 @@ import * as redisStore from 'cache-manager-redis-store';
 import { UploadedObject } from './upload/entities/uploaded-object.entity';
 import { AuthModule } from './auth/auth.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
-import { LoggingInterceptor } from './common/service/LogginInterceptor';
-import { ErrorHandlerInterceptor } from './common/service/ErrorHandlerInterceptor';
+import { ErrorHandlerInterceptor } from './common/interceptor/ErrorHandlerInterceptor';
 import { FinancialStatement } from './finance/entities/financial-statement.entity';
 
 @Module({

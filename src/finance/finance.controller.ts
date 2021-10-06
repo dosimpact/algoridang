@@ -6,8 +6,8 @@ import {
   UseInterceptors,
   Version,
 } from '@nestjs/common';
-import { ErrorHandlerInterceptor } from 'src/common/service/ErrorHandlerInterceptor';
-import { HttpCacheInterceptor } from 'src/common/service/HttpCacheInterceptor';
+import { ErrorHandlerInterceptor } from 'src/common/interceptor/ErrorHandlerInterceptor';
+import { HttpCacheInterceptor } from 'src/common/interceptor/HttpCacheInterceptor';
 import { FinanceService } from './finance.service';
 
 // @UseInterceptors(ErrorHandlerInterceptor)
