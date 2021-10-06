@@ -24,13 +24,15 @@ const TradingPropertySetting: React.FC<ITradingPropertySetting> = ({
   // 현재 변경 타겟의 seletedIdx
 
   const currentIdx = useRecoilValue(atomUniversalSettingStateIdx);
+  console.log('currentIdx>', currentIdx);
+
   const [currentUniversalSetting, setCurrentUniversalSetting] = useRecoilState(
     selectedUniversalSetting_R({ universalIdx: currentIdx }),
   );
   const setting_json = useMemo(() => {
     return currentUniversalSetting?.selectedTechnical?.setting_json;
   }, [currentUniversalSetting]);
-
+  console.log('setting_json>', setting_json);
   // 현재 변경할 unverisalSetting
   const handleSubmit = (e: unknown) => {
     const setting_json = e as SettingJSON;

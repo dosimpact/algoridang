@@ -10,7 +10,7 @@ interface IStrategyState {
   formStateTickerSelected?: Corporation[]; // 2
   formStateTradingSetting?: Object; // 3
 }
-
+// lagacy
 export const atomStrategyState = atom<IStrategyState>({
   key: 'StrategyState',
   default: {
@@ -38,7 +38,7 @@ export const atomStrategyState = atom<IStrategyState>({
     formStateTradingSetting: {},
   },
 });
-
+// lagacy
 export const parseCreateMyStrategy = selector({
   key: 'parseCreateMyStrategy',
   get: ({ get }) => {

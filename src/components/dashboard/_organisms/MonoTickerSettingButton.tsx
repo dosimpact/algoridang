@@ -37,7 +37,6 @@ const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
         draft.inspectorType = 'tradingSetting';
         draft.inspectorState.tradingSetting = {
           tab: prev.inspectorState.tradingSetting.tab,
-          // selectedIndex: -1,
         };
         return draft;
       }),
@@ -50,13 +49,10 @@ const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
     setInspector((prev) =>
       produce(prev, (draft) => {
         draft.inspectorType = 'tradingPropertySetting';
-        // draft.inspectorState.tradingPropertySetting = {
-        //   selectedIndex,
-        // };
         return draft;
       }),
     );
-    setCurrentUnivIdx(selectedIndex);
+    setCurrentUnivIdx(thisUnivIdx);
   };
 
   const { reqMiniBTMutation } = useMiniBacktest();

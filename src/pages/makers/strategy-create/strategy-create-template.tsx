@@ -25,18 +25,9 @@ interface IStrategyCreateModule {
   dashBoardCol1: {
     // 전략 셋팅, 종목 셋팅, 백테스트 셋팅
     baseSettingBtnElements: JSX.Element[];
-    // 선택된 종목 리스트 표시 앨리먼트
-    // selectedTickerElementList: JSX.Element[];
   };
   // 단일 종목 설정 앨리먼트
   selectedMonoTickerSettingButtonList: JSX.Element[];
-  // 단일 종목 매매 결과 앨리먼트
-  // dashBoardCol3?: JSX.Element[];
-  // // 포트 백테스팅 결과 앨리먼트
-  // dashBoardCol4: {
-  //   // 포트 백테스트 버튼 앨리먼트
-  //   portBacktestBtnElement: JSX.Element;
-  // };
 }
 const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
   currentInspectorElement,
@@ -153,20 +144,10 @@ const StrategyCreateTemplate = () => {
   // Selector: 현재 인스팩터 - React.FC 반환
   const CurrentInspector = useRecoilValue(selectorInspectorFC);
 
-  // Selector: 현재 선택된 종목 - JSX.Element 리스트를 선택
-  // const selectedTickerElementList = useRecoilValue(
-  //   selectedTickerElementListJSX,
-  // );
-
   // Selector : 선택된 단일 종목 매매전략 셋팅 버튼 , JSX 리스트 리턴
   const selectedMonoTickerSettingButtonList = useRecoilValue(
     selectedMonoTickerSettingButtonListJSX,
   );
-
-  // Selector : 선택된 단일 종목 매매전략 셋팅 버튼 , JSX 리스트 리턴
-  // const selecteMiniBacktestResultList = useRecoilValue(
-  //   selecteMiniBacktestResultListJSX,
-  // );
 
   // Handler
   const handleChangeInspector = (type: IInspectorTypes) => {
@@ -204,21 +185,8 @@ const StrategyCreateTemplate = () => {
             }}
           />,
         ],
-        // selectedTickerElementList: selectedTickerElementList,
       }}
       selectedMonoTickerSettingButtonList={selectedMonoTickerSettingButtonList}
-      // dashBoardCol3={selecteMiniBacktestResultList}
-      // dashBoardCol4={{
-      //   portBacktestBtnElement: (
-      //     <DashBoardButton
-      //       Icon={IconTesting}
-      //       text="포트 백테스트"
-      //       onClick={() => {
-      //         handleChangeInspector('backTestingSetting');
-      //       }}
-      //     />
-      //   ),
-      // }}
     />
   );
 };

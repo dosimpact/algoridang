@@ -1,7 +1,7 @@
 import { Button } from 'components/common/_atoms/Buttons';
 import InputListItem from 'components/common/_atoms/InputListItem';
-import React from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useEffect } from 'react';
+import { useForm, useWatch } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { SettingJSON } from 'states/trading/interface/entities';
 
@@ -64,13 +64,21 @@ export const StPropsGoldenCross: React.FC<IStPropsGoldenCross> = ({
   onSubmit,
   setting_json,
 }) => {
-  const { register, handleSubmit, getValues, formState } =
+  const { register, handleSubmit, getValues, formState, setValue } =
     useForm<IStPropsGoldenCrossForm>({
       defaultValues: {
-        pfast: setting_json?.GoldenCross?.pfast || 20,
-        pslow: setting_json?.GoldenCross?.pslow || 5,
+        pfast: setting_json?.GoldenCross?.pfast || 5,
+        pslow: setting_json?.GoldenCross?.pslow || 20,
       },
     });
+  // ✅ 이슈 해결
+  // -- react-hook-form의 defaultvalue는 한번만 랜더링 되므로
+  // -- 그 이후에 비동기적으로 가져온 데이터로 , input value를 변경하려면 setValue를 사용해야한다.
+  useEffect(() => {
+    setValue('pfast', setting_json?.GoldenCross?.pfast || 5);
+    setValue('pslow', setting_json?.GoldenCross?.pslow || 20);
+    return () => {};
+  }, [setting_json, setValue]);
 
   const submitHandler = handleSubmit((data) => {
     toast.success('적용 완료', {
@@ -85,37 +93,38 @@ export const StPropsGoldenCross: React.FC<IStPropsGoldenCross> = ({
     <div>
       <form onSubmit={submitHandler}>
         <InputListItem
-          error={!!formState.errors.pslow}
-          errorMessage={formState.errors.pslow?.message}
-        >
-          <label htmlFor="pslow">단기</label>
-          <input
-            type="text"
-            id="pslow"
-            {...register('pslow', {
-              setValueAs: (v) => Number(v),
-              validate: {
-                'lessThan-pfast': (v) =>
-                  Number(v) < getValues('pfast') ||
-                  '*단기지표값은 장기보다 작아야합니다.',
-              },
-            })}
-          />
-        </InputListItem>
-        <InputListItem
           error={!!formState.errors.pfast}
           errorMessage={formState.errors.pfast?.message}
         >
-          <label htmlFor="pfast">장기</label>
+          <label htmlFor="pfast">단기</label>
           <input
             type="text"
             id="pfast"
             {...register('pfast', {
               setValueAs: (v) => Number(v),
               validate: {
-                'moreThan-pslow': (v) =>
-                  Number(v) > getValues('pslow') ||
-                  '*장기 지표값은 단기보다 커야합니다.',
+                'lessThan-pfast': (v) =>
+                  Number(v) < getValues('pslow') ||
+                  '*단기지표값은 장기보다 작아야합니다.',
+              },
+            })}
+          />
+        </InputListItem>
+
+        <InputListItem
+          error={!!formState.errors.pslow}
+          errorMessage={formState.errors.pslow?.message}
+        >
+          <label htmlFor="pslow">장기</label>
+          <input
+            type="text"
+            id="pslow"
+            {...register('pslow', {
+              setValueAs: (v) => Number(v),
+              validate: {
+                'moreThan-pfast': (v) =>
+                  Number(v) > getValues('pfast') ||
+                  '*장기지표값은 단기보다 커야합니다.',
               },
             })}
           />
