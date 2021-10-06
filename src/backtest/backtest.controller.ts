@@ -6,6 +6,7 @@ import {
   Post,
   Body,
   Version,
+  CacheTTL,
 } from '@nestjs/common';
 import { AuthUser, Roles } from 'src/auth/auth.decorator';
 import {
@@ -113,6 +114,7 @@ export class BacktestMutationController {
   @Version('1')
   @Roles(['Any'])
   @Post('mini-backtest')
+  @CacheTTL(60 * 60 * 24)
   @UseInterceptors(HttpBodyCacheInterceptor)
   async requestMiniBackTest(@Body() body: RequestMiniBacktestingInput) {
     return this.flaskService.__requestMiniBacktesting(body);
