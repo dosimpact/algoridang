@@ -1,8 +1,24 @@
 from QuantStrategy.QuantStrategy import QuantStrategy
 
 class QuantNewMagic1_0(QuantStrategy):
+    
+    sampleParm = {
+    "strategy" : 2,
+    "numberOfData" : 50,
+    "data" : {
+        "market_cap" : {
+            "operater" : "up",
+            "values" : [5000]
+            } ,
+        "PBR_Q" : {
+            "operater" : "up",
+            "values" : [0]
+            } 
+        } 
+    }
     def __init__(self,parm) -> None:
         super().__init__(parm)
+        
         
 
     def makeQuery(self):

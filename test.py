@@ -81,6 +81,7 @@ def makeTestData(sel):
 if __name__ == '__main__':
     data = makeTestData(3)
     quant = QuantSelecter()
+    print(quant.getSampleData(2))
     print(quant.runQuantStrategty(data))
     quant.printQuantList()
     print("stategy Test")

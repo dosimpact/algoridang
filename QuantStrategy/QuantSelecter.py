@@ -27,6 +27,9 @@ class QuantSelecter(object):
 
         return res
 
+    def getSampleData(self, idx):
+        return self.quantList[idx][0].sampleParm
+
     def getQuantList(self):
         res = {}
         for idx,val in enumerate(self.quantList):

@@ -1,10 +1,29 @@
 from QuantStrategy.QuantStrategy import QuantStrategy
 
 class QuantOriginalMagic(QuantStrategy):
+    sampleParm = {
+        "strategy" : 3,
+        "numberOfData" : 50,
+        "data" : {
+            "market_cap" : {
+                "operater" : "up",
+                "values" : [5000]
+                } ,
+            "ROE_Q" : {
+                "operater" : "up",
+                "values" : [0]
+                } 
+             ,
+            "EV_per_EBITDA" : {
+                "operater" : "up",
+                "values" : [0]
+                } 
+            } 
+        }
+
     def __init__(self,parm) -> None:
         super().__init__(parm)
         
-
     def makeQuery(self):
         self.query = " \
         select b.\"ticker\" , b.\"name\",b.\"sum\" \
@@ -27,5 +46,3 @@ class QuantOriginalMagic(QuantStrategy):
         limit "+str(self.parm['numberOfData'])
         
         print(self.query)
-
-        

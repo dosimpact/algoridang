@@ -12,7 +12,7 @@ Quant = Namespace(
 )
 
 
-quantListFields = Quant.model('Quant', {  # Model 객체 생성
+quantListFields = Quant.model('quantListFields', {  # Model 객체 생성
 })
 
 expQuantList = {"0": "초기설정", "1": "사용자 전략 설정", "2": "신마법공식 1.0"}
@@ -20,7 +20,7 @@ quantListResponses = Quant.inherit('QuantResponses', quantListFields, {
     'strategy': fields.String(description='strategy code list', required=False, example=expQuantList),
 })
 
-@Quant.route('/search')
+@Quant.route('/lookup')
 @Quant.doc(params={})
 class QuantList(Resource):
     @Quant.expect(quantListFields)
@@ -85,7 +85,7 @@ expQuantParm={
         }
 
 
-quantStrategyFields = Quant.model('Quant', {  # Model 객체 생성
+quantStrategyFields = Quant.model('quantStrategyFields', {  # Model 객체 생성
     'parm': fields.String(description='Quant parm', required=True, example=expQuantParm),
 })
 expQuantStrategyResponses = {"0": ["003030", "세아제강지주"], "1": ["003240", "태광산업"], "2": ["007690", "국도화학"]}
@@ -107,6 +107,36 @@ class QuantStrategy(Resource):
             
             quant = QuantSelecter()
             res = quant.runQuantStrategty(data)
+
+            result = json.dumps(res, ensure_ascii=False)
+            res = make_response(result)
+        return res
+
+
+
+quantSampleFields = Quant.model('quantSampleFields', {  # Model 객체 생성
+    'index': fields.String(description='index', required=True, example=1),
+})
+expQuantSampleResponses = {'strategy': 2, 'numberOfData': 50, 'data': {'market_cap': {'operater': 'up', 'values': [5000]}, 'PBR_Q': {'operater': 'up', 'values': [0]}}}
+quantSampleResponses = Quant.inherit('quantSampleResponses',{
+    'sample parmeter json format': fields.String(description='quantSampleResponses', required=False, example=expQuantSampleResponses),
+})
+
+
+@Quant.route('/sample')
+@Quant.doc(params={})
+class QuantStrategy(Resource):
+    @Quant.expect(quantSampleFields)
+    @Quant.response(201, 'Success', quantSampleResponses)
+    def get(self): 
+        """ 전략별 전송 파라미터 예시를 조회합니다. """
+        
+        if request.method == 'GET':
+            index= request.args.get('index')
+            index = int (index)
+
+            quant = QuantSelecter()
+            res = quant.getSampleData(index)
 
             result = json.dumps(res, ensure_ascii=False)
             res = make_response(result)

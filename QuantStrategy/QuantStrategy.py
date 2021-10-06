@@ -21,6 +21,7 @@ class QuantStrategy(object):
 
         return res
  
+
  
     # 추상 메서드
     @abstractmethod

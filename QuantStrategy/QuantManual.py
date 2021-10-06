@@ -1,6 +1,47 @@
 from QuantStrategy.QuantStrategy import QuantStrategy
 
 class QuantManual(QuantStrategy):
+    sampleParm = {
+        "strategy" : 1,
+        "numberOfData" : 5,
+        "data" : {
+            "market_cap" : {
+                "operater" : "up",
+                "values" : [5000]
+                } ,
+            "revenue" : 0 ,
+            "operating_income" : 0 ,
+            "EPS" : 0 ,
+            "PER" : 0 ,
+            "EV_per_EBITDA" : 0 ,
+            "ROE" : 0 ,
+            "dividend_yield" : 0 ,
+            "BETA" : 0 ,
+            "revenue_Q" : 0 ,
+            "operating_income_Q" : 0 ,
+            "net_income_Q" : 0 ,
+            "controlling_interest_Q" : 0 ,
+            "non_controlling_interest_Q" : 0 ,
+            "total_assets_Q" : 0 ,
+            "total_stock_holders_Q" : 0 ,
+            "controlling_interest_share_Q" : 0 ,
+            "non_controlling_interest_share_Q" : 0 ,
+            "capital_Q" : 0 ,
+            "debt_ratio_Q" : 0 ,
+            "retention_rate_Q" : 0 ,
+            "operating_margin_Q" : 0 ,
+            "controlling_interest_rate_Q" : 0 ,
+            "ROA_Q" : 0 ,
+            "ROE_Q" : 0 ,
+            "EPS_Q" : 0 ,
+            "BPS_Q" : 0 ,
+            "DPS_Q" : 0 ,
+            "PBR_Q" : 0 ,
+            "outstanding_shares_Q" : 0 ,
+            "dividend_yield__Q" : 0 
+            }
+        }
+        
     def __init__(self,parm) -> None:
         super().__init__(parm)
         
