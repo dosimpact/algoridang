@@ -8,6 +8,7 @@ from route.routeCelery import Celerys
 from route.routeBacktest import BackTest
 from route.routeDailyStock import DailyStock
 from route.routeMiniBacktest import MiniBacktest
+from route.routeQuant import Quant
 
 import sentry_sdk
 
@@ -46,8 +47,7 @@ api.add_namespace(BackTest, '/backtest')
 api.add_namespace(MiniBacktest, '/minibacktest')
 api.add_namespace(Celerys, '/celery')
 api.add_namespace(DailyStock, '/datas')
+api.add_namespace(Quant, '/quant')
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
-    #processor.Test___backtestTestCode(None, 2693)
-    #processor.Test()
