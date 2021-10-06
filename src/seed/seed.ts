@@ -44,7 +44,7 @@ async function bootstrap() {
         strategy_code: newStrategy.memberStrategy.strategy_code,
         ticker,
         trading_strategy_name: StrategyName.GoldenCross,
-        setting_json: { GoldenCross: { pfast: 5, pslow: 15 } },
+        setting_json: { GoldenCross: { pfast: 5, pslow: 20 } },
       });
       // 백테스팅 요청
       await flaskService.pushBackTestQ('ypd03008@gmail.com', {

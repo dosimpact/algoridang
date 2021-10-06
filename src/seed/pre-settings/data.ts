@@ -13,7 +13,7 @@ export const preSet__BaseTradingStrategy_List: BaseTradingStrategy[] = [
     setting_json: {
       GoldenCross: {
         pfast: 5,
-        pslow: 10,
+        pslow: 20,
       },
     },
   },

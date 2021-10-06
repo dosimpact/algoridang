@@ -35,5 +35,5 @@ export type SettingJSON = Partial<StrategyValue>;
 
 const SettingJSONGolden1: SettingJSONFull = {
   name: 'GoldenCross',
-  setting: { GoldenCross: { pfast: 2, pslow: 1 } },
+  setting: { GoldenCross: { pfast: 5, pslow: 20 } },
 };

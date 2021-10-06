@@ -101,7 +101,7 @@ export class TradingQueryController {
               setting_json: {
                 GoldenCross: {
                   pfast: 5,
-                  pslow: 10,
+                  pslow: 20,
                 },
               },
             },
@@ -122,7 +122,7 @@ export class TradingQueryController {
               setting_json: {
                 GoldenCross: {
                   pfast: 5,
-                  pslow: 10,
+                  pslow: 20,
                 },
               },
             },
