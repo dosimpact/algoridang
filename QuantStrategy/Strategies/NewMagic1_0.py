@@ -1,6 +1,6 @@
-from QuantStrategy.QuantStrategy import QuantStrategy
+from QuantStrategy.Strategies.StrategyBase import StrategyBase
 
-class QuantNewMagic1_0(QuantStrategy):
+class NewMagic1_0(StrategyBase):
     
     sampleParm = {
     "strategy" : 2,

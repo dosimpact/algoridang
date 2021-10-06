@@ -1,7 +1,7 @@
 from abc import *
 from openAPI.DB.connectionPool import databasepool
 
-class QuantStrategy(object):
+class StrategyBase(object):
     def __init__(self,parm) -> None:
         super().__init__()
         self.query = ""

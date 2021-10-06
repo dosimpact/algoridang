@@ -1,6 +1,6 @@
-from QuantStrategy.QuantStrategy import QuantStrategy
+from QuantStrategy.Strategies.StrategyBase import StrategyBase
 
-class QuantManual(QuantStrategy):
+class Manual(StrategyBase):
     sampleParm = {
         "strategy" : 1,
         "numberOfData" : 5,
