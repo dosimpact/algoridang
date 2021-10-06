@@ -16,6 +16,26 @@ def makeTestData(sel):
                 } 
             } 
         }
+    if sel == 3:
+        return {
+        "strategy" : 3,
+        "numberOfData" : 50,
+        "data" : {
+            "market_cap" : {
+                "operater" : "up",
+                "values" : [5000]
+                } ,
+            "ROE_Q" : {
+                "operater" : "up",
+                "values" : [0]
+                } 
+             ,
+            "EV_per_EBITDA" : {
+                "operater" : "up",
+                "values" : [0]
+                } 
+            } 
+        }
     if sel == 1:
         return {
         "strategy" : 1,
@@ -59,7 +79,7 @@ def makeTestData(sel):
         }
     
 if __name__ == '__main__':
-    data = makeTestData(2)
+    data = makeTestData(3)
     quant = QuantSelecter()
     print(quant.runQuantStrategty(data))
     quant.printQuantList()
