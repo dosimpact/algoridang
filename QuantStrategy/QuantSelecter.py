@@ -4,6 +4,8 @@ from QuantStrategy.Strategies.Manual import Manual
 from QuantStrategy.Strategies.NewMagic1_0 import NewMagic1_0
 from QuantStrategy.Strategies.OriginalMagic import OriginalMagic
 from QuantStrategy.Strategies.SmallLowPBR import SmallLowPBR
+from QuantStrategy.Strategies.GrahamsLastGift import GrahamsLastGift
+from QuantStrategy.Strategies.UpgradeGrahamsLastGift import UpgradeGrahamsLastGift
 
 class QuantSelecter(object):
     def __init__(self) -> None:
@@ -14,6 +16,9 @@ class QuantSelecter(object):
         self.quantList.append((NewMagic1_0, "신마법공식 1.0"))
         self.quantList.append((OriginalMagic, "오리지널 마법공식"))
         self.quantList.append((SmallLowPBR, "소형주 저pbr 전략"))
+        self.quantList.append((GrahamsLastGift, "그레이엄의 마지막 선물"))
+        self.quantList.append((UpgradeGrahamsLastGift, "그레이엄의 마지막 선물 업그레이드"))
+        
 
     def __getQuantStrategy(self, selector):
         return self.quantList[selector][0]
