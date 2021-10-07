@@ -114,6 +114,7 @@ class QuantStrategy(Resource):
 
 
 
+
 quantSampleFields = Quant.model('quantSampleFields', {  # Model 객체 생성
     'index': fields.String(description='index', required=True, example=1),
 })
@@ -125,7 +126,7 @@ quantSampleResponses = Quant.inherit('quantSampleResponses',{
 
 @Quant.route('/sample')
 @Quant.doc(params={})
-class QuantStrategy(Resource):
+class QuantSampleCode(Resource):
     @Quant.expect(quantSampleFields)
     @Quant.response(201, 'Success', quantSampleResponses)
     def get(self): 

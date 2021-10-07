@@ -3,6 +3,7 @@ from QuantStrategy.QuantContext import QuantContext
 from QuantStrategy.Strategies.Manual import Manual
 from QuantStrategy.Strategies.NewMagic1_0 import NewMagic1_0
 from QuantStrategy.Strategies.OriginalMagic import OriginalMagic
+from QuantStrategy.Strategies.SmallLowPBR import SmallLowPBR
 
 class QuantSelecter(object):
     def __init__(self) -> None:
@@ -12,6 +13,7 @@ class QuantSelecter(object):
         self.quantList.append((Manual,"사용자 전략 설정"))
         self.quantList.append((NewMagic1_0, "신마법공식 1.0"))
         self.quantList.append((OriginalMagic, "오리지널 마법공식"))
+        self.quantList.append((SmallLowPBR, "소형주 저pbr 전략"))
 
     def __getQuantStrategy(self, selector):
         return self.quantList[selector][0]
