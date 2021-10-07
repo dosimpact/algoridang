@@ -49,7 +49,7 @@ class databasepool(dbQuery):
 
 
 
-dbinit = databasepool(0)
+dbinit = databasepool(2)
 
 
 if __name__ == "__main__":
