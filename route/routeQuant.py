@@ -38,9 +38,6 @@ class QuantList(Resource):
 
 
 expQuantParm={
-        "strategy" : 1,
-        "numberOfData" : 5,
-        "data" : {
             "market_cap" : {
                 "operater" : "up",
                 "values" : [5000]
@@ -81,12 +78,13 @@ expQuantParm={
             "PBR_Q" : 0 ,
             "outstanding_shares_Q" : 0 ,
             "dividend_yield__Q" : 0 
-            }
         }
 
 
 quantStrategyFields = Quant.model('quantStrategyFields', {  # Model 객체 생성
-    'parm': fields.String(description='Quant parm', required=True, example=expQuantParm),
+    'strategy': fields.String(description='Quant strategy', required=True, example=1),
+    'numberOfData': fields.String(description='Quant strategy', required=True, example=5),
+    'data': fields.String(description='Quant strategy', required=True, example=expQuantParm),
 })
 expQuantStrategyResponses = {"0": ["003030", "세아제강지주"], "1": ["003240", "태광산업"], "2": ["007690", "국도화학"]}
 quantStrategyResponses = Quant.inherit('QuantStrategyResponses',{
