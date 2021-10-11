@@ -26,12 +26,20 @@ class UpgradeGrahamsLastGift(StrategyBase):
             } 
         } 
     }
+
     def __init__(self,parm) -> None:
+        """ Initailizer
+        
+        @parms
+            parm - dict 각 전략마다 다름
+                QuantSelecter.getSampleData를 통해 각 전략에 맞는 parm을 받아 볼 수 있음.
+                혹은 this.sampleParm 참조 
+        """
         super().__init__(parm)
-        
-        
 
     def makeQuery(self):
+        """ DB 조회를 위한 Query 생성 """
+        
         self.query = " \
         select a.\"ticker\", a.\"name\" \
         from ( \
