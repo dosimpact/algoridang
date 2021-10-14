@@ -18,6 +18,8 @@ import produce from 'immer';
 import WideLine from 'components/common/_atoms/WideLine';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import { Button } from 'components/common/_atoms/Buttons';
+import FilterListItemRange from '../_molecules/FilterListItemRange';
+import InputListItemH from 'components/common/_atoms/InputListItemH';
 
 //https://velog.io/@seungsang00/React-React-Modal
 Modal.setAppElement('#root');
@@ -180,14 +182,16 @@ const UniversalSettingTabQuantSearch = () => {
             <input type="text" name="" id="" placeholder="100" />
           </div>
         </FilterListItem>
-        <FilterListItem>
-          <div className="title">ROE ( 단위: )</div>
-          <div className="fields">
-            <input type="text" name="" id="" placeholder="0" />
-            <span className="tail">~</span>
-            <input type="text" name="" id="" placeholder="100" />
-          </div>
-        </FilterListItem>
+        <FilterListItemRange
+          name="ROE (단위:)"
+          defaultFormValue={{
+            lowerBound: 0,
+            upperBound: 10,
+          }}
+          onChange={(e) => {
+            console.log(e);
+          }}
+        />
       </FilterList>
       <Modal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)}>
         <QuantFilter />
