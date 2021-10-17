@@ -39,7 +39,9 @@ interface IAtomInspector {
   isShow: boolean;
   inspectorType: IInspectorTypes;
   inspectorState: {
-    basicSetting: {};
+    basicSetting: {
+      isComplete: boolean;
+    };
     universalSetting: {
       tab: number;
       isFilterModalOpen: boolean;
@@ -98,7 +100,7 @@ export const atomInspector = atom<IAtomInspector>({
     isShow: true,
     inspectorType: 'basicSetting',
     inspectorState: {
-      basicSetting: {},
+      basicSetting: { isComplete: false },
       universalSetting: {
         isFilterModalOpen: false,
         tab: 0,

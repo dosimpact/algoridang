@@ -4,10 +4,15 @@ import InspectorHeaderDetail from 'components/inspector/_molecules/InspectorHead
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
-import { atomBasicSetting } from 'states/strategy/recoil/strategy-create';
+import {
+  atomBasicSetting,
+  atomInspector,
+} from 'states/strategy/recoil/strategy-create';
 import styled from 'styled-components';
 import { IInspectorSettings } from './index';
 import InputListItemH from 'components/common/_atoms/InputListItemH';
+import produce from 'immer';
+import ReactTooltip from 'react-tooltip';
 
 interface IFormBasicSetting {
   strategy_name: string; // 전략 이름
@@ -27,6 +32,7 @@ interface IBaseSettings extends IInspectorSettings {}
  * 인스팩터 - 기본설정
  */
 const BaseSettings: React.FC<IBaseSettings> = ({ headerTitle }) => {
+  const [inspector, setInspector] = useRecoilState(atomInspector);
   const [basicSetting, setBasicSetting] = useRecoilState(atomBasicSetting);
   const { register, watch, formState, trigger } = useForm<IFormBasicSetting>({
     defaultValues: {
@@ -52,14 +58,32 @@ const BaseSettings: React.FC<IBaseSettings> = ({ headerTitle }) => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [watch, setBasicSetting, trigger]);
+  }, [watch, setBasicSetting, trigger, formState]);
+
+  React.useEffect(() => {
+    const checkValid = () => {
+      if (formState.isValid) {
+        console.log('isValid', formState.isValid);
+        setInspector((prev) =>
+          produce(prev, (draft) => {
+            draft.inspectorState.basicSetting.isComplete = true;
+            return draft;
+          }),
+        );
+      }
+    };
+    checkValid();
+    return () => {};
+  }, [formState, setInspector]);
 
   const { errors } = formState;
-  console.log('errors', errors);
 
   return (
     <SBaseSettings>
-      <InspectorHeaderDetail headerTitle={headerTitle || '기본설정'} />
+      <InspectorHeaderDetail
+        toolTip="전략 운용에 필요한 기본 정보를 설정합니다."
+        headerTitle={headerTitle || '기본설정'}
+      />
       <WingBlank>
         <WideLine style={{ margin: '0 0 1.3rem 0' }} />
         <form>
@@ -176,15 +200,13 @@ export default BaseSettings;
 const SBaseSettings = styled.section`
   label {
     display: inline-block;
-    font-style: normal;
-    font-weight: normal;
     font-size: 1.7rem;
     line-height: 2.2rem;
-    margin-bottom: 1.2rem;
+    font-weight: 500;
+    margin: 1.2rem 0rem;
   }
   input {
     border: unset;
-    margin-bottom: 1rem;
   }
   select {
     border: unset;

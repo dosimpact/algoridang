@@ -19,7 +19,7 @@ import WideLine from 'components/common/_atoms/WideLine';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import { Button } from 'components/common/_atoms/Buttons';
 import FilterListItemRange from '../_molecules/FilterListItemRange';
-import InputListItemH from 'components/common/_atoms/InputListItemH';
+import QuantFilterModal from '../_molecules/QuantFilterModal';
 
 //https://velog.io/@seungsang00/React-React-Modal
 Modal.setAppElement('#root');
@@ -194,14 +194,7 @@ const UniversalSettingTabQuantSearch = () => {
         />
       </FilterList>
       <Modal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)}>
-        <QuantFilter />
-        <button
-          onClick={() => {
-            setModalIsOpen(false);
-          }}
-        >
-          close
-        </button>
+        <QuantFilterModal onRequestClose={() => setModalIsOpen(false)} />
       </Modal>
     </SUniversalSettingTabQuantSearch>
   );
@@ -228,71 +221,6 @@ const FilterListItem = styled.li`
     .tail {
       margin: 0rem 1rem;
     }
-  }
-`;
-
-const QuantFilter = () => {
-  return (
-    <SQuantFilter>
-      <article className="col1">
-        <div>섹터 필터</div>
-        <div>
-          <input type="checkbox" name="kospi" id="kospi" />
-          <label htmlFor="kospi">코스피</label>
-          <input type="checkbox" name="kosdaq" id="kosdaq" />
-          <label htmlFor="kosdaq">코스피</label>
-        </div>
-        <div>퀀트 필터셋</div>
-        <div>
-          <input type="checkbox" name="filterSet-1" id="filterSet-1" />
-          <label htmlFor="filterSet-1">마법공식</label>
-          <input type="checkbox" name="filterSet-2" id="filterSet-2" />
-          <label htmlFor="filterSet-2">테스트 공식</label>
-        </div>
-      </article>
-      <article className="col2">
-        <div>모든 필터</div>
-        {['시가 총액', '시가총액', 'PER', 'PCR', 'PSR'].map((word, idx) => {
-          return (
-            <div key={idx}>
-              <input
-                type="checkbox"
-                name={`filter-${idx}`}
-                id={`filter-${idx}`}
-              />
-              <label htmlFor={`filter-${idx}`}>{word}</label>
-            </div>
-          );
-        })}
-      </article>
-      <article className="col3">
-        <div>필터 설명</div>
-        <div
-          style={{
-            whiteSpace: 'pre-wrap',
-          }}
-        >
-          시가총액(Market Capitalization) 전일종가와 발행주식 수를 곱한 것으로
-          주식시장에서 상장회사의 규모를 평가하는 지표이다.
-        </div>
-      </article>
-    </SQuantFilter>
-  );
-};
-const SQuantFilter = styled.section`
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 1rem;
-  min-height: 80%;
-  z-index: 1000;
-  .col1 {
-    background-color: aliceblue;
-  }
-  .col2 {
-    background-color: antiquewhite;
-  }
-  .col3 {
-    background-color: azure;
   }
 `;
 
