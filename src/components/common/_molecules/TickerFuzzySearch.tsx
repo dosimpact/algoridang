@@ -1,8 +1,8 @@
+import { IconFind } from 'assets/icons';
 import { useClickOutside } from 'hooks/useClickOutside';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { Corporation } from 'states/finance/interface/entities';
-import useCorporation from 'states/finance/query/useCorporation';
 import useCorporations from 'states/finance/query/useCorporations';
 import styled from 'styled-components';
 import { createFuzzyMatcher, debouncing } from 'utils/funcs';
@@ -21,7 +21,10 @@ interface ITickerFuzzySearch {
   // 종목 검색 성공시 콜백
   onSuccess?: (e: SearchOnSuccessEvent) => void;
   // 종목 검색 후 앤터를 눌렀을때 콜백
-  onKeyDownEnter?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onKeyDownEnter?: (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    data?: SearchOnSuccessEvent,
+  ) => void;
 }
 
 const TickerFuzzySearch: React.FC<ITickerFuzzySearch> = ({
@@ -39,32 +42,34 @@ const TickerFuzzySearch: React.FC<ITickerFuzzySearch> = ({
   // 종목에 mark 가 있는 HTML string
   const [corpsNameMarked, setCorpsNameMarked] = useState<string[]>([]);
 
-  const { register, handleSubmit, setValue, control, formState } = useForm<{
+  const { register, setValue, control, formState } = useForm<{
     term: string;
   }>({ defaultValues: { term: '' } });
   const term = useWatch({ control, name: 'term' });
-  const { corporations, isLoading, refetch } = useCorporation({
-    term,
-  });
 
   useEffect(() => {
-    if (corporations && corporations?.length >= 1 && onSuccess) {
+    if (filteredCorps && filteredCorps?.length >= 1 && onSuccess) {
       onSuccess({
-        corp_name: corporations[0].corp_name,
-        ticker: corporations[0].ticker,
-        corporations,
+        corp_name: filteredCorps[0].corp_name,
+        ticker: filteredCorps[0].ticker,
+        corporations: filteredCorps,
       });
     }
     return () => {};
-  }, [corporations, onSuccess]);
+  }, [filteredCorps, onSuccess]);
 
   useEffect(() => {
+    const sliceEnd = 6;
     const reg = createFuzzyMatcher(term);
-    const result = corps?.filter((corp) => reg.test(corp.corp_name));
+    const result = corps
+      ?.filter((corp) => reg.test(corp.corp_name))
+      .slice(0, sliceEnd);
+
     setFilteredCorps(result || []);
 
     const markeds = corps
       ?.filter((corp) => reg.test(corp.corp_name))
+      .slice(0, sliceEnd)
       .map((corp) => {
         const tmp = corp.corp_name.replace(reg, (match, ...groups) => {
           const letters = groups.slice(0, -2);
@@ -73,7 +78,7 @@ const TickerFuzzySearch: React.FC<ITickerFuzzySearch> = ({
           for (let i = 0, l = letters.length; i < l; i++) {
             const idx = match.indexOf(letters[i], lastIndex);
             highlited.push(match.substring(lastIndex, idx));
-            highlited.push(`<mark>${letters[i]}</mark>`);
+            highlited.push(`<strong>${letters[i]}</strong>`);
             lastIndex = idx + 1;
           }
           return highlited.join('');
@@ -88,16 +93,18 @@ const TickerFuzzySearch: React.FC<ITickerFuzzySearch> = ({
     return () => {};
   }, [formState]);
 
-  // todo : refactor : error 표시
-
+  // 현재 컴포넌트의 안과 밖
   const searchInnerRef = useRef<HTMLDivElement>(null);
+  // 드랍 다운 메뉴 보이는 것 유무
+  const [isShowDropdown, setIsShowDropdown] = useState(true);
+  //
   useClickOutside<HTMLDivElement>(
     searchInnerRef,
     () => {
-      console.log('click outside');
+      setIsShowDropdown(false);
     },
     () => {
-      console.log('click inside');
+      setIsShowDropdown(true);
     },
   );
 
@@ -105,9 +112,9 @@ const TickerFuzzySearch: React.FC<ITickerFuzzySearch> = ({
     <STickerFuzzySearch>
       <div ref={searchInnerRef}>
         <form
-          onSubmit={handleSubmit((data) => {
-            refetch();
-          })}
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
         >
           <input
             className="tickerInput"
@@ -129,15 +136,27 @@ const TickerFuzzySearch: React.FC<ITickerFuzzySearch> = ({
             )}
           ></input>
         </form>
-        {/* <div>{error && "error..."}</div> */}
-        <div style={{ marginTop: '1rem' }}>
-          {corporations?.length === 0 || isLoading
-            ? '종목없음'
-            : `검색 완료 : ${
-                (corporations && corporations[0].corp_name) || ''
-              }`}
+        <div className="dropdownWrapper">
+          <DropdownResult
+            filteredCorps={filteredCorps}
+            corpsNameMarked={corpsNameMarked}
+            onSelect={(corp) => {
+              if (
+                corp &&
+                filteredCorps &&
+                filteredCorps?.length >= 1 &&
+                onSuccess
+              ) {
+                onSuccess({
+                  corp_name: corp.corp_name,
+                  ticker: corp.ticker,
+                  corporations: filteredCorps,
+                });
+              }
+            }}
+            isShow={isShowDropdown}
+          />
         </div>
-        <DropdownResult corpsNameMarked={corpsNameMarked} />
       </div>
     </STickerFuzzySearch>
   );
@@ -165,28 +184,81 @@ const STickerFuzzySearch = styled.section`
   input::placeholder {
     color: rgba(122, 122, 122, 0.67);
   }
+  .dropdownWrapper {
+    position: relative;
+  }
 `;
 
 const DropdownResult: React.FC<{
+  filteredCorps: Corporation[];
   corpsNameMarked: string[];
-  onSelect?: (idx: number) => void;
-}> = ({ corpsNameMarked, onSelect }) => {
-  const handleSelected = (idx: number) => {
-    if (onSelect) onSelect(idx);
+  onSelect?: (corp: Corporation) => void;
+  isShow: boolean;
+}> = ({ filteredCorps, corpsNameMarked, onSelect, isShow }) => {
+  const handleSelected = (corp: Corporation) => {
+    if (onSelect) onSelect(corp);
   };
   return (
-    <div>
-      {corpsNameMarked.map((html, idx) => {
-        return (
-          <div
-            onClick={() => {
-              handleSelected(idx);
-            }}
-            key={idx}
-            dangerouslySetInnerHTML={{ __html: html }}
-          ></div>
-        );
-      })}
-    </div>
+    <SDropdownResult isShow={isShow}>
+      <div className="dropdownContainer">
+        {corpsNameMarked.map((html, idx) => {
+          return (
+            <div
+              key={idx}
+              className="row"
+              onClick={() => {
+                handleSelected(filteredCorps[idx]);
+              }}
+            >
+              <div className="icon">
+                <IconFind />
+              </div>
+              <div className="content">
+                <div
+                  className="corpName"
+                  dangerouslySetInnerHTML={{ __html: html }}
+                ></div>
+                <div className="corpCode">{filteredCorps[idx]?.ticker}</div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </SDropdownResult>
   );
 };
+const SDropdownResult = styled.section<{ isShow: boolean }>`
+  display: ${(props) => (props.isShow ? 'block' : 'none')};
+  position: absolute;
+  width: 100%;
+  strong {
+    color: ${(props) => props.theme.ColorMainRed};
+  }
+  .row {
+    width: 100%;
+    min-height: 4rem;
+    display: flex;
+    padding: 0.8rem 0rem;
+    cursor: pointer;
+    &:hover {
+      background-color: ${(props) => props.theme.ColorMainLightGray};
+    }
+    .icon {
+      margin: 0 1.5rem;
+      svg {
+        fill: #898989;
+        width: 2rem;
+      }
+    }
+    .content {
+      .corpName {
+        font-size: 1.5rem;
+      }
+      .corpCode {
+        font-size: 1.2rem;
+        line-height: 1.2rem;
+        color: #717171;
+      }
+    }
+  }
+`;

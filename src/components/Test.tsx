@@ -11,7 +11,14 @@ const Test = () => {
   return (
     <STest>
       <h2>Test</h2>
-      <TickerFuzzySearch></TickerFuzzySearch>
+      <TickerFuzzySearch
+        onSuccess={(e) => {
+          console.log(e);
+        }}
+        onKeyDownEnter={(e) => {
+          console.log(e);
+        }}
+      ></TickerFuzzySearch>
     </STest>
   );
 };
