@@ -26,8 +26,9 @@ const BadgePriceDelta: React.FC<{ today?: number; yesterday?: number }> = ({
 
   return (
     <SBadgePriceDelta isPositive={isPositive}>
-      <span>{diff.diffValue}</span>
-      <span>({diff.diffPercentage})</span>
+      <div className="wrapper">
+        {diff.diffValue} ({diff.diffPercentage})
+      </div>
     </SBadgePriceDelta>
   );
 };
@@ -39,18 +40,19 @@ const SBadgePriceDelta = styled.div<{ isPositive: boolean }>`
     props.isPositive
       ? props.theme.ColorMainLightRed
       : props.theme.ColorMainLightBlue};
-  font-size: 1.2rem;
-  font-weight: 100;
-  border-radius: 1.1rem;
-  padding: 0.5rem 1.1rem;
-  min-width: 7rem;
-  min-height: 2.3rem;
+  font-size: 1.3rem;
+  font-weight: 400;
+  border-radius: 2.4rem;
+  padding: 1rem;
+  min-width: 10rem;
+  min-height: 3.3rem;
   display: inline-block;
-  span {
+
+  .wrapper {
+    display: flex;
+    justify-content: center;
     color: ${(props) =>
       props.isPositive ? props.theme.ColorMainRed : props.theme.ColorMainBlue};
-  }
-  span:nth-child(1) {
-    margin-right: 0.3rem;
+    text-align: center;
   }
 `;

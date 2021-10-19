@@ -65,6 +65,11 @@ const SLoggedOut = styled.section`
     color: ${(props) => props.theme.ColorGray};
     cursor: pointer;
   }
+  .btn {
+    height: 4.5rem;
+    font-size: 1.7rem;
+    line-height: 1.6rem;
+  }
 `;
 
 export default LoggedOut;

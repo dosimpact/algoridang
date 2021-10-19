@@ -111,6 +111,7 @@ const TickerPriceS = styled.section`
       }
       .unitText {
         margin-right: 1.5rem;
+        font-size: 2.7rem;
       }
     }
   }
