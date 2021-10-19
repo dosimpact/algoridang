@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useClickOutside } from 'hooks/useClickOutside';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useForm, useWatch } from 'react-hook-form';
 import { Corporation } from 'states/finance/interface/entities';
 import useCorporation from 'states/finance/query/useCorporation';
@@ -27,14 +28,18 @@ const TickerFuzzySearch: React.FC<ITickerFuzzySearch> = ({
   onSuccess,
   onKeyDownEnter,
 }) => {
+  // 기업 종목들의 리스트를 가져옵니다.
   const { GetCorporationsQuery } = useCorporations();
+  // 이름만 추출
   const corps = useMemo(() => {
     return GetCorporationsQuery.data?.corporations;
   }, [GetCorporationsQuery]);
+  // fuzzy search 결과 선별된 종목들
   const [filteredCorps, setFilteredCorps] = useState<Corporation[]>([]);
+  // 종목에 mark 가 있는 HTML string
   const [corpsNameMarked, setCorpsNameMarked] = useState<string[]>([]);
 
-  const { register, handleSubmit, setValue, control } = useForm<{
+  const { register, handleSubmit, setValue, control, formState } = useForm<{
     term: string;
   }>({ defaultValues: { term: '' } });
   const term = useWatch({ control, name: 'term' });
@@ -79,43 +84,61 @@ const TickerFuzzySearch: React.FC<ITickerFuzzySearch> = ({
     return () => {};
   }, [term, corps, setFilteredCorps]);
 
+  useEffect(() => {
+    return () => {};
+  }, [formState]);
+
   // todo : refactor : error 표시
+
+  const searchInnerRef = useRef<HTMLDivElement>(null);
+  useClickOutside<HTMLDivElement>(
+    searchInnerRef,
+    () => {
+      console.log('click outside');
+    },
+    () => {
+      console.log('click inside');
+    },
+  );
+
   return (
     <STickerFuzzySearch>
-      <form
-        onSubmit={handleSubmit((data) => {
-          refetch();
-        })}
-      >
-        <input
-          className="tickerInput"
-          type="text"
-          placeholder="코드,기업명을 입력해주세요"
-          autoComplete="off"
-          {...register('term', { required: true })}
-          onChange={debouncing((e: React.ChangeEvent<HTMLInputElement>) => {
-            setValue('term', e.target.value);
-          }, 100)}
-          onKeyDown={debouncing((e: React.KeyboardEvent<HTMLInputElement>) => {
-            if (e.key === 'Enter' && onKeyDownEnter) {
-              onKeyDownEnter(e);
-              setValue('term', '');
-            }
-          }, 100)}
-        ></input>
-      </form>
-      {/* <div>{error && "error..."}</div> */}
-      <div style={{ marginTop: '1rem' }}>
-        {corporations?.length === 0 || isLoading
-          ? '종목없음'
-          : `검색 완료 : ${(corporations && corporations[0].corp_name) || ''}`}
+      <div ref={searchInnerRef}>
+        <form
+          onSubmit={handleSubmit((data) => {
+            refetch();
+          })}
+        >
+          <input
+            className="tickerInput"
+            type="text"
+            placeholder="코드,기업명을 입력해주세요"
+            autoComplete="off"
+            {...register('term', { required: true })}
+            onChange={debouncing((e: React.ChangeEvent<HTMLInputElement>) => {
+              setValue('term', e.target.value);
+            }, 100)}
+            onKeyDown={debouncing(
+              (e: React.KeyboardEvent<HTMLInputElement>) => {
+                if (e.key === 'Enter' && onKeyDownEnter) {
+                  onKeyDownEnter(e);
+                  setValue('term', '');
+                }
+              },
+              100,
+            )}
+          ></input>
+        </form>
+        {/* <div>{error && "error..."}</div> */}
+        <div style={{ marginTop: '1rem' }}>
+          {corporations?.length === 0 || isLoading
+            ? '종목없음'
+            : `검색 완료 : ${
+                (corporations && corporations[0].corp_name) || ''
+              }`}
+        </div>
+        <DropdownResult corpsNameMarked={corpsNameMarked} />
       </div>
-      {corpsNameMarked.map((html) => {
-        return <div dangerouslySetInnerHTML={{ __html: html }}></div>;
-      })}
-      {/* <pre>{JSON.stringify(corpsNameMarked, null, 2)}</pre> */}
-      {/* <pre>{JSON.stringify(filteredCorps, null, 2)}</pre> */}
-      {/* <pre>{JSON.stringify(corps, null, 2)}</pre> */}
     </STickerFuzzySearch>
   );
 };
@@ -143,3 +166,27 @@ const STickerFuzzySearch = styled.section`
     color: rgba(122, 122, 122, 0.67);
   }
 `;
+
+const DropdownResult: React.FC<{
+  corpsNameMarked: string[];
+  onSelect?: (idx: number) => void;
+}> = ({ corpsNameMarked, onSelect }) => {
+  const handleSelected = (idx: number) => {
+    if (onSelect) onSelect(idx);
+  };
+  return (
+    <div>
+      {corpsNameMarked.map((html, idx) => {
+        return (
+          <div
+            onClick={() => {
+              handleSelected(idx);
+            }}
+            key={idx}
+            dangerouslySetInnerHTML={{ __html: html }}
+          ></div>
+        );
+      })}
+    </div>
+  );
+};
