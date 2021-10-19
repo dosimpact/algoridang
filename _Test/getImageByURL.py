@@ -2,7 +2,7 @@ import os
 import time
 from PIL import Image
 
-from openAPI.DB.connectionPool import databasepool
+from DB.connectionPool import databasepool
 
 from openAPI import pricePykrx
 

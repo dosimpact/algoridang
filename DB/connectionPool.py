@@ -4,7 +4,7 @@ from psycopg2 import pool
 from . import identification
 
 
-from openAPI.DB.query import dbQuery
+from DB.query import dbQuery
 
 class databasepool(dbQuery):
     __postgreSQLpool = []
@@ -48,8 +48,6 @@ class databasepool(dbQuery):
 
 
 
-
-dbinit = databasepool(2)
 
 
 if __name__ == "__main__":

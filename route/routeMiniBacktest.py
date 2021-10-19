@@ -1,5 +1,6 @@
 from flask import request, jsonify
 from flask_restx import Resource, Api, Namespace, fields
+from backtesting.BacktestMini import BacktestMini
 
 
 from pycelery import processor
@@ -38,7 +39,9 @@ class MiniBackTest(Resource):
         """strategyCode 를 바탕으로 백테스트를 수행합니다. """
         if request.method == 'POST':
             inputdata = request.get_json(silent=True)
-            res = processor.callMiniBacktest(inputdata)
+            bt = BacktestMini()
+            
+            res = bt.getMiniBacktest(inputdata)
            
         return res, 201
 

@@ -1,5 +1,5 @@
 
-from openAPI.DB.connectionPool import databasepool
+from DB.connectionPool import databasepool
 from backtesting.backtesting import CBackTtrader
 
 class MockInvestCtrl():

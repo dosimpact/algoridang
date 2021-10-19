@@ -16,7 +16,7 @@ import math
 
 
 from backtesting.BarAnalysis import BarAnalysis
-from backtesting.SMACross import SMACross
+from backtesting.Strategies.SMACross import SMACross
 from backtesting.backTestQuery import backTestQuery
 
 

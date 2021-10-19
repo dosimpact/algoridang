@@ -3,12 +3,12 @@ from backtesting.MiniBacktest import MiniBacktest
 
 import backtrader as bt
 import quantstats
-from openAPI.DB.connectionPool import databasepool
+from DB.connectionPool import databasepool
 import pandas as pd
 
 
-from backtesting.SMACross import SMACross
-from backtesting.RSI import RSI
+from backtesting.Strategies.SMACross import SMACross
+from backtesting.Strategies.RSI import RSI
 
 class MakeMiniBackTest(MiniBacktest):
     def __init__(self) -> None:

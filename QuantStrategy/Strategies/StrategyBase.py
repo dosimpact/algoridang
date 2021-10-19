@@ -1,5 +1,5 @@
 from abc import *
-from openAPI.DB.connectionPool import databasepool
+from DB.connectionPool import databasepool
 
 class StrategyBase(object):
     def __init__(self,parm) -> None:

@@ -10,6 +10,7 @@ from route.routeDailyStock import DailyStock
 from route.routeMiniBacktest import MiniBacktest
 from route.routeQuant import Quant
 
+from DB.connectionPool import databasepool
 import sentry_sdk
 
 # sentry
@@ -49,5 +50,8 @@ api.add_namespace(Celerys, '/celery')
 api.add_namespace(DailyStock, '/datas')
 api.add_namespace(Quant, '/quant')
 
+
+dbinit = databasepool(0)
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
+    #processor.Test___backtestTestCode(2733)
