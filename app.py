@@ -51,7 +51,7 @@ api.add_namespace(DailyStock, '/datas')
 api.add_namespace(Quant, '/quant')
 
 
-dbinit = databasepool(2)
+dbinit = databasepool(0)
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
-    #processor.Test___backtestTestCode(2733)
+    #processor.Test___backtestTestCode(2736)
