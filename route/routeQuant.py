@@ -106,9 +106,7 @@ class QuantStrategy(Resource):
             quant = QuantSelecter()
             res = quant.runQuantStrategty(data)
 
-            result = json.dumps(res, ensure_ascii=False)
-            res = make_response(result)
-        return res
+        return res, 201
 
 
 
@@ -137,6 +135,4 @@ class QuantSampleCode(Resource):
             quant = QuantSelecter()
             res = quant.getSampleData(index)
 
-            result = json.dumps(res, ensure_ascii=False)
-            res = make_response(result)
-        return res
+        return res, 201
