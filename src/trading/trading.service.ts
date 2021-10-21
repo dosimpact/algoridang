@@ -38,6 +38,7 @@ export class TradingService {
     private readonly simpleBacktestRepo: Repository<SimpleBacktest>,
     @InjectRepository(Universal)
     private readonly universalRepo: Repository<Universal>,
+    @Inject(forwardRef(() => FinanceService))
     private readonly financeService: FinanceService,
 
     @Inject(forwardRef(() => StrategyService))

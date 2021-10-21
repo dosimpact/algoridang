@@ -1,6 +1,17 @@
-import { IsArray, IsJSON, IsNumber, IsObject, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsArray,
+  IsJSON,
+  IsNumber,
+  IsObject,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 import { CoreOutput } from 'src/common/dtos/output.dto';
-import { RequestFS } from 'src/finance/entities/financial-statement.entity';
+import {
+  RequestFS,
+  RequestFSData,
+} from 'src/finance/entities/financial-statement.entity';
 import { StrategyName } from 'src/trading/constant/strategy-setting';
 import {
   AccumulateProfitRateChart,
@@ -77,7 +88,14 @@ export class RequestMiniBacktestingOutput extends CoreOutput {
 
 // 퀀트 종목 발굴 - input
 export class RequestQuantSelectInput {
-  requestFS: RequestFS;
+  @IsNumber()
+  strategy: number;
+  @IsNumber()
+  numberOfData: number;
+  // @ValidateNested()
+  // @Type()
+  @IsObject()
+  data: RequestFSData;
 }
 // 퀀트 종목 발굴 - output
 export class RequestQuantSelectOutput extends CoreOutput {

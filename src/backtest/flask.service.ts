@@ -149,13 +149,13 @@ export class FlaskService {
    * @returns {Promise<RequestQuantSelectOutput>} RequestQuantSelectOutput
    */
 
-  async __requestQuantSelect(
+  async __requestQuantSelection(
     body: RequestQuantSelectInput,
   ): Promise<RequestQuantSelectOutput> {
     const { data, status } = await axios({
       method: 'post',
       url: `${this.dataServerUrl}/quant`,
-      data: body.requestFS,
+      data: body,
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',

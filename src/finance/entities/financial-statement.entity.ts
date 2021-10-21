@@ -186,20 +186,21 @@ type RequestFSKeys = Omit<
 
 type RequestFSBody =
   | {
-      operater: 'between';
+      operator: 'between';
       values: [number, number]; // number[]와 달리 튜플을 다음처럼 정의한다.
     }
   | {
-      operater: 'up';
+      operator: 'up';
       values: [number];
     }
   | {
-      operater: 'down';
+      operator: 'down';
       values: [number];
     }
   | number;
 
-type RequestFSData = Partial<Record<keyof RequestFSKeys, RequestFSBody>>;
+export type RequestFSData = Partial<Record<keyof RequestFSKeys, RequestFSBody>>;
+
 export type RequestFS = {
   strategy: number;
   numberOfData: number;

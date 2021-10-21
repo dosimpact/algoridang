@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundError, Like, Raw, Repository } from 'typeorm';
 import {
@@ -20,6 +20,13 @@ import {
 } from './entities/index';
 import { execSync } from 'child_process';
 import { join } from 'path';
+import { FlaskService } from '../backtest/flask.service';
+import {
+  RequestQuantSelectDefaultOutput,
+  RequestQuantSelectInput,
+  RequestQuantSelectLookUpOutput,
+  RequestQuantSelectOutput,
+} from 'src/backtest/dto/query.dtos';
 // import { promisify } from 'util';
 
 // 👨‍💻 FinanceService 의 책임이 막중하다.
@@ -38,6 +45,8 @@ export class FinanceService {
     private readonly CorporationRepo: Repository<Corporation>,
     @InjectRepository(DailyStock)
     private readonly DailyStockRepo: Repository<DailyStock>,
+    @Inject(forwardRef(() => FlaskService))
+    private readonly flaskService: FlaskService,
   ) {}
 
   // (1) 모든 회사들의 리스트를 리턴
@@ -123,6 +132,23 @@ export class FinanceService {
   async getFinancialStatements({}: GetFinancialStatementInput): Promise<GetFinancialStatementOutput> {
     return {
       ok: false,
+      error: 'not yet',
     };
   }
+
+  async FS_Selection(
+    body: RequestQuantSelectInput,
+  ): Promise<RequestQuantSelectOutput> {
+    return this.flaskService.__requestQuantSelection(body);
+  }
+
+  async FS_SelectionLookupList(): Promise<RequestQuantSelectLookUpOutput> {
+    return this.flaskService.__requestQuantSelectLookUp();
+  }
+  async FS_SelectionLookupType(
+    index: number,
+  ): Promise<RequestQuantSelectDefaultOutput> {
+    return this.flaskService.__requestQuantSelectDefault(index);
+  }
+  async FS_SelectionLookupAll() {}
 }
