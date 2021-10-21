@@ -73,3 +73,11 @@ export class RequestMiniBacktestingOutput extends CoreOutput {
     mdd: number;
   };
 }
+
+export class RequestQuantSelectLookUpOutput extends CoreOutput {
+  strategy: Record<string, string>;
+}
+
+export class RequestQuantSelectDefaultOutput extends CoreOutput {
+  strategy: Record<string, string>;
+}

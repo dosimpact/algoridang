@@ -9,6 +9,8 @@ import {
   GetDayilStocksOutput,
   GetCorporationsOutput,
   GetCorporationsWithTermInput,
+  GetFinancialStatementOutput,
+  GetFinancialStatementInput,
 } from './dtos/query.dtos';
 import {
   Category,
@@ -116,5 +118,11 @@ export class FinanceService {
         { corp_name: Raw((corp_name) => `${corp_name} ILIKE '${term}'`) },
       ],
     });
+  }
+
+  async getFinancialStatements({}: GetFinancialStatementInput): Promise<GetFinancialStatementOutput> {
+    return {
+      ok: false,
+    };
   }
 }

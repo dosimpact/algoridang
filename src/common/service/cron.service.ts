@@ -17,9 +17,14 @@ export class CronService {
   //   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async handleCron() {
+    console.time('cache-ticker-price');
     this.logger.verbose('🚀 Ticker Price Data CachingStart');
     await this.cachTickerPriceData();
-    this.logger.verbose('✔ Ticker Price Data Caching Fin');
+    this.logger.verbose(
+      `✔ Ticker Price Data Caching Fin ${console.timeEnd(
+        'cache-ticker-price',
+      )}`,
+    );
   }
 
   private async cachTickerPriceData() {

@@ -6,18 +6,13 @@ import {
   UseInterceptors,
   Version,
 } from '@nestjs/common';
-import { ErrorHandlerInterceptor } from 'src/common/interceptor/ErrorHandlerInterceptor';
 import { HttpCacheInterceptor } from 'src/common/interceptor/HttpCacheInterceptor';
 import { FinanceService } from './finance.service';
 
-// @UseInterceptors(ErrorHandlerInterceptor)
-// @Controller({ version: '1' })
 @UseInterceptors(HttpCacheInterceptor)
 @Controller('/api/finance/')
 export class FinanceController {
   constructor(private readonly financeService: FinanceService) {}
-
-  // stock --- api
 
   // (1) 기업 리스트 출력
   @Version('1')
@@ -51,5 +46,11 @@ export class FinanceController {
     @Query('sort') sort: string,
   ) {
     return this.financeService.getDailyStocks({ term, take, skip, sort });
+  }
+
+  @Version('1')
+  @Get('financial-statements/:ticker')
+  async getFinancialStatements(@Param('ticker') ticker: string) {
+    return this.financeService.getFinancialStatements({ ticker });
   }
 }

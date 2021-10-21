@@ -60,19 +60,7 @@ export class FlaskService {
       return false;
     }
   }
-  // (1) ??
-  async setCorporationDBData() {
-    try {
-      // sido / sigungu 정보 써서 서버로 쏘면 됨
-      const { data } = await axios.get(
-        `${this.dataServerUrl}/DBinit/Corporation`,
-      );
-      return data;
-    } catch (e) {
-      console.error('[FAIL] GET test', e);
-      return e;
-    }
-  }
+
   // (2) backtest 실행, - strategyCode 입력
   async __requestBackTest(strategyCode: number): Promise<SetBackTestOutput> {
     try {
@@ -86,19 +74,21 @@ export class FlaskService {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
         },
-        timeout: 10000,
+        timeout: 15 * 1000,
       });
       if (status !== 201) {
         return { ok: false, ...data };
       }
       return { ok: true, ...data };
     } catch (e) {
-      console.error('[FAIL] GET test', e);
+      this.logger.error(
+        `❌️ DA Server connection AxiosError ${this.dataServerUrl}`,
+      );
       throw e;
     }
   }
   /**
-   * (2) backtest 큐 넣기
+   * (2) backtest 실행, - strategyCode 입력
    * - email_id가 가진 전략인지 확인 후 큐 요청
    * @param {string} email_id
    * @param {PushBackTestQInput} pushBackTestQInput
@@ -117,21 +107,9 @@ export class FlaskService {
       throw new UnauthorizedException('cannot access strategy');
     }
   }
-  // (3) 작업 상태 점검 - task_id 입력
-  async check(task_id: string) {
-    try {
-      const { data } = await axios.get(
-        `${this.dataServerUrl}/check/${task_id}`,
-      );
-      return data;
-    } catch (e) {
-      console.error('[FAIL] GET test', e);
-      return e;
-    }
-  }
 
   /**
-   * 미니 백테스팅
+   * (3)  미니 백테스팅
    * - email_id가 가진 전략인지 확인 후 큐 요청
    * @param {RequestMiniBacktestingInput} pushBackTestQInput
    * @returns {RequestMiniBacktestingOutput} RequestMiniBacktestingOutput
@@ -158,6 +136,85 @@ export class FlaskService {
       return { ok: true, ...data };
     } catch (e) {
       console.error('[FAIL] GET test', e);
+      throw e;
+    }
+  }
+  /**
+   * (4)  퀀트 발굴 - 적용된 파라미터로 종목을 발굴합니다.
+   */
+
+  // async __requestQuantSelect() {
+  //   try {
+  //     const { data, status } = await axios({
+  //       method: 'post',
+  //       url: `${this.dataServerUrl}/quant`,
+  //       data: {
+  //         strategyCode,
+  //       },
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'Access-Control-Allow-Origin': '*',
+  //       },
+  //       timeout: 15 * 1000,
+  //     });
+  //     if (status !== 201) {
+  //       return { ok: false, ...data };
+  //     }
+  //     return { ok: true, ...data };
+  //   } catch (e) {
+  //     this.logger.error(
+  //       `❌️ DA Server connection AxiosError ${this.dataServerUrl}`,
+  //     );
+  //     throw e;
+  //   }
+  // }
+
+  /**
+   * (4)  퀀트 발굴 - 공식별 파라미터를 보여줍니다.
+   */
+  async __requestQuantSelectLookUp() {
+    try {
+      const { data, status } = await axios({
+        method: 'get',
+        url: `${this.dataServerUrl}/quant/lookup`,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        timeout: 15 * 1000,
+      });
+      if (status !== 201) {
+        return { ok: false, ...data };
+      }
+      return { ok: true, ...data };
+    } catch (e) {
+      this.logger.error(
+        `❌️ DA Server connection AxiosError ${this.dataServerUrl}`,
+      );
+      throw e;
+    }
+  }
+
+  async __requestQuantSelectDefault(index: number) {
+    try {
+      const { data, status } = await axios({
+        method: 'get',
+        url: `${this.dataServerUrl}/quant/sample?index=${index}`,
+        data: {},
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        timeout: 15 * 1000,
+      });
+      if (status !== 201) {
+        return { ok: false, ...data };
+      }
+      return { ok: true, ...data };
+    } catch (e) {
+      this.logger.error(
+        `❌️ DA Server connection AxiosError ${this.dataServerUrl}`,
+      );
       throw e;
     }
   }

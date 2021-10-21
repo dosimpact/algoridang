@@ -178,3 +178,25 @@ export class FinancialStatement {
   dividend_yield__Q?: number; // 배당수익률
   // --- end entity property
 }
+
+type requestFSKeys = Omit<
+  FinancialStatement,
+  'finance_date' | 'ticker' | 'corporation'
+>;
+
+type requestFSBody =
+  | {
+      operator: 'between';
+      values: [number, number];
+    }
+  | {
+      operator: 'up';
+      values: [number];
+    }
+  | {
+      operator: 'down';
+      values: [number];
+    }
+  | number;
+
+export type requestFS = Partial<Record<keyof requestFSKeys, requestFSBody>>;
