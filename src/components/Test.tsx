@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import TickerFuzzySearch from './common/_molecules/TickerFuzzySearch';
 import Skeleton from 'react-loading-skeleton';
 import StrategyCardInfoSkeleton from './common/_molecules/StrategyCardInfoSkeleton';
+import StrategyCardInfoEmpty from './common/_molecules/StrategyCardInfoEmpty';
 // import { GqlPrac02 } from 'components/test/gql-prac/gql-prac-02';
 // import { GqlPrac03 } from "components/test/gql-prac/gql-prac-03";
 // import { GqlPrac04 } from "components/test/gql-prac/gql-prac-04";
@@ -12,6 +13,7 @@ import StrategyCardInfoSkeleton from './common/_molecules/StrategyCardInfoSkelet
 const Test = () => {
   return (
     <STest>
+      <StrategyCardInfoEmpty />
       <StrategyCardInfoSkeleton />
       <h2>Test</h2>
       <Skeleton /> <br />

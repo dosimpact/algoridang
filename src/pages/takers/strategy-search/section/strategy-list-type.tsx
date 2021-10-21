@@ -2,6 +2,7 @@ import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import NavHeaderDetail from 'components/common/_molecules/NavHeaderDetail';
 import StrategyCardInfo from 'components/common/_molecules/StrategyCardInfo';
+import StrategyCardInfoSkeleton from 'components/common/_molecules/StrategyCardInfoSkeleton';
 import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import useStrategy from 'states/strategy/query/useStrategy';
@@ -53,18 +54,19 @@ const StrategyListType = () => {
           />
           <WhiteSpace />
           <WingBlank>
-            {strategyListNew &&
-              strategyListNew.map((data, key) => (
-                <StrategyCardInfo
-                  key={key}
-                  strategy={data}
-                  onClick={() => {
-                    history.push(
-                      `/takers/strategy-search/details/${data.strategy_code}`,
-                    );
-                  }}
-                />
-              ))}
+            {!strategyListNew
+              ? [...new Array(6)].map(() => <StrategyCardInfoSkeleton />)
+              : strategyListNew.map((data, key) => (
+                  <StrategyCardInfo
+                    key={key}
+                    strategy={data}
+                    onClick={() => {
+                      history.push(
+                        `/takers/strategy-search/details/${data.strategy_code}`,
+                      );
+                    }}
+                  />
+                ))}
             <WhiteSpace />
           </WingBlank>
         </>
@@ -77,18 +79,19 @@ const StrategyListType = () => {
           />
           <WhiteSpace />
           <WingBlank>
-            {strategyListHighView &&
-              strategyListHighView.map((data, key) => (
-                <StrategyCardInfo
-                  key={key}
-                  strategy={data}
-                  onClick={() => {
-                    history.push(
-                      `/takers/strategy-search/details/${data.strategy_code}`,
-                    );
-                  }}
-                />
-              ))}
+            {!strategyListHighView
+              ? [...new Array(6)].map(() => <StrategyCardInfoSkeleton />)
+              : strategyListHighView.map((data, key) => (
+                  <StrategyCardInfo
+                    key={key}
+                    strategy={data}
+                    onClick={() => {
+                      history.push(
+                        `/takers/strategy-search/details/${data.strategy_code}`,
+                      );
+                    }}
+                  />
+                ))}
             <WhiteSpace />
           </WingBlank>
         </>
@@ -102,18 +105,19 @@ const StrategyListType = () => {
           />
           <WhiteSpace />
           <WingBlank>
-            {strategyListRiskTaking &&
-              strategyListRiskTaking.map((data, key) => (
-                <StrategyCardInfo
-                  key={key}
-                  strategy={data}
-                  onClick={() => {
-                    history.push(
-                      `/takers/strategy-search/details/${data.strategy_code}`,
-                    );
-                  }}
-                />
-              ))}
+            {!strategyListRiskTaking
+              ? [...new Array(6)].map(() => <StrategyCardInfoSkeleton />)
+              : strategyListRiskTaking.map((data, key) => (
+                  <StrategyCardInfo
+                    key={key}
+                    strategy={data}
+                    onClick={() => {
+                      history.push(
+                        `/takers/strategy-search/details/${data.strategy_code}`,
+                      );
+                    }}
+                  />
+                ))}
             <WhiteSpace />
           </WingBlank>
         </>
@@ -126,18 +130,19 @@ const StrategyListType = () => {
           />
           <WhiteSpace />
           <WingBlank>
-            {strategyListNeutral &&
-              strategyListNeutral.map((data, key) => (
-                <StrategyCardInfo
-                  key={key}
-                  strategy={data}
-                  onClick={() => {
-                    history.push(
-                      `/takers/strategy-search/details/${data.strategy_code}`,
-                    );
-                  }}
-                />
-              ))}
+            {!strategyListNeutral
+              ? [...new Array(6)].map(() => <StrategyCardInfoSkeleton />)
+              : strategyListNeutral.map((data, key) => (
+                  <StrategyCardInfo
+                    key={key}
+                    strategy={data}
+                    onClick={() => {
+                      history.push(
+                        `/takers/strategy-search/details/${data.strategy_code}`,
+                      );
+                    }}
+                  />
+                ))}
             <WhiteSpace />
           </WingBlank>
         </>
@@ -150,18 +155,19 @@ const StrategyListType = () => {
           />
           <WhiteSpace />
           <WingBlank>
-            {strategyListStableIncome &&
-              strategyListStableIncome.map((data, key) => (
-                <StrategyCardInfo
-                  key={key}
-                  strategy={data}
-                  onClick={() => {
-                    history.push(
-                      `/takers/strategy-search/details/${data.strategy_code}`,
-                    );
-                  }}
-                />
-              ))}
+            {!strategyListStableIncome
+              ? [...new Array(6)].map(() => <StrategyCardInfoSkeleton />)
+              : strategyListStableIncome.map((data, key) => (
+                  <StrategyCardInfo
+                    key={key}
+                    strategy={data}
+                    onClick={() => {
+                      history.push(
+                        `/takers/strategy-search/details/${data.strategy_code}`,
+                      );
+                    }}
+                  />
+                ))}
             <WhiteSpace />
           </WingBlank>
         </>
@@ -174,18 +180,19 @@ const StrategyListType = () => {
           />
           <WhiteSpace />
           <WingBlank>
-            {strategyListNeutral &&
-              strategyListNeutral.map((data, key) => (
-                <StrategyCardInfo
-                  key={key}
-                  strategy={data}
-                  onClick={() => {
-                    history.push(
-                      `/takers/strategy-search/details/${data.strategy_code}`,
-                    );
-                  }}
-                />
-              ))}
+            {!strategyListNeutral
+              ? [...new Array(6)].map(() => <StrategyCardInfoSkeleton />)
+              : strategyListNeutral.map((data, key) => (
+                  <StrategyCardInfo
+                    key={key}
+                    strategy={data}
+                    onClick={() => {
+                      history.push(
+                        `/takers/strategy-search/details/${data.strategy_code}`,
+                      );
+                    }}
+                  />
+                ))}
             <WhiteSpace />
           </WingBlank>
         </>

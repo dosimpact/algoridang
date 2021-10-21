@@ -106,16 +106,15 @@ const SStrategyCardInfo = styled.section`
     border-bottom-left-radius: 7px;
     margin-top: 1rem;
     width: 10rem;
-    height: 10rem;
-    /* background-color: red; */
+
     display: flex;
     justify-content: center;
     align-items: center;
     .thumnail {
       border-top-left-radius: 7px;
       border-bottom-left-radius: 7px;
-      width: 100%;
-      height: auto;
+      height: 10rem;
+      width: 10rem;
       object-fit: scale-down;
       padding: 1rem;
     }
