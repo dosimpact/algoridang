@@ -20,6 +20,7 @@ import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import { Button } from 'components/common/_atoms/Buttons';
 import FilterListItemRange from '../_molecules/FilterListItemRange';
 import QuantFilterModal from '../_molecules/QuantFilterModal';
+import TickerFuzzySearch from 'components/common/_molecules/TickerFuzzySearch';
 
 //https://velog.io/@seungsang00/React-React-Modal
 Modal.setAppElement('#root');
@@ -63,12 +64,24 @@ const UniversalSettingTabTickerSearch = () => {
   return (
     <SUniversalSettingTabTickerSearch>
       <WhiteSpace style={{ marginTop: '1rem' }} />
-      <TickerSearch
-        onSuccess={handleSearchedCorporations}
+      <TickerFuzzySearch
+        onSuccess={(e) => {
+          handleSearchedCorporations(e);
+        }}
+        onSelect={(e) => {
+          if (e) {
+            setUniversalSettingState((prev) =>
+              produce(prev, (draft) => {
+                draft.selected.push({
+                  selectedCorporations: e.corporation,
+                });
+                return draft;
+              }),
+            );
+          }
+        }}
         onKeyDownEnter={(e) => {
-          console.log('keydonwenter event');
           if (searchResultCorps.length >= 1) {
-            console.log('searchResultCorps[0]', searchResultCorps[0]);
             setUniversalSettingState((prev) => {
               return {
                 ...prev,
@@ -81,6 +94,7 @@ const UniversalSettingTabTickerSearch = () => {
           }
         }}
       />
+
       <WhiteSpace />
       <WideLine style={{ margin: '0 0 1.3rem 0' }} />
       <div className="searchedTableHeader">

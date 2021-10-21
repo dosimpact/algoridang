@@ -14,12 +14,15 @@ import { createFuzzyMatcher, debouncing } from 'utils/funcs';
 type SearchOnSuccessEvent = {
   ticker: string;
   corp_name: string;
+  corporation: Corporation;
   corporations: Corporation[];
 };
 
 interface ITickerFuzzySearch {
   // 종목 검색 성공시 콜백
   onSuccess?: (e: SearchOnSuccessEvent) => void;
+  // 종목 검색 결과 클릭시 콜백
+  onSelect?: (e: SearchOnSuccessEvent) => void;
   // 종목 검색 후 앤터를 눌렀을때 콜백
   onKeyDownEnter?: (
     e: React.KeyboardEvent<HTMLInputElement>,
@@ -29,6 +32,7 @@ interface ITickerFuzzySearch {
 
 const TickerFuzzySearch: React.FC<ITickerFuzzySearch> = ({
   onSuccess,
+  onSelect,
   onKeyDownEnter,
 }) => {
   // 기업 종목들의 리스트를 가져옵니다.
@@ -52,6 +56,7 @@ const TickerFuzzySearch: React.FC<ITickerFuzzySearch> = ({
       onSuccess({
         corp_name: filteredCorps[0].corp_name,
         ticker: filteredCorps[0].ticker,
+        corporation: filteredCorps[0],
         corporations: filteredCorps,
       });
     }
@@ -138,19 +143,22 @@ const TickerFuzzySearch: React.FC<ITickerFuzzySearch> = ({
             filteredCorps={filteredCorps}
             corpsNameMarked={corpsNameMarked}
             onSelect={(corp) => {
-              if (
-                corp &&
-                filteredCorps &&
-                filteredCorps?.length >= 1 &&
-                onSuccess
-              ) {
-                console.log('onSuccess', isShowDropdown);
+              if (corp && filteredCorps && filteredCorps?.length >= 1) {
                 setIsShowDropdown((prev) => !prev);
-                onSuccess({
-                  corp_name: corp.corp_name,
-                  ticker: corp.ticker,
-                  corporations: filteredCorps,
-                });
+                if (onSuccess)
+                  onSuccess({
+                    corp_name: corp.corp_name,
+                    ticker: corp.ticker,
+                    corporation: filteredCorps[0],
+                    corporations: filteredCorps,
+                  });
+                if (onSelect)
+                  onSelect({
+                    corp_name: corp.corp_name,
+                    ticker: corp.ticker,
+                    corporation: corp,
+                    corporations: filteredCorps,
+                  });
               }
             }}
             isShow={isShowDropdown}
@@ -167,16 +175,12 @@ const STickerFuzzySearch = styled.section`
   /* margin-top: 3rem; */
   width: 100%;
   .tickerInput {
-    background: rgba(255, 255, 255, 0.53);
-    /* box-shadow: 0px 0.3px 2px rgba(0, 0, 0, 0.25); */
     border-radius: 9px;
     width: 100%;
     height: 4.6rem;
     border: ${(props) => props.theme.Border};
     padding: 1.5rem 2.8rem;
-
     background: rgba(255, 255, 255, 0.53);
-    box-shadow: 0px 0.3px 2px rgba(0, 0, 0, 0.25);
     border-radius: 9px;
     font-size: 1.3rem;
   }
