@@ -2,6 +2,7 @@ from backtesting.Backtest import Backtest
 
 from backtesting.Strategies.SMACross import SMACross
 from backtesting.Strategies.RSI import RSI
+from backtesting.Strategies.BollingerBand import BollingerBand
 
 class BacktestMini(Backtest):
     def __init__(self) -> None:
@@ -36,6 +37,10 @@ class BacktestMini(Backtest):
         if salestrategy == 'RSI':
             salestrategy = RSI
             minDate = 21
+
+        if salestrategy == 'BollingerBand':
+            salestrategy = BollingerBand
+            minDate = miniBackData['setting'][0]
 
         for i in range(len(salestrategy.param)):
             salestrategy.param[i] = setting[i]         

@@ -13,7 +13,28 @@ import math
 
 
 class BacktestMultiPort(Backtest):
-    """데이터 베이스 친화적 멀티 포트 클래스"""
+    """데이터 베이스 친화적 멀티 포트 클래스
+    
+    @methods
+        __init__ - 초기화 함수
+        portBacktest - 포트폴리오 백테스트 함수
+        MultiPortBacktest - 
+        getPortInfoFromDB - 
+        getPeriodInfo - 
+        makePortpolio - 
+        makeDBDataSet - 
+        calDailyData - 
+        __setDailyAccumulate - 
+        makeBackTestInfo - 
+        saveDB - 
+        _saveBacktestWinRatioTable - 
+        _saveBacktestMonthlyProfitRateChartTable - 
+        _saveAccumulateProfitRateChartTable - 
+        _setStatusMemberStrategy - 
+        _saveBacktestDetailInfoTable - 
+        _saveInvestProfitInfoTable - 
+        _saveBacktestDailyProfitRateChartTable - 
+    """
     def __init__(self,strategyCode) -> None:
         super().__init__()
         self.strategyCode = strategyCode
@@ -26,6 +47,11 @@ class BacktestMultiPort(Backtest):
         self.portMonthlyProfitRatioChartData = []
 
     def portBacktest(self):
+        """포트폴리오 백테스트 함수
+        @result
+            res - "error" : 에러코드
+            res - "Done" : 정상 동작 코드
+        """
         periodInfo = self.getPeriodInfo()
         if len(periodInfo) == 0:
             print("DB dose'not have any data in this field...")
@@ -44,7 +70,12 @@ class BacktestMultiPort(Backtest):
         return "Done"
 
     def MultiPortBacktest(self, cash, case, startTime, endTime):
-
+        """ 멀티 포트에 대하여 백테스팅을 수행함 
+        
+        DB데이터결과를 입력으로 받음
+        
+        @parms
+        """
         tickerlen = len(case)
 
         for ticker, salestrategy, setting, weight, minDate in case:
@@ -86,7 +117,7 @@ class BacktestMultiPort(Backtest):
                     minDate = row[3]['GoldenCross']['pslow']
                     strategyList.append((row[1], SMACross, setting, 1, minDate)) 
                 if row[2] == 'RSI':
-                    setting = [row[3]['RSI']['pfast'],row[3]['RSI']['pslow']]
+                    setting = [row[3]['RSI']['min'],row[3]['RSI']['max']]
                     minDate = 21
                     strategyList.append((row[1], RSI, setting, 1, minDate)) 
 
@@ -202,7 +233,7 @@ class BacktestMultiPort(Backtest):
     
     def saveDB(self):
         print("["+str(self.strategyCode)+"] Start data saving...")
-        
+        self._updateInvestType()
         # 데이터 저장하기
         print("["+str(self.strategyCode)+"] Start data saving...1")
         self._saveBacktestMonthlyProfitRateChartTable()
@@ -217,11 +248,39 @@ class BacktestMultiPort(Backtest):
         print("["+str(self.strategyCode)+"] Start data saving...6")
         self._saveAccumulateProfitRateChartTable()
 
+
         print("["+str(self.strategyCode)+"] Complete data saving!")
         self._setStatusMemberStrategy( "Success","Success", self.strategyCode)
         return "Done"
         
 ########################################################################################
+    def _updateInvestType(self):
+        
+        backtestDetailInfo = self.DBdataBacktestDetailInfo
+        strategyCode = self.strategyCode
+        if backtestDetailInfo[6] < 0.05:
+            typedata = "StableIncome"
+            
+        elif backtestDetailInfo[6] > 0.3:
+            typedata = "RiskTaking"
+            
+        else:
+            typedata = "Neutral"
+            
+        DBClass = databasepool()
+        conn = DBClass.getConn()
+        try:
+            query = "update member_strategy set "
+            query += " \"invest_type\" = \'" + str(typedata)+"\'"            
+            query += " where strategy_code = "+str(strategyCode)+";"
+            DBClass.updateData(conn,query)
+            
+        except:
+            self._setStatusMemberStrategy( "Error",  "_saveBacktestWinRatioTable Unexpected error",self.strategyCode)
+            print("_updateInvestType Unexpected error:", sys.exc_info()[0]) 
+            DBClass.putConn(conn)
+            
+
     def _saveBacktestWinRatioTable(self):
         win = self.multiWin
         lose = self.multiLose
