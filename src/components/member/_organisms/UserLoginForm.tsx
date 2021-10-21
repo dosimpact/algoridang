@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from 'components/common/_atoms/Buttons';
 import useMember from 'states/member/query/useMember';
-import NavHeaderDetail from 'components/common/_molecules/NavHeaderDetail';
-import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import InputListItemH from 'components/common/_atoms/InputListItemH';
 import { toast } from 'react-toastify';
@@ -13,8 +11,8 @@ interface ILoginForm {
 }
 
 const UserLoginForm = () => {
-  const { logIn, logInMutation } = useMember();
-  const { trigger, register, handleSubmit, formState } = useForm<ILoginForm>({
+  const { logInMutation } = useMember();
+  const { register, handleSubmit, formState } = useForm<ILoginForm>({
     defaultValues: { email: '', password: '' },
   });
   const handleLogin = handleSubmit((data) => {

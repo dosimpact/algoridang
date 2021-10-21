@@ -1,4 +1,4 @@
-import { selector, selectorFamily } from 'recoil';
+import { selector } from 'recoil';
 import { CreateMyStrategyInput } from '../interface/dtos';
 import { AddUniversalInput } from 'states/trading/interface/dtos';
 import { atomBasicSetting, atomUniversalSettingState } from './strategy-create';

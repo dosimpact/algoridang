@@ -26,7 +26,8 @@ const StrategyFeeds = () => {
       <PageGuide
         icon={<IconSearchStrategy />}
         title="전략 탐색"
-        subTitle="수익률을 확인하고 원하는 전략으로 모의투자를 시작해 보세요."
+        subTitle={`수익률을 확인하고 원하는 전략으로
+모의투자를 시작해 보세요.`}
       />
       <SectionTitle title="전략 검색" />
       <StrategySearchInput />

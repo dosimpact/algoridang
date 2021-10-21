@@ -1,12 +1,7 @@
 import React, { useMemo } from 'react';
 import { Title } from 'components/common/_atoms/Typos';
 import { useHistory, useParams } from 'react-router-dom';
-import {
-  toPercentage,
-  toRatio,
-  toTagsString,
-  toTickerImage,
-} from 'utils/parse';
+import { toPercentage, toRatio } from 'utils/parse';
 import styled from 'styled-components';
 import DetailSummary from 'components/report/_organisms/DetailSummary';
 import CumulativeReturn from 'components/report/_molecules/CumulativeReturn';

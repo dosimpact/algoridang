@@ -1,4 +1,3 @@
-import React from 'react';
 import { AxiosError, AxiosResponse } from 'axios';
 import { useMutation } from 'react-query';
 import { backtestApi } from 'states/api';

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { toTagsString, toTickerImage } from 'utils/parse';
 import PageGuide from 'components/common/_molecules/PageGuide';
 import { IconMockInvest } from 'assets/icons';
 import { useMyStrategy } from 'states/strategy/query/useMyStrategy';
@@ -23,7 +22,9 @@ const MockInvestFeeds = () => {
       <PageGuide
         icon={<IconMockInvest />}
         title="모의 투자"
-        subTitle="알고리당의 투자 로직에 따라 매일 모의투자를 합니다."
+        subTitle={`알고리당의 투자 로직에 따라
+매일 모의투자를 합니다.
+        `}
       />
       <SectionTitle
         title="나의 모의 투자 전략"

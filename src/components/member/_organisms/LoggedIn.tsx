@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from 'components/common/_atoms/Buttons';
 import useMember from 'states/member/query/useMember';
 import NavHeaderDetail from 'components/common/_molecules/NavHeaderDetail';
 import styled from 'styled-components';
-import { SubTitle, Title } from 'components/common/_atoms/Typos';
+import { SubTitle } from 'components/common/_atoms/Typos';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 
 const LoggedIn = () => {
-  const { logIn, logOut, me } = useMember();
+  const { logOut, me } = useMember();
 
   return (
     <SLoggedIn>

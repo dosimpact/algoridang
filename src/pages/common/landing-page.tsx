@@ -1,8 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import useMember from 'states/member/query/useMember';
-import Tour from 'reactour';
-import useLogin from 'hooks/useMockLogin';
 import { Button } from 'components/common/_atoms/Buttons';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';

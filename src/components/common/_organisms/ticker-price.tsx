@@ -62,7 +62,7 @@ const TickerPrice = () => {
           )}
         />
       </WingBlank>
-
+      <WhiteSpace style={{ marginTop: '3.7rem' }} />
       <WingBlank>
         <article className="chartLegend">
           <div className="tickerName">{corporation.corp_name}</div>
@@ -92,12 +92,14 @@ export default TickerPrice;
 
 const TickerPriceS = styled.section`
   .chartLegend {
-    margin-top: 5.8rem;
     padding: 0rem 1.5rem;
     font-size: 2.3rem;
     font-weight: 400;
     .tickerName {
       margin-bottom: 1rem;
+      font-weight: 700;
+      font-size: 2.4rem;
+      line-height: 2.8rem;
     }
     .tickerPrice {
       display: flex;
@@ -112,7 +114,9 @@ const TickerPriceS = styled.section`
       }
       .unitText {
         margin-right: 1.5rem;
-        font-size: 2.7rem;
+        font-weight: 700;
+        font-size: 2.4rem;
+        line-height: 2.8rem;
       }
     }
   }

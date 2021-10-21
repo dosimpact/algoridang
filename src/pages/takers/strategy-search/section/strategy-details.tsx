@@ -1,7 +1,6 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Title, SubTitle } from 'components/common/_atoms/Typos';
 import { useHistory, useParams } from 'react-router-dom';
-import { toTagsString, toTickerImage } from 'utils/parse';
 import styled from 'styled-components';
 import TradingHistory from 'components/report/_organisms/TradingHistory';
 import TradingPoints from 'components/report/_organisms/TradingPoints';

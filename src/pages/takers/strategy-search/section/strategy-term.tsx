@@ -1,6 +1,5 @@
 import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import useStrategy from 'states/strategy/query/useStrategy';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import PageGuide from 'components/common/_molecules/PageGuide';
 
@@ -16,7 +15,6 @@ const StrategyTerm = () => {
   const urlParams = useParams<{ term: string }>();
   const history = useHistory();
   const term = urlParams['term'];
-  const { strategyListNew, strategyListRiskTaking } = useStrategy();
 
   const searchStrategyQueryTypeName = useSearchStrategy({
     term,
@@ -35,7 +33,8 @@ const StrategyTerm = () => {
       <PageGuide
         icon={<IconSearchStrategy />}
         title="전략 탐색"
-        subTitle="수익률을 확인하고 원하는 전략으로 모의투자를 시작해 보세요."
+        subTitle={`수익률을 확인하고 원하는 전략으로
+모의투자를 시작해 보세요.`}
       />
       <SectionTitle title="전략 검색" />
       <StrategySearchInput />
