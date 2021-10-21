@@ -48,7 +48,7 @@ const StrategyTerm = () => {
         [...new Array(3)].map(() => <StrategyCardInfoSkeleton />)
       ) : searchStrategyQueryTypeTicker?.data?.memberStrategyList?.length ===
         0 ? (
-        <StrategyCardInfoEmpty />
+        <StrategyCardInfoEmpty message={'종목 이름 및 코드가 없습니다.'} />
       ) : (
         searchStrategyQueryTypeTicker?.data?.memberStrategyList &&
         searchStrategyQueryTypeTicker?.data?.memberStrategyList.map(
@@ -65,7 +65,6 @@ const StrategyTerm = () => {
           ),
         )
       )}
-
       <WhiteSpace />
       <SectionTitle title="이름 검색 결과" />
       <WhiteSpace />
@@ -73,7 +72,7 @@ const StrategyTerm = () => {
         [...new Array(3)].map(() => <StrategyCardInfoSkeleton />)
       ) : searchStrategyQueryTypeName?.data?.memberStrategyList?.length ===
         0 ? (
-        <StrategyCardInfoEmpty />
+        <StrategyCardInfoEmpty message={'이름 검색 결과가 없습니다.'} />
       ) : (
         searchStrategyQueryTypeName?.data?.memberStrategyList &&
         searchStrategyQueryTypeName?.data?.memberStrategyList.map(

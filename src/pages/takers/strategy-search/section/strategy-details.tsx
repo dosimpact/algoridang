@@ -18,13 +18,8 @@ const StrategyDetails = () => {
   const history = useHistory();
   // 현재 전략 코드 알아오기
   const params = useParams() as { id: string };
-  console.log('params', params);
 
   const strategyCode = params?.id || 0;
-
-  // if (strategyCode === 0) {
-  // history.push('/');
-  // }
   // 현재 전략코드로 데이터 API 요청
   const {
     strategyDetailQuery,
@@ -52,7 +47,6 @@ const StrategyDetails = () => {
         {strategyDetailQuery.isLoading && 'loading...'}
         <WhiteSpace />
         {memberStrategy && <StrategyCardInfo strategy={memberStrategy} />}
-
         <div className="flexRowSBt">
           <Title title="모의 투자" style={{ marginRight: '15px' }}></Title>
           <Button

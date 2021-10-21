@@ -1,11 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const StrategyCardInfoEmpty = () => {
+interface IStrategyCardInfoEmpty {
+  message?: string;
+}
+
+const StrategyCardInfoEmpty: React.FC<IStrategyCardInfoEmpty> = ({
+  message,
+}) => {
   return (
     <SStrategyCardInfoEmpty>
       <img src={process.env.PUBLIC_URL + '/img/youngBee.png'} alt="noData" />
-      <div>데이터가 없습니다.</div>
+      <div>{message ? message : '데이터가 없습니다.'}</div>
     </SStrategyCardInfoEmpty>
   );
 };
