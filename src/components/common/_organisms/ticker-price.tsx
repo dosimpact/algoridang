@@ -49,19 +49,7 @@ const TickerPrice = () => {
     <TickerPriceS>
       <WingBlank>
         <WhiteSpace style={{ marginTop: '1rem' }} />
-        {/* <TickerFuzzySearch
-          onSuccess={useCallback(
-            (e) => {
-              // console.log("TickerSearch sucess", e.corp_name, e.ticker);
-              if (e.corp_name && e.ticker) {
-                const { corp_name, ticker } = e;
-                setCorporation({ corp_name, ticker });
-              }
-            },
-            [setCorporation],
-          )}
-        /> */}
-        <TickerSearch
+        <TickerFuzzySearch
           onSuccess={useCallback(
             (e) => {
               // console.log("TickerSearch sucess", e.corp_name, e.ticker);

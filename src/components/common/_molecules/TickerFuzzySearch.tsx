@@ -98,15 +98,9 @@ const TickerFuzzySearch: React.FC<ITickerFuzzySearch> = ({
   // 드랍 다운 메뉴 보이는 것 유무
   const [isShowDropdown, setIsShowDropdown] = useState(true);
   //
-  useClickOutside<HTMLDivElement>(
-    searchInnerRef,
-    () => {
-      setIsShowDropdown(false);
-    },
-    () => {
-      setIsShowDropdown(true);
-    },
-  );
+  useClickOutside<HTMLDivElement>(searchInnerRef, () => {
+    setIsShowDropdown(false);
+  });
 
   return (
     <STickerFuzzySearch>
@@ -134,6 +128,9 @@ const TickerFuzzySearch: React.FC<ITickerFuzzySearch> = ({
               },
               100,
             )}
+            onClick={() => {
+              setIsShowDropdown(true);
+            }}
           ></input>
         </form>
         <div className="dropdownWrapper">
@@ -147,6 +144,8 @@ const TickerFuzzySearch: React.FC<ITickerFuzzySearch> = ({
                 filteredCorps?.length >= 1 &&
                 onSuccess
               ) {
+                console.log('onSuccess', isShowDropdown);
+                setIsShowDropdown((prev) => !prev);
                 onSuccess({
                   corp_name: corp.corp_name,
                   ticker: corp.ticker,
@@ -231,6 +230,12 @@ const SDropdownResult = styled.section<{ isShow: boolean }>`
   display: ${(props) => (props.isShow ? 'block' : 'none')};
   position: absolute;
   width: 100%;
+  z-index: 100;
+  .dropdownContainer {
+    z-index: 1000;
+    background-color: white;
+    cursor: pointer;
+  }
   strong {
     color: ${(props) => props.theme.ColorMainRed};
   }

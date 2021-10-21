@@ -17,9 +17,9 @@ export const useClickOutside = <T extends HTMLElement>(
       }
     };
     // 이벤트 등록 및 해제
-    document.addEventListener('mousedown', handleClickOutsider);
+    document.addEventListener('click', handleClickOutsider, {});
     return () => {
-      document.removeEventListener('mousedown', handleClickOutsider);
+      document.removeEventListener('click', handleClickOutsider, {});
     };
-  }, [ref]);
+  }, [ref, onClickInside, onClickOutside]);
 };
