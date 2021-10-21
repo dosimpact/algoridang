@@ -22,7 +22,7 @@ class QuantSelecter(object):
         super().__init__()
         self.quantList = []
         self.quantList.append((0,"초기설정"))
-        self.quantList.append((Manual,"사용자 전략 설정"))
+        self.quantList.append((NewMagic1_0,"제작 준비 중"))
         self.quantList.append((NewMagic1_0, "신마법공식 1.0"))
         self.quantList.append((OriginalMagic, "오리지널 마법공식"))
         self.quantList.append((SmallLowPBR, "소형주 저pbr 전략"))

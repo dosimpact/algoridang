@@ -31,9 +31,7 @@ class QuantList(Resource):
         
         res = quant.getQuantList()
 
-        result = json.dumps(res, ensure_ascii=False)
-        res = make_response(result)
-        return res
+        return res, 201
 
 
 
