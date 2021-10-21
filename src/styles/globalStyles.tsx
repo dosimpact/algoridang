@@ -154,7 +154,7 @@ export default createGlobalStyle`
         cursor:pointer;
         border:unset;
         border-radius: 9px;
-        border: ${(props) => props.theme.Border};
+        /* border: ${(props) => props.theme.Border}; */
 
         width: 100%;
         height: 4.6rem;

@@ -39,22 +39,26 @@ interface IAtomInspector {
   isShow: boolean;
   inspectorType: IInspectorTypes;
   inspectorState: {
+    // (1) 기본설정
     basicSetting: {
       isComplete: boolean;
     };
+    // (2) 종목관리
     universalSetting: {
       tab: number;
       isFilterModalOpen: boolean;
+      isComplete: boolean;
     };
+    // ()
     tradingSetting: {
       tab: number;
-      // selectedIndex: number; // 변경할 atomUniversalSettingState.selected의 idx
     };
-    tradingPropertySetting: {
-      // selectedIndex: number; // 변경할 atomUniversalSettingState.selected의 idx
-    };
+    // ()
+    tradingPropertySetting: {};
+    // (3) 백테스트
     backTestingSetting: {
       tab: number;
+      isComplete: boolean;
     };
   };
 }
@@ -104,10 +108,11 @@ export const atomInspector = atom<IAtomInspector>({
       universalSetting: {
         isFilterModalOpen: false,
         tab: 0,
+        isComplete: false,
       },
       tradingSetting: { tab: 0 },
       tradingPropertySetting: {},
-      backTestingSetting: { tab: 0 },
+      backTestingSetting: { tab: 0, isComplete: false },
     },
   },
 });

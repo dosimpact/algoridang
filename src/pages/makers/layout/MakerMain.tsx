@@ -30,9 +30,14 @@ const NavigationContainer = () => {
       <header>
         <Link to="/">
           <div className="hwrapper">
-            <div className="headerName">{`알고`}</div>
+            <img
+              className="headerLogo"
+              src={process.env.PUBLIC_URL + '/img/logo_light.png'}
+              alt="mainLogo"
+            />
+            {/* <div className="headerName">{`알고`}</div>
             <div className="headerName">{`리당`}</div>
-            <div className="headerSubName">Makers</div>
+            <div className="headerSubName">Makers</div> */}
           </div>
         </Link>
       </header>
@@ -88,6 +93,11 @@ const SNavigationContainer = styled.section`
     margin-top: 5rem;
     .hwrapper {
       text-align: center;
+      .headerLogo {
+        width: 8rem;
+        height: auto;
+        object-fit: scale-down;
+      }
       .headerName {
         font-size: 1.4rem;
         font-weight: 700;

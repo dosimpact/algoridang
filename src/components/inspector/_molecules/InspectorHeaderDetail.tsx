@@ -42,6 +42,7 @@ const SInspectorHeaderDetail = styled.header`
   grid-template-columns: 8rem 1fr 8rem;
   grid-template-rows: 2rem;
   padding: 2.7rem 0rem;
+  align-items: center;
   .col1 {
     svg {
       fill: ${(props) => props.theme.ColorMainGray};
@@ -53,9 +54,7 @@ const SInspectorHeaderDetail = styled.header`
     cursor: pointer;
   }
   .col2 {
-    line-height: 1.8rem;
-    font-style: normal;
-    font-weight: 500;
+    font-weight: 700;
     font-size: 2rem;
   }
   .col3 {

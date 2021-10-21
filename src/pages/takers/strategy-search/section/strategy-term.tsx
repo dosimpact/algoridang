@@ -9,6 +9,8 @@ import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import StrategyCardInfo from 'components/common/_molecules/StrategyCardInfo';
 import StrategySearchInput from 'components/common/_organisms/StrategySearchInput';
 import useSearchStrategy from 'states/strategy/query/useSearchStrategy';
+import StrategyCardInfoSkeleton from 'components/common/_molecules/StrategyCardInfoSkeleton';
+import StrategyCardInfoEmpty from 'components/common/_molecules/StrategyCardInfoEmpty';
 
 // todo:refactor CAGR 부분 DB Relation eager 처리 및 undefined 핸들링
 const StrategyTerm = () => {
@@ -38,15 +40,16 @@ const StrategyTerm = () => {
       />
       <SectionTitle title="전략 검색" />
       <StrategySearchInput />
-
       <WhiteSpace />
       <SectionTitle title="종목 검색 결과" />
       <WhiteSpace />
-      {searchStrategyQueryTypeTicker.isLoading && 'loading...'}
-      {!searchStrategyQueryTypeTicker.isLoading &&
-        searchStrategyQueryTypeTicker?.data?.memberStrategyList?.length === 0 &&
-        '검색 결과 없음 😢'}
-      {!searchStrategyQueryTypeTicker.isLoading &&
+
+      {searchStrategyQueryTypeTicker.isLoading ? (
+        [...new Array(3)].map(() => <StrategyCardInfoSkeleton />)
+      ) : searchStrategyQueryTypeTicker?.data?.memberStrategyList?.length ===
+        0 ? (
+        <StrategyCardInfoEmpty />
+      ) : (
         searchStrategyQueryTypeTicker?.data?.memberStrategyList &&
         searchStrategyQueryTypeTicker?.data?.memberStrategyList.map(
           (data, key) => (
@@ -60,16 +63,18 @@ const StrategyTerm = () => {
               }}
             />
           ),
-        )}
+        )
+      )}
 
       <WhiteSpace />
       <SectionTitle title="이름 검색 결과" />
       <WhiteSpace />
-      {searchStrategyQueryTypeName.isLoading && 'loading...'}
-      {!searchStrategyQueryTypeName.isLoading &&
-        searchStrategyQueryTypeName?.data?.memberStrategyList?.length === 0 &&
-        '검색 결과 없음 😢'}
-      {!searchStrategyQueryTypeName.isLoading &&
+      {searchStrategyQueryTypeName.isLoading ? (
+        [...new Array(3)].map(() => <StrategyCardInfoSkeleton />)
+      ) : searchStrategyQueryTypeName?.data?.memberStrategyList?.length ===
+        0 ? (
+        <StrategyCardInfoEmpty />
+      ) : (
         searchStrategyQueryTypeName?.data?.memberStrategyList &&
         searchStrategyQueryTypeName?.data?.memberStrategyList.map(
           (data, key) => (
@@ -83,7 +88,8 @@ const StrategyTerm = () => {
               }}
             />
           ),
-        )}
+        )
+      )}
     </WingBlank>
   );
 };

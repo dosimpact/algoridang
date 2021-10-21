@@ -208,11 +208,10 @@ const SBaseSettings = styled.section`
   input {
     border: unset;
   }
-  select {
+  select.customSelect {
     border: unset;
     display: block;
     border-radius: 9px;
-    border: ${(props) => props.theme.Border};
     width: 100%;
     height: 4.6rem;
     padding: 0.2rem 2.8rem;
