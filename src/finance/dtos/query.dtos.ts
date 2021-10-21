@@ -1,3 +1,9 @@
+import {
+  RequestQuantSelectDefaultOutput,
+  RequestQuantSelectInput,
+  RequestQuantSelectLookUpOutput,
+  RequestQuantSelectOutput,
+} from 'src/backtest/dto/query.dtos';
 import { CorePaginationInput } from 'src/common/dtos/input.dto';
 import { CoreOutput } from 'src/common/dtos/output.dto';
 import { Corporation, DailyStock } from '../entities';
@@ -49,5 +55,12 @@ export class GetFinancialStatementInput {
   ticker: string;
 }
 export class GetFinancialStatementOutput extends CoreOutput {
-  financialStatement?: FinancialStatement[];
+  financialStatements?: FinancialStatement[];
 }
+
+export class QuantSelectionInput extends RequestQuantSelectInput {}
+export class QuantSelectionOutput extends RequestQuantSelectOutput {}
+
+export class QuantSelectionLookupListOutput extends RequestQuantSelectLookUpOutput {}
+
+export class QuantSelectionLookupTypeOutput extends RequestQuantSelectDefaultOutput {}

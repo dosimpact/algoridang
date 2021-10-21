@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { RequestQuantSelectInput } from 'src/backtest/dto/query.dtos';
 import { HttpBodyCacheInterceptor } from 'src/common/interceptor/HttpCacheInterceptor';
+import { QuantSelectionInput } from './dtos/query.dtos';
 import { FinanceService } from './finance.service';
 
 @UseInterceptors(HttpBodyCacheInterceptor)
@@ -52,31 +53,36 @@ export class FinanceController {
   }
 
   /**
-   * (6) 퀀트 발굴에 대해서 제공하는 기능 출력
+   * (6-1) 퀀트 발굴에 대해서 제공하는 기능 출력
    * type - list : 어떤 전략들이 있는지
-   * type - default : 기본 셋팅 값
    * @param {lookupType} lookupType
-   * @returns
+   * @returns {QuantSelectionLookupListOutput}
    */
   @Version('1')
   @Get('statements/lookup/list')
-  async getSelectionLookupList() {
-    return this.financeService.FS_SelectionLookupList();
-  }
-  @Version('1')
-  @Get('statements/lookup/type/:index')
-  async getSelectionLookupType(@Param('index') index: number) {
-    return this.financeService.FS_SelectionLookupType(Number(index));
+  async getQuantSelectionLookupList() {
+    return this.financeService.QuantSelectionLookupList();
   }
   /**
-   * (6) 퀀트 발굴을 수행
-   * @param {}
-   * @returns
+   * (6-2) 퀀트 발굴에 대해서 제공하는 기능 출력
+   * type - default : 기본 셋팅 값
+   * @param {number} index
+   * @returns {QuantSelectionLookupTypeOutput}
+   */
+  @Version('1')
+  @Get('statements/lookup/type/:index')
+  async getQuantSelectionLookupType(@Param('index') index: number) {
+    return this.financeService.QuantSelectionLookupType(Number(index));
+  }
+  /**
+   * (7) 퀀트 발굴을 수행
+   * @param {QuantSelectionInput} body
+   * @returns {QuantSelectionOutput}
    */
   @Version('1')
   @Post('statements/select/')
-  async quantSelection(@Body() body: RequestQuantSelectInput) {
-    return this.financeService.FS_Selection(body);
+  async getQuantSelection(@Body() body: QuantSelectionInput) {
+    return this.financeService.QuantSelection(body);
   }
 
   // (5) 특정 종목에 대한 재무 정보 리턴
