@@ -118,7 +118,8 @@ const UniversalSettingTabTickerSearch = () => {
               <label
                 htmlFor={`willDel-${idx}${data.selectedCorporations.ticker}`}
               >
-                <div key={idx}>{data.selectedCorporations.corp_name}</div>
+                <span className="checkbox"></span>
+                <span key={idx}>{data.selectedCorporations.corp_name}</span>
               </label>
             </div>
           );

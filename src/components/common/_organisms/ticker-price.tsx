@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import BadgePriceDelta from 'components/common/_atoms/BadgePriceDelta';
 import WhiteSpace from '../_atoms/WhiteSpace';
+import TickerFuzzySearch from '../_molecules/TickerFuzzySearch';
 
 // todo:refator onSuccess등 콜백함수에 usecallback안써도 되도록 하기
 const TickerPrice = () => {
@@ -48,6 +49,18 @@ const TickerPrice = () => {
     <TickerPriceS>
       <WingBlank>
         <WhiteSpace style={{ marginTop: '1rem' }} />
+        {/* <TickerFuzzySearch
+          onSuccess={useCallback(
+            (e) => {
+              // console.log("TickerSearch sucess", e.corp_name, e.ticker);
+              if (e.corp_name && e.ticker) {
+                const { corp_name, ticker } = e;
+                setCorporation({ corp_name, ticker });
+              }
+            },
+            [setCorporation],
+          )}
+        /> */}
         <TickerSearch
           onSuccess={useCallback(
             (e) => {

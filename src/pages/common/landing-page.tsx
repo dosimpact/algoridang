@@ -9,37 +9,9 @@ import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import styled from 'styled-components';
 
 const LandingPage = () => {
-  const { email, mockUpUserLogin } = useLogin();
-
-  const [isTourOpen, setIsTourOpen] = useState(false);
   return (
     <SLadingPage>
       <WingBlank>
-        {/* <Button className="btn" onClick={mockUpUserLogin}>
-          login
-        </Button>
-        <WhiteSpace />
-        <Button
-          className="btn"
-          onClick={() => {
-            setIsTourOpen(true);
-          }}
-        >
-          TEST Tour
-        </Button>
-        <Tour
-          onRequestClose={() => {
-            setIsTourOpen(false);
-          }}
-          steps={tourConfig}
-          isOpen={isTourOpen}
-          maskClassName="mask"
-          className="helper"
-          rounded={5}
-          accentColor={'#5cb7b7'}
-          // onAfterOpen={this.disableBody}
-          // onBeforeClose={this.enableBody}
-        /> */}
         <WhiteSpace />
         <div className="mainTitle">
           알고리당,
@@ -51,13 +23,13 @@ const LandingPage = () => {
         <nav>
           <ul>
             <Button className="btn" type="info">
-              <Link to="takers/ticker-search">
+              <Link className="link" to="takers/ticker-search">
                 <li data-tut="reactour__search">전략 탐색 하기</li>
               </Link>
             </Button>
             <WhiteSpace marginV="0.5" />
             <Button className="btn" type="info">
-              <Link to="makers">
+              <Link className="link" to="makers">
                 <li data-tut="reactour__maker">전략 생성 하기</li>
               </Link>
             </Button>
@@ -94,5 +66,9 @@ const SLadingPage = styled.section`
     height: 4.5rem;
     font-size: 1.7rem;
     line-height: 1.6rem;
+    .link {
+      width: 100%;
+      text-align: center;
+    }
   }
 `;

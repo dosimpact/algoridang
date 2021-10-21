@@ -97,13 +97,29 @@ export default createGlobalStyle`
     ::-webkit-scrollbar-thumb:hover {
         background: #aaa;
     }
-    /* input[type=checkbox] */
-    /* input[type="checkbox"]{
+
+    /* input check-box */
+    input[type="checkbox"]{
         display:none;
-    } */
-    /* input[type="checkbox"] + label{
-        display:none;
-    } */
+    }
+    input[type="checkbox"] + label{
+        /* display:none; */
+        display:flex;
+        align-items: center;
+    }
+    input[type="checkbox"] + label span.checkbox {
+        content:" ";
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        border: 1px solid #C4C4C4;
+        border-radius: 3px;
+        margin-right:1rem;
+    }
+    input[type="checkbox"]:checked + label span.checkbox {
+        background-color:#F3BC2F;
+    }
     /* input css reset */
     input[type="text"],input[type="password"] {
         border:unset;

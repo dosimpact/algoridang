@@ -3,11 +3,9 @@ import MockInvest from '../mock-invest/mock-investC';
 import StrategySearch from '../strategy-search/strategy-searchC';
 import TickerSearch from '../ticker-search/ticker-searchC';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import useMember from 'states/member/query/useMember';
 import styled from 'styled-components';
 import {
   IconMockInvest,
-  IconPerson,
   IconSearchStrategy,
   IconSearchTicker,
 } from 'assets/icons';
@@ -30,83 +28,6 @@ export const URLList = {
     url: '/takers/user-profile',
   },
 } as const;
-
-const TopNavigation = () => {
-  const history = useHistory();
-  const { logIn, me } = useMember();
-  const email = useMemo(() => {
-    return me.data?.email_id;
-  }, [me]);
-
-  // TODO TEST
-  const mockUpUserLogin = () => {
-    logIn({
-      email_id: 'ypd03008@gmail.com',
-      password: 'ypd03008',
-    });
-  };
-
-  const handleUserProfileLink = () => {
-    history.push(process.env.PUBLIC_URL + '/takers/user-profile');
-  };
-
-  return (
-    <STopNavigation>
-      <div
-        className="logo"
-        onClick={() => {
-          history.push('/takers');
-        }}
-      >
-        {'알고\n리당'}
-      </div>
-      <div className="authInfo">
-        <span className="email">
-          {email ? email : <span onClick={mockUpUserLogin}>Login</span>}
-        </span>
-        <span onClick={handleUserProfileLink}>
-          <IconPerson />
-        </span>
-      </div>
-    </STopNavigation>
-  );
-};
-
-const STopNavigation = styled.header`
-  position: fixed;
-  top: 0;
-  left: 0;
-
-  height: 4.5rem;
-  width: 100%;
-  padding: 0px 2.8rem;
-
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  justify-content: center;
-  align-content: center;
-  background-color: ${(props) => props.theme.ColorMainDarkGray};
-  color: ${(props) => props.theme.ColorMainWhite};
-  z-index: 1000;
-
-  svg {
-    fill: ${(props) => props.theme.ColorMainWhite};
-  }
-  .logo {
-    white-space: pre-wrap;
-    cursor: pointer;
-  }
-  .authInfo {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    justify-content: flex-end;
-    cursor: pointer;
-    .email {
-      margin-right: 1.5rem;
-    }
-  }
-`;
 
 const BottomNavigation = () => {
   const location = useLocation();
@@ -262,10 +183,8 @@ const TakerMainSection = () => {
 };
 
 const STakerMainSection = styled.section`
-  /* margin-bottom: 7.8rem; */
   background-color: ${(props) => props.theme.ColorGrayL2};
   min-height: 100vh;
-  padding-top: 4.5rem;
   padding-bottom: 8rem;
 `;
 
@@ -287,7 +206,7 @@ const TakerMainContainer = () => {
   return (
     <section>
       <TakerConfig />
-      <TopNavigation />
+      {/* <TopNavigation /> */}
       <div>
         <ErrorHandler>
           <TakerMainSection />
