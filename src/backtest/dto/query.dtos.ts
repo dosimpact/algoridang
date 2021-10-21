@@ -1,5 +1,6 @@
 import { IsArray, IsJSON, IsNumber, IsObject, IsString } from 'class-validator';
 import { CoreOutput } from 'src/common/dtos/output.dto';
+import { RequestFS } from 'src/finance/entities/financial-statement.entity';
 import { StrategyName } from 'src/trading/constant/strategy-setting';
 import {
   AccumulateProfitRateChart,
@@ -74,10 +75,19 @@ export class RequestMiniBacktestingOutput extends CoreOutput {
   };
 }
 
+// 퀀트 종목 발굴 - input
+export class RequestQuantSelectInput extends CoreOutput {
+  requestFS: RequestFS;
+}
+// 퀀트 종목 발굴 - output
+export class RequestQuantSelectOutput extends CoreOutput {
+  result: Record<string, [string, string]>;
+}
+// 발굴 가능한 전략 리스트들 출력
 export class RequestQuantSelectLookUpOutput extends CoreOutput {
   strategy: Record<string, string>;
 }
-
+// 전략 기본 셋팅값 요청
 export class RequestQuantSelectDefaultOutput extends CoreOutput {
-  strategy: Record<string, string>;
+  requestFS: RequestFS;
 }

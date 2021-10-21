@@ -179,15 +179,15 @@ export class FinancialStatement {
   // --- end entity property
 }
 
-type requestFSKeys = Omit<
+type RequestFSKeys = Omit<
   FinancialStatement,
   'finance_date' | 'ticker' | 'corporation'
 >;
 
-type requestFSBody =
+type RequestFSBody =
   | {
       operator: 'between';
-      values: [number, number];
+      values: [number, number]; // number[]와 달리 튜플을 다음처럼 정의한다.
     }
   | {
       operator: 'up';
@@ -199,4 +199,10 @@ type requestFSBody =
     }
   | number;
 
-export type requestFS = Partial<Record<keyof requestFSKeys, requestFSBody>>;
+type RequestFSData = Partial<Record<keyof RequestFSKeys, RequestFSBody>>;
+export type RequestFS =
+  | {
+      strategy: number;
+      numberOfData: number;
+    }
+  | RequestFSData;
