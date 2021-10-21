@@ -76,7 +76,7 @@ export class RequestMiniBacktestingOutput extends CoreOutput {
 }
 
 // 퀀트 종목 발굴 - input
-export class RequestQuantSelectInput extends CoreOutput {
+export class RequestQuantSelectInput {
   requestFS: RequestFS;
 }
 // 퀀트 종목 발굴 - output

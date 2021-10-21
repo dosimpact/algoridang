@@ -1,21 +1,23 @@
 import {
   CallHandler,
   ExecutionContext,
-  HttpException,
-  HttpStatus,
   Injectable,
-  InternalServerErrorException,
   Logger,
   NestInterceptor,
   NotFoundException,
   BadRequestException,
   UnauthorizedException,
-  ForbiddenException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { EntityNotFoundError } from 'typeorm';
 import { AlreadyExistError, PasswordWrongError } from '../error/Custom-Error';
+import { AxiosError } from 'axios';
+
+function instanceOfAxiosError(object: any): object is AxiosError {
+  return 'config' in object && 'isAxiosError' in object;
+}
 
 // reference
 // https://docs.nestjs.com/interceptors#exception-mapping
@@ -28,6 +30,19 @@ export class ErrorHandlerInterceptor implements NestInterceptor {
     return next.handle().pipe(
       catchError((error) => {
         // throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+        if (instanceOfAxiosError(error)) {
+          const e = error as AxiosError;
+          if (e.response) {
+            if (e.code === '500') {
+              this.logger.error(`❌️ DA Server internal Error `);
+              throw new InternalServerErrorException(e.message);
+            }
+          } else {
+            this.logger.error(`❌️ DA Server is not connected`);
+            throw new InternalServerErrorException(e.message);
+          }
+        }
+
         if (error instanceof EntityNotFoundError) {
           throw new NotFoundException(error.message);
         } else if (error instanceof PasswordWrongError) {

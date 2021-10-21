@@ -6,9 +6,9 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { StrategyService } from 'src/strategy/strategy.service';
-import { LeftHandSideExpressionedNode } from 'ts-morph';
+
 import {
   PushBackTestQInput,
   PushBackTestQOutput,
@@ -17,6 +17,10 @@ import {
 import {
   RequestMiniBacktestingInput,
   RequestMiniBacktestingOutput,
+  RequestQuantSelectDefaultOutput,
+  RequestQuantSelectInput,
+  RequestQuantSelectLookUpOutput,
+  RequestQuantSelectOutput,
 } from './dto/query.dtos';
 
 @Injectable()
@@ -141,38 +145,35 @@ export class FlaskService {
   }
   /**
    * (4)  퀀트 발굴 - 적용된 파라미터로 종목을 발굴합니다.
+   * @param {RequestQuantSelectInput} RequestQuantSelectInput
+   * @returns {Promise<RequestQuantSelectOutput>} RequestQuantSelectOutput
    */
 
-  // async __requestQuantSelect() {
-  //   try {
-  //     const { data, status } = await axios({
-  //       method: 'post',
-  //       url: `${this.dataServerUrl}/quant`,
-  //       data: {
-  //         strategyCode,
-  //       },
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         'Access-Control-Allow-Origin': '*',
-  //       },
-  //       timeout: 15 * 1000,
-  //     });
-  //     if (status !== 201) {
-  //       return { ok: false, ...data };
-  //     }
-  //     return { ok: true, ...data };
-  //   } catch (e) {
-  //     this.logger.error(
-  //       `❌️ DA Server connection AxiosError ${this.dataServerUrl}`,
-  //     );
-  //     throw e;
-  //   }
-  // }
+  async __requestQuantSelect(
+    body: RequestQuantSelectInput,
+  ): Promise<RequestQuantSelectOutput> {
+    const { data, status } = await axios({
+      method: 'post',
+      url: `${this.dataServerUrl}/quant`,
+      data: body.requestFS,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+      timeout: 15 * 1000,
+    });
+    if (status !== 201) {
+      return { ok: false, result: data };
+    }
+    return { ok: true, result: data };
+  }
 
   /**
-   * (4)  퀀트 발굴 - 공식별 파라미터를 보여줍니다.
+   * (5)  퀀트 발굴 - 어떤 전략이 가능한지 리스트업 - 결과 리턴
+   * @param {}
+   * @returns {Promise<RequestQuantSelectLookUpOutput>} RequestQuantSelectLookUpOutput
    */
-  async __requestQuantSelectLookUp() {
+  async __requestQuantSelectLookUp(): Promise<RequestQuantSelectLookUpOutput> {
     try {
       const { data, status } = await axios({
         method: 'get',
@@ -194,8 +195,14 @@ export class FlaskService {
       throw e;
     }
   }
-
-  async __requestQuantSelectDefault(index: number) {
+  /**
+   * (6)  퀀트 발굴 - 공식별 파라미터를 보여줍니다.
+   * @param {number} index
+   * @returns {Promise<RequestQuantSelectLookUpOutput>} RequestQuantSelectLookUpOutput
+   */
+  async __requestQuantSelectDefault(
+    index: number,
+  ): Promise<RequestQuantSelectDefaultOutput> {
     try {
       const { data, status } = await axios({
         method: 'get',
