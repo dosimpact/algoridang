@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import 'antd-mobile/dist/antd-mobile.css'; // or 'antd-mobile/dist/antd-mobile.less'
+import 'react-loading-skeleton/dist/skeleton.css';
 
 ReactDOM.render(
   <React.StrictMode>

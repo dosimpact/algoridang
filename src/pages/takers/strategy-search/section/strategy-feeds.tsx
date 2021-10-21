@@ -9,6 +9,7 @@ import SectionTitle from 'components/common/_molecules/SectionTitle';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import StrategyCardInfo from 'components/common/_molecules/StrategyCardInfo';
 import StrategySearchInput from 'components/common/_organisms/StrategySearchInput';
+import StrategyCardInfoSkeleton from 'components/common/_molecules/StrategyCardInfoSkeleton';
 
 // todo:refactor CAGR 부분 DB Relation eager 처리 및 undefined 핸들링
 const StrategyFeeds = () => {
@@ -38,18 +39,19 @@ const StrategyFeeds = () => {
         linkTo={process.env.PUBLIC_URL + '/takers/strategy-search/list/new'}
       />
       <WhiteSpace />
-      {strategyListNew &&
-        strategyListNew.slice(0, 3).map((data, key) => (
-          <StrategyCardInfo
-            key={key}
-            strategy={data}
-            onClick={() => {
-              history.push(
-                `/takers/strategy-search/details/${data.strategy_code}`,
-              );
-            }}
-          />
-        ))}
+      {!strategyListNew
+        ? [...new Array(3)].map(() => <StrategyCardInfoSkeleton />)
+        : strategyListNew.slice(0, 3).map((data, key) => (
+            <StrategyCardInfo
+              key={key}
+              strategy={data}
+              onClick={() => {
+                history.push(
+                  `/takers/strategy-search/details/${data.strategy_code}`,
+                );
+              }}
+            />
+          ))}
 
       <WhiteSpace />
       <SectionTitle
@@ -59,18 +61,19 @@ const StrategyFeeds = () => {
         }
       />
       <WhiteSpace />
-      {strategyListHighView &&
-        strategyListHighView.slice(0, 3).map((data, key) => (
-          <StrategyCardInfo
-            key={key}
-            strategy={data}
-            onClick={() => {
-              history.push(
-                `/takers/strategy-search/details/${data.strategy_code}`,
-              );
-            }}
-          />
-        ))}
+      {!strategyListHighView
+        ? [...new Array(3)].map(() => <StrategyCardInfoSkeleton />)
+        : strategyListHighView.slice(0, 3).map((data, key) => (
+            <StrategyCardInfo
+              key={key}
+              strategy={data}
+              onClick={() => {
+                history.push(
+                  `/takers/strategy-search/details/${data.strategy_code}`,
+                );
+              }}
+            />
+          ))}
       <WhiteSpace />
       <SectionTitle
         title="위험 추구형 투자 전략"
@@ -79,36 +82,38 @@ const StrategyFeeds = () => {
         }
       />
       <WhiteSpace />
-      {strategyListRiskTaking &&
-        strategyListRiskTaking.slice(0, 3).map((data, key) => (
-          <StrategyCardInfo
-            key={key}
-            strategy={data}
-            onClick={() => {
-              history.push(
-                `/takers/strategy-search/details/${data.strategy_code}`,
-              );
-            }}
-          />
-        ))}
+      {!strategyListRiskTaking
+        ? [...new Array(3)].map(() => <StrategyCardInfoSkeleton />)
+        : strategyListRiskTaking.slice(0, 3).map((data, key) => (
+            <StrategyCardInfo
+              key={key}
+              strategy={data}
+              onClick={() => {
+                history.push(
+                  `/takers/strategy-search/details/${data.strategy_code}`,
+                );
+              }}
+            />
+          ))}
       <WhiteSpace />
       <SectionTitle
         title="중립형 투자 전략"
         linkTo={process.env.PUBLIC_URL + '/takers/strategy-search/list/neutral'}
       />
       <WhiteSpace />
-      {strategyListNeutral &&
-        strategyListNeutral.slice(0, 3).map((data, key) => (
-          <StrategyCardInfo
-            key={key}
-            strategy={data}
-            onClick={() => {
-              history.push(
-                `/takers/strategy-search/details/${data.strategy_code}`,
-              );
-            }}
-          />
-        ))}
+      {!strategyListNeutral
+        ? [...new Array(3)].map(() => <StrategyCardInfoSkeleton />)
+        : strategyListNeutral.slice(0, 3).map((data, key) => (
+            <StrategyCardInfo
+              key={key}
+              strategy={data}
+              onClick={() => {
+                history.push(
+                  `/takers/strategy-search/details/${data.strategy_code}`,
+                );
+              }}
+            />
+          ))}
       <WhiteSpace />
       <SectionTitle
         title="수익 안정형 투자 전략"
@@ -117,18 +122,19 @@ const StrategyFeeds = () => {
         }
       />
       <WhiteSpace />
-      {strategyListStableIncome &&
-        strategyListStableIncome.slice(0, 3).map((data, key) => (
-          <StrategyCardInfo
-            key={key}
-            strategy={data}
-            onClick={() => {
-              history.push(
-                `/takers/strategy-search/details/${data.strategy_code}`,
-              );
-            }}
-          />
-        ))}
+      {!strategyListStableIncome
+        ? [...new Array(3)].map(() => <StrategyCardInfoSkeleton />)
+        : strategyListStableIncome.slice(0, 3).map((data, key) => (
+            <StrategyCardInfo
+              key={key}
+              strategy={data}
+              onClick={() => {
+                history.push(
+                  `/takers/strategy-search/details/${data.strategy_code}`,
+                );
+              }}
+            />
+          ))}
     </WingBlank>
   );
 };

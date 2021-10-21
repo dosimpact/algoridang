@@ -22,7 +22,8 @@ const SPageGuide = styled.section`
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
-  padding: 5.4rem 0rem;
+  padding-top: 4rem;
+  padding-bottom: 5rem;
   .icon {
     fill: ${(props) => props.theme.ColorMainYellow};
     svg {

@@ -90,15 +90,11 @@ const StrategyCardInfo: React.FC<IStrategyCardInfo> = ({
 const SStrategyCardInfo = styled.section`
   background-color: white;
   transition: box-shadow 0.2s ease-in-out;
-  /* :hover {
-    box-shadow: 0px 0.5px 5px 0px rgba(0, 0, 0, 0.5);
-  } */
   box-shadow: 0px 0.5px 1px rgba(0, 0, 0, 0.25);
   border-radius: 7px;
 
   min-height: 10rem;
-  height: 10rem;
-  /* min-width: 300px; */
+  height: 12rem;
   width: 100%;
 
   display: grid;
@@ -108,8 +104,9 @@ const SStrategyCardInfo = styled.section`
   .left {
     border-top-left-radius: 7px;
     border-bottom-left-radius: 7px;
+    margin-top: 1rem;
     width: 10rem;
-    height: 100%;
+    height: 10rem;
     /* background-color: red; */
     display: flex;
     justify-content: center;
@@ -118,7 +115,7 @@ const SStrategyCardInfo = styled.section`
       border-top-left-radius: 7px;
       border-bottom-left-radius: 7px;
       width: 100%;
-      height: 100%;
+      height: auto;
       object-fit: scale-down;
       padding: 1rem;
     }
@@ -148,20 +145,20 @@ const SStrategyCardInfo = styled.section`
   }
   .right {
     width: 100%;
-    padding-left: 1rem;
-    padding-top: 1.9rem;
+    padding: 2.2rem 1.2rem 0rem 1.2rem;
     .title {
       font-size: 1.3rem;
       font-weight: 500;
       line-height: 1.5rem;
     }
     .subTitle {
-      margin-top: 0.7rem;
+      margin-top: 1rem;
       font-size: 1.1rem;
+      font-weight: 400;
       color: ${(props) => props.theme.ColorMainGray};
     }
     .CAGR {
-      margin-top: 0.7rem;
+      margin-top: 1rem;
     }
   }
 `;
