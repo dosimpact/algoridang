@@ -6,7 +6,7 @@ class SmallLowPBR(StrategyBase):
         "numberOfData" : 30,
         "data" : {
             "PBR_Q" : {
-                "operater" : "up",
+                "operator" : "up",
                 "values" : [0.2]
                 } 
         }
@@ -20,6 +20,17 @@ class SmallLowPBR(StrategyBase):
                 QuantSelecter.getSampleData를 통해 각 전략에 맞는 parm을 받아 볼 수 있음.
                 혹은 this.sampleParm 참조 
         """
+        
+        parmTemp = {}
+        for key, val in parm.items():
+            if key == 'data':
+                dataTemp = {}
+                for datakey, dataval in parm[key].items():
+                    if type(dataval) == type({}) and (datakey  == "PBR_Q" ):
+                        dataTemp[datakey] = dataval
+                parmTemp[key] = dataTemp
+            else:
+                parmTemp[key] = val
         super().__init__(parm)
         
     def makeQuery(self):

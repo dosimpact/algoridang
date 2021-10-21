@@ -7,11 +7,11 @@ def makeTestData(sel):
         "numberOfData" : 50,
         "data" : {
             "market_cap" : {
-                "operater" : "up",
+                "operator" : "up",
                 "values" : [5000]
                 } ,
             "PBR_Q" : {
-                "operater" : "up",
+                "operator" : "up",
                 "values" : [0]
                 } 
             } 
@@ -22,16 +22,16 @@ def makeTestData(sel):
         "numberOfData" : 50,
         "data" : {
             "market_cap" : {
-                "operater" : "up",
+                "operator" : "up",
                 "values" : [5000]
                 } ,
             "ROE_Q" : {
-                "operater" : "up",
+                "operator" : "up",
                 "values" : [0]
                 } 
              ,
             "EV_per_EBITDA" : {
-                "operater" : "up",
+                "operator" : "up",
                 "values" : [0]
                 } 
             } 
@@ -42,7 +42,7 @@ def makeTestData(sel):
         "numberOfData" : 5,
         "data" : {
             "market_cap" : {
-                "operater" : "up",
+                "operator" : "up",
                 "values" : [5000]
                 } ,
             "revenue" : 0 ,

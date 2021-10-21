@@ -37,15 +37,15 @@ class QuantList(Resource):
 
 expQuantParm={
             "market_cap" : {
-                "operater" : "up",
+                "operator" : "up",
                 "values" : [5000]
                 } ,
             "revenue" : {
-                "operater" : "down",
+                "operator" : "down",
                 "values" : [5000]
                 } ,
             "operating_income" : {
-                "operater" : "between",
+                "operator" : "between",
                 "values" : [5000, 6000]
                 } ,
             "EPS" : 0 ,
@@ -103,7 +103,8 @@ class QuantStrategy(Resource):
             
             quant = QuantSelecter()
             res = quant.runQuantStrategty(data)
-
+            if res == "error":
+                return "Input Data Error! Search Format Use Next URL \{flask_server\}/quant/sample?index=1", 400
         return res, 201
 
 
@@ -112,7 +113,7 @@ class QuantStrategy(Resource):
 quantSampleFields = Quant.model('quantSampleFields', {  # Model 객체 생성
     'index': fields.String(description='index', required=True, example=1),
 })
-expQuantSampleResponses = {'strategy': 2, 'numberOfData': 50, 'data': {'market_cap': {'operater': 'up', 'values': [5000]}, 'PBR_Q': {'operater': 'up', 'values': [0]}}}
+expQuantSampleResponses = {'strategy': 2, 'numberOfData': 50, 'data': {'market_cap': {'operator': 'up', 'values': [5000]}, 'PBR_Q': {'operator': 'up', 'values': [0]}}}
 quantSampleResponses = Quant.inherit('quantSampleResponses',{
     'sample parmeter json format': fields.String(description='quantSampleResponses', required=False, example=expQuantSampleResponses),
 })

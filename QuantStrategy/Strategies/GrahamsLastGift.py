@@ -12,11 +12,11 @@ class GrahamsLastGift(StrategyBase):
     "numberOfData" : 30,
     "data" : {
         "PER" : {
-            "operater" : "down",
+            "operator" : "down",
             "values" : [10]
             } ,
         "debt_ratio_Q" : {
-            "operater" : "down",
+            "operator" : "down",
             "values" : [50]
             } 
         } 
@@ -29,6 +29,17 @@ class GrahamsLastGift(StrategyBase):
                 QuantSelecter.getSampleData를 통해 각 전략에 맞는 parm을 받아 볼 수 있음.
                 혹은 this.sampleParm 참조 
         """
+        parmTemp = {}
+        for key, val in parm.items():
+            if key == 'data':
+                dataTemp = {}
+                for datakey, dataval in parm[key].items():
+                    if type(dataval) == type({}) and (datakey  == "PER" or datakey == "debt_ratio_Q"):
+                        dataTemp[datakey] = dataval
+                parmTemp[key] = dataTemp
+            else:
+                parmTemp[key] = val
+
         super().__init__(parm)
         
         

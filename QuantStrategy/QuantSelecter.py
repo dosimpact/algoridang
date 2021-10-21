@@ -22,7 +22,7 @@ class QuantSelecter(object):
         super().__init__()
         self.quantList = []
         self.quantList.append((0,"초기설정"))
-        self.quantList.append((NewMagic1_0,"제작 준비 중"))
+        self.quantList.append((Manual,"사용자 제작공식"))
         self.quantList.append((NewMagic1_0, "신마법공식 1.0"))
         self.quantList.append((OriginalMagic, "오리지널 마법공식"))
         self.quantList.append((SmallLowPBR, "소형주 저pbr 전략"))
@@ -47,13 +47,16 @@ class QuantSelecter(object):
         """
         strategy = self.__getQuantStrategy(parm["strategy"])
         quant = QuantContext(strategy,parm)
-        quantList = quant.getDatas()
-        
-        res = {}
-        for idx, val in enumerate(quantList):
-            res[idx] = val
+        try:
+            quantList = quant.getDatas()
+            
+            res = {}
+            for idx, val in enumerate(quantList):
+                res[idx] = val
 
-        return res
+            return res
+        except:
+            return "error"
 
     def getSampleData(self, idx):
         """ sampleData 가져오기
@@ -61,6 +64,8 @@ class QuantSelecter(object):
         @parms
             idx - 전략 선택 인덱스
         """
+        if idx >= len(self.quantList):
+            idx = len(self.quantList) - 1 
         return self.quantList[idx][0].sampleParm
 
     def getQuantList(self):

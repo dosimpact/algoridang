@@ -7,16 +7,16 @@ class OriginalMagic(StrategyBase):
         "numberOfData" : 50,
         "data" : {
             "market_cap" : {
-                "operater" : "up",
+                "operator" : "up",
                 "values" : [5000]
                 } ,
             "ROE_Q" : {
-                "operater" : "up",
+                "operator" : "up",
                 "values" : [0]
                 } 
              ,
             "EV_per_EBITDA" : {
-                "operater" : "up",
+                "operator" : "up",
                 "values" : [0]
                 } 
             } 
@@ -30,6 +30,17 @@ class OriginalMagic(StrategyBase):
                 QuantSelecter.getSampleData를 통해 각 전략에 맞는 parm을 받아 볼 수 있음.
                 혹은 this.sampleParm 참조 
         """
+        
+        parmTemp = {}
+        for key, val in parm.items():
+            if key == 'data':
+                dataTemp = {}
+                for datakey, dataval in parm[key].items():
+                    if type(dataval) == type({}) and (datakey  == "market_cap" or datakey == "ROE_Q" or datakey == "EV_per_EBITDA"):
+                        dataTemp[datakey] = dataval
+                parmTemp[key] = dataTemp
+            else:
+                parmTemp[key] = val
         super().__init__(parm)
         
     def makeQuery(self):
