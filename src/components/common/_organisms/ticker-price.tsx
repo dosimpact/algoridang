@@ -98,19 +98,19 @@ const TickerPrice = () => {
 
 export default TickerPrice;
 
-const ChartLegendSkeleton = () => {
-  return (
-    <article className="chartLegend">
-      <div className="tickerName">
-        <Skeleton />
-      </div>
-      <Skeleton />
-      <div className="tickerPrice">
-        <Skeleton />
-      </div>
-    </article>
-  );
-};
+// const ChartLegendSkeleton = () => {
+//   return (
+//     <article className="chartLegend">
+//       <div className="tickerName">
+//         <Skeleton />
+//       </div>
+//       <Skeleton />
+//       <div className="tickerPrice">
+//         <Skeleton />
+//       </div>
+//     </article>
+//   );
+// };
 
 const TickerPriceS = styled.section`
   .chartLegend {

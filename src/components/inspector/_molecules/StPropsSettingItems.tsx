@@ -1,7 +1,7 @@
 import { Button } from 'components/common/_atoms/Buttons';
 import InputListItem from 'components/common/_atoms/InputListItem';
 import React, { useEffect } from 'react';
-import { useForm, useWatch } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { SettingJSON } from 'states/trading/interface/entities';
 
@@ -23,7 +23,7 @@ export const StPropsSMA: React.FC<IStPropsSMA> = ({
   onSubmit,
   setting_json,
 }) => {
-  const { register, formState, handleSubmit } = useForm<IStPropsSMAForm>({
+  const { register, handleSubmit } = useForm<IStPropsSMAForm>({
     defaultValues: { SMA_A: setting_json?.SMA?.SMA_A || 10 },
   });
 

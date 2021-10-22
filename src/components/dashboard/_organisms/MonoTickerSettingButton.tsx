@@ -21,10 +21,8 @@ const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
 }) => {
   const thisUnivIdx = selectedIndex;
 
-  const [inspector, setInspector] = useRecoilState(atomInspector);
-  const [currentUnivIdx, setCurrentUnivIdx] = useRecoilState(
-    atomUniversalSettingStateIdx,
-  );
+  const [, setInspector] = useRecoilState(atomInspector);
+  const [, setCurrentUnivIdx] = useRecoilState(atomUniversalSettingStateIdx);
   const thisUnivSetting = useRecoilValue(
     selectedUniversalSetting_R({ universalIdx: thisUnivIdx }),
   );

@@ -1,5 +1,3 @@
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
 import useMember from 'states/member/query/useMember';
 import styled from 'styled-components';
 import WingBlank from '../../common/_atoms/WingBlank';

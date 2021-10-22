@@ -110,7 +110,7 @@ const PortBacktestTabDetail = () => {
         `/makers/strategy-create/details/${currentStrategyCode}`,
     );
     return () => {};
-  }, [history]);
+  }, [history, currentStrategyCode]);
 
   return (
     <div>
@@ -132,7 +132,7 @@ const PortBacktestTabReport = () => {
         `/makers/strategy-create/report/${currentStrategyCode}`,
     );
     return () => {};
-  }, [history]);
+  }, [history, currentStrategyCode]);
 
   return (
     <div>

@@ -19,10 +19,9 @@ import UserProfileC from 'pages/makers/user-profile/user-profileC';
 
 // TODO LOGIN 처리 ( Email , Google )
 const NavigationContainer = () => {
-  const { email, mockUpUserLogin } = useLogin();
+  const { email } = useLogin();
   const history = useHistory();
   const handleClickProfile = () => {
-    // mockUpUserLogin();
     history.push(process.env.PUBLIC_URL + '/makers/user-profile');
   };
   return (

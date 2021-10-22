@@ -64,7 +64,7 @@ export const makeAddUniversals = selector<ImakeAddUniversals[]>({
   get: ({ get }) => {
     const result: ImakeAddUniversals[] = [];
     const aBasic = get(atomUniversalSettingState);
-    aBasic.selected.map((e) => {
+    aBasic.selected.forEach((e) => {
       const { selectedCorporations, selectedTechnical } = e;
       if (selectedTechnical?.trading_strategy_name)
         result.push({

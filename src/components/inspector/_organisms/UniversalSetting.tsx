@@ -1,7 +1,5 @@
 import React, { useMemo } from 'react';
-import TickerSearch, {
-  TickerSearchOnSuccessResult,
-} from 'components/common/_molecules/TickerSearch';
+import { TickerSearchOnSuccessResult } from 'components/common/_molecules/TickerSearch';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import InspectorHeaderDetail from 'components/inspector/_molecules/InspectorHeaderDetail';
 import { useRecoilState } from 'recoil';

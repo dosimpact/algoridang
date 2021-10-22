@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import MockInvest from '../mock-invest/mock-investC';
 import StrategySearch from '../strategy-search/strategy-searchC';
 import TickerSearch from '../ticker-search/ticker-searchC';
