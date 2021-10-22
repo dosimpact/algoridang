@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRecoilState } from 'recoil';
-import { atomInspector } from 'states/strategy/recoil/strategy-create';
+import { atomInspector } from 'states/common/recoil/dashBoard/inspector';
 import styled from 'styled-components';
 import { IBaseSettingButton } from './BaseSettingButton';
 

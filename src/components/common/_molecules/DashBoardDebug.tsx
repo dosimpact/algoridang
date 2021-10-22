@@ -2,10 +2,10 @@ import React from 'react';
 import { useRecoilState } from 'recoil';
 import {
   atomCurrentStrategyCode,
-  atomInspector,
   atomUniversalSettingState,
   atomUniversalSettingStateIdx,
-} from 'states/strategy/recoil/strategy-create';
+} from 'states/common/recoil/dashBoard/dashBoard';
+import { atomInspector } from 'states/common/recoil/dashBoard/inspector';
 import styled from 'styled-components';
 
 // DashBoardDebug

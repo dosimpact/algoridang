@@ -10,15 +10,13 @@ import { Route, useHistory } from 'react-router';
 import { toast } from 'react-toastify';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import useBackTestMutation from 'states/backtest/query/useBackTestMutation';
-import useCreateStrategy from 'states/strategy/query/useCreateStrategy';
+import { atomCurrentStrategyCode } from 'states/common/recoil/dashBoard/dashBoard';
 import {
   makeAddUniversals,
   makeCreateMyStrategy,
-} from 'states/strategy/recoil/selectors';
-import {
-  atomInspector,
-  atomCurrentStrategyCode,
-} from 'states/strategy/recoil/strategy-create';
+} from 'states/common/recoil/dashBoard/formState';
+import { atomInspector } from 'states/common/recoil/dashBoard/inspector';
+import useCreateStrategy from 'states/strategy/query/useCreateStrategy';
 import styled from 'styled-components';
 import { IInspectorSettings } from '.';
 

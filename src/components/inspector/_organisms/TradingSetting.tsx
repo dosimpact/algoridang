@@ -4,10 +4,9 @@ import produce from 'immer';
 import React, { useMemo } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
-  atomInspector,
   atomUniversalSettingStateIdx,
   selectedUniversalSetting_R,
-} from 'states/strategy/recoil/strategy-create';
+} from 'states/common/recoil/dashBoard/dashBoard';
 import styled from 'styled-components';
 import { IInspectorSettings } from '.';
 import TechnicalSearch from 'components/common/_atoms/TechnicalSearch';
@@ -17,6 +16,7 @@ import { BaseTradingStrategy } from 'states/trading/interface/entities';
 import WideLine from 'components/common/_atoms/WideLine';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import { Button } from 'components/common/_atoms/Buttons';
+import { atomInspector } from 'states/common/recoil/dashBoard/inspector';
 
 interface ITechnicalStrategyList {
   onSelect?: (e: BaseTradingStrategy) => void;

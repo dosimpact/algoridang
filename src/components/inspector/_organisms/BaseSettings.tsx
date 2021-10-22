@@ -4,15 +4,12 @@ import InspectorHeaderDetail from 'components/inspector/_molecules/InspectorHead
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
-import {
-  atomBasicSetting,
-  atomInspector,
-} from 'states/strategy/recoil/strategy-create';
 import styled from 'styled-components';
 import { IInspectorSettings } from './index';
 import InputListItemH from 'components/common/_atoms/InputListItemH';
 import produce from 'immer';
-import ReactTooltip from 'react-tooltip';
+import { atomBasicSettingForm } from 'states/common/recoil/dashBoard/formState';
+import { atomInspector } from 'states/common/recoil/dashBoard/inspector';
 
 interface IFormBasicSetting {
   strategy_name: string; // 전략 이름
@@ -33,7 +30,7 @@ interface IBaseSettings extends IInspectorSettings {}
  */
 const BaseSettings: React.FC<IBaseSettings> = ({ headerTitle }) => {
   const [inspector, setInspector] = useRecoilState(atomInspector);
-  const [basicSetting, setBasicSetting] = useRecoilState(atomBasicSetting);
+  const [basicSetting, setBasicSetting] = useRecoilState(atomBasicSettingForm);
   const { register, watch, formState, trigger } = useForm<IFormBasicSetting>({
     defaultValues: {
       ...basicSetting,

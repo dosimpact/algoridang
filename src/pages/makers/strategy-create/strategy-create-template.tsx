@@ -1,12 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import {
-  atomInspector,
-  IInspectorTypes,
-  selectedMonoTickerSettingButtonListJSX,
-  selectorInspectorFC,
-} from 'states/strategy/recoil/strategy-create';
 import DashBoardButton from 'components/common/_molecules/DashBoardButton';
 import { IconPlusNormal, IconSettingNormal, IconInfo } from 'assets/icons';
 import DashBoardDebug from 'components/common/_molecules/DashBoardDebug';
@@ -14,6 +8,12 @@ import TickerPrice from 'components/common/_organisms/ticker-price';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import ReactTooltip from 'react-tooltip';
+import {
+  atomInspector,
+  IInspectorTypes,
+  selectorInspectorFC,
+} from 'states/common/recoil/dashBoard/inspector';
+import { selectedMonoTickerSettingButtonListJSX } from 'states/common/recoil/dashBoard/dashBoard';
 
 // 전략 생성 모듈
 // DashBoard - Inspector
@@ -140,7 +140,7 @@ const SStrategyCreateModule = styled.section`
  */
 const StrategyCreateTemplate = () => {
   // State: 인스펙터 전체 상태
-  const [insepctorState, setInsepctorState] = useRecoilState(atomInspector);
+  const [, setInsepctorState] = useRecoilState(atomInspector);
   // Selector: 현재 인스팩터 - React.FC 반환
   const CurrentInspector = useRecoilValue(selectorInspectorFC);
 

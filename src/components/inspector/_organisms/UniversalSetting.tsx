@@ -6,10 +6,6 @@ import WingBlank from 'components/common/_atoms/WingBlank';
 import InspectorHeaderDetail from 'components/inspector/_molecules/InspectorHeaderDetail';
 import { useRecoilState } from 'recoil';
 import { Corporation } from 'states/finance/interface/entities';
-import {
-  atomInspector,
-  atomUniversalSettingState,
-} from 'states/strategy/recoil/strategy-create';
 import styled from 'styled-components';
 import { RemoveMultipleElements } from 'utils/parse';
 import { IInspectorSettings } from '.';
@@ -21,6 +17,8 @@ import { Button } from 'components/common/_atoms/Buttons';
 import FilterListItemRange from '../_molecules/FilterListItemRange';
 import QuantFilterModal from '../_molecules/QuantFilterModal';
 import TickerFuzzySearch from 'components/common/_molecules/TickerFuzzySearch';
+import { atomInspector } from 'states/common/recoil/dashBoard/inspector';
+import { atomUniversalSettingState } from 'states/common/recoil/dashBoard/dashBoard';
 
 //https://velog.io/@seungsang00/React-React-Modal
 Modal.setAppElement('#root');
