@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FinanceService } from 'src/finance/finance.service';
 import { StrategyService } from 'src/strategy/strategy.service';
 import { Raw, Repository } from 'typeorm';
+import { preSet__BaseTradingStrategy_List } from './constant/strategy-setting';
 import {
   AddUniversalInput,
   AddUniversalOutput,
@@ -168,5 +169,25 @@ export class TradingService {
       },
       select: ['strategy_code'],
     });
+  }
+
+  //  기본 매매전략 시드
+  async __seedBaseTradingStrategy() {
+    try {
+      const targets = await this.baseTradingStRepo.find();
+      await Promise.all(
+        targets.map(async (t) =>
+          this.baseTradingStRepo.delete(t.trading_strategy_code),
+        ),
+      );
+      await Promise.all(
+        preSet__BaseTradingStrategy_List.map(async (t) =>
+          this.baseTradingStRepo.save(this.baseTradingStRepo.create(t)),
+        ),
+      );
+      this.logger.verbose('✔ seedBaseTradingStrategy');
+    } catch (error) {
+      this.logger.error('❌ seedBaseTradingStrategy', error);
+    }
   }
 }
