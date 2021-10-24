@@ -1,15 +1,15 @@
 import { IconArrowRight } from 'assets/icons';
 import produce from 'immer';
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import useMiniBacktest, {
   miniBacktestAdaptor,
 } from 'states/backtest/query/useMiniBacktest';
 import {
-  atomInspector,
   atomUniversalSettingStateIdx,
   selectedUniversalSetting_R,
-} from 'states/strategy/recoil/strategy-create';
+} from 'states/common/recoil/dashBoard/dashBoard';
+import { atomInspector } from 'states/common/recoil/dashBoard/inspector';
 import styled from 'styled-components';
 import { IBaseSettingButton } from './BaseSettingButton';
 interface IMonoTickerSettingButton extends IBaseSettingButton {}
@@ -21,10 +21,8 @@ const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
 }) => {
   const thisUnivIdx = selectedIndex;
 
-  const [inspector, setInspector] = useRecoilState(atomInspector);
-  const [currentUnivIdx, setCurrentUnivIdx] = useRecoilState(
-    atomUniversalSettingStateIdx,
-  );
+  const [, setInspector] = useRecoilState(atomInspector);
+  const [, setCurrentUnivIdx] = useRecoilState(atomUniversalSettingStateIdx);
   const thisUnivSetting = useRecoilValue(
     selectedUniversalSetting_R({ universalIdx: thisUnivIdx }),
   );

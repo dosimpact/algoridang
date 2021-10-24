@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { SubTitle, Title } from 'components/common/_atoms/Typos';
 import { useHistory, useParams } from 'react-router-dom';
-import { getTodayDiff, toTagsString, toTickerImage } from 'utils/parse';
+import { getTodayDiff } from 'utils/parse';
 import styled from 'styled-components';
 import ReturnsStatus from 'components/report/_organisms/ReturnsStatus';
 import TradingHistory from 'components/report/_organisms/TradingHistory';

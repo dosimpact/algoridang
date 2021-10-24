@@ -1,5 +1,4 @@
 import { IconInfo } from 'assets/icons';
-import WingBlank from 'components/common/_atoms/WingBlank';
 import React from 'react';
 import ReactTooltip from 'react-tooltip';
 import styled from 'styled-components';

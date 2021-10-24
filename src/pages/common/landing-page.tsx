@@ -38,16 +38,16 @@ const LandingPage = () => {
   );
 };
 
-const tourConfig = [
-  {
-    selector: '[data-tut="reactour__search"]',
-    content: `Ok, let's start with the name of the Tour that is about to begin.`,
-  },
-  {
-    selector: '[data-tut="reactour__maker"]',
-    content: `And this is our cool bus...`,
-  },
-];
+// const tourConfig = [
+//   {
+//     selector: '[data-tut="reactour__search"]',
+//     content: `Ok, let's start with the name of the Tour that is about to begin.`,
+//   },
+//   {
+//     selector: '[data-tut="reactour__maker"]',
+//     content: `And this is our cool bus...`,
+//   },
+// ];
 
 export default LandingPage;
 

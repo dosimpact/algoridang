@@ -8,7 +8,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   atomUniversalSettingStateIdx,
   selectedUniversalSetting_R,
-} from 'states/strategy/recoil/strategy-create';
+} from 'states/common/recoil/dashBoard/dashBoard';
 import { SettingJSON } from 'states/trading/interface/entities';
 import { IInspectorSettings } from '.';
 

@@ -5,7 +5,6 @@ import WideLine from 'components/common/_atoms/WideLine';
 import useMember from 'states/member/query/useMember';
 import UserLoginForm from './UserLoginForm';
 import styled from 'styled-components';
-import { SubTitle } from 'components/common/_atoms/Typos';
 import UserSinginForm from './UserSignUpForm';
 
 const LoggedOut = () => {
