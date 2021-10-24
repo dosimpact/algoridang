@@ -55,7 +55,15 @@ async function bootstrap() {
       });
     }
   };
-  const ss = () => {};
-  // seedStrategy()
+  const seedBaseTradingStrategy = async () => {
+    tradingService.__seedBaseTradingStrategy();
+  };
+
+  const main = () => {
+    // seedStrategy()
+    // 기술적분석, 기본값 시드
+    seedBaseTradingStrategy();
+  };
+  main();
 }
 bootstrap();

@@ -61,30 +61,6 @@ export class TradingService {
     const baseTradingStrategyList = await this.baseTradingStRepo.find({});
     return { ok: true, baseTradingStrategyList };
   }
-  //(3) 기본 매매전략 카피 (deprecated)
-  // - 유니버셜에 바로 추가
-  //🚀todo refactor
-  // async __copyBaseTradingStrategy({
-  //   setting_json,
-  //   trading_strategy_code,
-  // }: CopyBaseTradingStrategyInput): Promise<CopyBaseTradingStrategyOutput> {
-  //   try {
-  //     const tradingStrategy = await this.baseTradingStRepo.findOne({
-  //       where: { trading_strategy_code },
-  //     });
-  //     if (!tradingStrategy) return { ok: false };
-  //     const customTradingStrategy = await this.customTradingStRepo.save(
-  //       this.customTradingStRepo.create({
-  //         ...tradingStrategy,
-  //         setting_json,
-  //       }),
-  //     );
-  //     return { ok: true, customTradingStrategy };
-  //   } catch (error) {
-  //     this.logger.error(error);
-  //     return { ok: false };
-  //   }
-  // }
 
   //(4) 전략에 티커 추가하기
   async addUniversalOnly(
@@ -176,9 +152,7 @@ export class TradingService {
     try {
       const targets = await this.baseTradingStRepo.find();
       await Promise.all(
-        targets.map(async (t) =>
-          this.baseTradingStRepo.delete(t.trading_strategy_code),
-        ),
+        targets.map(async (t) => this.baseTradingStRepo.remove(t)),
       );
       await Promise.all(
         preSet__BaseTradingStrategy_List.map(async (t) =>

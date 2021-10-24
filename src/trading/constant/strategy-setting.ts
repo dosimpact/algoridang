@@ -2,7 +2,7 @@ import { BaseTradingStrategy } from '../entities';
 
 // 기술적 전략 이름
 export enum StrategyName {
-  // None = 'None',
+  None = 'None',
   // SMA = 'SMA',
   GoldenCross = 'GoldenCross',
   RSI = 'RSI',
@@ -33,7 +33,10 @@ export type SettingJSON = Partial<StrategyValue>;
 
 export const preSet__BaseTradingStrategy_List: BaseTradingStrategy[] = [
   {
-    trading_strategy_code: 0,
+    trading_strategy_name: StrategyName.None,
+    setting_json: {},
+  },
+  {
     trading_strategy_name: StrategyName.GoldenCross,
     setting_json: {
       GoldenCross: {
@@ -43,7 +46,6 @@ export const preSet__BaseTradingStrategy_List: BaseTradingStrategy[] = [
     },
   },
   {
-    trading_strategy_code: 1,
     trading_strategy_name: StrategyName.RSI,
     setting_json: {
       RSI: { min: 30, max: 70 },
