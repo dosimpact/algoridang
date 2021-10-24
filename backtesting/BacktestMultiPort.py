@@ -52,22 +52,29 @@ class BacktestMultiPort(Backtest):
             res - "error" : 에러코드
             res - "Done" : 정상 동작 코드
         """
-        periodInfo = self.getPeriodInfo()
-        if len(periodInfo) == 0:
-            print("DB dose'not have any data in this field...")
-            return "error"
+        
+        self._setStatusMemberStrategy( "Start","Start", self.strategyCode)
+        try:
+            periodInfo = self.getPeriodInfo()
+            if len(periodInfo) == 0:
+                print("DB dose'not have any data in this field...")
+                return "error"
 
-        case = self.getPortInfoFromDB()
-        # data 가 없는 경우
-        if len(case) == 0:
-            print("DB dose'not have any data in this field...")
-            return "error"
-
-        self.MultiPortBacktest(periodInfo['investPrice'], case, periodInfo['startTime'], periodInfo['endTime'])
-        self.makePortpolio()
-        self.makeDBDataSet(periodInfo['investPrice'],periodInfo['startTime'], periodInfo['endTime'])
-        self.saveDB()
-        return "Done"
+            case = self.getPortInfoFromDB()
+            # data 가 없는 경우
+            if len(case) == 0:
+                print("DB dose'not have any data in this field...")
+                return "error"
+            
+            
+            self.MultiPortBacktest(periodInfo['investPrice'], case, periodInfo['startTime'], periodInfo['endTime'])
+            self.makePortpolio()
+            self.makeDBDataSet(periodInfo['investPrice'],periodInfo['startTime'], periodInfo['endTime'])
+            self.saveDB()
+            return "Done"
+        except:
+            print("!!!!!!!!!!!!!!!Multiport Error")
+            self._setStatusMemberStrategy( "Error","Error", self.strategyCode)
 
     def MultiPortBacktest(self, cash, case, startTime, endTime):
         """ 멀티 포트에 대하여 백테스팅을 수행함 
@@ -194,7 +201,7 @@ class BacktestMultiPort(Backtest):
 
 
     def calDailyData(self, investPrice):
-        dailydata = self.__setDailyAccumulate(self.dailyData, investPrice)
+        dailydata = self.__setDailyAccumulate(self.multiDailyData, investPrice)
         dailydata.to_csv('saleLog.txt', sep = '\t')
         return dailydata
 
@@ -274,6 +281,8 @@ class BacktestMultiPort(Backtest):
             query += " \"invest_type\" = \'" + str(typedata)+"\'"            
             query += " where strategy_code = "+str(strategyCode)+";"
             DBClass.updateData(conn,query)
+            conn.commit()
+            DBClass.putConn(conn)
             
         except:
             self._setStatusMemberStrategy( "Error",  "_saveBacktestWinRatioTable Unexpected error",self.strategyCode)

@@ -15,7 +15,7 @@ class BacktestTestCase(unittest.TestCase):
         pass
 
     def test_getPortInfoFromDB(self):
-        bt = BacktestMultiPort(2744)
+        bt = BacktestMultiPort(2746)
         res = bt.portBacktest()
 
 
