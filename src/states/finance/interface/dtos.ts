@@ -1,3 +1,9 @@
+import {
+  RequestQuantSelectDefaultOutput,
+  RequestQuantSelectInput,
+  RequestQuantSelectLookUpOutput,
+  RequestQuantSelectOutput,
+} from 'states/backtest/interface/dtos';
 import { CoreOutput, CorePaginationInput } from '../../common/interface/dtos';
 import { Corporation, DailyStock } from './entities';
 
@@ -36,3 +42,10 @@ export interface GetDayilStocksInput extends CorePaginationInput {
 export interface GetDayilStocksOutput extends CoreOutput {
   dailyStocks?: DailyStock[];
 }
+
+export interface QuantSelectionInput extends RequestQuantSelectInput {}
+export interface QuantSelectionOutput extends RequestQuantSelectOutput {}
+export interface QuantSelectionLookupListOutput
+  extends RequestQuantSelectLookUpOutput {}
+export interface QuantSelectionLookupTypeOutput
+  extends RequestQuantSelectDefaultOutput {}

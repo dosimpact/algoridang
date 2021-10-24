@@ -2,6 +2,7 @@
  * Query
  */
 
+import { RequestFS, RequestFSData } from 'states/finance/interface/entities';
 import { StrategyName } from 'states/trading/interface/entities';
 import { CoreOutput } from '../../common/interface/dtos';
 import {
@@ -88,4 +89,23 @@ export interface PushBackTestQInput {
 }
 export interface PushBackTestQOutput extends CoreOutput {
   task_id?: string;
+}
+
+// 퀀트 종목 발굴 - input
+export interface RequestQuantSelectInput {
+  strategy: number;
+  numberOfData: number;
+  data: RequestFSData;
+}
+// 퀀트 종목 발굴 - output
+export interface RequestQuantSelectOutput extends CoreOutput {
+  result: Record<string, [string, string]>;
+}
+// 발굴 가능한 전략 리스트들 출력
+export interface RequestQuantSelectLookUpOutput extends CoreOutput {
+  strategy: Record<string, string>;
+}
+// 전략 기본 셋팅값 요청
+export interface RequestQuantSelectDefaultOutput extends CoreOutput {
+  requestFS: RequestFS;
 }
