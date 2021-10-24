@@ -1,12 +1,19 @@
 
 from DB.connectionPool import databasepool
-from backtesting.backtesting import CBackTtrader
+from backtesting.BacktestMultiPort import BacktestMultiPort
 
 class MockInvestCtrl():
+    """모의투자 class
+    @methods
+        __init__ - Initailizer
+        searchMockInvest - 모의투자 실행 함수
+    """
     def __init__(self) -> None:
+        """ Initailizer """
         pass
         
     def searchMockInvest(self):
+        """ 모의 투자 실행하기 """
         db = databasepool()
         conn = db.getConn()
 
@@ -15,10 +22,9 @@ class MockInvestCtrl():
         db.putConn(conn)
         for i in range(len(mockList)):
             # 5번
-            print()
             startegyCode = int(mockList[i][5])
             
-            bk = CBackTtrader(None,startegyCode)
-            res = bk.requestBacktestOneStock()
+            bt = BacktestMultiPort(startegyCode)
+            res = bt.portBacktest()
 
         

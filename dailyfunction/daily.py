@@ -54,7 +54,7 @@ def callDailyFunction():
     # sched.add_job(callDaily, 'cron', day_of_week='0-4', hour='0', minute='30')
 
     # test
-    sched.add_job(callDaily, 'cron', day_of_week='0-4', hour='18', minute='40')
+    sched.add_job(callDaily, 'cron', day_of_week='0-4', hour='00', minute='30')
 
     # apscheduler실행
     sched.start()

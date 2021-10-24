@@ -18,7 +18,7 @@ class BacktestTestCase(unittest.TestCase):
     def test_bollBacktest_plot(self):
 
         bt = Backtest()
-        res,strat= bt.backtest("005930", 1000000, BollingerBand, '20200101','20211001',20 ,'plot')
+        res,strat= bt.backtest("005930", 1000000, BollingerBand, '20200101','20211001',20)
         bt.makebacktestResult(strat)
         bt.makePortpolio()
         
@@ -26,7 +26,7 @@ class BacktestTestCase(unittest.TestCase):
     def test_bollBacktest_plot_comp(self):
 
         bt = Backtest()
-        res,strat= bt.backtest("005930", 1000000, SMACross, '20200101','20211001',20 ,'plot')
+        res,strat= bt.backtest("005930", 1000000, SMACross, '20200101','20211001',20 )
         bt.makebacktestResult(strat)
         bt.makePortpolio()
         

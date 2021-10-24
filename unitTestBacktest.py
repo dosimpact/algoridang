@@ -76,7 +76,7 @@ class BacktestTestCase(unittest.TestCase):
             } 
         }
         res = bt.getMiniBacktest(data)
-        goldenvalue= {'code': 'Success', 'res': {'profit_rate': 0.094596, 'year_avg_profit_rate': -0.06, 'mdd': -0.12}}
+        goldenvalue= {'code': 'Success', 'res': {'proUPDit_rate': 0.094596, 'year_avg_profit_rate': -0.06, 'mdd': -0.12}}
         self.assertEqual(res, goldenvalue)
 
         

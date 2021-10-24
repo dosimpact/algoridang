@@ -11,11 +11,8 @@ from app import app
 
 from os.path import join, dirname
 
-from backtesting import backtesting
 from openAPI import pricePykrx
 
-from backtesting.MiniBacktest import MiniBacktest
-from backtesting.MakeMiniBackTest import MakeMiniBackTest
 
 
 from backtesting.BacktestMultiPort import BacktestMultiPort
@@ -120,12 +117,6 @@ def backtestTaskCall(self,strategyCode):
     bt = BacktestMultiPort(strategyCode)
     res = bt.portBacktest()
     return res
-
-
-
-def callMiniBacktest(miniBackData):
-    adapter = MakeMiniBackTest()
-    return (adapter.minibacktest(miniBackData))
 
 
     
