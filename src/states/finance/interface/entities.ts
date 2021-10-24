@@ -85,10 +85,12 @@ export interface FinancialStatement {
   // --- end entity property
 }
 
-export type RequestFSKeys = Omit<
+export type RequestFSKeys = keyof Omit<
   FinancialStatement,
   'finance_date' | 'ticker' | 'corporation'
 >;
+
+export type RequestFSKeysLiterals = keyof RequestFSKeys;
 
 export type RequestFSBody =
   | {
@@ -105,10 +107,85 @@ export type RequestFSBody =
     }
   | number;
 
-export type RequestFSData = Partial<Record<keyof RequestFSKeys, RequestFSBody>>;
+export type RequestFSData = Partial<Record<RequestFSKeys, RequestFSBody>>;
 
 export type RequestFS = {
   strategy: number;
   numberOfData: number;
   data: RequestFSData;
+};
+
+export const RequestFSKeysToKo: Record<RequestFSKeys, string> = {
+  market_cap: '시가총액',
+  revenue: '매출액',
+  operating_income: '영업이익',
+  EPS: 'EPS(원)',
+  PER: 'PER',
+  EV_per_EBITDA: 'EV/EBITDA',
+  ROE: 'ROE',
+  dividend_yield: '배당수익률',
+  BETA: '베타(1년)',
+  revenue_Q: '매출액(분기)',
+  operating_income_Q: '영업이익(분기)',
+  net_income_Q: '당기순이익',
+  controlling_interest_Q: '당기순이익(재배)',
+  non_controlling_interest_Q: '당기순이익(비재배)',
+  total_assets_Q: '자산총계',
+  total_stock_holders_Q: '자본총계',
+  controlling_interest_rate_Q: '자본총계(비지배)',
+  non_controlling_interest_share_Q: '자본총계(비지배)',
+  capital_Q: '자본금',
+  debt_ratio_Q: '부채비율',
+  retention_rate_Q: '자본유보율',
+  operating_margin_Q: '영업이익률',
+  controlling_interest_share_Q: '순이익률',
+  ROA_Q: 'ROA',
+  ROE_Q: 'ROE',
+  EPS_Q: 'EPS(원)',
+  BPS_Q: 'BPS(원)',
+  DPS_Q: 'DPS(원)',
+  PBR_Q: 'PBR',
+  outstanding_shares_Q: '발행주식수(보통주)',
+  dividend_yield__Q: '현금배당수익률',
+};
+
+export const RequestFSKeysToKoDesciption: Record<RequestFSKeys, string> = {
+  market_cap:
+    '시가총액( market capitalization)은 주가와 발행 주식수를 곱한 것으로<br/> 상장회사 혹은 기업 가치를 평가하는 지표이다.',
+  revenue:
+    '매출액( sales volume,sales)은 제품이나 상품 등을 판매하고 얻은 대가이다. ',
+  operating_income:
+    '영업이익: EBIT(Earning before interest and taxes)라고도 하며, 매출총이익에서 판매관리비를 뺀 것이다. 기업이 경영하는 주된 사업의 수익성을 나타낸다.',
+  EPS: '주당순이익(EPS)은 기업이 1주당 얼마의 순이익을 냈는가를 나타내는 지표이며 순이익(당기순이익)을 그 기업이 발행한 총 주식수로 나눈 값을(당기순이익/주식수) 말한다.',
+  PER: 'PER은 Price Earning Ratio의 약자로서 직역하면 주가수익비율 이라고 합니다. 조금 더 풀어서 해석하면 기업의 1주당 벌어 들이는 순이익에 비해서 실제 주가가 몇 배가 되는지 나타내는 지표입니다',
+  EV_per_EBITDA:
+    '해당 기업의 내재가치(수익가치)와 기업가치를 비교하는 투자지표로, EV/EBITDA가 2배라면 그 기업을 시장 가격(EV)으로 매수했을 때 그 기업이 벌어들인 이익(EBITDA)을 2년간 합하면 투자원금을 회수할 수 있다는 의미다.',
+  ROE: '자기자본이익률(Return On Equity, ROE)이란 기업이 자본을 이용하여 얼마만큼의 이익을 냈는지를 나타내는 지표로, 당기순이익 값을 자본 값으로 나누어 구한다.',
+  dividend_yield:
+    '배당수익률은 주가 대비 매년 얼마의 배당금을 지급하는지를 나타내는 비율입니다. 즉 현재 주가로 주식을 매수할 경우 배당으로 몇%의 수익률을 올릴 수 있는지 알 수 있습니다.',
+  BETA: '베타란 금융에서 개별 주식이나 포트폴리오의 위험을 나타내는 상대적인 지표이다. 시장포트폴리오의 위험과 같은 기준이 되는 지표와의 상대적인 변동성비율등을 의미하며, CAPM등에 의해 개별자산과 포트폴리오의 위험을 측정하는 데 사용된다.',
+  revenue_Q: '매출액(분기)',
+  operating_income_Q: '영업이익(분기)',
+  net_income_Q: '당기순이익',
+  controlling_interest_Q: '당기순이익(재배)',
+  non_controlling_interest_Q: '당기순이익(비재배)',
+  total_assets_Q: '자산총계',
+  total_stock_holders_Q: '자본총계',
+  controlling_interest_rate_Q: '자본총계(비지배)',
+  non_controlling_interest_share_Q: '자본총계(비지배)',
+  capital_Q: '자본금',
+  debt_ratio_Q:
+    '부채비율 (Debt Ratio)는 기업의 부채와 자기자본과의 관계를 나타내는 안정성 지표입니다.',
+  retention_rate_Q: '자본유보율',
+  operating_margin_Q: '영업이익률',
+  controlling_interest_share_Q: '순이익률',
+  ROA_Q: 'ROA',
+  ROE_Q: 'ROE',
+  EPS_Q: 'EPS(원)',
+  BPS_Q: 'BPS(원)',
+  DPS_Q: 'DPS(원)',
+  PBR_Q: 'PBR',
+  outstanding_shares_Q: '발행주식수(보통주)',
+  dividend_yield__Q:
+    '배당수익률은 주가 대비 매년 얼마의 배당금을 지급하는지를 나타내는 비율입니다. 즉 현재 주가로 주식을 매수할 경우 배당으로 몇%의 수익률을 올릴 수 있는지 알 수 있습니다.',
 };

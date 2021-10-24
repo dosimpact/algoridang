@@ -1,9 +1,9 @@
-import React, { useMemo } from 'react';
+import React, { SetStateAction, useMemo, useState } from 'react';
 import { TickerSearchOnSuccessResult } from 'components/common/_molecules/TickerSearch';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import InspectorHeaderDetail from 'components/inspector/_molecules/InspectorHeaderDetail';
 import { useRecoilState } from 'recoil';
-import { Corporation } from 'states/finance/interface/entities';
+import { Corporation, RequestFSKeys } from 'states/finance/interface/entities';
 import styled from 'styled-components';
 import { RemoveMultipleElements } from 'utils/parse';
 import { IInspectorSettings } from '.';
@@ -17,6 +17,10 @@ import QuantFilterModal from '../_molecules/QuantFilterModal';
 import TickerFuzzySearch from 'components/common/_molecules/TickerFuzzySearch';
 import { atomInspector } from 'states/common/recoil/dashBoard/inspector';
 import { atomUniversalSettingState } from 'states/common/recoil/dashBoard/dashBoard';
+import {
+  atomQSBody,
+  IatomQSBody,
+} from 'states/common/recoil/dashBoard/QuantSelect';
 
 //https://velog.io/@seungsang00/React-React-Modal
 Modal.setAppElement('#root');
@@ -165,9 +169,34 @@ const SUniversalSettingTabTickerSearch = styled.section`
   }
 `;
 
-const UniversalSettingTabQuantSearch = () => {
+const UniversalSettingTabQuantSearchVM = () => {
+  // 종목 추출 요청
+
+  const [currentFSKey, setCurrentFSKey] = useState<RequestFSKeys>('capital_Q');
+  const handleSetCurrentFSKey = (key: RequestFSKeys) => {
+    setCurrentFSKey(key);
+  };
+  // 선택지 리스트 업
+  const [QSBody, setQSBody] = useRecoilState(atomQSBody);
+
+  // 핸들러 - 필터셋 선택
+
+  return (
+    <UniversalSettingTabQuantSearch
+      QSBody={QSBody}
+      currentFSKey={currentFSKey}
+      handleSetCurrentFSKey={handleSetCurrentFSKey}
+    />
+  );
+};
+
+const UniversalSettingTabQuantSearch: React.FC<{
+  QSBody: IatomQSBody;
+  currentFSKey: RequestFSKeys;
+  handleSetCurrentFSKey: (key: RequestFSKeys) => void;
+}> = ({ QSBody, currentFSKey, handleSetCurrentFSKey }) => {
   // 1. 모달창 open/close 상태
-  const [modalIsOpen, setModalIsOpen] = React.useState(false);
+  const [modalIsOpen, setModalIsOpen] = React.useState(true);
 
   return (
     <SUniversalSettingTabQuantSearch>
@@ -205,7 +234,13 @@ const UniversalSettingTabQuantSearch = () => {
         />
       </FilterList>
       <Modal isOpen={modalIsOpen} onRequestClose={() => setModalIsOpen(false)}>
-        <QuantFilterModal onRequestClose={() => setModalIsOpen(false)} />
+        <QuantFilterModal
+          QSBody={QSBody}
+          onRequestClose={() => setModalIsOpen(false)}
+          currentFSKey={currentFSKey}
+          onSetCurrentFSKey={handleSetCurrentFSKey}
+          // handleSetCurrentFSKey={}
+        />
       </Modal>
     </SUniversalSettingTabQuantSearch>
   );
@@ -282,7 +317,7 @@ const UniversalSetting: React.FC<IUniversalSetting> = ({ headerTitle }) => {
         )}
         {tab === 1 && (
           <>
-            <UniversalSettingTabQuantSearch />
+            <UniversalSettingTabQuantSearchVM />
           </>
         )}
       </WingBlank>

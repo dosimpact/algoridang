@@ -85,13 +85,16 @@ export const selectorQSHeaderData = selectorFamily<
 
 // atom 정의 - fs 에 들어가는 데이터별로
 // selector 정의 - strategy,numberOfData 각 getter/setter
-export const atomQSBody = atom<
-  Omit<RequestQuantSelectInput, 'strategy' | 'numberOfData'>
->({
+
+export type IatomQSBody = Omit<
+  RequestQuantSelectInput,
+  'strategy' | 'numberOfData'
+>;
+export const atomQSBody = atom<IatomQSBody>({
   key: 'atomQSBody',
   default: {
     data: {
-      market_cap: 0,
+      market_cap: { operator: 'up', values: [10] },
       revenue: 0,
       operating_income: 0,
       EPS: 0,
@@ -130,7 +133,7 @@ export const atomQSBody = atom<
 // value 가 number 이면 off
 // value 가 object 이면 on
 type atomQSBodyOnOff_IO = RequestFSBody | undefined;
-type atomQSBodyOnOff_Params = keyof RequestFSKeys;
+type atomQSBodyOnOff_Params = RequestFSKeys;
 
 export const atomQSBodyOnOff = selectorFamily<
   atomQSBodyOnOff_IO,

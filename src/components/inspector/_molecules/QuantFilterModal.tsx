@@ -1,5 +1,11 @@
 import { Button } from 'components/common/_atoms/Buttons';
 import React from 'react';
+import { IatomQSBody } from 'states/common/recoil/dashBoard/QuantSelect';
+import {
+  RequestFSKeys,
+  RequestFSKeysToKo,
+  RequestFSKeysToKoDesciption,
+} from 'states/finance/interface/entities';
 import styled from 'styled-components';
 
 // TODO 예상컨데, 필터 타입이 두가지가 있음
@@ -7,9 +13,17 @@ import styled from 'styled-components';
 // category를 먹이는 필터
 
 interface IQuantFilterModal {
+  QSBody: IatomQSBody;
   onRequestClose: () => void;
+  currentFSKey: RequestFSKeys;
+  onSetCurrentFSKey?: (key: RequestFSKeys) => void;
 }
-const QuantFilterModal: React.FC<IQuantFilterModal> = ({ onRequestClose }) => {
+const QuantFilterModal: React.FC<IQuantFilterModal> = ({
+  onRequestClose,
+  QSBody,
+  currentFSKey,
+  onSetCurrentFSKey,
+}) => {
   return (
     <SQuantFilterModal>
       <div className="buttonList">
@@ -50,7 +64,28 @@ const QuantFilterModal: React.FC<IQuantFilterModal> = ({ onRequestClose }) => {
           </div>
         </article>
         <article className="col2">
-          <div>모든 필터</div>
+          <div>재무 필터</div>
+          {Object.keys(QSBody.data).map((key) => {
+            const _key = key as RequestFSKeys;
+            const selected = typeof QSBody.data[_key] === 'object';
+            // console.log('QSBody.data[key];', QSBody.data[_key]);
+            return (
+              <div key={_key}>
+                <input type="checkbox" id={_key} checked={selected} />
+                <label>
+                  <span className="checkbox"></span>
+                  <div
+                    onClick={() => {
+                      if (onSetCurrentFSKey) onSetCurrentFSKey(_key);
+                    }}
+                  >
+                    {RequestFSKeysToKo[_key]}
+                  </div>
+                </label>
+              </div>
+            );
+          })}
+          {/* <div>모든 필터</div>
           {['시가 총액', '시가총액', 'PER', 'PCR', 'PSR'].map((word, idx) => {
             return (
               <div key={idx}>
@@ -62,18 +97,23 @@ const QuantFilterModal: React.FC<IQuantFilterModal> = ({ onRequestClose }) => {
                 <label htmlFor={`filter-${idx}`}>{word}</label>
               </div>
             );
-          })}
+          })} */}
         </article>
         <article className="col3">
           <div>필터 설명</div>
           <div
+            dangerouslySetInnerHTML={{
+              __html: RequestFSKeysToKoDesciption[currentFSKey],
+            }}
+          />
+          {/* <div
             style={{
               whiteSpace: 'pre-wrap',
             }}
           >
             시가총액(Market Capitalization) 전일종가와 발행주식 수를 곱한 것으로
             주식시장에서 상장회사의 규모를 평가하는 지표이다.
-          </div>
+          </div> */}
         </article>
       </section>
     </SQuantFilterModal>
