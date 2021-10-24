@@ -1,9 +1,15 @@
 import React from 'react';
+import { useRecoilState } from 'recoil';
+import {
+  atomQSHeader,
+  selectorQSHeaderData,
+  selectorQSHeaderStretegy,
+} from 'states/common/recoil/dashBoard/QuantSelect';
 import styled from 'styled-components';
-import TickerFuzzySearch from './common/_molecules/TickerFuzzySearch';
-import Skeleton from 'react-loading-skeleton';
-import StrategyCardInfoSkeleton from './common/_molecules/StrategyCardInfoSkeleton';
-import StrategyCardInfoEmpty from './common/_molecules/StrategyCardInfoEmpty';
+// import TickerFuzzySearch from './common/_molecules/TickerFuzzySearch';
+// import Skeleton from 'react-loading-skeleton';
+// import StrategyCardInfoSkeleton from './common/_molecules/StrategyCardInfoSkeleton';
+// import StrategyCardInfoEmpty from './common/_molecules/StrategyCardInfoEmpty';
 // import { GqlPrac02 } from 'components/test/gql-prac/gql-prac-02';
 // import { GqlPrac03 } from "components/test/gql-prac/gql-prac-03";
 // import { GqlPrac04 } from "components/test/gql-prac/gql-prac-04";
@@ -11,35 +17,34 @@ import StrategyCardInfoEmpty from './common/_molecules/StrategyCardInfoEmpty';
 // import { GqlPrac06 } from 'components/test/gql-prac/gql-prac-06';
 
 const Test = () => {
+  const [QSHeader, setQSHeader] = useRecoilState(atomQSHeader);
+  const [QSHeaderStretegy, setQSHeaderStretegy] = useRecoilState(
+    selectorQSHeaderStretegy,
+  );
+  // numberOfData 는 0 으로 setter의 대상에서 제외
+  // strategy 는 1 으로 setter의 대상에서 on
+  const [QSHeaderData, setQSHeaderData] = useRecoilState(
+    selectorQSHeaderData({ numberOfData: 0, strategy: 1 }),
+  );
   return (
     <STest>
-      <StrategyCardInfoEmpty />
-      <StrategyCardInfoSkeleton />
-      <h2>Test</h2>
-      <Skeleton /> <br />
-      <Skeleton count={5} /> <br />
-      <div
-        style={{
-          border: '1px solid #ccc',
-          display: 'block',
-          lineHeight: 2,
-          padding: '1rem',
-          marginBottom: '0.5rem',
-          width: 100,
+      <pre>{JSON.stringify(QSHeader, null, 2)}</pre>
+      <pre>{JSON.stringify(QSHeaderStretegy, null, 2)}</pre>
+      <button
+        onClick={() => {
+          setQSHeaderStretegy(10);
         }}
       >
-        <Skeleton circle={true} style={{ width: 50, height: 50 }} />
-      </div>
-      <Skeleton count={5} /> <br />
-      <Skeleton count={5} />
-      <TickerFuzzySearch
-        onSuccess={(e) => {
-          console.log(e);
+        setQSHeaderStretegy
+      </button>
+      <pre>{JSON.stringify(QSHeaderData, null, 2)}</pre>
+      <button
+        onClick={() => {
+          setQSHeaderData({ numberOfData: 11, strategy: 11 });
         }}
-        onKeyDownEnter={(e) => {
-          console.log(e);
-        }}
-      ></TickerFuzzySearch>
+      >
+        setQSHeaderData
+      </button>
     </STest>
   );
 };

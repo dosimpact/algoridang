@@ -85,12 +85,12 @@ export interface FinancialStatement {
   // --- end entity property
 }
 
-type RequestFSKeys = Omit<
+export type RequestFSKeys = Omit<
   FinancialStatement,
   'finance_date' | 'ticker' | 'corporation'
 >;
 
-type RequestFSBody =
+export type RequestFSBody =
   | {
       operator: 'between';
       values: [number, number]; // number[]와 달리 튜플을 다음처럼 정의한다.
