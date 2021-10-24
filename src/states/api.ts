@@ -9,6 +9,10 @@ import {
   GetCorporationInput,
   GetCorporationsWithTermInput,
   GetDayilStocksInput,
+  GetFinancialStatementInput,
+  QuantSelectionInput,
+  QuantSelectionLookupListOutput,
+  QuantSelectionLookupTypeOutput,
 } from './finance/interface/dtos';
 import {
   CreateMemberInfoInput,
@@ -113,8 +117,21 @@ export const financeApi = {
         },
       });
     },
+    getFinancialStatements: ({ ticker }: GetFinancialStatementInput) => {
+      return axios.get(`finance/statements/${ticker}`);
+    },
+    quantSelectionLookupList: () => {
+      return axios.get(`finance/statements/lookup/list`);
+    },
+    quantSelectionLookupType: ({ index }: { index: number }) => {
+      return axios.get(`finance/statements/lookup/type/${index}`);
+    },
   },
-  POST: {},
+  POST: {
+    quantSelection: (body: QuantSelectionInput) => {
+      return axios.post(`finance/statements/select`, body);
+    },
+  },
   PATCH: {},
   DELETE: {},
 };
