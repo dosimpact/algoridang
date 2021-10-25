@@ -165,7 +165,10 @@ class BacktestMultiPort(Backtest):
     def makePortpolio(self):
         """ 단일종목 포트폴리오 """
         self.metrics = quantstats.reports.metrics(self.multiTotalreturn, mode='full', display=False)
-        
+        filename = "./quantStateResult/"+str(self.strategyCode)+".html"
+        quantstats.reports.html(self.multiTotalreturn,output = filename)
+
+        self.HTML = open(filename,"rt",encoding='UTF8').read()
         # 월간 수익률 차트 데이터 
         # 최대 상승 개월수 -> 상승개월수 
         monthlyProfitRatioChartDataMeta = quantstats.stats.monthly_returns(self.multiTotalreturn)
@@ -241,6 +244,7 @@ class BacktestMultiPort(Backtest):
     def saveDB(self):
         print("["+str(self.strategyCode)+"] Start data saving...")
         self._updateInvestType()
+        self._updataHTML()
         # 데이터 저장하기
         print("["+str(self.strategyCode)+"] Start data saving...1")
         self._saveBacktestMonthlyProfitRateChartTable()
@@ -261,6 +265,26 @@ class BacktestMultiPort(Backtest):
         return "Done"
         
 ########################################################################################
+    def _updataHTML(self):
+        HTMLString = self.HTML
+        strategyCode = self.strategyCode
+            
+        DBClass = databasepool()
+        conn = DBClass.getConn()
+        try:
+            query = "update backtest_detail_info set "
+            query += " \"quant_state_report\" = \'" + str(HTMLString)+"\'"            
+            query += " where strategy_code = "+str(strategyCode)+";"
+            DBClass.updateData(conn,query)
+            conn.commit()
+            DBClass.putConn(conn)
+            
+        except:
+            self._setStatusMemberStrategy( "Error",  "_saveBacktestWinRatioTable Unexpected error",self.strategyCode)
+            print("_updateInvestType Unexpected error:", sys.exc_info()[0]) 
+            DBClass.putConn(conn)
+            
+
     def _updateInvestType(self):
         
         backtestDetailInfo = self.DBdataBacktestDetailInfo
