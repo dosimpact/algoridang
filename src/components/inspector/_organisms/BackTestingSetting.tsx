@@ -1,7 +1,6 @@
 import { Button } from 'components/common/_atoms/Buttons';
 import WideLine from 'components/common/_atoms/WideLine';
 import WingBlank from 'components/common/_atoms/WingBlank';
-import InspectorHeaderDetail from 'components/inspector/_molecules/InspectorHeaderDetail';
 import produce from 'immer';
 import MockInvestReport from 'pages/takers/mock-invest/section/mock-invest-report';
 import StrategyDetails from 'pages/takers/strategy-search/section/strategy-details';
@@ -15,10 +14,13 @@ import {
   makeAddUniversals,
   makeCreateMyStrategy,
 } from 'states/common/recoil/dashBoard/formState';
-import { atomInspector } from 'states/common/recoil/dashBoard/inspector';
+import {
+  atomInspector,
+  selector_ST3_isComplete,
+} from 'states/common/recoil/dashBoard/inspector';
 import useCreateStrategy from 'states/strategy/query/useCreateStrategy';
 import styled from 'styled-components';
-import { IInspectorSettings } from '.';
+import InspectorSettings, { IInspectorSettings } from '.';
 
 const PortBacktestTabStart = () => {
   const [currentStrategyCode, setCurrentStrategyCode] = useRecoilState(
@@ -166,39 +168,44 @@ const BackTestingSetting: React.FC<IBackTestingSetting> = ({ headerTitle }) => {
       }),
     );
   };
-
+  const ST3_isComplete = useRecoilValue(selector_ST3_isComplete);
   return (
     <SBackTestingSetting>
-      <InspectorHeaderDetail headerTitle={headerTitle || '백테스팅'} />
-      <WingBlank>
-        <WideLine style={{ margin: '0 0 1.3rem 0' }} />
-        <article className="tabContainer">
-          <StabItem selected={tab === 0} onClick={() => handleTabIdx(0)}>
-            백테스팅
-          </StabItem>
-          <StabItem selected={tab === 1} onClick={() => handleTabIdx(1)}>
-            상세결과
-          </StabItem>
-          <StabItem selected={tab === 2} onClick={() => handleTabIdx(2)}>
-            리포트
-          </StabItem>
-        </article>
-      </WingBlank>
-      {tab === 0 && (
-        <>
-          <PortBacktestTabStart />
-        </>
-      )}
-      {tab === 1 && (
-        <>
-          <PortBacktestTabDetail />
-        </>
-      )}
-      {tab === 2 && (
-        <>
-          <PortBacktestTabReport />
-        </>
-      )}
+      <InspectorSettings
+        toolTip="만들어진 전략으로 과거부터 테스트 해봅니다."
+        headerTitle={headerTitle || '백테스팅'}
+        isComplete={ST3_isComplete}
+      >
+        <WingBlank>
+          <WideLine style={{ margin: '0 0 1.3rem 0' }} />
+          <article className="tabContainer">
+            <StabItem selected={tab === 0} onClick={() => handleTabIdx(0)}>
+              백테스팅
+            </StabItem>
+            <StabItem selected={tab === 1} onClick={() => handleTabIdx(1)}>
+              상세결과
+            </StabItem>
+            <StabItem selected={tab === 2} onClick={() => handleTabIdx(2)}>
+              리포트
+            </StabItem>
+          </article>
+        </WingBlank>
+        {tab === 0 && (
+          <>
+            <PortBacktestTabStart />
+          </>
+        )}
+        {tab === 1 && (
+          <>
+            <PortBacktestTabDetail />
+          </>
+        )}
+        {tab === 2 && (
+          <>
+            <PortBacktestTabReport />
+          </>
+        )}
+      </InspectorSettings>
     </SBackTestingSetting>
   );
 };

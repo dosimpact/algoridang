@@ -11,8 +11,6 @@ import {
   GetDayilStocksInput,
   GetFinancialStatementInput,
   QuantSelectionInput,
-  QuantSelectionLookupListOutput,
-  QuantSelectionLookupTypeOutput,
 } from './finance/interface/dtos';
 import {
   CreateMemberInfoInput,

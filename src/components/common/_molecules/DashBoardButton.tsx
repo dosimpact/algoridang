@@ -18,6 +18,7 @@ const DashBoardButton: React.FC<IDashBoardButton> = ({
 }) => {
   return (
     <SDashBoardButton
+      isComplete={isComplete}
       onClick={() => {
         if (onClick) {
           onClick();
@@ -39,7 +40,7 @@ const DashBoardButton: React.FC<IDashBoardButton> = ({
 
 export default DashBoardButton;
 
-const SDashBoardButton = styled.div`
+const SDashBoardButton = styled.div<{ isComplete?: boolean }>`
   display: flex;
   flex-direction: row;
   justify-content: space-around;
@@ -48,7 +49,10 @@ const SDashBoardButton = styled.div`
   cursor: pointer;
   padding: 1rem;
 
-  background-color: ${(props) => props.theme.ColorMainLightYellow};
+  background-color: ${(props) =>
+    props.isComplete === true
+      ? props.theme.ColorMainLightGreen
+      : props.theme.ColorMainLightYellow};
   min-height: 6rem;
   width: 18rem;
   border-radius: 1rem;

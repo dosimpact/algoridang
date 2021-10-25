@@ -22,5 +22,5 @@ export const ShadowBox: React.FC<{
 const SShadowBox = styled.div`
   padding: 1.2rem;
   border-radius: 0.4rem;
-  ${(props) => props.theme.shadowN1};
+  ${(props) => props.theme.shadowLine1};
 `;

@@ -12,7 +12,6 @@ import NavHeaderDetail from 'components/common/_molecules/NavHeaderDetail';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import { Button } from 'components/common/_atoms/Buttons';
-import { ShadowBox } from 'components/common/_atoms/ShadowBox';
 
 const StrategyDetails = () => {
   // 히스토리

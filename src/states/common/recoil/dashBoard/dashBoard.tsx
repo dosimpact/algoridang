@@ -14,11 +14,6 @@ export interface IAtomInterestedUnivItem {
   selectedCorporations: Corporation;
   // B: 선택된 종목에 대한 기술적 지표
   selectedTechnical?: BaseTradingStrategy;
-  // A+B 의 Output ( BackTesting )
-  miniBacktestingResult?: {
-    CAGR: string;
-    MDD: string;
-  };
 }
 // IAtom 개별종목설정리스트 State
 interface IAtomInterestedUnivList {

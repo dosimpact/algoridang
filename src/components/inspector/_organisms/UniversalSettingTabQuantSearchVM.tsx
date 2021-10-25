@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
-import {
-  Corporation,
-  IQuantPreset,
-  RequestFSKeys,
-} from 'states/finance/interface/entities';
+import { IQuantPreset, RequestFSKeys } from 'states/finance/interface/entities';
 import styled from 'styled-components';
 import Modal from 'react-modal';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';

@@ -9,8 +9,6 @@ import WingBlank from 'components/common/_atoms/WingBlank';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import ReactTooltip from 'react-tooltip';
 import {
-  atomInspector,
-  IInspectorTypes,
   selectorInspectorFC,
   selectorInspectorType,
   selector_ST1_isComplete,
@@ -18,6 +16,7 @@ import {
   selector_ST3_isComplete,
 } from 'states/common/recoil/dashBoard/inspector';
 import { selectedMonoTickerSettingButtonListJSX } from 'states/common/recoil/dashBoard/dashBoard';
+import { ShadowBox } from 'components/common/_atoms/ShadowBox';
 
 // 전략 생성 모듈
 // DashBoard - Inspector
@@ -73,9 +72,11 @@ const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
               전략에 포함되는 종목들 입니다.
             </ReactTooltip>
             <WhiteSpace />
-            <article className="interestTickers">
-              <ul className="slot">{selectedMonoTickerSettingButtonList}</ul>
-            </article>
+            <ShadowBox>
+              <article className="interestTickers">
+                <ul className="slot">{selectedMonoTickerSettingButtonList}</ul>
+              </article>
+            </ShadowBox>
           </section>
         </article>
         <section className="inspector">
@@ -98,6 +99,8 @@ const SStrategyCreateModule = styled.section`
     text-align: start;
     display: flex;
     align-items: center;
+    font-weight: 700;
+    font-size: 2rem;
     .iconInfo {
       margin-left: 1rem;
       svg {
@@ -126,6 +129,9 @@ const SStrategyCreateModule = styled.section`
     /* border: 1px solid red; */
     height: 80vh;
     overflow-y: scroll;
+    ::-webkit-scrollbar {
+      width: 0.2rem;
+    }
   }
   .baseSettingBtnSlot {
     display: flex;
@@ -144,7 +150,7 @@ const SStrategyCreateModule = styled.section`
  */
 const StrategyCreateTemplate = () => {
   // State: 인스펙터 전체 상태
-  const [, setInsepctorState] = useRecoilState(atomInspector);
+  // const [, setInsepctorState] = useRecoilState(atomInspector);
   // Selector: 현재 인스팩터 - React.FC 반환
   const CurrentInspector = useRecoilValue(selectorInspectorFC);
 
@@ -177,7 +183,7 @@ const StrategyCreateTemplate = () => {
             onClick={() => {
               handleChangeInspector('basicSetting');
             }}
-            isComplete={ST1_isComplete}
+            isComplete={true || ST1_isComplete}
           />,
           <DashBoardButton
             Icon={IconPlusNormal}
