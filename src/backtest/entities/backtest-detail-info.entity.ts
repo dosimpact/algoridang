@@ -1,4 +1,4 @@
-import { IsNumber } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 import { MemberStrategy } from 'src/strategy/entities';
 import {
   Column,
@@ -45,6 +45,10 @@ export class BacktestDetailInfo {
   @IsNumber()
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
   yearly_volatility?: number;
+
+  @IsString()
+  @Column({ type: 'text', nullable: true })
+  quant_state_report?: string;
 
   @IsNumber()
   strategy_code: number;
