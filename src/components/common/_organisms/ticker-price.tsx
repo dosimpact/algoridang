@@ -147,6 +147,6 @@ const TickerPriceS = styled.section`
     background-color: white;
     border-radius: 1rem;
     padding: 1.2rem 0rem;
-    ${(props) => props.theme.shadowN1};
+    ${(props) => props.theme.shadowLine1};
   }
 `;

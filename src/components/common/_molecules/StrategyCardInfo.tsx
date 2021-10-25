@@ -90,7 +90,7 @@ const StrategyCardInfo: React.FC<IStrategyCardInfo> = ({
 const SStrategyCardInfo = styled.section`
   background-color: white;
   transition: box-shadow 0.2s ease-in-out;
-  ${(props) => props.theme.shadowN1};
+  ${(props) => props.theme.shadowLine1};
   border-radius: 7px;
 
   min-height: 10rem;
@@ -146,8 +146,8 @@ const SStrategyCardInfo = styled.section`
     width: 100%;
     padding: 2.2rem 1.2rem 0rem 1.2rem;
     .title {
-      font-size: 1.3rem;
-      font-weight: 500;
+      font-size: 1.4rem;
+      font-weight: 600;
       line-height: 1.5rem;
     }
     .subTitle {

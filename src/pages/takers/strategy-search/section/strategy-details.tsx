@@ -12,6 +12,7 @@ import NavHeaderDetail from 'components/common/_molecules/NavHeaderDetail';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import { Button } from 'components/common/_atoms/Buttons';
+import { ShadowBox } from 'components/common/_atoms/ShadowBox';
 
 const StrategyDetails = () => {
   // 히스토리
@@ -46,43 +47,47 @@ const StrategyDetails = () => {
       <WingBlank>
         {strategyDetailQuery.isLoading && 'loading...'}
         <WhiteSpace />
-        {memberStrategy && <StrategyCardInfo strategy={memberStrategy} />}
-        <div className="flexRowSBt">
-          <Title title="모의 투자" style={{ marginRight: '15px' }}></Title>
-          <Button
-            style={{ width: '8rem' }}
-            onClick={() => {
-              history.push(`/takers/mock-invest/create/${strategyCode}`);
-            }}
-          >
-            시작하기
-          </Button>
-        </div>
-        <div className="flexRowSBt" style={{ marginTop: '15px' }}>
-          <SubTitle
-            title="상세 전략 리포트"
-            style={{ marginRight: '20px' }}
-          ></SubTitle>
-          <Button
-            type="gray"
-            style={{ width: '8rem' }}
-            onClick={() => {
-              console.log('deatil');
-              history.push(
-                process.env.PUBLIC_URL +
-                  `/takers/strategy-search/report/${params.id}`,
-              );
-            }}
-          >
-            리포트
-          </Button>
-        </div>
-        <WhiteSpace />
-        <WhiteSpace />
-        {/* 0. 전략 메이커 설명 Description.tsx */}
-        {memberStrategy && (
-          <Description description={memberStrategy.strategy_explanation} />
-        )}
+        {memberStrategy && <StrategyCardInfo strategy={memberStrategy} />}{' '}
+        <ShadowBox>
+          <div className="flexRowSBt">
+            <Title title="모의 투자" style={{ marginRight: '15px' }}></Title>
+            <Button
+              style={{ width: '8rem' }}
+              onClick={() => {
+                history.push(`/takers/mock-invest/create/${strategyCode}`);
+              }}
+            >
+              시작하기
+            </Button>
+          </div>
+
+          <div className="flexRowSBt" style={{ marginTop: '15px' }}>
+            <SubTitle
+              title="상세 전략 리포트"
+              style={{ marginRight: '20px' }}
+            ></SubTitle>
+            <Button
+              type="gray"
+              style={{ width: '8rem' }}
+              onClick={() => {
+                console.log('deatil');
+                history.push(
+                  process.env.PUBLIC_URL +
+                    `/takers/strategy-search/report/${params.id}`,
+                );
+              }}
+            >
+              리포트
+            </Button>
+          </div>
+          <WhiteSpace />
+          <WhiteSpace />
+
+          {/* 0. 전략 메이커 설명 Description.tsx */}
+          {memberStrategy && (
+            <Description description={memberStrategy.strategy_explanation} />
+          )}
+        </ShadowBox>
         {/* 1. 투자 수익 현황 ReturnsStatus.tsx */}
         {investProfitInfo && (
           <ReturnsStatus

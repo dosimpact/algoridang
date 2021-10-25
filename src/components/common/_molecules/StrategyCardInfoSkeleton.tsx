@@ -21,7 +21,7 @@ const StrategyCardInfoSkeleton = () => {
 const SStrategyCardInfoSkeleton = styled.section`
   background-color: white;
   transition: box-shadow 0.2s ease-in-out;
-  ${(props) => props.theme.shadowN1};
+  ${(props) => props.theme.shadowLine1};
   border-radius: 7px;
 
   min-height: 10rem;

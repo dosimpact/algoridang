@@ -9,7 +9,7 @@ const BadgeCAGR: React.FC<{
 }> = ({ val, hasPercentage = false, ...props }) => {
   return (
     <SBadgeCAGR num={val} {...props}>
-      {val ? (
+      {val !== undefined ? (
         <span>
           연수익 {Math.round(val * 100)}
           {hasPercentage ? '%' : ''}

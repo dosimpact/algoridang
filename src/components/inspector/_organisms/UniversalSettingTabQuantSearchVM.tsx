@@ -285,6 +285,7 @@ const UniversalSettingTabQuantSearch: React.FC<IUniversalSettingTabQuantSearch> 
                   moreThan: (n) => Number(n) >= 1 || '*1개 이상 입력',
                   lessThan: (n) => Number(n) <= 50 || '*50개 이하 입력',
                 },
+                setValueAs: (n) => Number(n),
               })}
             ></input>
           </InputListItemH>

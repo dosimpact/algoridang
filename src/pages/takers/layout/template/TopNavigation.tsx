@@ -46,7 +46,7 @@ const STopNavigation = styled.header`
   justify-content: center;
   align-content: center;
   /* background-color: ${(props) => props.theme.ColorMainDarkGray}; */
-  color: ${(props) => props.theme.ColorMainDarkGray};
+
   z-index: 1000;
   svg {
     fill: ${(props) => props.theme.ColorMainWhite};
@@ -59,6 +59,8 @@ const STopNavigation = styled.header`
       width: 4rem;
     }
     .logoText {
+      font-weight: 700;
+      font-size: 2rem;
     }
   }
   .authInfo {
