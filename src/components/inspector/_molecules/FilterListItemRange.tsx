@@ -3,24 +3,27 @@ import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
 import InputListItemH from 'components/common/_atoms/InputListItemH';
 
-interface IFilterListItem {
-  name: string;
-  defaultFormValue?: IFilterForm;
-  onChange?: (e: IFilterForm) => void;
-}
 interface IFilterForm {
   lowerBound: number;
   upperBound: number;
+}
+
+interface IFilterListItem {
+  name: string;
+  defaultFormValue?: Partial<IFilterForm>;
+  type: 'up' | 'down' | 'between';
+  onChange?: (e: IFilterForm) => void;
 }
 
 const FilterListItemRange: React.FC<IFilterListItem> = ({
   name,
   onChange,
   defaultFormValue,
+  type = 'between',
 }) => {
   const { register, watch, getValues, formState, trigger } =
     useForm<IFilterForm>({
-      defaultValues: { ...defaultFormValue },
+      defaultValues: { lowerBound: 0, upperBound: 10, ...defaultFormValue },
     });
 
   React.useEffect(() => {
@@ -56,6 +59,7 @@ const FilterListItemRange: React.FC<IFilterListItem> = ({
               },
             })}
             placeholder="하안값"
+            disabled={type === 'down'}
           />
           <span className="tail">~</span>
           <input
@@ -69,6 +73,7 @@ const FilterListItemRange: React.FC<IFilterListItem> = ({
               },
             })}
             placeholder="상한값"
+            disabled={type === 'up'}
           />
         </div>
       </InputListItemH>
@@ -89,5 +94,9 @@ const SFilterListItem = styled.li`
     .tail {
       margin: 0rem 1rem;
     }
+  }
+  input:disabled {
+    color: ${(props) => props.theme.ColorGrayL1};
+    background-color: ${(props) => props.theme.ColorGrayL1};
   }
 `;

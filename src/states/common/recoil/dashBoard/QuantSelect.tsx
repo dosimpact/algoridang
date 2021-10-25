@@ -1,11 +1,5 @@
 import produce from 'immer';
-import {
-  atom,
-  DefaultValue,
-  selector,
-  selectorFamily,
-  useRecoilState,
-} from 'recoil';
+import { atom, DefaultValue, selector, selectorFamily } from 'recoil';
 import { RequestQuantSelectInput } from 'states/backtest/interface/dtos';
 import {
   RequestFSBody,
@@ -19,7 +13,7 @@ export const atomQSHeader = atom<
 >({
   key: 'atomQSHeader',
   default: {
-    strategy: 1,
+    strategy: 2,
     numberOfData: 10,
   },
 });
@@ -201,3 +195,24 @@ export const selectorQSApiBody = selector<RequestQuantSelectInput>({
     return { ...head, ...body };
   },
 });
+
+// select b."ticker" , b."name",b."sum"
+// from(
+//    select a."ticker"as "ticker" , a."name"  as "name", a."Rank_PBR_Q" + a."Rank_GPA" as "sum"
+//    from (
+//       select  c."ticker"as "ticker" , c."name"  as "name", rank () OVER(order by c."PBR_Q" desc) as "Rank_PBR_Q", rank () over(order by c."GPA" asc) as "Rank_GPA",c."GPA"
+//       from (
+//          select cor.ticker as "ticker", cor.corp_name as "name", fin."PBR_Q" as "PBR_Q", fin."operating_income_Q"*10000/fin."total_assets_Q" as "GPA" , fin."operating_income_Q",fin."total_assets_Q"
+//          from financial_statement fin, corporation cor
+//          where fin."ticker"=cor."ticker"
+//          and fin."PBR_Q" > 0
+//          and fin."operating_income_Q" >= 0
+//          and fin."total_assets_Q" > 0
+//          and fin."market_cap" >= '5000'
+//       ) c
+//       --order by c."GPA" desc
+
+//       ) a
+//    ) b
+// order by b."sum" desc
+// limit 50

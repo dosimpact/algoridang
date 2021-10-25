@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useRecoilState, useResetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import { IQuantPreset, RequestFSKeys } from 'states/finance/interface/entities';
 import styled from 'styled-components';
 import Modal from 'react-modal';
@@ -14,10 +14,14 @@ import {
   IatomQSBody,
   selectorQSBodyOnOff_IO,
   selectorQSBodyOnOff_Params,
+  selectorQSApiBody,
 } from 'states/common/recoil/dashBoard/QuantSelect';
 import { useForm } from 'react-hook-form';
 import InputListItemH from 'components/common/_atoms/InputListItemH';
 import produce from 'immer';
+import { useQuantSelect } from 'states/finance/query/useQuantSelect';
+import { toast } from 'react-toastify';
+import { RequestQuantSelectOutput } from 'states/backtest/interface/dtos';
 
 //https://velog.io/@seungsang00/React-React-Modal
 Modal.setAppElement('#root');
@@ -148,7 +152,29 @@ const UniversalSettingTabQuantSearchVM = () => {
   };
 
   // 퀀트 발굴하기
-  const handleRequestQuantSelect = () => {};
+  const QSReqeustBody = useRecoilValue(selectorQSApiBody);
+  const { QSMutation } = useQuantSelect();
+
+  const handleRequestQuantSelect = async () => {
+    const result = await toast.promise(
+      QSMutation.mutateAsync(QSReqeustBody),
+      {
+        pending: '종목을 추출 합니다.',
+        success: {
+          render({ data }) {
+            console.log('data', data);
+            const res = result.data as unknown as RequestQuantSelectOutput;
+            const su = Object.keys(res.result).length;
+            return `종목 추출 완료 - ${su}개 😊`;
+          },
+        },
+        error: '종목 추출 실패 🤯',
+      },
+      {
+        position: 'bottom-right',
+      },
+    );
+  };
 
   return (
     <UniversalSettingTabQuantSearch
@@ -159,6 +185,7 @@ const UniversalSettingTabQuantSearchVM = () => {
       handleSetNumOfRequestTicker={handleSetNumOfRequestTicker}
       handleToggleQSBodyValue={handleToggleQSBodyValue}
       handlePreset={handlePreset}
+      handleRequestQuantSelect={handleRequestQuantSelect}
     />
   );
 };
@@ -173,6 +200,7 @@ export interface IUniversalSettingTabQuantSearch {
   handleSetNumOfRequestTicker: (numberOfData: number) => void;
   handleToggleQSBodyValue: IhandleToggleQSBodyValue;
   handlePreset: IhandlePreset;
+  handleRequestQuantSelect: () => void;
 }
 
 const UniversalSettingTabQuantSearch: React.FC<IUniversalSettingTabQuantSearch> =
@@ -184,6 +212,7 @@ const UniversalSettingTabQuantSearch: React.FC<IUniversalSettingTabQuantSearch> 
     handleSetStrategyNum,
     handleToggleQSBodyValue,
     handlePreset,
+    handleRequestQuantSelect,
   }) => {
     // 1. 모달창 open/close 상태
     const [modalIsOpen, setModalIsOpen] = React.useState(false);
@@ -200,13 +229,13 @@ const UniversalSettingTabQuantSearch: React.FC<IUniversalSettingTabQuantSearch> 
       const subscription = watch((value, { name, type }) => {
         trigger();
         handleSubmit((data) => {
-          handleSetStrategyNum(data.numberOfData);
+          handleSetNumOfRequestTicker(data.numberOfData);
         })();
       });
       return () => {
         subscription.unsubscribe();
       };
-    }, [watch, trigger, handleSetStrategyNum, handleSubmit]);
+    }, [watch, trigger, handleSetNumOfRequestTicker, handleSubmit]);
 
     return (
       <SUniversalSettingTabQuantSearch>
@@ -241,7 +270,14 @@ const UniversalSettingTabQuantSearch: React.FC<IUniversalSettingTabQuantSearch> 
           >
             필터 추가
           </Button>
-          <Button type="success">종목 추출</Button>
+          <Button
+            type="success"
+            onClick={() => {
+              handleRequestQuantSelect();
+            }}
+          >
+            종목 추출
+          </Button>
         </div>
         <WhiteSpace style={{ marginTop: '1rem' }} />
         <FilterList>
@@ -252,6 +288,7 @@ const UniversalSettingTabQuantSearch: React.FC<IUniversalSettingTabQuantSearch> 
               if (val?.operator === 'between')
                 return (
                   <FilterListItemRange
+                    type="between"
                     name={_key}
                     defaultFormValue={{
                       lowerBound: 0,
@@ -262,9 +299,9 @@ const UniversalSettingTabQuantSearch: React.FC<IUniversalSettingTabQuantSearch> 
               if (val?.operator === 'down')
                 return (
                   <FilterListItemRange
+                    type="down"
                     name={_key}
                     defaultFormValue={{
-                      lowerBound: 0,
                       upperBound: 10,
                     }}
                   />
@@ -272,10 +309,10 @@ const UniversalSettingTabQuantSearch: React.FC<IUniversalSettingTabQuantSearch> 
               if (val?.operator === 'up')
                 return (
                   <FilterListItemRange
+                    type="up"
                     name={_key}
                     defaultFormValue={{
                       lowerBound: 0,
-                      upperBound: 10,
                     }}
                   />
                 );
@@ -303,6 +340,7 @@ const UniversalSettingTabQuantSearch: React.FC<IUniversalSettingTabQuantSearch> 
             onSetCurrentFSKey={handleSetCurrentFSKey}
             handleToggleQSBodyValue={handleToggleQSBodyValue}
             handlePreset={handlePreset}
+            handleSetStrategyNum={handleSetStrategyNum}
           />
         </Modal>
       </SUniversalSettingTabQuantSearch>

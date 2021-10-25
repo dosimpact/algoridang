@@ -1,23 +1,18 @@
 import { AxiosError, AxiosResponse } from 'axios';
-import { useQuery } from 'react-query';
+import { useMutation } from 'react-query';
 import { financeApi } from 'states/api';
 import {
   QuantSelectionInput,
   QuantSelectionLookupListOutput,
 } from '../interface/dtos';
 
-export const useQuantSelect = (body: QuantSelectionInput) => {
-  const QSQuery = useQuery<
+export const useQuantSelect = () => {
+  const QSMutation = useMutation<
     AxiosResponse<QuantSelectionLookupListOutput>,
     AxiosError,
-    QuantSelectionLookupListOutput
-  >(
-    'QSLookupListQuery',
-    () => {
-      return financeApi.POST.quantSelection(body);
-    },
-    { select: (data) => data.data },
-  );
-
-  return { QSQuery };
+    QuantSelectionInput
+  >('useQuantSelect', (body) => {
+    return financeApi.POST.quantSelection(body);
+  });
+  return { QSMutation };
 };

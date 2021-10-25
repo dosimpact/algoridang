@@ -25,6 +25,7 @@ interface IQuantFilterModal {
   onSetCurrentFSKey?: (key: RequestFSKeys) => void;
   handleToggleQSBodyValue?: IhandleToggleQSBodyValue;
   handlePreset?: IhandlePreset;
+  handleSetStrategyNum?: (strategy: number) => void;
 }
 const QuantFilterModal: React.FC<IQuantFilterModal> = ({
   onRequestClose,
@@ -33,24 +34,18 @@ const QuantFilterModal: React.FC<IQuantFilterModal> = ({
   onSetCurrentFSKey,
   handleToggleQSBodyValue,
   handlePreset,
+  handleSetStrategyNum,
 }) => {
   return (
     <SQuantFilterModal>
       <section className="wrapper">
         <article className="col1">
-          {/* <div>섹터 필터</div>
-          <div>
-            <input type="checkbox" name="kospi" id="kospi" />
-            <label htmlFor="kospi">코스피</label>
-            <input type="checkbox" name="kosdaq" id="kosdaq" />
-            <label htmlFor="kosdaq">코스피</label>
-          </div> */}
           <div className="modalTitle">퀀트 필터 프리셋</div>
           <div className="modalsubTitle warn">
-            *주의 : 클릭시 필터값이 변경됩니다.
+            *주의 : 선택시 필터값이 덮어쓰기 됩니다.
           </div>
           <div>
-            {Object.keys(QuantPresetObject).map((key) => {
+            {Object.keys(QuantPresetObject).map((key, idx) => {
               let _key = key as IQuantPreset;
               return (
                 <div className="row" key={_key}>
@@ -59,6 +54,7 @@ const QuantFilterModal: React.FC<IQuantFilterModal> = ({
                     <Button
                       onClick={() => {
                         if (handlePreset) handlePreset(_key);
+                        if (handleSetStrategyNum) handleSetStrategyNum(idx);
                       }}
                       type="normal"
                       className="quantPresetBtn"
@@ -189,6 +185,9 @@ const SQuantFilterModal = styled.section`
   .filterScroll {
     max-height: 60vh;
     overflow-y: scroll;
+    ::-webkit-scrollbar {
+      width: 0.5rem;
+    }
   }
   .modalsubTitle {
     /* font-size: 2.5rem; */
@@ -198,6 +197,7 @@ const SQuantFilterModal = styled.section`
     font-size: 2rem;
     line-height: 2.9rem;
     letter-spacing: 0.06rem;
+    cursor: pointer;
   }
   .warn {
     color: ${(props) => props.theme.ColorMainRed};
