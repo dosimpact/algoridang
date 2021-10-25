@@ -79,9 +79,8 @@ const FilterListItemRange: React.FC<IFilterListItem> = ({
 export default FilterListItemRange;
 
 const SFilterListItem = styled.li`
-  margin-bottom: 2rem;
   .title {
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
   }
   .fields {
     display: flex;

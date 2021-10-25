@@ -105,8 +105,8 @@ const SStrategyCreateModule = styled.section`
 
   .columns {
     background-color: white;
-    min-height: 80vh;
-    padding: 2rem;
+    min-height: 76vh;
+    padding: 2rem 2rem 0rem 2rem;
     display: grid;
     grid-template-columns: 80rem minmax(35rem, 1fr);
     grid-gap: 2rem;

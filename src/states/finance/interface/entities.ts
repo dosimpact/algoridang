@@ -150,6 +150,15 @@ export const RequestFSKeysToKo: Record<RequestFSKeys, string> = {
 };
 
 export type IQuantPreset = '0' | '1' | '2' | '3' | '4' | '5' | '6';
+export const QuantPresetObject: Record<IQuantPreset, string> = {
+  '0': '초기설정',
+  '1': '사용자 제작공식',
+  '2': '신마법공식 1.0',
+  '3': '오리지널 마법공식',
+  '4': '소형주 저pbr 전략',
+  '5': '그레이엄의 마지막 선물',
+  '6': '그레이엄의 마지막 선물 업그레이드',
+};
 
 export const RequestFSKeysToKoDesciption: Record<
   RequestFSKeys | IQuantPreset,
@@ -193,11 +202,11 @@ export const RequestFSKeysToKoDesciption: Record<
   outstanding_shares_Q: '발행주식수(보통주)',
   dividend_yield__Q:
     '배당수익률은 주가 대비 매년 얼마의 배당금을 지급하는지를 나타내는 비율입니다. 즉 현재 주가로 주식을 매수할 경우 배당으로 몇%의 수익률을 올릴 수 있는지 알 수 있습니다.',
-  '0': '초기설정',
-  '1': '사용자 제작공식',
-  '2': '신마법공식 1.0',
-  '3': '오리지널 마법공식',
-  '4': '소형주 저pbr 전략',
-  '5': '그레이엄의 마지막 선물',
-  '6': '그레이엄의 마지막 선물 업그레이드',
+  '0': '(설명)초기설정',
+  '1': '(설명)사용자 제작공식',
+  '2': '(설명)신마법공식 1.0',
+  '3': '(설명)오리지널 마법공식',
+  '4': '(설명)소형주 저pbr 전략',
+  '5': '(설명)그레이엄의 마지막 선물',
+  '6': '(설명)그레이엄의 마지막 선물 업그레이드',
 };

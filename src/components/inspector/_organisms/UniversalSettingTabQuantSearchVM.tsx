@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import { useRecoilState, useResetRecoilState } from 'recoil';
 import { IQuantPreset, RequestFSKeys } from 'states/finance/interface/entities';
 import styled from 'styled-components';
 import Modal from 'react-modal';
@@ -9,8 +9,8 @@ import FilterListItemRange from '../_molecules/FilterListItemRange';
 import QuantFilterModal from '../_molecules/QuantFilterModal';
 import {
   atomQSBody,
-  selectorQSBodyOnOff,
   atomQSHeader,
+  defaultQSBodyData,
   IatomQSBody,
   selectorQSBodyOnOff_IO,
   selectorQSBodyOnOff_Params,
@@ -54,16 +54,16 @@ const UniversalSettingTabQuantSearchVM = () => {
     //   TODO Reset
   };
   const _handlePreset_1 = () => {
-    setQSBody(
-      produce(QSBody, (df) => {
-        df.data['market_cap'] = { operator: 'up', values: [5000] };
-        return df;
-      }),
-    );
+    setQSBody({
+      data: {
+        ...defaultQSBodyData,
+        market_cap: { operator: 'up', values: [5000] },
+      },
+    });
   };
   const _handlePreset_2 = () => {
     setQSBody(
-      produce(QSBody, (df) => {
+      produce({ data: defaultQSBodyData }, (df) => {
         df.data['market_cap'] = { operator: 'up', values: [5000] };
         df.data['PBR_Q'] = { operator: 'up', values: [0] };
         return df;
@@ -72,7 +72,7 @@ const UniversalSettingTabQuantSearchVM = () => {
   };
   const _handlePreset_3 = () => {
     setQSBody(
-      produce(QSBody, (df) => {
+      produce({ data: defaultQSBodyData }, (df) => {
         df.data['market_cap'] = { operator: 'up', values: [5000] };
         df.data['PBR_Q'] = { operator: 'up', values: [0] };
         df.data['EV_per_EBITDA'] = { operator: 'up', values: [0] };
@@ -82,7 +82,7 @@ const UniversalSettingTabQuantSearchVM = () => {
   };
   const _handlePreset_4 = () => {
     setQSBody(
-      produce(QSBody, (df) => {
+      produce({ data: defaultQSBodyData }, (df) => {
         df.data['PER'] = { operator: 'up', values: [5000] };
         df.data['debt_ratio_Q'] = { operator: 'up', values: [0] };
         df.data['EV_per_EBITDA'] = { operator: 'up', values: [0] };
@@ -92,7 +92,7 @@ const UniversalSettingTabQuantSearchVM = () => {
   };
   const _handlePreset_5 = () => {
     setQSBody(
-      produce(QSBody, (df) => {
+      produce({ data: defaultQSBodyData }, (df) => {
         df.data['PER'] = { operator: 'down', values: [10] };
         df.data['debt_ratio_Q'] = { operator: 'down', values: [50] };
         return df;
@@ -101,7 +101,7 @@ const UniversalSettingTabQuantSearchVM = () => {
   };
   const _handlePreset_6 = () => {
     setQSBody(
-      produce(QSBody, (df) => {
+      produce({ data: defaultQSBodyData }, (df) => {
         df.data['PBR_Q'] = { operator: 'up', values: [0.2] };
         df.data['debt_ratio_Q'] = { operator: 'down', values: [50] };
         df.data['ROA_Q'] = { operator: 'up', values: [5] };
@@ -109,8 +109,9 @@ const UniversalSettingTabQuantSearchVM = () => {
       }),
     );
   };
-
+  const resetQSBody = useResetRecoilState(atomQSBody);
   const handlePreset = (preset: IQuantPreset) => {
+    resetQSBody();
     if (preset === '0') _handlePreset_0();
     if (preset === '1') _handlePreset_1();
     if (preset === '2') _handlePreset_2();
@@ -145,8 +146,9 @@ const UniversalSettingTabQuantSearchVM = () => {
   const handleSetNumOfRequestTicker = (numberOfData: number) => {
     setQSHeader({ ...QSHeader, numberOfData });
   };
-  //   const [] = useRecoilState(selectorQSBodyOnOff('BETA'));
-  // 핸들러 - 필터셋 선택
+
+  // 퀀트 발굴하기
+  const handleRequestQuantSelect = () => {};
 
   return (
     <UniversalSettingTabQuantSearch
@@ -243,15 +245,43 @@ const UniversalSettingTabQuantSearch: React.FC<IUniversalSettingTabQuantSearch> 
         </div>
         <WhiteSpace style={{ marginTop: '1rem' }} />
         <FilterList>
-          <FilterListItem>
-            <div className="title">거래량 ( 단위: )</div>
-            <div className="fields">
-              <input type="text" name="" id="" placeholder="0" />
-              <span className="tail">~</span>
-              <input type="text" name="" id="" placeholder="100" />
-            </div>
-          </FilterListItem>
-          <FilterListItemRange
+          {Object.keys(QSBody.data).map((key) => {
+            const _key = key as RequestFSKeys;
+            const val = QSBody.data[_key];
+            if (typeof val !== 'number') {
+              if (val?.operator === 'between')
+                return (
+                  <FilterListItemRange
+                    name={_key}
+                    defaultFormValue={{
+                      lowerBound: 0,
+                      upperBound: 10,
+                    }}
+                  />
+                );
+              if (val?.operator === 'down')
+                return (
+                  <FilterListItemRange
+                    name={_key}
+                    defaultFormValue={{
+                      lowerBound: 0,
+                      upperBound: 10,
+                    }}
+                  />
+                );
+              if (val?.operator === 'up')
+                return (
+                  <FilterListItemRange
+                    name={_key}
+                    defaultFormValue={{
+                      lowerBound: 0,
+                      upperBound: 10,
+                    }}
+                  />
+                );
+            }
+          })}
+          {/* <FilterListItemRange
             name="ROE (단위:)"
             defaultFormValue={{
               lowerBound: 0,
@@ -260,7 +290,7 @@ const UniversalSettingTabQuantSearch: React.FC<IUniversalSettingTabQuantSearch> 
             onChange={(e) => {
               console.log(e);
             }}
-          />
+          /> */}
         </FilterList>
         <Modal
           isOpen={modalIsOpen}
@@ -287,18 +317,10 @@ const SUniversalSettingTabQuantSearch = styled.section`
   }
 `;
 
-const FilterList = styled.ul``;
-const FilterListItem = styled.li`
-  margin-bottom: 2rem;
-  .title {
-    margin-bottom: 1rem;
-  }
-  .fields {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    .tail {
-      margin: 0rem 1rem;
-    }
+const FilterList = styled.ul`
+  max-height: 60vh;
+  overflow-y: scroll;
+  ::-webkit-scrollbar {
+    width: 0.3rem;
   }
 `;
