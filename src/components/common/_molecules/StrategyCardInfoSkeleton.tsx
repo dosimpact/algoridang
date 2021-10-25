@@ -37,7 +37,7 @@ const SStrategyCardInfoSkeleton = styled.section`
     border-bottom-left-radius: 7px;
   }
   .right {
-    padding: 2.2rem 1.2rem 0rem 1.2rem;
+    padding: 2.2rem 1.2rem 0rem 1.5rem;
   }
 `;
 

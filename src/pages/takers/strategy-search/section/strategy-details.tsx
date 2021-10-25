@@ -48,7 +48,7 @@ const StrategyDetails = () => {
         {strategyDetailQuery.isLoading && 'loading...'}
         <WhiteSpace />
         {memberStrategy && <StrategyCardInfo strategy={memberStrategy} />}{' '}
-        <ShadowBox>
+        <>
           <div className="flexRowSBt">
             <Title title="모의 투자" style={{ marginRight: '15px' }}></Title>
             <Button
@@ -87,7 +87,7 @@ const StrategyDetails = () => {
           {memberStrategy && (
             <Description description={memberStrategy.strategy_explanation} />
           )}
-        </ShadowBox>
+        </>
         {/* 1. 투자 수익 현황 ReturnsStatus.tsx */}
         {investProfitInfo && (
           <ReturnsStatus

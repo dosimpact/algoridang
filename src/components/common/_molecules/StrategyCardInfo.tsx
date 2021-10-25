@@ -68,18 +68,20 @@ const StrategyCardInfo: React.FC<IStrategyCardInfo> = ({
             ))}
         </article>
         <article className="right">
-          <div className="title text_ellipsis">{title}</div>
-          {subTitle && <div className="subTitle">{subTitle}</div>}
-          <div className="CAGR">
-            {strategy.status_code === 'Success' ? (
-              <BadgeCAGR val={CAGR} hasPercentage={true} />
-            ) : strategy.status_code === 'Running' ? (
-              <RoundBadge type="Green">백테스트 진행중</RoundBadge>
-            ) : (
-              strategy.status_code === 'Error' && (
-                <RoundBadge type="Yellow">백테스트 오류</RoundBadge>
-              )
-            )}
+          <div className="right_wrapper">
+            <div className="title text_ellipsis">{title}</div>
+            {subTitle && <div className="subTitle">{subTitle}</div>}
+            <div className="CAGR">
+              {strategy.status_code === 'Success' ? (
+                <BadgeCAGR val={CAGR} hasPercentage={true} />
+              ) : strategy.status_code === 'Running' ? (
+                <RoundBadge type="Green">백테스트 진행중</RoundBadge>
+              ) : (
+                strategy.status_code === 'Error' && (
+                  <RoundBadge type="Yellow">백테스트 오류</RoundBadge>
+                )
+              )}
+            </div>
           </div>
         </article>
       </SStrategyCardInfo>
@@ -96,17 +98,16 @@ const SStrategyCardInfo = styled.section`
   min-height: 10rem;
   height: 12rem;
   width: 100%;
+  /* padding-left: 1rem; */
 
   display: grid;
-  grid-template-columns: 10rem 1fr;
+  grid-template-columns: 11rem 1fr;
   margin-bottom: 20px;
   cursor: pointer;
   .left {
     border-top-left-radius: 7px;
     border-bottom-left-radius: 7px;
-    margin-top: 1rem;
-    width: 10rem;
-
+    width: 11rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -143,8 +144,13 @@ const SStrategyCardInfo = styled.section`
     }
   }
   .right {
-    width: 100%;
-    padding: 2.2rem 1.2rem 0rem 1.2rem;
+    width: 95%;
+    padding-left: 1.5rem;
+    display: flex;
+    align-items: center;
+    .right_wrapper {
+      width: 100%;
+    }
     .title {
       font-size: 1.4rem;
       font-weight: 600;

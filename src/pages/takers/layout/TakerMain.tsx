@@ -121,7 +121,7 @@ const SBottomNavigation = styled.section<{ isDown?: boolean }>`
   position: fixed;
   bottom: 0rem;
   width: 100%;
-  height: 5.6rem;
+  height: 6rem;
   background-color: ${(props) => props.theme.ColorMainDarkGray};
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
