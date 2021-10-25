@@ -60,7 +60,7 @@ export class FinanceController {
    */
   @Version('1')
   @Get('statements/lookup/list')
-  async getQuantSelectionLookupList() {
+  async quantSelectionLookupList() {
     return this.financeService.QuantSelectionLookupList();
   }
   /**
@@ -71,7 +71,7 @@ export class FinanceController {
    */
   @Version('1')
   @Get('statements/lookup/type/:index')
-  async getQuantSelectionLookupType(@Param('index') index: number) {
+  async quantSelectionLookupType(@Param('index') index: number) {
     return this.financeService.QuantSelectionLookupType(Number(index));
   }
   /**
@@ -81,7 +81,7 @@ export class FinanceController {
    */
   @Version('1')
   @Post('statements/select/')
-  async getQuantSelection(@Body() body: QuantSelectionInput) {
+  async quantSelection(@Body() body: QuantSelectionInput) {
     return this.financeService.QuantSelection(body);
   }
 
@@ -89,7 +89,6 @@ export class FinanceController {
   @Version('1')
   @Get('statements/:ticker')
   async getFinancialStatements(@Param('ticker') ticker: string) {
-    console.log('getFinancialStatements');
     return this.financeService.getFinancialStatements({ ticker });
   }
 }
