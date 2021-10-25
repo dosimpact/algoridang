@@ -14,5 +14,6 @@ class QuantContext (object):
     def getDatas(self) :
         """ DB에서 전략 수행하기 """
         self.strategy.makeQuery()
+        print(self.strategy.query)
         return self.strategy.lookup()
 

@@ -59,7 +59,7 @@ class Manual(StrategyBase):
         
         self.query = "select c.ticker ,c.corp_name from financial_statement f, corporation c"
         queryWhere = " where f.ticker = c.ticker "
-        queryOrderBy = " order by "
+        queryOrderBy = ""
 
         queryLimit = " limit " + str(self.parm["numberOfData"])
 
@@ -67,15 +67,19 @@ class Manual(StrategyBase):
         for key, val in self.parm["data"].items():
             if type(val) == type({}):
                 if val['operator'] == "up":
-                    queryWhere += " and \'" + str(key) + "\' >= \'"+ str(val['values'][0]) +"\'" 
+                    queryWhere += " and \"" + str(key) + "\" >= \'"+ str(val['values'][0]) +"\'" 
                 if val['operator'] == "down":
-                    queryWhere += " and \'" + str(key) + "\' <= \'"+ str(val['values'][0]) +"\'"
+                    queryWhere += " and \"" + str(key) + "\" <= \'"+ str(val['values'][0]) +"\'"
                 if val['operator'] == "between":
-                    queryWhere += " and \'" + str(key) + "\' >= \'"+ str(val['values'][0]) +"\'" 
-                    queryWhere += " and \'" + str(key) + "\' <= \'"+ str(val['values'][1]) +"\'" 
-                queryOrderBy += str(key) + " desc "
+                    queryWhere += " and \"" + str(key) + "\" >= \'"+ str(val['values'][0]) +"\'" 
+                    queryWhere += " and \"" + str(key) + "\" <= \'"+ str(val['values'][1]) +"\'" 
+                if queryOrderBy == "":
+                    queryOrderBy += "\""+str(key)+"\"" + " desc "
+                else:
+                    queryOrderBy += ", \""+str(key)+"\"" + " desc "
+
         
         self.query += queryWhere
-        self.query += queryOrderBy
+        self.query += " order by " + queryOrderBy
         self.query += queryLimit
         #print(self.query)
