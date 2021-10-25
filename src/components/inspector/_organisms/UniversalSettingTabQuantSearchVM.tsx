@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
-import { IQuantPreset, RequestFSKeys } from 'states/finance/interface/entities';
+import {
+  Corporation,
+  IQuantPreset,
+  RequestFSKeys,
+} from 'states/finance/interface/entities';
 import styled from 'styled-components';
 import Modal from 'react-modal';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
@@ -22,6 +26,10 @@ import produce from 'immer';
 import { useQuantSelect } from 'states/finance/query/useQuantSelect';
 import { toast } from 'react-toastify';
 import { RequestQuantSelectOutput } from 'states/backtest/interface/dtos';
+import {
+  atomUniversalSettingState,
+  IAtomInterestedUnivItem,
+} from 'states/common/recoil/dashBoard/dashBoard';
 
 //https://velog.io/@seungsang00/React-React-Modal
 Modal.setAppElement('#root');
@@ -154,6 +162,9 @@ const UniversalSettingTabQuantSearchVM = () => {
   // 퀀트 발굴하기
   const QSReqeustBody = useRecoilValue(selectorQSApiBody);
   const { QSMutation } = useQuantSelect();
+  const [universalSettingState, setUniversalSettingState] = useRecoilState(
+    atomUniversalSettingState,
+  );
 
   const handleRequestQuantSelect = async () => {
     const result = await toast.promise(
@@ -173,6 +184,23 @@ const UniversalSettingTabQuantSearchVM = () => {
       {
         position: 'bottom-right',
       },
+    );
+    const res = result.data as unknown as RequestQuantSelectOutput;
+    const listup = Object.keys(res.result).map((_key) => {
+      return {
+        selectedCorporations: {
+          ticker: res.result[_key][0],
+          corp_name: res.result[_key][1],
+        },
+      } as IAtomInterestedUnivItem;
+    });
+    console.log('listup', listup);
+
+    setUniversalSettingState((prev) =>
+      produce(prev, (draft) => {
+        draft.selected = draft.selected.concat(...listup);
+        return draft;
+      }),
     );
   };
 

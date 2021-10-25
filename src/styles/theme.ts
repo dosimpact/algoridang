@@ -57,7 +57,12 @@ const Theme = {
   FontSizeXlg: '1.9rem',
   FontSizeXXlg: '2.3rem',
   // border
-  Border: '1PX solid #ddd',
+  Border: '1px solid #ddd',
+  // shadow
+  shadowN1: 'box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px',
+  shadowN2: 'box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px',
+  shadowN3: 'box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px',
+  shadowLine1: 'box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px',
   /*breakpoints */
   breakpoints: {
     xs: '0px',

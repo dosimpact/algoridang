@@ -198,4 +198,7 @@ export default createGlobalStyle`
     input[type="date"]:hover::-webkit-calendar-picker-indicator { opacity:0.05; }
     input[type="date"]:hover::-webkit-calendar-picker-indicator:hover { opacity:0.15; }
 
+    .shadow{
+        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    }
 `;

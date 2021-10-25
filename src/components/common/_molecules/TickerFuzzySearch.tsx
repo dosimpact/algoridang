@@ -178,11 +178,12 @@ const STickerFuzzySearch = styled.section`
     border-radius: 9px;
     width: 100%;
     height: 4.6rem;
-    border: ${(props) => props.theme.Border};
+    /* border: ${(props) => props.theme.Border}; */
     padding: 1.5rem 2.8rem;
     background: rgba(255, 255, 255, 0.53);
     border-radius: 9px;
     font-size: 1.3rem;
+    ${(props) => props.theme.shadowLine1};
   }
   input::placeholder {
     color: rgba(122, 122, 122, 0.67);

@@ -23,7 +23,7 @@ const SStrategyCardInfoEmpty = styled.article`
   }
   background-color: white;
   transition: box-shadow 0.2s ease-in-out;
-  box-shadow: 0px 0.5px 1px rgba(0, 0, 0, 0.25);
+  ${(props) => props.theme.shadowN1};
   border-radius: 7px;
 
   min-height: 10rem;

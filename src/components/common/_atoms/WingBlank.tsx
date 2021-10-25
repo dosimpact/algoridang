@@ -7,7 +7,7 @@ const WingBlank: React.FC<{ [props: string]: any }> = ({
   return (
     <div
       style={{
-        padding: '0px 2.8rem',
+        padding: '0px 1.8rem',
       }}
       {...props}
     >

@@ -41,7 +41,6 @@ const STopNavigation = styled.header`
   height: 7.4rem;
   width: 100%;
   padding: 0px 2rem;
-
   display: grid;
   grid-template-columns: 1fr 1fr;
   justify-content: center;
@@ -49,7 +48,6 @@ const STopNavigation = styled.header`
   /* background-color: ${(props) => props.theme.ColorMainDarkGray}; */
   color: ${(props) => props.theme.ColorMainDarkGray};
   z-index: 1000;
-
   svg {
     fill: ${(props) => props.theme.ColorMainWhite};
   }

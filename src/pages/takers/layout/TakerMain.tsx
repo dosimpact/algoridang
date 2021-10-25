@@ -183,7 +183,7 @@ const TakerMainSection = () => {
 };
 
 const STakerMainSection = styled.section`
-  background-color: ${(props) => props.theme.ColorGrayL2};
+  background-color: ${(props) => props.theme.ColorWhite};
   min-height: 100vh;
   padding-bottom: 8rem;
 `;
