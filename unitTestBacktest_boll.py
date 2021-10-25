@@ -8,7 +8,7 @@ from backtesting.Strategies.RSI import RSI
 from backtesting.Strategies.BollingerBand import BollingerBand
 from DB.connectionPool import databasepool
 
-class BacktestTestCase(unittest.TestCase):
+class BacktestTestBollCase(unittest.TestCase):
     """ unit test testcase class for QuantStrategy class """
 
     def setUp(self) -> None:
@@ -46,7 +46,7 @@ class BacktestTestCase(unittest.TestCase):
             } 
         }
         res = bt.getMiniBacktest(data)
-        goldenvalue= {'code': 'Success', 'res': {'mdd': -0.16, 'profit_rate': 0.094691, 'year_avg_profit_rate': -0.06}}
+        goldenvalue= {'code': 'Success', 'res': {'mdd': -0.19, 'profit_rate': 0.092726, 'year_avg_profit_rate': -0.08}}
         self.assertEqual(res, goldenvalue)
         
 if __name__ == "__main__":

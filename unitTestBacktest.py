@@ -62,7 +62,7 @@ class BacktestTestCase(unittest.TestCase):
             } 
         }
         res = bt.getMiniBacktest(data)
-        goldenvalue= {'code': 'Success', 'res': {'profit_rate': 0.077775, 'year_avg_profit_rate': -0.26, 'mdd': -0.22}}
+        goldenvalue= {'code': 'Success', 'res': {'profit_rate': 0.077775, 'year_avg_profit_rate': -0.25, 'mdd': -0.22}}
         self.assertEqual(res, goldenvalue)
 
 
@@ -76,7 +76,7 @@ class BacktestTestCase(unittest.TestCase):
             } 
         }
         res = bt.getMiniBacktest(data)
-        goldenvalue= {'code': 'Success', 'res': {'proUPDit_rate': 0.094596, 'year_avg_profit_rate': -0.06, 'mdd': -0.12}}
+        goldenvalue= {'code': 'Success', 'res': {'mdd': -0.13, 'profit_rate': 0.092631, 'year_avg_profit_rate': -0.08}}
         self.assertEqual(res, goldenvalue)
 
         
@@ -89,7 +89,7 @@ class BacktestTestCase(unittest.TestCase):
             } 
         }
         res = bt.getMiniBacktest(data)
-        goldenvalue= {'code': 'Success', 'res': {'profit_rate': 0.094596, 'year_avg_profit_rate': -0.06, 'mdd': -0.12}}
+        goldenvalue= {'code': 'Success', 'res': {'mdd': -0.13, 'profit_rate': 0.092631, 'year_avg_profit_rate': -0.08}}
         self.assertEqual(res, goldenvalue)
 
 if __name__ == "__main__":

@@ -7,7 +7,7 @@ from backtesting.Strategies.RSI import RSI
 
 from DB.connectionPool import databasepool
 
-class BacktestTestCase(unittest.TestCase):
+class BacktestStrategyTestCase(unittest.TestCase):
     """ unit test testcase class for QuantStrategy class """
 
     def setUp(self) -> None:
