@@ -1,5 +1,11 @@
 import produce from 'immer';
-import { atom, DefaultValue, selector, selectorFamily } from 'recoil';
+import {
+  atom,
+  DefaultValue,
+  selector,
+  selectorFamily,
+  useRecoilState,
+} from 'recoil';
 import { RequestQuantSelectInput } from 'states/backtest/interface/dtos';
 import {
   RequestFSBody,
@@ -132,14 +138,14 @@ export const atomQSBody = atom<IatomQSBody>({
 // - selector 정의 : 재무제표 key를 선택해서, ( operator,valuse 수정  )
 // value 가 number 이면 off
 // value 가 object 이면 on
-type atomQSBodyOnOff_IO = RequestFSBody | undefined;
-type atomQSBodyOnOff_Params = RequestFSKeys;
+export type selectorQSBodyOnOff_IO = RequestFSBody | undefined;
+export type selectorQSBodyOnOff_Params = RequestFSKeys;
 
-export const atomQSBodyOnOff = selectorFamily<
-  atomQSBodyOnOff_IO,
-  atomQSBodyOnOff_Params
+export const selectorQSBodyOnOff = selectorFamily<
+  selectorQSBodyOnOff_IO,
+  selectorQSBodyOnOff_Params
 >({
-  key: 'atomQSBodyOnOff',
+  key: 'selectorQSBodyOnOff',
   get:
     (targetKey) =>
     ({ get }) => {
@@ -161,6 +167,27 @@ export const atomQSBodyOnOff = selectorFamily<
       }
     },
 });
+
+// export const selectorQSBodyValue = selector<selectorQSBodyOnOff_IO>({
+//   key: 'selectorQSBodyValue',
+//   get: ({ get }) => {},
+//   set: ({ get, set }, newValue) => {},
+// });
+
+// TODO: 커스텀 훅 함수로 변환
+//  React Hook "useRecoilState" is called in function "usehandleSetQSBodyValue" that is neither a React function component nor a custom React Hook function. React component names must start with an uppercase letter  react-hooks/rules-of-hooks
+// export const usehandleSetQSBodyValue = (
+//   data: selectorQSBodyOnOff_IO,
+//   key: selectorQSBodyOnOff_Params,
+// ) => {
+//   const [QSBody, setQSBody] = useRecoilState(atomQSBody);
+//   setQSBody(
+//     produce(QSBody, (df) => {
+//       df.data[key] = data;
+//       return df;
+//     }),
+//   );
+// };
 
 // selector 합치기 selectorQSApiBody = atomQSHeader + atomQSBody
 export const selectorQSApiBody = selector<RequestQuantSelectInput>({

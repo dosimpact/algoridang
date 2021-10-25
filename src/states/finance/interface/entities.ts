@@ -149,7 +149,12 @@ export const RequestFSKeysToKo: Record<RequestFSKeys, string> = {
   dividend_yield__Q: '현금배당수익률',
 };
 
-export const RequestFSKeysToKoDesciption: Record<RequestFSKeys, string> = {
+export type IQuantPreset = '0' | '1' | '2' | '3' | '4' | '5' | '6';
+
+export const RequestFSKeysToKoDesciption: Record<
+  RequestFSKeys | IQuantPreset,
+  string
+> = {
   market_cap:
     '시가총액( market capitalization)은 주가와 발행 주식수를 곱한 것으로<br/> 상장회사 혹은 기업 가치를 평가하는 지표이다.',
   revenue:
@@ -188,4 +193,11 @@ export const RequestFSKeysToKoDesciption: Record<RequestFSKeys, string> = {
   outstanding_shares_Q: '발행주식수(보통주)',
   dividend_yield__Q:
     '배당수익률은 주가 대비 매년 얼마의 배당금을 지급하는지를 나타내는 비율입니다. 즉 현재 주가로 주식을 매수할 경우 배당으로 몇%의 수익률을 올릴 수 있는지 알 수 있습니다.',
+  '0': '초기설정',
+  '1': '사용자 제작공식',
+  '2': '신마법공식 1.0',
+  '3': '오리지널 마법공식',
+  '4': '소형주 저pbr 전략',
+  '5': '그레이엄의 마지막 선물',
+  '6': '그레이엄의 마지막 선물 업그레이드',
 };

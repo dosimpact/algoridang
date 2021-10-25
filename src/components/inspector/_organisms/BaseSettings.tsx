@@ -132,7 +132,7 @@ const BaseSettings: React.FC<IBaseSettings> = ({ headerTitle }) => {
               {...register('invest_principal', {
                 required: '* 운용자금 입력 필수',
                 validate: {
-                  moreThan: (v) => Number(v) >= 1000000 || '* 100만원 이상',
+                  moreThan: (v) => Number(v) >= 10000 || '* 1만원 이상',
                   lessThan: (v) => Number(v) <= 2000000000 || '* 20억원 이하',
                 },
               })}
