@@ -1,4 +1,4 @@
-import { atom, selector } from 'recoil';
+import { atom, DefaultValue, selector } from 'recoil';
 import {
   BackTestingSetting,
   BasicSettings,
@@ -65,6 +65,44 @@ export const atomInspector = atom<IAtomInspector>({
     },
   },
 });
+
+export const selector_ST1_isComplete = selector<boolean>({
+  key: 'selector_ST1_isComplete',
+  get: ({ get }) => {
+    return get(atomInspector).inspectorState.basicSetting.isComplete;
+  },
+});
+export const selector_ST2_isComplete = selector<boolean>({
+  key: 'selector_ST2_isComplete',
+  get: ({ get }) => {
+    return get(atomInspector).inspectorState.universalSetting.isComplete;
+  },
+});
+export const selector_ST3_isComplete = selector<boolean>({
+  key: 'selector_ST3_isComplete',
+  get: ({ get }) => {
+    return get(atomInspector).inspectorState.backTestingSetting.isComplete;
+  },
+});
+
+export const selectorInspectorType = selector<IInspectorTypes>({
+  key: 'selectorInspectorType',
+  get: ({ get }) => {
+    return get(atomInspector).inspectorType;
+  },
+  set: ({ get, set }, newValue) => {
+    if (!(newValue instanceof DefaultValue)) {
+      const prev = get(atomInspector);
+      set(atomInspector, {
+        ...prev,
+        inspectorType: newValue,
+      });
+    }
+  },
+});
+// const handleChangeInspector = (type: IInspectorTypes) => {
+
+// };
 
 // ----------------------------
 

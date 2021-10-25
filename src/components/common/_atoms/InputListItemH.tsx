@@ -33,11 +33,12 @@ const SInputListItemH = styled.div<IInputListItemH>`
     ${(props) =>
       props.error
         ? `border-bottom: 1px solid ${props.theme.ColorMainRed}`
-        : ``};
+        : `border-bottom: 1px solid transparent`};
   }
   .errorMessage {
     color: ${(props) => props.theme.ColorMainRed};
     font-size: 1.3rem;
-    height: 1.5rem;
+    margin-top: 0.5rem;
+    height: 2rem;
   }
 `;

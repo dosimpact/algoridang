@@ -137,6 +137,9 @@ const SUniversalSettingTabTickerSearch = styled.section`
       margin-right: 1rem;
     }
     .btn {
+      height: 4rem;
+      width: 30%;
+      font-size: 1.8rem;
     }
   }
   .selectedUnivList {

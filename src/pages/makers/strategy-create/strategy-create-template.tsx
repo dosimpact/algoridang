@@ -12,6 +12,10 @@ import {
   atomInspector,
   IInspectorTypes,
   selectorInspectorFC,
+  selectorInspectorType,
+  selector_ST1_isComplete,
+  selector_ST2_isComplete,
+  selector_ST3_isComplete,
 } from 'states/common/recoil/dashBoard/inspector';
 import { selectedMonoTickerSettingButtonListJSX } from 'states/common/recoil/dashBoard/dashBoard';
 
@@ -150,12 +154,16 @@ const StrategyCreateTemplate = () => {
   );
 
   // Handler
-  const handleChangeInspector = (type: IInspectorTypes) => {
-    setInsepctorState((prev) => ({
-      ...prev,
-      inspectorType: type,
-    }));
-  };
+  // const handleChangeInspector = (type: IInspectorTypes) => {
+  //   setInsepctorState((prev) => ({
+  //     ...prev,
+  //     inspectorType: type,
+  //   }));
+  // };
+  const [, handleChangeInspector] = useRecoilState(selectorInspectorType);
+  const ST1_isComplete = useRecoilValue(selector_ST1_isComplete);
+  const ST2_isComplete = useRecoilValue(selector_ST2_isComplete);
+  const ST3_isComplete = useRecoilValue(selector_ST3_isComplete);
 
   return (
     <StrategyCreateModule
@@ -169,6 +177,7 @@ const StrategyCreateTemplate = () => {
             onClick={() => {
               handleChangeInspector('basicSetting');
             }}
+            isComplete={ST1_isComplete}
           />,
           <DashBoardButton
             Icon={IconPlusNormal}
@@ -176,6 +185,7 @@ const StrategyCreateTemplate = () => {
             onClick={() => {
               handleChangeInspector('universalSetting');
             }}
+            isComplete={ST2_isComplete}
           />,
           <DashBoardButton
             Icon={IconPlusNormal}
@@ -183,6 +193,7 @@ const StrategyCreateTemplate = () => {
             onClick={() => {
               handleChangeInspector('backTestingSetting');
             }}
+            isComplete={ST3_isComplete}
           />,
         ],
       }}

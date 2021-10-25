@@ -1,3 +1,4 @@
+import { IconCheckCircle } from 'assets/icons';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -6,12 +7,14 @@ import styled from 'styled-components';
 interface IDashBoardButton {
   Icon: () => JSX.Element;
   text: string;
+  isComplete?: boolean;
   onClick?: () => void;
 }
 const DashBoardButton: React.FC<IDashBoardButton> = ({
   Icon,
   text,
   onClick,
+  isComplete,
 }) => {
   return (
     <SDashBoardButton
@@ -21,7 +24,14 @@ const DashBoardButton: React.FC<IDashBoardButton> = ({
         }
       }}
     >
-      <Icon></Icon>
+      {isComplete === true ? (
+        <span className="completeIcon">
+          <IconCheckCircle />{' '}
+        </span>
+      ) : (
+        <Icon />
+      )}
+
       <div className="text">{text}</div>
     </SDashBoardButton>
   );
@@ -48,5 +58,8 @@ const SDashBoardButton = styled.div`
   svg {
     width: 3rem;
     height: 3rem;
+  }
+  .completeIcon {
+    fill: ${(props) => props.theme.ColorMainGreen};
   }
 `;
