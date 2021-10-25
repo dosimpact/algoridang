@@ -12,9 +12,6 @@ class BacktestTestCase(unittest.TestCase):
 
     def setUp(self) -> None:
         dbinit = databasepool(0)
-        pass
-
-    def test_Backtest(self):
         bt = Backtest()
         res,strat= bt.backtest("005930", 1000000,SMACross, '20210101','20211001',20 )
         self.assertEqual(res, 788800.0)

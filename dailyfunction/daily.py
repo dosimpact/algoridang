@@ -13,7 +13,7 @@ def callDaily():
     fin = financialInformation()
     mock = MockInvestCtrl()
     print("dailyStockData END : ", dailyStockData(tickers))
-    #print("dailyfinanceData END : ", fin.getFinancalDataNaver(tickers))
+    print("dailyfinanceData END : ", fin.getFinancalDataNaver(tickers))
     print("dailyfinanceData END : ", mock.searchMockInvest())
     print(f'job : {time.strftime("%H:%M:%S")}')
 

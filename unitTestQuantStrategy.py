@@ -9,7 +9,7 @@ class QuantStrategyTestCase(unittest.TestCase):
 
     def test_QuantStrategy(self):
         quant = QuantSelecter()
-        for idx in range(2,7):
+        for idx in range(1,7):
             res = quant.runQuantStrategty(quant.getSampleData(idx))
             print("Test = ", idx)
             self.assertEqual(res, res)
