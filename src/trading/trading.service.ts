@@ -164,4 +164,8 @@ export class TradingService {
       this.logger.error('❌ seedBaseTradingStrategy', error);
     }
   }
+
+  async requestMiniBacktesting() {
+    return;
+  }
 }

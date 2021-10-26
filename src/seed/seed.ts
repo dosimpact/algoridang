@@ -36,7 +36,7 @@ async function bootstrap() {
               invest_principal: '30000000',
             },
             strategy_explanation: `기본 골든 크로스 전략 입니다.(${corp_name},${ticker}) TC-1`,
-            strategy_name: `${corp_name} 5,15 골든 크로스 전략`,
+            strategy_name: `TestCase01 ${corp_name} 5,15 골든 크로스 전략`,
             open_yes_no: true,
             tags: ['기본전략', '골든크로스'],
           },
@@ -70,7 +70,7 @@ async function bootstrap() {
           invest_principal: '30000000',
         },
         strategy_explanation: `기본 골든 크로스 전략 입니다 TC-2`,
-        strategy_name: `TestCase02 5,15 골든 크로스 전략`,
+        strategy_name: `TestCase02 5,15 골든 크로스 전략*2`,
         open_yes_no: true,
         tags: ['기본전략', '골든크로스'],
       },
@@ -107,7 +107,7 @@ async function bootstrap() {
           invest_principal: '30000000',
         },
         strategy_explanation: `기본 골든 크로스 전략 입니다 TC-3`,
-        strategy_name: `TestCase03 5,15 골든 크로스 전략`,
+        strategy_name: `TestCase03 5,15 골든크로스&RSI 전략`,
         open_yes_no: true,
         tags: ['기본전략', '골든크로스'],
       },
@@ -152,8 +152,8 @@ async function bootstrap() {
 
   const main = () => {
     // 매매전략 시드
-    // strategyTC_01();
-    // strategyTC_02();
+    strategyTC_01();
+    strategyTC_02();
     strategyTC_03();
     // 기술적분석, 기본값 시드
     // seedBaseTradingStrategy();
