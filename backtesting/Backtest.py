@@ -3,6 +3,7 @@ import backtrader as bt
 import quantstats
 import pandas as pd
 import sys
+import copy
 from DB.connectionPool import databasepool
 
 from backtesting.BarAnalysis import BarAnalysis
@@ -120,7 +121,7 @@ class Backtest(object):
         if plot is not None:
             cerebro.plot()
 
-        strat.analyzers.bar_data.init_tradehistory()
+        
         del cerebro
         return value, strat
 
@@ -149,7 +150,9 @@ class Backtest(object):
         self.lose = loseCnt
 
         # 히스토리 출력하기
-        self.tradehitory = strat.analyzers.bar_data.get_tradehistory()
+        self.tradehitory = copy.deepcopy(strat.analyzers.bar_data.get_tradehistory())
+        
+        strat.analyzers.bar_data.init_tradehistory()
 
     def daily_profit(self, strat):
         bar_data_res = strat.analyzers.bar_data.get_analysis()

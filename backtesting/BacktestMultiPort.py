@@ -42,7 +42,7 @@ class BacktestMultiPort(Backtest):
         self.multiTotalreturn = None
         self.multiWin = 0
         self.multiLose = 0
-        self.multiTradehitory = None
+        self.multiTradehitory = []
         self.multiDailyData = None
         self.portMonthlyProfitRatioChartData = []
 
@@ -104,6 +104,8 @@ class BacktestMultiPort(Backtest):
                 self.multiDailyData = self.dailyData
             else:
                 self.multiDailyData = self.multiDailyData + self.dailyData
+            
+            self.multiTradehitory.extend(self.tradehitory)
 
             self.multiWin += self.win
             self.multiLose += self.lose
@@ -182,6 +184,59 @@ class BacktestMultiPort(Backtest):
                     self.monthlyProfitRatioRiseMonth += 1
     
 #####################DB dataSet#######################################
+
+    def _saveHistoryTable(self):
+        tradehitory = self.multiTradehitory
+        strategyCode = self.strategyCode
+
+        DBClass = databasepool()
+        conn = DBClass.getConn()
+        try:
+            for i in range(len(tradehitory)):
+                query = "select * from history "
+                query += " where strategy_code = " + str(strategyCode)
+                query += " and ticker = \'" + str(tradehitory[i][3])+"\'"
+                query += " and history_date = \'"+str(tradehitory[i][0]) + "\';"
+
+                if len(DBClass.selectData(conn,query)) == 1:
+                    if tradehitory[i][2] != None :
+                        query = "update history set "
+                        query += " buy_sale_price = " + str(tradehitory[i][1]) + ","
+                        query += " profit_loss_rate = " + str(tradehitory[i][2])
+                        query += " where strategy_code = " + str(strategyCode)
+                        query += " and ticker = \'" + str(tradehitory[i][3]) + "\'"
+                        query += " and history_date = \'"+str(tradehitory[i][0]) + "\';"
+                        DBClass.updateData(conn,query)
+                    else :
+                        query = "update history set "
+                        query += " buy_sale_price = " + str(tradehitory[i][1]) 
+                        query += " where strategy_code = " + str(strategyCode)
+                        query += " and ticker =  \'" + str(tradehitory[i][3]) + "\'"
+                        query += " and history_date = \'"+str(tradehitory[i][0]) + "\';"
+                        DBClass.updateData(conn,query)
+                    
+                else :
+                    if tradehitory[i][2] != None :
+                        query = "insert into history(\"history_date\",\"buy_sale_price\",\"profit_loss_rate\",\"strategy_code\",\"ticker\")"
+                        query += "values(\'"+str(tradehitory[i][0]) + "\'," + str(tradehitory[i][1])+","+str(tradehitory[i][2])+","+str(strategyCode)+",\'"+str(tradehitory[i][3]) + "\')"
+                        #print(query)
+
+                    else :
+                        query = "insert into history(\"history_date\",\"buy_sale_price\",\"strategy_code\",\"ticker\")"
+                        query += "values(\'"+str(tradehitory[i][0]) + "\'," + str(tradehitory[i][1])+","+str(strategyCode)+",\'"+str(tradehitory[i][3]) + "\')"
+                        #print(query)
+
+                DBClass.insertIntoData(conn,query)
+            conn.commit()
+            
+            DBClass.putConn(conn)
+        
+        except:
+            self._setStatusMemberStrategy( "Error", "_saveHistoryTable Unexpected error", self.strategyCode)
+            print("_saveHistoryTable Unexpected error:", sys.exc_info()[0]) 
+            DBClass.putConn(conn)
+
+
     def makeDBDataSet(self,investPrice,startTime,EndTime = None):
         
         self.multiDailyData = self.calDailyData(int(investPrice))
@@ -258,6 +313,8 @@ class BacktestMultiPort(Backtest):
         self._saveBacktestDailyProfitRateChartTable()
         print("["+str(self.strategyCode)+"] Start data saving...6")
         self._saveAccumulateProfitRateChartTable()
+        print("["+str(self.strategyCode)+"] Start data saving...7")
+        self._saveHistoryTable()
 
 
         print("["+str(self.strategyCode)+"] Complete data saving!")
