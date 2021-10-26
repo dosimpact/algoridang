@@ -74,6 +74,8 @@ const StrategyCardInfo: React.FC<IStrategyCardInfo> = ({
             <div className="CAGR">
               {strategy.status_code === 'Success' ? (
                 <BadgeCAGR val={CAGR} hasPercentage={true} />
+              ) : strategy.status_code === null ? (
+                <RoundBadge type="Yellow">백테스트 대기중</RoundBadge>
               ) : strategy.status_code === 'Running' ? (
                 <RoundBadge type="Green">백테스트 진행중</RoundBadge>
               ) : (

@@ -22,7 +22,6 @@ const StrategyFeeds = () => {
     strategyListRiskTaking,
     strategyListStableIncome,
   } = useStrategy();
-  console.log('strategyListRiskTaking', strategyListRiskTaking);
   return (
     <WingBlank>
       <PageGuide

@@ -94,9 +94,12 @@ const BaseSettings: React.FC<IBaseSettings> = ({ headerTitle }) => {
 
   //  기본값에 대해서 유효성 검사하기 ( layoutEffect는 왜 안될까?)
   React.useEffect(() => {
-    trigger();
+    if (ST1_isComplete) {
+      trigger();
+    }
     return () => {};
-  }, [trigger]);
+  }, [trigger, ST1_isComplete]);
+
   return (
     <SBaseSettings>
       <InspectorSettings
@@ -210,8 +213,8 @@ const BaseSettings: React.FC<IBaseSettings> = ({ headerTitle }) => {
                     setValueAs: (v) => (v === 'true' ? true : false),
                   })}
                 >
-                  <option value={'true'}>public</option>
-                  <option value={'false'}>private</option>
+                  <option value={'true'}>모두 공개</option>
+                  <option value={'false'}>나만 보기</option>
                 </select>
               </InputListItemH>
             </form>

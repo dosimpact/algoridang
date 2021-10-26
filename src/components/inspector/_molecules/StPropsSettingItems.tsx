@@ -10,26 +10,30 @@ interface IStProps {
   setting_json?: SettingJSON;
 }
 
-interface IStPropsSMAForm {
-  SMA_A: number;
+interface IStPropsRSIForm {
+  min: number;
+  max: number;
 }
 
 // 늘어나는 상세 전략에 대해 상속을 통해 구현합니다.
 
-interface IStPropsSMA extends IStProps {}
+interface IStPropsRSI extends IStProps {}
 
-export const StPropsSMA: React.FC<IStPropsSMA> = ({
+export const StPropsRSI: React.FC<IStPropsRSI> = ({
   children,
   onSubmit,
   setting_json,
 }) => {
-  const { register, handleSubmit } = useForm<IStPropsSMAForm>({
-    defaultValues: { SMA_A: setting_json?.SMA?.SMA_A || 10 },
+  const { register, handleSubmit, getValues } = useForm<IStPropsRSIForm>({
+    defaultValues: {
+      min: setting_json?.RSI?.min || 30,
+      max: setting_json?.RSI?.max || 70,
+    },
   });
 
   const submitHandler = handleSubmit((data) => {
     if (onSubmit) {
-      onSubmit({ SMA: data });
+      onSubmit({ RSI: data });
     }
   });
 
@@ -37,12 +41,28 @@ export const StPropsSMA: React.FC<IStPropsSMA> = ({
     <div>
       <form onSubmit={submitHandler}>
         <InputListItem>
-          <label htmlFor="SMA_A">단순이평선 정배열</label>
+          <label htmlFor="min">RSI 하단</label>
           <input
             type="text"
-            id="SMA_A"
-            {...register('SMA_A', {
+            id="min"
+            {...register('min', {
               setValueAs: (v) => Number(v),
+              validate: {
+                lessThan: (v) => Number(v) < getValues('max'),
+              },
+            })}
+          />
+        </InputListItem>
+        <InputListItem>
+          <label htmlFor="max">RSI 상단</label>
+          <input
+            type="text"
+            id="max"
+            {...register('max', {
+              setValueAs: (v) => Number(v),
+              validate: {
+                moreThan: (v) => Number(v) > getValues('min'),
+              },
             })}
           />
         </InputListItem>

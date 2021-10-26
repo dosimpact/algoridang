@@ -11,12 +11,16 @@ import styled from 'styled-components';
 import { IInspectorSettings } from '.';
 import TechnicalSearch from 'components/common/_atoms/TechnicalSearch';
 import { useTechnicals } from 'states/trading/query/useTechnicals';
-import { useRequestMiniBacktesting } from 'states/trading/query/useRequestMiniBacktesting';
-import { BaseTradingStrategy } from 'states/trading/interface/entities';
+// import { useRequestMiniBacktesting } from 'states/trading/query/useRequestMiniBacktesting';
+import {
+  BaseTradingStrategy,
+  StrategyName,
+} from 'states/trading/interface/entities';
 import WideLine from 'components/common/_atoms/WideLine';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import { Button } from 'components/common/_atoms/Buttons';
 import { atomInspector } from 'states/common/recoil/dashBoard/inspector';
+import useMiniBacktest from 'states/backtest/query/useMiniBacktest';
 
 interface ITechnicalStrategyList {
   onSelect?: (e: BaseTradingStrategy) => void;
@@ -33,18 +37,23 @@ const TechnicalStrategyList: React.FC<ITechnicalStrategyList> = ({
       {GetTechnicalStrategyListQuery.isLoading && 'loading...'}
       {!GetTechnicalStrategyListQuery.isLoading && (
         <ul className="strategyList">
-          {GetTechnicalStrategyListQuery.data?.map((st, idx) => (
-            <Button
-              type="info"
-              className="strategyListItem"
-              key={`${idx}-${st.trading_strategy_name}`}
-              onClick={() => {
-                if (onSelect) onSelect(st);
-              }}
-            >
-              {st.trading_strategy_name}
-            </Button>
-          ))}
+          {GetTechnicalStrategyListQuery.data?.map((st, idx) => {
+            if (st.trading_strategy_name === 'None') {
+              return <></>;
+            }
+            return (
+              <Button
+                type="blue"
+                className="strategyListItem"
+                key={`${idx}-${st.trading_strategy_name}`}
+                onClick={() => {
+                  if (onSelect) onSelect(st);
+                }}
+              >
+                {st.trading_strategy_name}
+              </Button>
+            );
+          })}
         </ul>
       )}
     </STechnicalStrategyList>
@@ -107,6 +116,57 @@ const TradingSettingTabTechnicalSearch = () => {
 };
 const STradingSettingTabTechnicalSearch = styled.section``;
 
+const MiniBackTestItem: React.FC<{
+  baseTradingStrategy: BaseTradingStrategy;
+  ticker: string;
+  onSelect?: (e: BaseTradingStrategy) => void;
+}> = ({ ticker, baseTradingStrategy, onSelect }) => {
+  const { reqMiniBTMutation } = useMiniBacktest();
+  const handleRequest = () => {
+    if (baseTradingStrategy.trading_strategy_name === StrategyName.None) {
+    }
+    if (
+      baseTradingStrategy.trading_strategy_name === StrategyName.GoldenCross
+    ) {
+      reqMiniBTMutation.mutate({
+        ticker,
+        salestrategy: baseTradingStrategy.trading_strategy_name,
+        setting: [5, 20],
+        data: {
+          startTime: '20190101',
+          endTime: '',
+        },
+      });
+    }
+    if (baseTradingStrategy.trading_strategy_name === StrategyName.RSI) {
+      reqMiniBTMutation.mutate({
+        ticker,
+        salestrategy: baseTradingStrategy.trading_strategy_name,
+        setting: [30, 70],
+        data: {
+          startTime: '20190101',
+          endTime: '',
+        },
+      });
+    }
+  };
+  // TODO 무한 리퀘스트 ㅜㅜㅜ
+  React.useEffect(() => {
+    console.log('effect', ticker, baseTradingStrategy);
+    handleRequest();
+    return () => {};
+  }, []);
+  return (
+    <div
+      onClick={() => {
+        if (onSelect) onSelect(baseTradingStrategy);
+      }}
+    >
+      <div>{JSON.stringify(reqMiniBTMutation.data?.data, null, 2)}</div>
+    </div>
+  );
+};
+
 /**
  * 전략 발굴에 대한 검색
  * - 종목 ticker에 대해서 , 가능한 모든 매매전략결과를 알려준다.
@@ -131,20 +191,7 @@ const TradingSettingTabQuantSearch = () => {
     return currentUniversalSetting?.selectedCorporations.ticker;
   }, [currentUniversalSetting]);
 
-  const { RequestMiniBacktestingQuery } = useRequestMiniBacktesting();
-  // console.log(RequestMiniBacktestingQuery);
-  // RequestMiniBacktestingQuery.mutate
-
-  // TODO Refactoring
-  React.useEffect(() => {
-    const fetchBacktesting = async () => {
-      if (ticker) {
-        RequestMiniBacktestingQuery.mutate({ ticker });
-      }
-    };
-    fetchBacktesting();
-  }, [ticker]);
-
+  const { GetTechnicalStrategyListQuery } = useTechnicals();
   return (
     <div>
       <div>
@@ -152,30 +199,20 @@ const TradingSettingTabQuantSearch = () => {
         매매전략 추천
       </div>
       <div>
-        <br />
-        <div>매매전략 이름| CAGR | MDD </div>
-        {RequestMiniBacktestingQuery.data?.data.result &&
-          RequestMiniBacktestingQuery.data?.data.result.map((e, idx) => {
+        {GetTechnicalStrategyListQuery.data?.map((bs) => {
+          if (bs.trading_strategy_name !== 'None' && ticker) {
             return (
-              <div
-                key={idx}
-                style={{
-                  cursor: 'pointer',
-                  margin: '1rem',
-                  backgroundColor: 'AppWorkspace',
-                }}
-                onClick={() => {
-                  handleApplyTechinalToTicker(e.baseTradingStrategy);
-                }}
-              >
-                {e.baseTradingStrategy.trading_strategy_name} (결과)| {e.CAGR}|{' '}
-                {e.MDD}
-                <br />
-              </div>
+              <MiniBackTestItem
+                baseTradingStrategy={bs}
+                ticker={ticker}
+                onSelect={handleApplyTechinalToTicker}
+              />
             );
-          })}
+          } else {
+            return <></>;
+          }
+        })}
       </div>
-      {/* <div>{RequestMiniBacktestingQuery.data?.data}</div> */}
     </div>
   );
 };

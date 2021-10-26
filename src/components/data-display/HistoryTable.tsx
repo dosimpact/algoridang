@@ -20,7 +20,6 @@ const HistoryTable: React.FC<{
 }> = ({ header, keyMap, body, style, skip, take, ...props }) => {
   skip = skip || 0;
   take = take || 30;
-  console.log('skip take', skip, take);
 
   return (
     <HistoryTableS style={{ ...style }} {...props}>

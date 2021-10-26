@@ -1,7 +1,7 @@
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import React, { useCallback, useMemo } from 'react';
 import { SettingJSON, StrategyName } from 'states/trading/interface/entities';
-import { StPropsSMA, StPropsGoldenCross } from './StPropsSettingItems';
+import { StPropsRSI, StPropsGoldenCross } from './StPropsSettingItems';
 
 interface IStPropsSetting {
   trading_strategy_name: StrategyName;
@@ -22,8 +22,8 @@ const StPropsSetting: React.FC<IStPropsSetting> = ({
   );
 
   const SelectedStSettingItem = useMemo(() => {
-    if (trading_strategy_name === StrategyName.SMA) {
-      return <StPropsSMA onSubmit={handleSubmit} setting_json={setting_json} />;
+    if (trading_strategy_name === StrategyName.RSI) {
+      return <StPropsRSI onSubmit={handleSubmit} setting_json={setting_json} />;
     } else if (trading_strategy_name === StrategyName.GoldenCross) {
       return (
         <StPropsGoldenCross

@@ -183,7 +183,7 @@ const StrategyCreateTemplate = () => {
             onClick={() => {
               handleChangeInspector('basicSetting');
             }}
-            isComplete={true || ST1_isComplete}
+            isComplete={ST1_isComplete}
           />,
           <DashBoardButton
             Icon={IconPlusNormal}
