@@ -26,6 +26,17 @@ class BacktestTestCase(unittest.TestCase):
         
         print("test_adjustAllModify Done")
 
+    def test_backtestTestCaseError1026(self):
+        """035420에서 에러 발생"""
+        bt = Backtest()
+        res,strat= bt.backtest("035420", 333333,SMACross, '20110301', None, 20 )
+        res,strat= bt.backtest("035420", 333333,RSI, '20110901', None, 20 )
+        #RSI.param = [30,70]
+        
+
+        print("test_backtestTestCaseError1026 Done")
+
+
     def test_backtestTestCase(self):
         bt = Backtest()
         res,strat= bt.backtest("005930", 1000000,SMACross, '20210101','20211001',20 )
