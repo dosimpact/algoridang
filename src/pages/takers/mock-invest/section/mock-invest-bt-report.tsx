@@ -6,13 +6,14 @@ import NavHeaderDetail from 'components/common/_molecules/NavHeaderDetail';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import StrategyCardInfo from 'components/common/_molecules/StrategyCardInfo';
+import Iframe from 'react-iframe';
 import Scrollable from 'components/common/_molecules/Scrollable';
 import QuantStatesReport from 'components/report/_organisms/QuantStatesReport';
 
-interface IStrategyBackTestReport {
+interface IMockInvestBackTestReport {
   showForkButton?: boolean;
 }
-const StrategyBackTestReport: React.FC<IStrategyBackTestReport> = ({
+const MockInvestBackTestReport: React.FC<IMockInvestBackTestReport> = ({
   showForkButton,
 }) => {
   showForkButton = showForkButton === undefined ? true : false;
@@ -54,7 +55,7 @@ const StrategyBackTestReport: React.FC<IStrategyBackTestReport> = ({
   );
 };
 
-export default StrategyBackTestReport;
+export default MockInvestBackTestReport;
 
 const PStrategyBTDetail = styled.section`
   margin-bottom: 120px;

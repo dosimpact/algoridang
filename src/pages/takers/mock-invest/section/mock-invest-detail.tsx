@@ -48,7 +48,7 @@ const MockInvestDetail = () => {
         <div className="flexRowSBt">
           <Title title="모의 투자" style={{ marginRight: '15px' }}></Title>
           <Button
-            style={{ width: '8rem' }}
+            className="midsize-btn"
             onClick={() => {
               history.push(`/takers/mock-invest/update/${strategyCode}`);
             }}
@@ -58,12 +58,12 @@ const MockInvestDetail = () => {
         </div>
         <div className="flexRowSBt" style={{ marginTop: '15px' }}>
           <SubTitle
-            title="상세 전략 리포트"
+            title="투자 수익 리포트"
             style={{ marginRight: '20px' }}
           ></SubTitle>
           <Button
-            type="gray"
-            style={{ width: '8rem' }}
+            className="midsize-btn"
+            type="blue"
             onClick={() => {
               history.push(
                 process.env.PUBLIC_URL +
@@ -72,6 +72,24 @@ const MockInvestDetail = () => {
             }}
           >
             리포트
+          </Button>
+        </div>
+        <div className="flexRowSBt" style={{ marginTop: '15px' }}>
+          <SubTitle
+            title="백테스트 리포트"
+            style={{ marginRight: '20px' }}
+          ></SubTitle>
+          <Button
+            type="blue"
+            className="midsize-btn"
+            onClick={() => {
+              history.push(
+                process.env.PUBLIC_URL +
+                  `/takers/mock-invest/bt-report/${params.id}`,
+              );
+            }}
+          >
+            리포트 보기
           </Button>
         </div>
         <WhiteSpace />
@@ -124,5 +142,9 @@ export default MockInvestDetail;
 
 const StrategyDetailP = styled.section`
   .articleHistory {
+  }
+  .midsize-btn {
+    width: 9rem;
+    height: 3rem;
   }
 `;

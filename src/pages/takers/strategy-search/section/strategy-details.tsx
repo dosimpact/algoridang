@@ -62,7 +62,7 @@ const StrategyDetails = () => {
 
           <div className="flexRowSBt" style={{ marginTop: '15px' }}>
             <SubTitle
-              title="상세 전략 리포트"
+              title="투자 수익 리포트"
               style={{ marginRight: '20px' }}
             ></SubTitle>
             <Button
@@ -88,7 +88,6 @@ const StrategyDetails = () => {
               type="blue"
               className="midsize-btn"
               onClick={() => {
-                console.log('deatil');
                 history.push(
                   process.env.PUBLIC_URL +
                     `/takers/strategy-search/bt-report/${params.id}`,
