@@ -7,6 +7,9 @@ import quantstats
 from backtesting.Strategies.SMACross import SMACross
 from backtesting.Strategies.RSI import RSI
 
+from backtesting.Strategies.BollingerBand import BollingerBand 
+from backtesting.Strategies.MACD import MACD 
+
 
 import datetime
 import math
@@ -129,6 +132,17 @@ class BacktestMultiPort(Backtest):
                     setting = [row[3]['RSI']['min'],row[3]['RSI']['max']]
                     minDate = 21
                     strategyList.append((row[1], RSI, setting, 1, minDate)) 
+                if row[2] == 'BollingerBand':
+                    setting = [row[3]['BollingerBand']['period']]
+                    minDate = 20
+                    strategyList.append((row[1], BollingerBand, setting, 1, minDate)) 
+                if row[2] == 'MACD':
+                    setting = [row[3]['MACD']['pfast'], row[3]['MACD']['pslow'], row[3]['MACD']['value']]
+                    if row[3]['MACD']['pslow'] < 30:
+                        minDate = 30
+                    else:
+                        minDate = row[3]['MACD']['pslow']
+                    strategyList.append((row[1], MACD, setting, 1, minDate)) 
 
         return strategyList
 

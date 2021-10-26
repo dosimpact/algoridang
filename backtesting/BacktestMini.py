@@ -3,6 +3,7 @@ from backtesting.Backtest import Backtest
 from backtesting.Strategies.SMACross import SMACross
 from backtesting.Strategies.RSI import RSI
 from backtesting.Strategies.BollingerBand import BollingerBand
+from backtesting.Strategies.MACD import MACD 
 
 class BacktestMini(Backtest):
     def __init__(self) -> None:
@@ -41,6 +42,12 @@ class BacktestMini(Backtest):
         if salestrategy == 'BollingerBand':
             salestrategy = BollingerBand
             minDate = miniBackData['setting'][0]
+
+        if salestrategy == 'MACD':
+            salestrategy = MACD
+            minDate = miniBackData['setting'][1]
+            if minDate < 30:
+                minDate = 30
 
         for i in range(len(salestrategy.param)):
             salestrategy.param[i] = setting[i]         
