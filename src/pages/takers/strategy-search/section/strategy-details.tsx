@@ -79,7 +79,7 @@ const StrategyDetails = () => {
               리포트 보기
             </Button>
           </div>
-          {/* <div className="flexRowSBt" style={{ marginTop: '15px' }}>
+          <div className="flexRowSBt" style={{ marginTop: '15px' }}>
             <SubTitle
               title="백테스트 리포트"
               style={{ marginRight: '20px' }}
@@ -97,7 +97,7 @@ const StrategyDetails = () => {
             >
               리포트 보기
             </Button>
-          </div> */}
+          </div>
           <WhiteSpace />
           <WhiteSpace />
 
