@@ -12,6 +12,21 @@ class BacktestTestCase(unittest.TestCase):
 
     def setUp(self) -> None:
         dbinit = databasepool(0)
+    
+    def test_adjustAllModify(self):
+        
+        DBClass = databasepool()
+        conn = DBClass.getConn()
+        query = "select ms.strategy_code  from member_strategy ms "
+        tickers = DBClass.selectData(conn, query)
+        DBClass.putConn(conn)
+        for i in range(len(tickers)):
+            bt = BacktestMultiPort(int(tickers[i][0]))
+            res = bt.portBacktest()
+        
+        print("test_adjustAllModify Done")
+
+    def test_backtestTestCase(self):
         bt = Backtest()
         res,strat= bt.backtest("005930", 1000000,SMACross, '20210101','20211001',20 )
         self.assertEqual(res, 788800.0)
@@ -89,5 +104,12 @@ class BacktestTestCase(unittest.TestCase):
         goldenvalue= {'code': 'Success', 'res': {'mdd': -0.13, 'profit_rate': 0.092631, 'year_avg_profit_rate': -0.08}}
         self.assertEqual(res, goldenvalue)
 
+
+def suite():
+    suite = unittest.TestSuite()
+    suite.addTest(BacktestTestCase('test_adjustAllModify'))
+    return suite
 if __name__ == "__main__":
     unittest.main()
+    #runner = unittest.TextTestRunner()
+    #runner.run(suite())
