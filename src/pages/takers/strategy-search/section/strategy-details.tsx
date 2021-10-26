@@ -51,7 +51,7 @@ const StrategyDetails = () => {
           <div className="flexRowSBt">
             <Title title="모의 투자" style={{ marginRight: '15px' }}></Title>
             <Button
-              style={{ width: '8rem' }}
+              className="midsize-btn"
               onClick={() => {
                 history.push(`/takers/mock-invest/create/${strategyCode}`);
               }}
@@ -66,8 +66,8 @@ const StrategyDetails = () => {
               style={{ marginRight: '20px' }}
             ></SubTitle>
             <Button
-              type="gray"
-              style={{ width: '8rem' }}
+              type="blue"
+              className="midsize-btn"
               onClick={() => {
                 console.log('deatil');
                 history.push(
@@ -76,9 +76,28 @@ const StrategyDetails = () => {
                 );
               }}
             >
-              리포트
+              리포트 보기
             </Button>
           </div>
+          {/* <div className="flexRowSBt" style={{ marginTop: '15px' }}>
+            <SubTitle
+              title="백테스트 리포트"
+              style={{ marginRight: '20px' }}
+            ></SubTitle>
+            <Button
+              type="blue"
+              className="midsize-btn"
+              onClick={() => {
+                console.log('deatil');
+                history.push(
+                  process.env.PUBLIC_URL +
+                    `/takers/strategy-search/bt-report/${params.id}`,
+                );
+              }}
+            >
+              리포트 보기
+            </Button>
+          </div> */}
           <WhiteSpace />
           <WhiteSpace />
 
@@ -143,5 +162,9 @@ const PStrategyDetail = styled.section`
   .articleTrading {
   }
   .articleHistory {
+  }
+  .midsize-btn {
+    width: 9rem;
+    height: 3rem;
   }
 `;

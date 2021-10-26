@@ -77,6 +77,7 @@ export interface BacktestDetailInfo {
   monthly_volatility: number;
   sharp: number;
   yearly_volatility: number;
+  quant_state_report?: string;
   strategy_code: string;
   strategy: MemberStrategy;
 }

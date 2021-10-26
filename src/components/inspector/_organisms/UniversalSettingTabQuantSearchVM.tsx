@@ -50,14 +50,14 @@ const UniversalSettingTabQuantSearchVM = () => {
   // 선택지 리스트 업
   const [QSBody, setQSBody] = useRecoilState(atomQSBody);
 
-  const _handleSetQSBodyValue: IhandleSetQSBodyValue = (key, data) => {
-    setQSBody(
-      produce(QSBody, (df) => {
-        df.data[key] = data;
-        return df;
-      }),
-    );
-  };
+  // const _handleSetQSBodyValue: IhandleSetQSBodyValue = (key, data) => {
+  //   setQSBody(
+  //     produce(QSBody, (df) => {
+  //       df.data[key] = data;
+  //       return df;
+  //     }),
+  //   );
+  // };
   const _handlePreset_0 = () => {
     //   TODO Reset
   };

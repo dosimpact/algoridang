@@ -5,6 +5,7 @@ import {
   selectorQSHeaderData,
   selectorQSHeaderStretegy,
 } from 'states/common/recoil/dashBoard/QuantSelect';
+import useStrategyDetail from 'states/strategy/query/useStrategyDetail';
 import styled from 'styled-components';
 // import TickerFuzzySearch from './common/_molecules/TickerFuzzySearch';
 // import Skeleton from 'react-loading-skeleton';
@@ -17,7 +18,7 @@ import styled from 'styled-components';
 // import { GqlPrac06 } from 'components/test/gql-prac/gql-prac-06';
 
 const Test = () => {
-  const [QSHeader, setQSHeader] = useRecoilState(atomQSHeader);
+  const [QSHeader] = useRecoilState(atomQSHeader);
   const [QSHeaderStretegy, setQSHeaderStretegy] = useRecoilState(
     selectorQSHeaderStretegy,
   );
@@ -26,9 +27,32 @@ const Test = () => {
   const [QSHeaderData, setQSHeaderData] = useRecoilState(
     selectorQSHeaderData({ numberOfData: 0, strategy: 1 }),
   );
+  const { strategyDetailQuery } = useStrategyDetail('2746');
   return (
     <STest>
-      <pre>{JSON.stringify(QSHeader, null, 2)}</pre>
+      <div>hello</div>
+      <div>hello</div>
+      <div>hello</div>
+      {/* <pre>
+        {JSON.stringify(
+          strategyDetailQuery.data?.memberStrategy?.backtestDetailInfo
+            .quant_state_report,
+          null,
+          2,
+        )}
+      </pre> */}
+      {strategyDetailQuery.data?.memberStrategy?.backtestDetailInfo
+        .quant_state_report && (
+        <div
+          dangerouslySetInnerHTML={{
+            __html:
+              strategyDetailQuery.data?.memberStrategy?.backtestDetailInfo
+                .quant_state_report,
+          }}
+        ></div>
+      )}
+      <div>hello</div> <div>hello</div> <div>hello</div> <div>hello</div>
+      {/* <pre>{JSON.stringify(QSHeader, null, 2)}</pre>
       <pre>{JSON.stringify(QSHeaderStretegy, null, 2)}</pre>
       <button
         onClick={() => {
@@ -44,7 +68,7 @@ const Test = () => {
         }}
       >
         setQSHeaderData
-      </button>
+      </button> */}
     </STest>
   );
 };
