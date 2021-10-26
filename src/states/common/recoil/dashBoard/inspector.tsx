@@ -7,6 +7,10 @@ import {
   TradingSetting,
   UniversalSetting,
 } from 'components/inspector/_organisms';
+import {
+  atomCurrentStrategyCode,
+  atomUniversalSettingState,
+} from './dashBoard';
 
 /**
 * 1.1 인스팩터 상태관리 atom
@@ -72,16 +76,39 @@ export const selector_ST1_isComplete = selector<boolean>({
     return get(atomInspector).inspectorState.basicSetting.isComplete;
   },
 });
+// export const selector_ST2_isComplete = selector<boolean>({
+//   key: 'selector_ST2_isComplete',
+//   get: ({ get }) => {
+//     return get(atomInspector).inspectorState.universalSetting.isComplete;
+//   },
+// });
+
 export const selector_ST2_isComplete = selector<boolean>({
   key: 'selector_ST2_isComplete',
   get: ({ get }) => {
-    return get(atomInspector).inspectorState.universalSetting.isComplete;
+    const res = get(atomUniversalSettingState);
+    let isFin = true;
+    res.selected.forEach((e) => {
+      if (!e.selectedTechnical) {
+        isFin = false;
+      }
+    });
+    return isFin;
   },
 });
+
+// export const selector_ST3_isComplete = selector<boolean>({
+//   key: 'selector_ST3_isComplete',
+//   get: ({ get }) => {
+//     return get(atomInspector).inspectorState.backTestingSetting.isComplete;
+//   },
+// });
+
 export const selector_ST3_isComplete = selector<boolean>({
   key: 'selector_ST3_isComplete',
   get: ({ get }) => {
-    return get(atomInspector).inspectorState.backTestingSetting.isComplete;
+    const tmpStCode = get(atomCurrentStrategyCode);
+    return tmpStCode !== '';
   },
 });
 

@@ -26,7 +26,7 @@ export const atomUniversalSettingState = atom<IAtomInterestedUnivList>({
   },
 });
 /**
- * 4.1  관심있는 백테스팅 전략 코드
+ * 4.1  만들어진 전략 코드 >  백테스팅 전략 코드
  */
 
 export const atomCurrentStrategyCode = atom<string>({
@@ -101,4 +101,12 @@ export const selectedUniversalSetting_R = selectorFamily<
         );
       }
     },
+});
+
+export const selectorCurrentCorpLen = selector<number>({
+  key: 'selectorCurrentCorpLen',
+  get: ({ get }) => {
+    const res = get(atomUniversalSettingState);
+    return res.selected.length;
+  },
 });

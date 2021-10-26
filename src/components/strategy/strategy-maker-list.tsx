@@ -37,13 +37,6 @@ const StrategyMakerList: React.FC<IStrategyMakerList> = ({
   const history = useHistory();
   console.log('memberStrategyList', memberStrategyList);
 
-  // const selectBottomText= (strategy:MemberStrategy)=>{
-  //   if(strategy?.investProfitInfo){
-  //     const {} = strategy?.investProfitInfo;
-  //     return `${}`
-  //   }
-  // }
-
   return (
     <SStrategyMyC>
       {memberStrategyList &&

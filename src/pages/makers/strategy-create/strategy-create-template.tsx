@@ -15,7 +15,10 @@ import {
   selector_ST2_isComplete,
   selector_ST3_isComplete,
 } from 'states/common/recoil/dashBoard/inspector';
-import { selectedMonoTickerSettingButtonListJSX } from 'states/common/recoil/dashBoard/dashBoard';
+import {
+  selectedMonoTickerSettingButtonListJSX,
+  selectorCurrentCorpLen,
+} from 'states/common/recoil/dashBoard/dashBoard';
 import { ShadowBox } from 'components/common/_atoms/ShadowBox';
 
 // 전략 생성 모듈
@@ -23,6 +26,7 @@ import { ShadowBox } from 'components/common/_atoms/ShadowBox';
 // TODO : JSX.Element  vs React.ReactElement
 // JSX.Element 의 제너릭 타입이 React.ReactElement 이다.
 interface IStrategyCreateModule {
+  currentCorpLen: number;
   // 현재 인스팩터 앨리먼트
   currentInspectorElement: React.ReactElement | null; //JSX.Element;
   dashBoardCol1: {
@@ -33,11 +37,10 @@ interface IStrategyCreateModule {
   selectedMonoTickerSettingButtonList: JSX.Element[];
 }
 const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
+  currentCorpLen,
   currentInspectorElement,
   dashBoardCol1,
   selectedMonoTickerSettingButtonList,
-  // dashBoardCol3,
-  // dashBoardCol4,
 }) => {
   const { baseSettingBtnElements } = dashBoardCol1;
 
@@ -59,7 +62,7 @@ const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
           <section className="dashBoardCol2">
             <WhiteSpace />
             <div className="interestTickersHeader">
-              관심 종목 리스트
+              관심 종목 리스트 ({currentCorpLen}개)
               <span
                 data-tip="interestTickerInfo"
                 data-for="interestTickerInfo"
@@ -159,20 +162,16 @@ const StrategyCreateTemplate = () => {
     selectedMonoTickerSettingButtonListJSX,
   );
 
-  // Handler
-  // const handleChangeInspector = (type: IInspectorTypes) => {
-  //   setInsepctorState((prev) => ({
-  //     ...prev,
-  //     inspectorType: type,
-  //   }));
-  // };
   const [, handleChangeInspector] = useRecoilState(selectorInspectorType);
   const ST1_isComplete = useRecoilValue(selector_ST1_isComplete);
   const ST2_isComplete = useRecoilValue(selector_ST2_isComplete);
   const ST3_isComplete = useRecoilValue(selector_ST3_isComplete);
 
+  const currentCorpLen = useRecoilValue(selectorCurrentCorpLen);
+
   return (
     <StrategyCreateModule
+      currentCorpLen={currentCorpLen}
       currentInspectorElement={<CurrentInspector />}
       // currentInspectorElement={CurrentInspector({})}
       dashBoardCol1={{

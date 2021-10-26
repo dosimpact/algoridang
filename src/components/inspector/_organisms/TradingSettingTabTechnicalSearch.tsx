@@ -89,14 +89,14 @@ const TradingSettingTabTechnicalSearch = () => {
         선택된 매매 전략 :{' '}
         {currentUniversalSetting?.selectedTechnical?.trading_strategy_name}
       </div>
-      <TechnicalSearch
+      {/* <TechnicalSearch
         onSuccess={(e) => {
           console.log('TechnicalSearch onSuccess', e);
         }}
         onKeyDownEnter={(e) => {
           console.log('TechnicalSearch onKeyDownEnter', e);
         }}
-      />
+      /> */}
       <WhiteSpace />
       <WideLine style={{ margin: '0 0 1.3rem 0' }} />
       <TechnicalStrategyList onSelect={(e) => handleApplyTechinalToTicker(e)} />

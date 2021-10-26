@@ -31,7 +31,7 @@ const NavigationContainer = () => {
           <div className="hwrapper">
             <img
               className="headerLogo"
-              src={process.env.PUBLIC_URL + '/img/logo_light.png'}
+              src={process.env.PUBLIC_URL + '/logo192.png'}
               alt="mainLogo"
             />
             {/* <div className="headerName">{`알고`}</div>
