@@ -120,7 +120,7 @@ const UniversalSettingTabQuantSearchVM = () => {
   const resetQSBody = useResetRecoilState(atomQSBody);
   const handlePreset = (preset: IQuantPreset) => {
     resetQSBody();
-    if (preset === '0') _handlePreset_0();
+    // if (preset === '0') _handlePreset_0();
     if (preset === '1') _handlePreset_1();
     if (preset === '2') _handlePreset_2();
     if (preset === '3') _handlePreset_3();

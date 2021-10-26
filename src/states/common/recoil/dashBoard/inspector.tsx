@@ -86,9 +86,10 @@ export const selector_ST1_isComplete = selector<boolean>({
 export const selector_ST2_isComplete = selector<boolean>({
   key: 'selector_ST2_isComplete',
   get: ({ get }) => {
-    const res = get(atomUniversalSettingState);
+    const currentUnivs = get(atomUniversalSettingState);
+    if (currentUnivs.selected.length === 0) return false;
     let isFin = true;
-    res.selected.forEach((e) => {
+    currentUnivs.selected.forEach((e) => {
       if (!e.selectedTechnical) {
         isFin = false;
       }

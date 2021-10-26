@@ -51,12 +51,13 @@ const MiniBackTestItem: React.FC<{
       });
     }
   };
-  // TODO 무한 리퀘스트 ㅜㅜㅜ
+  // TODO bug 무한 랜더링 리퀘스트 ㅜㅜㅜ
   React.useEffect(() => {
     console.log('TODO effect dept', ticker, baseTradingStrategy);
     handleRequest();
     return () => {};
   }, []);
+
   const result = React.useMemo(() => {
     return reqMiniBTMutation.data?.data.res;
   }, [reqMiniBTMutation]);
