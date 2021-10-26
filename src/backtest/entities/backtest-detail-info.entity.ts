@@ -50,8 +50,9 @@ export class BacktestDetailInfo {
   @Column({ type: 'text', nullable: true })
   quant_state_report?: string;
 
-  @IsNumber()
-  strategy_code: number;
+  @IsString()
+  @Column()
+  strategy_code: string;
 
   @OneToOne(() => MemberStrategy, (ms) => ms.backtestDetailInfo, {
     onDelete: 'CASCADE',

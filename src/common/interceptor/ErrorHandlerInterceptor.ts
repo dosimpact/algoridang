@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { EntityNotFoundError } from 'typeorm';
+import { EntityColumnNotFound, EntityNotFoundError } from 'typeorm';
 import { AlreadyExistError, PasswordWrongError } from '../error/Custom-Error';
 import { AxiosError } from 'axios';
 
@@ -44,6 +44,8 @@ export class ErrorHandlerInterceptor implements NestInterceptor {
         }
 
         if (error instanceof EntityNotFoundError) {
+          throw new NotFoundException(error.message);
+        } else if (error instanceof EntityColumnNotFound) {
           throw new NotFoundException(error.message);
         } else if (error instanceof PasswordWrongError) {
           throw new UnauthorizedException(error.message);

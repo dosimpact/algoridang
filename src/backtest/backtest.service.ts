@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import {
@@ -170,6 +170,26 @@ export class BacktestService {
       where: { strategy_code },
     });
     return { backtestWinRatio, ok: true };
+  }
+
+  /**
+   * 5 전략에 대한 차트 - 승률
+   */
+  async getQuantstatesReport({ strategy_code }: GetBacktestWinRatioInput) {
+    const detailInfo = await this.DetailRepo.findOneOrFail({
+      where: { strategy_code },
+    });
+    if (
+      detailInfo.quant_state_report &&
+      detailInfo.quant_state_report.length >= 100
+    ) {
+      return detailInfo.quant_state_report;
+    } else {
+      return `해당 전략코드는 퀀트 리포트가 없습니다.`;
+      // throw new NotFoundException(
+      //   `strategy_code(${strategy_code}) has no report`,
+      // );
+    }
   }
 
   // -------------mutation-------------

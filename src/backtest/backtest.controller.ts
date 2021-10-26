@@ -7,6 +7,7 @@ import {
   Body,
   Version,
   CacheTTL,
+  Header,
 } from '@nestjs/common';
 import { AuthUser, Roles } from 'src/auth/auth.decorator';
 import {
@@ -67,6 +68,13 @@ export class BacktestQueryController {
   @Get(':strategy_code/win-ratio')
   async getWinRatio(@Param() strategy_code: string) {
     return this.backtestService.getBacktestWinRatio({ strategy_code });
+  }
+
+  @Version('1')
+  @Header('content-type', 'text/html')
+  @Get(':strategy_code/quantstates-report')
+  async getQuantstatesReport(@Param() strategy_code: string) {
+    return this.backtestService.getQuantstatesReport({ strategy_code });
   }
 }
 

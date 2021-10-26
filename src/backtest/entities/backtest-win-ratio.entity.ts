@@ -5,7 +5,7 @@ import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 @Entity({ name: 'backtest_win_ratio' })
 export class BacktestWinRatio {
   @PrimaryColumn()
-  strategy_code: number;
+  strategy_code: string;
 
   @OneToOne(() => MemberStrategy, (ms) => ms.backtestWinRatio, {
     onDelete: 'CASCADE',
