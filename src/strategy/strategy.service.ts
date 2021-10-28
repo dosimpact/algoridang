@@ -27,18 +27,12 @@ import {
   SearchStrategyOutput,
 } from './dto/query.dtos';
 import {
-  CopyStrategyInput,
-  CopyStrategyOutput,
   CreateMyStrategyInput,
   CreateMyStrategyOutput,
   DeleteMyStrategyByIdInput,
   DeleteMyStrategyByIdOutput,
   ForkStrategyInput,
   ForkStrategyOutput,
-  NoticeMyStrategyByIdInput,
-  NoticeMyStrategyByIdOutput,
-  RecoverStrategyByIdInput,
-  RecoverStrategyByIdOutput,
   UpdateMyStrategyByIdInput,
   UpdateMyStrategyByIdOutput,
 } from './dto/mutation.dtos';
@@ -779,32 +773,35 @@ export class StrategyService {
   ): Promise<DeleteMyStrategyByIdOutput> {
     // 전략 soft delete
     // 투자 수익 soft delete
-    const result = await this.getMyStrategyById(email_id, { strategy_code });
-    const del_result = await this.MemberStrategyRepo.delete(
-      result.memberStrategy,
-    );
-    if (del_result.affected >= 1) {
-      return { ok: true };
+    // const result = await this.getMyStrategyById(email_id, { strategy_code });
+    console.log(email_id, strategy_code, typeof strategy_code);
+
+    const strategy = await this.MemberStrategyRepo.findOneOrFail({
+      where: { strategy_code, operator_id: email_id },
+    });
+    const del_result = await this.MemberStrategyRepo.remove(strategy);
+    if (del_result) {
+      return { ok: true, memberStrategy: del_result };
     } else {
       throw new NotFoundException(
-        `strategy_code : ${strategy_code} delete Fail`,
+        `${email_id} has no strategy_code : ${strategy_code} delete Fail`,
       );
     }
   }
   // (POST) recoverStrategyById		(4) (관리자) 나의 전략 recover
-  async recoverStrategyById(
-    recoverStrategyByIdInput: RecoverStrategyByIdInput,
-  ): Promise<RecoverStrategyByIdOutput> {
-    // 전략 검색 withDelete
-    // 전략 복구
+  // async recoverStrategyById(
+  //   recoverStrategyByIdInput: RecoverStrategyByIdInput,
+  // ): Promise<RecoverStrategyByIdOutput> {
+  //   // 전략 검색 withDelete
+  //   // 전략 복구
 
-    return { ok: false };
-  }
-  // (POST) noticeMyStrategyById		(5) 나의 전략 알림기능
-  async noticeMyStrategyById(
-    noticeMyStrategyByIdInput: NoticeMyStrategyByIdInput,
-  ): Promise<NoticeMyStrategyByIdOutput> {
-    // 전략 알림 기능 on/off
-    return { ok: false };
-  }
+  //   return { ok: false };
+  // }
+  // // (POST) noticeMyStrategyById		(5) 나의 전략 알림기능
+  // async noticeMyStrategyById(
+  //   noticeMyStrategyByIdInput: NoticeMyStrategyByIdInput,
+  // ): Promise<NoticeMyStrategyByIdOutput> {
+  //   // 전략 알림 기능 on/off
+  //   return { ok: false };
+  // }
 }

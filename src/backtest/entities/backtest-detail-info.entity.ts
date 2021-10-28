@@ -47,7 +47,7 @@ export class BacktestDetailInfo {
   yearly_volatility?: number;
 
   @IsString()
-  @Column({ type: 'text', nullable: true })
+  @Column({ type: 'text', nullable: true, select: false })
   quant_state_report?: string;
 
   @IsString()

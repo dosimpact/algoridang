@@ -193,11 +193,11 @@ export class StrategyMutationController {
     return this.strategyService.hardDeleteMyStrategyById(m.email_id, body);
   }
   // TODO 🚀 (POST) recoverStrategyById		(4) (관리자) 나의 전략 recover
-  async recoverStrategyById() {}
+  // async recoverStrategyById() {}
   // TODO 🚀 (POST) noticeMyStrategyById		(5) 나의 전략 알림기능
-  async noticeMyStrategyById() {}
+  // async noticeMyStrategyById() {}
   // TODO 🚀 (POST) copyStrategy	id		(6) 투자 전략 복사  ( API )
-  async copyStrategy() {}
+  // async copyStrategy() {}
   // TODO 🚀 (POST) addLookupStrategy	id		(7) 투자 전략 조회자 추가  ( API )
-  async addLookupStrategy() {}
+  // async addLookupStrategy() {}
 }

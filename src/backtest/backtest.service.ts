@@ -178,6 +178,7 @@ export class BacktestService {
   async getQuantstatesReport({ strategy_code }: GetBacktestWinRatioInput) {
     const detailInfo = await this.DetailRepo.findOneOrFail({
       where: { strategy_code },
+      select: ['quant_state_report'],
     });
     if (
       detailInfo.quant_state_report &&
