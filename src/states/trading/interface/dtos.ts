@@ -8,7 +8,7 @@ import {
 
 // query DTOs
 export interface GetBaseTradingStrategyInput {
-  trading_strategy_code: string;
+  trading_strategy_name: StrategyName;
 }
 export interface GetBaseTradingStrategyOutput extends CoreOutput {
   baseTradingStrategy?: BaseTradingStrategy;

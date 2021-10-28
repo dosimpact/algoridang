@@ -10,75 +10,15 @@ interface IStProps {
   setting_json?: SettingJSON;
 }
 
-interface IStPropsRSIForm {
-  min: number;
-  max: number;
-}
-
+// Addon -StrategyName
 // 늘어나는 상세 전략에 대해 상속을 통해 구현합니다.
 
-interface IStPropsRSI extends IStProps {}
-
-export const StPropsRSI: React.FC<IStPropsRSI> = ({
-  children,
-  onSubmit,
-  setting_json,
-}) => {
-  const { register, handleSubmit, getValues } = useForm<IStPropsRSIForm>({
-    defaultValues: {
-      min: setting_json?.RSI?.min || 30,
-      max: setting_json?.RSI?.max || 70,
-    },
-  });
-
-  const submitHandler = handleSubmit((data) => {
-    if (onSubmit) {
-      onSubmit({ RSI: data });
-    }
-  });
-
-  return (
-    <div>
-      <form onSubmit={submitHandler}>
-        <InputListItem>
-          <label htmlFor="min">RSI 하단</label>
-          <input
-            type="text"
-            id="min"
-            {...register('min', {
-              setValueAs: (v) => Number(v),
-              validate: {
-                lessThan: (v) => Number(v) < getValues('max'),
-              },
-            })}
-          />
-        </InputListItem>
-        <InputListItem>
-          <label htmlFor="max">RSI 상단</label>
-          <input
-            type="text"
-            id="max"
-            {...register('max', {
-              setValueAs: (v) => Number(v),
-              validate: {
-                moreThan: (v) => Number(v) > getValues('min'),
-              },
-            })}
-          />
-        </InputListItem>
-        <Button type="success" onClick={submitHandler}>
-          적용
-        </Button>
-      </form>
-    </div>
-  );
-};
-
+// GoldenCross
+interface IStPropsGoldenCross extends IStProps {}
 interface IStPropsGoldenCrossForm {
   pfast: number;
   pslow: number;
 }
-interface IStPropsGoldenCross extends IStProps {}
 
 export const StPropsGoldenCross: React.FC<IStPropsGoldenCross> = ({
   onSubmit,
@@ -150,6 +90,192 @@ export const StPropsGoldenCross: React.FC<IStPropsGoldenCross> = ({
           />
         </InputListItem>
 
+        <Button type="success" onClick={submitHandler}>
+          적용
+        </Button>
+      </form>
+    </div>
+  );
+};
+
+// RSI
+
+interface IStPropsRSI extends IStProps {}
+interface IStPropsRSIForm {
+  min: number;
+  max: number;
+}
+
+export const StPropsRSI: React.FC<IStPropsRSI> = ({
+  onSubmit,
+  setting_json,
+}) => {
+  const { register, handleSubmit, getValues } = useForm<IStPropsRSIForm>({
+    defaultValues: {
+      min: setting_json?.RSI?.min || 30,
+      max: setting_json?.RSI?.max || 70,
+    },
+  });
+
+  const submitHandler = handleSubmit((data) => {
+    if (onSubmit) {
+      onSubmit({ RSI: data });
+    }
+  });
+
+  return (
+    <div>
+      <form onSubmit={submitHandler}>
+        <InputListItem>
+          <label htmlFor="min">RSI 하단</label>
+          <input
+            type="text"
+            id="min"
+            {...register('min', {
+              setValueAs: (v) => Number(v),
+              validate: {
+                lessThan: (v) => Number(v) < getValues('max'),
+              },
+            })}
+          />
+        </InputListItem>
+        <InputListItem>
+          <label htmlFor="max">RSI 상단</label>
+          <input
+            type="text"
+            id="max"
+            {...register('max', {
+              setValueAs: (v) => Number(v),
+              validate: {
+                moreThan: (v) => Number(v) > getValues('min'),
+              },
+            })}
+          />
+        </InputListItem>
+        <Button type="success" onClick={submitHandler}>
+          적용
+        </Button>
+      </form>
+    </div>
+  );
+};
+
+// BollingerBand
+interface IStPropsBollingerBand extends IStProps {}
+interface IStPropsBollingerBandForm {
+  period: number;
+}
+
+export const StPropsBollingerBand: React.FC<IStPropsBollingerBand> = ({
+  onSubmit,
+  setting_json,
+}) => {
+  const { register, handleSubmit } = useForm<IStPropsBollingerBandForm>({
+    defaultValues: {
+      period: setting_json?.BollingerBand?.period || 70,
+    },
+  });
+
+  const submitHandler = handleSubmit((data) => {
+    if (onSubmit) {
+      onSubmit({ BollingerBand: data });
+    }
+  });
+
+  return (
+    <div>
+      <form onSubmit={submitHandler}>
+        <InputListItem>
+          <label htmlFor="period">기간</label>
+          <input
+            type="text"
+            id="period"
+            {...register('period', {
+              setValueAs: (v) => Number(v),
+              validate: {
+                moreThan: (v) => Number(v) > 1,
+              },
+            })}
+          />
+        </InputListItem>
+        <Button type="success" onClick={submitHandler}>
+          적용
+        </Button>
+      </form>
+    </div>
+  );
+};
+
+// MACD
+interface IStPropsMACD extends IStProps {}
+interface IStPropsMACDForm {
+  pfast: number;
+  pslow: number;
+  value: number;
+}
+
+export const StPropsMACD: React.FC<IStPropsMACD> = ({
+  onSubmit,
+  setting_json,
+}) => {
+  const { register, handleSubmit, getValues } = useForm<IStPropsMACDForm>({
+    defaultValues: {
+      pfast: setting_json?.MACD?.pfast || 12,
+      pslow: setting_json?.MACD?.pslow || 26,
+      value: setting_json?.MACD?.value || 9,
+    },
+  });
+
+  const submitHandler = handleSubmit((data) => {
+    if (onSubmit) {
+      onSubmit({ MACD: data });
+    }
+  });
+
+  return (
+    <div>
+      <form onSubmit={submitHandler}>
+        <InputListItem>
+          <label htmlFor="pfast">단기</label>
+          <input
+            type="text"
+            id="pfast"
+            {...register('pfast', {
+              setValueAs: (v) => Number(v),
+              validate: {
+                lessThan: (v) =>
+                  Number(v) < getValues('pslow') || '* 장기보다 작아야합니다.',
+              },
+            })}
+          />
+        </InputListItem>
+        <InputListItem>
+          <label htmlFor="pslow">장기</label>
+          <input
+            type="text"
+            id="pslow"
+            {...register('pslow', {
+              setValueAs: (v) => Number(v),
+              validate: {
+                moreThan: (v) =>
+                  Number(v) > getValues('pfast') || '* 단기보다 커야합니다.',
+              },
+            })}
+          />
+        </InputListItem>
+        <InputListItem>
+          <label htmlFor="value">시그널</label>
+          <input
+            type="text"
+            id="value"
+            {...register('value', {
+              setValueAs: (v) => Number(v),
+              validate: {
+                moreThan: (v) => Number(v) >= 1 || '* 1보다 커야합니다.',
+              },
+            })}
+          />
+        </InputListItem>
         <Button type="success" onClick={submitHandler}>
           적용
         </Button>

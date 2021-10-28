@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   atomUniversalSettingStateIdx,
@@ -23,10 +23,11 @@ const MiniBackTestItem: React.FC<{
   onSelect?: (e: BaseTradingStrategy) => void;
 }> = ({ ticker, baseTradingStrategy, onSelect }) => {
   const { reqMiniBTMutation } = useMiniBacktest();
-  const handleRequest = () => {
+
+  // TODO Refactor, StrategyName Addon : 전략 투가시 하드코딩 업데이트 바꾸기
+  const handleRequestCB = useCallback(() => {
     if (baseTradingStrategy.trading_strategy_name === StrategyName.None) {
-    }
-    if (
+    } else if (
       baseTradingStrategy.trading_strategy_name === StrategyName.GoldenCross
     ) {
       reqMiniBTMutation.mutate({
@@ -38,8 +39,7 @@ const MiniBackTestItem: React.FC<{
           endTime: '',
         },
       });
-    }
-    if (baseTradingStrategy.trading_strategy_name === StrategyName.RSI) {
+    } else if (baseTradingStrategy.trading_strategy_name === StrategyName.RSI) {
       reqMiniBTMutation.mutate({
         ticker,
         salestrategy: baseTradingStrategy.trading_strategy_name,
@@ -49,14 +49,40 @@ const MiniBackTestItem: React.FC<{
           endTime: '',
         },
       });
+    } else if (
+      baseTradingStrategy.trading_strategy_name === StrategyName.BollingerBand
+    ) {
+      reqMiniBTMutation.mutate({
+        ticker,
+        salestrategy: baseTradingStrategy.trading_strategy_name,
+        setting: [70],
+        data: {
+          startTime: '20190101',
+          endTime: '',
+        },
+      });
+    } else if (
+      baseTradingStrategy.trading_strategy_name === StrategyName.MACD
+    ) {
+      reqMiniBTMutation.mutate({
+        ticker,
+        salestrategy: baseTradingStrategy.trading_strategy_name,
+        setting: [12, 26, 9],
+        data: {
+          startTime: '20190101',
+          endTime: '',
+        },
+      });
     }
-  };
+  }, [baseTradingStrategy, ticker, reqMiniBTMutation]);
+
   // TODO bug 무한 랜더링 리퀘스트 ㅜㅜㅜ
+  // reqMiniBTMutation 추가하면 무한랜더링 발생
   React.useEffect(() => {
     console.log('TODO effect dept', ticker, baseTradingStrategy);
-    handleRequest();
+    handleRequestCB();
     return () => {};
-  }, []);
+  }, [baseTradingStrategy, ticker]);
 
   const result = React.useMemo(() => {
     return reqMiniBTMutation.data?.data.res;
@@ -68,7 +94,7 @@ const MiniBackTestItem: React.FC<{
         if (onSelect) onSelect(baseTradingStrategy);
       }}
     >
-      {result && (
+      {
         <>
           <div className="container">
             <div className="col">
@@ -78,12 +104,26 @@ const MiniBackTestItem: React.FC<{
             </div>
             {/* <div className="col col2">{toPercentage(result.profit_rate)}</div> */}
             <div className="col">
-              {toPercentage(result.year_avg_profit_rate)}%
+              {reqMiniBTMutation.isLoading
+                ? 'Loading... '
+                : !reqMiniBTMutation.isLoading &&
+                  !reqMiniBTMutation.isError &&
+                  result
+                ? toPercentage(result.year_avg_profit_rate) + '%'
+                : 'Error'}
             </div>
-            <div className="col">{toPercentage(result.mdd)}%</div>
+            <div className="col">
+              {reqMiniBTMutation.isLoading
+                ? 'Loading... '
+                : !reqMiniBTMutation.isLoading &&
+                  !reqMiniBTMutation.isError &&
+                  result
+                ? toPercentage(result.mdd) + '%'
+                : 'Error'}
+            </div>
           </div>
         </>
-      )}
+      }
     </SMiniBackTestItem>
   );
 };

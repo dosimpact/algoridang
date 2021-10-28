@@ -7,17 +7,17 @@ export interface BaseTradingStrategy {
   setting_json: SettingJSON;
 }
 
+// Addon- StrategyName
+// 기술적 전략 이름
 export enum StrategyName {
   None = 'None',
-  // SMA = 'SMA',
   GoldenCross = 'GoldenCross',
   RSI = 'RSI',
+  BollingerBand = 'BollingerBand',
+  MACD = 'MACD',
 }
-
-export interface StrategyValue {
-  // SMA: {
-  //   SMA_A: number;
-  // };
+// Addon- StrategyName
+interface StrategyValue {
   GoldenCross: {
     pfast: number;
     pslow: number;
@@ -25,6 +25,14 @@ export interface StrategyValue {
   RSI: {
     min: number;
     max: number;
+  };
+  BollingerBand: {
+    period: number;
+  };
+  MACD: {
+    pfast: number;
+    pslow: number;
+    value: number;
   };
 }
 

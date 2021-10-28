@@ -1,13 +1,19 @@
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import React, { useCallback, useMemo } from 'react';
 import { SettingJSON, StrategyName } from 'states/trading/interface/entities';
-import { StPropsRSI, StPropsGoldenCross } from './StPropsSettingItems';
+import {
+  StPropsRSI,
+  StPropsGoldenCross,
+  StPropsBollingerBand,
+  StPropsMACD,
+} from './StPropsSettingItems';
 
 interface IStPropsSetting {
   trading_strategy_name: StrategyName;
   onSubmit?: (e: unknown) => void;
   setting_json?: SettingJSON;
 }
+
 const StPropsSetting: React.FC<IStPropsSetting> = ({
   children,
   trading_strategy_name,
@@ -30,6 +36,17 @@ const StPropsSetting: React.FC<IStPropsSetting> = ({
           onSubmit={handleSubmit}
           setting_json={setting_json}
         />
+      );
+    } else if (trading_strategy_name === StrategyName.BollingerBand) {
+      return (
+        <StPropsBollingerBand
+          onSubmit={handleSubmit}
+          setting_json={setting_json}
+        />
+      );
+    } else if (trading_strategy_name === StrategyName.MACD) {
+      return (
+        <StPropsMACD onSubmit={handleSubmit} setting_json={setting_json} />
       );
     }
     return <div>Error</div>;
