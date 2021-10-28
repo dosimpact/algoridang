@@ -18,8 +18,8 @@ import { setLocalMemberInfo } from 'states/local-state';
 
 const useMember = () => {
   const queryClient = useQueryClient();
-  const refresh = () => {
-    queryClient.invalidateQueries('me');
+  const refreshAll = () => {
+    queryClient.invalidateQueries();
   };
   const me = useQuery<AxiosResponse<MeOutput>, AxiosError, MeOutput>(
     'me',
@@ -50,7 +50,7 @@ const useMember = () => {
         console.log('onSuccess', result);
         const data = result.data as LoginMemberInfoOutput;
         setLocalMemberInfo({ token: data.token });
-        refresh();
+        refreshAll();
       },
       onError: (error: any) => {
         if (error?.response) {
@@ -66,7 +66,7 @@ const useMember = () => {
 
   const logOut = () => {
     setLocalMemberInfo({ token: '' });
-    refresh();
+    refreshAll();
   };
 
   const createMemberMutation = useMutation<

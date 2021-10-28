@@ -121,6 +121,7 @@ const SBottomNavigation = styled.section<{ isDown?: boolean }>`
   position: fixed;
   bottom: 0rem;
   width: 100%;
+  max-width: 75rem;
   height: 6rem;
   background-color: ${(props) => props.theme.ColorMainDarkGray};
   border-top-left-radius: 1rem;
@@ -204,17 +205,19 @@ const TakerConfig = () => {
 
 const TakerMainContainer = () => {
   return (
-    <section>
-      <TakerConfig />
-      {/* <TopNavigation /> */}
-      <div>
-        <ErrorHandler>
-          <TakerMainSection />
-        </ErrorHandler>
-      </div>
-      <BottomNavigation />
-      <BottomGradient />
-    </section>
+    <div style={{ background: '#F6F6F6' }}>
+      <section style={{ maxWidth: '75rem', margin: '0 auto' }}>
+        <TakerConfig />
+        {/* <TopNavigation /> */}
+        <div>
+          <ErrorHandler>
+            <TakerMainSection />
+          </ErrorHandler>
+        </div>
+        <BottomNavigation />
+        {/* <BottomGradient /> */}
+      </section>
+    </div>
   );
 };
 

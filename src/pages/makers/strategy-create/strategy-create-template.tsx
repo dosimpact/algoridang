@@ -52,7 +52,7 @@ const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
             <WingBlank>
               <div className="baseSettingBtnSlot">
                 {baseSettingBtnElements}
-                {<DashBoardDebug />}
+                {process.env.NODE_ENV === 'development' && <DashBoardDebug />}
               </div>
             </WingBlank>
             <div className="charSlot">

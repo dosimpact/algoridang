@@ -18,6 +18,7 @@ import {
 } from './member/interface/dtos';
 import {
   CreateMyStrategyInput,
+  DeleteMyStrategyByIdInput,
   ForkStrategyInput,
   UpdateMyStrategyByIdInput,
 } from './strategy/interface/dtos';
@@ -94,7 +95,16 @@ export const strategyApi = {
       return axios.patch(`strategies/my`, body);
     },
   },
-  DELETE: {},
+  DELETE: {
+    deleteMyStrategyById: (body: DeleteMyStrategyByIdInput) => {
+      // return axios({
+      // method:"DELETE",
+      // })
+      return axios.delete(`strategies/my`, {
+        data: body,
+      });
+    },
+  },
 };
 
 // (3) finance api

@@ -20,8 +20,13 @@ const MockInvestDetail = () => {
     history.push(process.env.PUBLIC_URL + '/takers/mock-invest');
   }
   const strategyCode = params.id;
-  const { firstUniversal, histories, investProfitInfo, memberStrategy } =
-    useMyStrategyDetail(strategyCode + '');
+  const {
+    firstUniversal,
+    histories,
+    investProfitInfo,
+    memberStrategy,
+    myStrategyDetailQuery,
+  } = useMyStrategyDetail(strategyCode + '');
 
   const todayHistories = useMemo(() => {
     if (histories) {
@@ -42,6 +47,7 @@ const MockInvestDetail = () => {
       />
       <WingBlank>
         <WhiteSpace />
+        {myStrategyDetailQuery.isLoading && 'loading...'}
         {memberStrategy && (
           <StrategyCardInfo isDisplayMock={true} strategy={memberStrategy} />
         )}

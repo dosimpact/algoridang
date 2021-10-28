@@ -11,6 +11,7 @@ import { useHistory, useParams } from 'react-router';
 import { toast } from 'react-toastify';
 import useStrategyDetail from 'states/strategy/query/useStrategyDetail';
 import { useUpdateMyStrategy } from 'states/strategy/query/useUpdateMyStrategy';
+import { useDeleteStrategy } from 'states/strategy/query/useDeleteStrategy';
 
 interface IForkStrategyForm {
   strategy_code: string; // "52",
@@ -31,9 +32,15 @@ const MockInvestUpdate = () => {
   // route 처리
   const history = useHistory();
   const params = useParams() as { id: string };
-  const strategyCode = params?.id || 0;
-  if (strategyCode === 0) {
-    history.push('/');
+  const strategyCode = params?.id;
+  console.log('strategyCode', strategyCode);
+
+  const handleGoBack = () => {
+    history.push(process.env.PUBLIC_URL + `/takers/mock-invest`);
+  };
+
+  if (strategyCode === undefined || !Number.isInteger(Number(strategyCode))) {
+    handleGoBack();
   }
 
   // 전략에 대한 정보
@@ -42,6 +49,10 @@ const MockInvestUpdate = () => {
     () => strategyDetailQuery?.data?.memberStrategy,
     [strategyDetailQuery?.data],
   );
+  // TODO NOT_FOUND 처리
+  if (strategyDetailQuery.isError) {
+    console.log('strategyDetailQuery.isError');
+  }
 
   // form 처리
   const { register, handleSubmit, formState, getValues, setValue } =
@@ -83,14 +94,25 @@ const MockInvestUpdate = () => {
     }, 500);
   });
 
+  const { deleteStrategyMutation } = useDeleteStrategy();
+
   // 전략 삭제
   const [cnt, setCnt] = useState(0);
-  const handleDeleteMyStrategy = () => {
+  const handleDeleteMyStrategy = async () => {
     if (cnt === 0) {
       setCnt(cnt + 1);
-      toast.warn('정말 전략 삭제를 하시겠습니까? (한번더 클릭)');
+      toast.warn('정말 전략 삭제를 하시겠습니까? (한번 더 클릭)');
     } else {
-      toast.success('전략 삭제 완료 ✨');
+      await toast.promise(
+        deleteStrategyMutation.mutateAsync({ strategy_code: strategyCode }),
+        {
+          pending: '전략 삭제 중...',
+          success: '전략 삭제 완료 ✨',
+          error: '전략 삭제 실패 🤯',
+        },
+      );
+      setCnt(0);
+      handleGoBack();
     }
   };
 
@@ -103,78 +125,76 @@ const MockInvestUpdate = () => {
         headerTitle="전략 수정 하기"
       />
       <WingBlank>
+        <WhiteSpace />
         {strategyDetailQuery.isLoading && 'loading...'}
-
         {memberStrategy && <StrategyCardInfo strategy={memberStrategy} />}
-        <WingBlank>
-          <Title title={'기본 설정'} />
-          <WhiteSpace />
-          <InputListItem>
-            <label>전략 코드</label>
-            <input disabled value={getValues('strategy_code')} />
-          </InputListItem>
+        <Title title={'기본 설정'} />
+        <WhiteSpace />
+        <InputListItem>
+          <label>전략 코드</label>
+          <input disabled value={getValues('strategy_code')} />
+        </InputListItem>
+        <InputListItem
+          error={!!formState.errors.strategy_name?.message}
+          errorMessage={formState.errors.strategy_name?.message}
+        >
+          <label htmlFor="strategy_name">전략이름</label>
+          <input
+            type="text"
+            id="strategy_name"
+            placeholder="eg) 1번 전략"
+            {...register('strategy_name', {
+              required: '* 전략 이름 필수',
+              validate: {
+                lessThan: (v) => v.length <= 50 || '* 50자 이하',
+                MoreThan: (v) => v.length >= 2 || '* 2자 이상',
+              },
+            })}
+          />
+        </InputListItem>
+        <WhiteSpace />
+        <Title title={'사용자 설정'} />
+        <WhiteSpace />
+        <>
           <InputListItem
-            error={!!formState.errors.strategy_name?.message}
-            errorMessage={formState.errors.strategy_name?.message}
+            error={!!formState.errors.invest_principal?.message}
+            errorMessage={formState.errors.invest_principal?.message}
           >
-            <label htmlFor="strategy_name">전략이름</label>
+            <label htmlFor="invest_principal">원금</label>
             <input
               type="text"
-              id="strategy_name"
-              placeholder="eg) 1번 전략"
-              {...register('strategy_name', {
-                required: '* 전략 이름 필수',
+              id="invest_principal"
+              placeholder="투자 시작 금액을 입력해주세요"
+              {...register('invest_principal', {
+                required: '* 투자 시작금액 입력 예) 1000만원',
                 validate: {
-                  lessThan: (v) => v.length <= 50 || '* 50자 이하',
-                  MoreThan: (v) => v.length >= 2 || '* 2자 이상',
+                  moreThan: (v) =>
+                    Number(v) >= 1000000 || '* 100만원 보다 큰 금액',
                 },
               })}
             />
           </InputListItem>
-          <WhiteSpace />
-          <Title title={'사용자 설정'} />
-          <WhiteSpace />
-          <>
-            <InputListItem
-              error={!!formState.errors.invest_principal?.message}
-              errorMessage={formState.errors.invest_principal?.message}
-            >
-              <label htmlFor="invest_principal">원금</label>
-              <input
-                type="text"
-                id="invest_principal"
-                placeholder="투자 시작 금액을 입력해주세요"
-                {...register('invest_principal', {
-                  required: '* 투자 시작금액 입력 예) 1000만원',
-                  validate: {
-                    moreThan: (v) =>
-                      Number(v) >= 1000000 || '* 100만원 보다 큰 금액',
-                  },
-                })}
-              />
-            </InputListItem>
 
-            <InputListItem
-              error={!!formState.errors.securities_corp_fee?.message}
-              errorMessage={formState.errors.securities_corp_fee?.message}
-            >
-              <label htmlFor="securities_corp_fee">수수료(%)</label>
-              <input
-                type="text"
-                id="securities_corp_fee"
-                placeholder="거래당 발생하는 수수료"
-                {...register('securities_corp_fee', {
-                  required: '* 거래 수수료 입력 예) 0.01',
-                  validate: {
-                    lessThan: (v) => Number(v) < 100 || '* 100 보다 작은 금액',
-                    moreThan: (v) => Number(v) > 0 || '* 0보다 큰 금액',
-                  },
-                })}
-              />
-            </InputListItem>
-          </>
-          <WhiteSpace />
-        </WingBlank>
+          <InputListItem
+            error={!!formState.errors.securities_corp_fee?.message}
+            errorMessage={formState.errors.securities_corp_fee?.message}
+          >
+            <label htmlFor="securities_corp_fee">수수료(%)</label>
+            <input
+              type="text"
+              id="securities_corp_fee"
+              placeholder="거래당 발생하는 수수료"
+              {...register('securities_corp_fee', {
+                required: '* 거래 수수료 입력 예) 0.01',
+                validate: {
+                  lessThan: (v) => Number(v) < 100 || '* 100 보다 작은 금액',
+                  moreThan: (v) => Number(v) > 0 || '* 0보다 큰 금액',
+                },
+              })}
+            />
+          </InputListItem>
+        </>
+        <WhiteSpace />
         <Button
           style={{
             height: '4.6rem',
@@ -185,7 +205,7 @@ const MockInvestUpdate = () => {
         >
           전략 수정하기
         </Button>
-        <WhiteSpace />
+        <WhiteSpace marginV="3" />
         <Title title={'정보 삭제'} />
         <WhiteSpace marginV="0.5" />
         <Button

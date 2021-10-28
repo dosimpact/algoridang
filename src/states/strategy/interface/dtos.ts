@@ -86,3 +86,10 @@ export interface UpdateMyStrategyByIdInput extends Partial<ForkStrategyInput> {}
 export interface UpdateMyStrategyByIdOutput extends CoreOutput {
   memberStrategy?: MemberStrategy;
 }
+
+export interface DeleteMyStrategyByIdInput {
+  strategy_code: string;
+}
+export interface DeleteMyStrategyByIdOutput extends CoreOutput {
+  memberStrategy?: MemberStrategy;
+}

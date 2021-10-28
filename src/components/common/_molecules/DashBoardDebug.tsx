@@ -37,7 +37,7 @@ const DashBoardDebug: React.FC<IDashBoardDebug> = ({ onClick }) => {
         );
       }}
     >
-      ATOM 디버그
+      {process.env.NODE_ENV === 'development' ? 'ATOM 디버그' : ''}
     </SDashBoardDebug>
   );
 };
