@@ -80,7 +80,7 @@ import { CronModule } from './common/cron.module';
           rejectUnauthorized: false,
         },
       }),
-      synchronize: true,
+      synchronize: process.env.NODE_ENV === 'production' ? false : false,
       logging: false,
       entities: [
         ...[
@@ -102,7 +102,6 @@ import { CronModule } from './common/cron.module';
           Hash,
           HashList,
           MemberStrategy,
-          // StockList,
         ],
         ...[
           // back test (8/8)
@@ -139,7 +138,6 @@ import { CronModule } from './common/cron.module';
     }),
     AuthModule,
     FinanceModule,
-    // UserModule,
     StrategyModule,
     TradingModule,
     BacktestModule,

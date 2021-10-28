@@ -1,4 +1,9 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Raw, Repository } from 'typeorm';
 import {
@@ -766,14 +771,25 @@ export class StrategyService {
 
     return { ok: true, memberStrategy: sourceStrategy };
   }
-  // (POST) deleteMyStrategyById	 	(3) 나의 전략 softdelete
-  async deleteMyStrategyById(
-    deleteMyStrategyByIdInput: DeleteMyStrategyByIdInput,
+
+  // (POST) deleteMyStrategyById	 	(3) 나의 전략 delete
+  async hardDeleteMyStrategyById(
+    email_id: string,
+    { strategy_code }: DeleteMyStrategyByIdInput,
   ): Promise<DeleteMyStrategyByIdOutput> {
     // 전략 soft delete
     // 투자 수익 soft delete
-
-    return { ok: false };
+    const result = await this.getMyStrategyById(email_id, { strategy_code });
+    const del_result = await this.MemberStrategyRepo.delete(
+      result.memberStrategy,
+    );
+    if (del_result.affected >= 1) {
+      return { ok: true };
+    } else {
+      throw new NotFoundException(
+        `strategy_code : ${strategy_code} delete Fail`,
+      );
+    }
   }
   // (POST) recoverStrategyById		(4) (관리자) 나의 전략 recover
   async recoverStrategyById(

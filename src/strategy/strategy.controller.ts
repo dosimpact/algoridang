@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -14,6 +15,7 @@ import { AuthUser, Roles } from 'src/auth/auth.decorator';
 import { HttpCacheInterceptor } from 'src/common/interceptor/HttpCacheInterceptor';
 import {
   CreateMyStrategyInput,
+  DeleteMyStrategyByIdInput,
   ForkStrategyInput,
   UpdateMyStrategyByIdInput,
 } from './dto/mutation.dtos';
@@ -180,8 +182,16 @@ export class StrategyMutationController {
   ) {
     return this.strategyService.updateMyStrategyById(m.email_id, body);
   }
-  // TODO 🚀 (POST) deleteMyStrategyById	 	(3) 나의 전략 softdelete
-  async deleteMyStrategyById() {}
+  // (POST) deleteMyStrategyById	 	(3) 나의 전략 delete
+  @Roles(['Any'])
+  @Version('1')
+  @Delete('my')
+  async deleteMyStrategyById(
+    @AuthUser() m: MemberInfo,
+    @Body() body: DeleteMyStrategyByIdInput,
+  ) {
+    return this.strategyService.hardDeleteMyStrategyById(m.email_id, body);
+  }
   // TODO 🚀 (POST) recoverStrategyById		(4) (관리자) 나의 전략 recover
   async recoverStrategyById() {}
   // TODO 🚀 (POST) noticeMyStrategyById		(5) 나의 전략 알림기능
