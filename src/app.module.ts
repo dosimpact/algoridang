@@ -80,7 +80,7 @@ import { CronModule } from './common/cron.module';
           rejectUnauthorized: false,
         },
       }),
-      synchronize: process.env.NODE_ENV === 'production' ? false : false,
+      synchronize: process.env.NODE_ENV === 'production' ? false : true,
       logging: false,
       entities: [
         ...[
