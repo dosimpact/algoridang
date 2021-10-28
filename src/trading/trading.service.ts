@@ -47,10 +47,10 @@ export class TradingService {
   ) {}
   //(1) 기본 매매전략
   async getBaseTradingStrategy({
-    trading_strategy_code,
+    trading_strategy_name,
   }: GetBaseTradingStrategyInput): Promise<GetBaseTradingStrategyOutput> {
     const baseTradingStrategy = await this.baseTradingStRepo.findOneOrFail({
-      where: { trading_strategy_code },
+      where: { trading_strategy_name },
     });
     return { ok: true, baseTradingStrategy };
   }

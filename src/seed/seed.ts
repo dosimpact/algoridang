@@ -152,11 +152,11 @@ async function bootstrap() {
 
   const main = () => {
     // 매매전략 시드
-    strategyTC_01();
-    strategyTC_02();
-    strategyTC_03();
+    // strategyTC_01();
+    // strategyTC_02();
+    // strategyTC_03();
     // 기술적분석, 기본값 시드
-    // seedBaseTradingStrategy();
+    seedBaseTradingStrategy();
   };
   main();
 }

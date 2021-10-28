@@ -5,16 +5,6 @@ import { SettingJSON, StrategyName } from '../constant/strategy-setting';
 // 매매전략 디폴트값 매핑 테이블
 @Entity({ name: 'base_trading_strategy' })
 export class BaseTradingStrategy {
-  // @IsNumber()
-  // @PrimaryColumn()
-  // trading_strategy_code: number;
-
-  // @Column({
-  //   type: 'enum',
-  //   enum: StrategyName,
-  //   default: StrategyName.,
-  //   unique: true,
-  // })
   @PrimaryColumn({
     type: 'enum',
     enum: StrategyName,

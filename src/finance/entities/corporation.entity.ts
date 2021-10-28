@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 import { Universal } from 'src/trading/entities';
 import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
 import { CategoryList } from './category-list.entity';
@@ -13,6 +13,11 @@ export class Corporation {
   @IsString()
   @Column({ type: 'varchar', length: 15 })
   corp_name: string;
+
+  @IsString()
+  @IsOptional()
+  @Column({ type: 'varchar', length: 15, nullable: true })
+  market?: string;
 
   // 1:N
   // (1) 회사의 일봉 데이터 리스트

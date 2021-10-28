@@ -6,9 +6,11 @@ import {
   Param,
   Version,
   Query,
+  NotFoundException,
 } from '@nestjs/common';
 import { AuthUser, Roles } from 'src/auth/auth.decorator';
 import { MemberInfo } from 'src/member/entities';
+import { StrategyName } from './constant/strategy-setting';
 import { AddUniversalInput } from './dto/mutation.dtos';
 import { TradingService } from './trading.service';
 
@@ -25,11 +27,15 @@ export class TradingQueryController {
 
   //(1) 기본 매매전략
   @Version('1')
-  @Get('technicals/:code')
-  async getBaseTechnicalStrategy(@Param('code') code) {
-    return this.tradingService.getBaseTradingStrategy({
-      trading_strategy_code: code,
-    });
+  @Get('technicals/:name')
+  async getBaseTechnicalStrategy(@Param('name') trading_strategy_name: string) {
+    if ((<any>Object).values(StrategyName).includes(trading_strategy_name)) {
+      return this.tradingService.getBaseTradingStrategy({
+        trading_strategy_name: trading_strategy_name as StrategyName,
+      });
+    } else {
+      throw new NotFoundException('trading_strategy_name is not found');
+    }
   }
 }
 
