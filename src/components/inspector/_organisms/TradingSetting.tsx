@@ -30,7 +30,10 @@ const TradingSetting: React.FC<ITradingSetting> = ({ headerTitle }) => {
 
   return (
     <STradingSetting>
-      <InspectorHeaderDetail headerTitle={headerTitle || '매매 전략 설정'} />
+      <InspectorHeaderDetail
+        headerTitle={headerTitle || '매매 전략 설정'}
+        toolTip="사고 파는 방법을 설정합니다. 전략발굴탭에서 높은 수익률을 확인해 보세요"
+      />
       <WingBlank>
         <WideLine style={{ margin: '0 0 1.3rem 0' }} />
         <article className="tabContainer">

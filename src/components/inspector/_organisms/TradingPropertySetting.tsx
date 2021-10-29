@@ -52,6 +52,7 @@ const TradingPropertySetting: React.FC<ITradingPropertySetting> = ({
     <div>
       <InspectorHeaderDetail
         headerTitle={headerTitle || '매매 전략 상세설정'}
+        toolTip="매매 전략에 대한 세부 지표를 설정합니다."
       />
       <WideLine style={{ margin: '0 0 1.3rem 0' }} />
       <WingBlank>

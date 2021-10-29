@@ -33,7 +33,6 @@ const StrategyBackTestReport: React.FC<IStrategyBackTestReport> = ({
       </div>
     );
   }
-  const SERVER_URL = process.env.REACT_APP_SERVER_URI;
 
   return (
     <PStrategyBTDetail>
