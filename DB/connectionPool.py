@@ -2,7 +2,7 @@ import psycopg2
 from psycopg2 import Error
 from psycopg2 import pool
 from . import identification
-
+import time
 
 from DB.query import dbQuery
 
@@ -20,7 +20,13 @@ class databasepool(dbQuery):
             #print("__init__ is called\n")
             cls._init = True
             self.Mode = mode
-            self.__initDB()
+            cnt = 0
+            while not self.__initDB():
+                cnt += 1
+                time.sleep(1)
+                print("connecting... ",cnt ,"/ 100 ")
+                if cnt > 100:
+                    break
     def __initDB(self):
         try:
             print("DB connecting...")
@@ -34,10 +40,10 @@ class databasepool(dbQuery):
     
             print("address = ",identification.ID.host[self.Mode])
             print("DB connected!")
-            return str("Connect with postgresSQL")
+            return True
         except (Exception, Error) as error:
             print("Error while connecting to PostgreSQL", error)
-            return ("Error")
+            return False
 
     #getConnection
     def getConn(self):

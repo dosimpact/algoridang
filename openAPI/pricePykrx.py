@@ -25,7 +25,7 @@ class CPricePykrx(object):
         db = databasepool()
         conn = db.getConn()
 
-        query = "select * from corporation where \"ticker\" = \'"+ticker+"\';"
+        query = "select \"ticker\" , \"corp_name\" from corporation where \"ticker\" = \'"+ticker+"\';"
         
 
         #없는경우 데이터 입력
@@ -44,7 +44,7 @@ class CPricePykrx(object):
         db = databasepool()
         conn = db.getConn()
 
-        query = "select * from corporation "
+        query = "select \"ticker\" , \"corp_name\" from corporation "
 
         res = db.selectData(conn, query)
 
