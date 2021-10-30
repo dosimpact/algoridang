@@ -1,5 +1,6 @@
 import { IconArrowRight, IconCheckCircle } from 'assets/icons';
 import BadgeCAGR from 'components/common/_atoms/BadgeCAGR';
+import DisplayPercentage from 'components/common/_atoms/DisplayPercentage';
 import RoundBadge from 'components/common/_atoms/RoundBadge';
 import produce from 'immer';
 import React, { useEffect } from 'react';
@@ -130,19 +131,13 @@ const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
             <div className="btResult_List">
               <div className="btResult_item">
                 <span>연수익 </span>
-                <span>
-                  {Number(
-                    reqMiniBTMutation.data.data.res.year_avg_profit_rate * 100,
-                  ).toFixed(1)}
-                  %
-                </span>
+                <DisplayPercentage
+                  val={reqMiniBTMutation.data.data.res.year_avg_profit_rate}
+                />
               </div>
               <div className="btResult_item">
                 <span>최대낙폭 </span>
-                <span>
-                  {Number(reqMiniBTMutation.data.data.res.mdd * 100).toFixed(1)}
-                  %
-                </span>
+                <DisplayPercentage val={reqMiniBTMutation.data.data.res.mdd} />
               </div>
             </div>
           )}

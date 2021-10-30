@@ -2,13 +2,19 @@ import React from 'react';
 import styled from 'styled-components';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import DashBoardButton from 'components/common/_molecules/DashBoardButton';
-import { IconPlusNormal, IconSettingNormal, IconInfo } from 'assets/icons';
+import {
+  IconInfo,
+  IconStep1Normal,
+  IconStep2Normal,
+  IconStep3Normal,
+} from 'assets/icons';
 import DashBoardDebug from 'components/common/_molecules/DashBoardDebug';
 import TickerPrice from 'components/common/_organisms/ticker-price';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import ReactTooltip from 'react-tooltip';
 import {
+  atomInspector,
   selectorInspectorFC,
   selectorInspectorType,
   selector_ST1_isComplete,
@@ -20,6 +26,8 @@ import {
   selectorCurrentCorpLen,
 } from 'states/common/recoil/dashBoard/dashBoard';
 import { ShadowBox } from 'components/common/_atoms/ShadowBox';
+import produce from 'immer';
+import { Button } from 'components/common/_atoms/Buttons';
 
 // 전략 생성 모듈
 // DashBoard - Inspector
@@ -35,12 +43,14 @@ interface IStrategyCreateModule {
   };
   // 단일 종목 설정 앨리먼트
   selectedMonoTickerSettingButtonList: JSX.Element[];
+  handleClickQuantSelect: () => void;
 }
 const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
   currentCorpLen,
   currentInspectorElement,
   dashBoardCol1,
   selectedMonoTickerSettingButtonList,
+  handleClickQuantSelect,
 }) => {
   const { baseSettingBtnElements } = dashBoardCol1;
 
@@ -62,18 +72,30 @@ const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
           <section className="dashBoardCol2">
             <WhiteSpace />
             <div className="interestTickersHeader">
-              관심 종목 리스트 ({currentCorpLen}개)
-              <span
-                data-tip="interestTickerInfo"
-                data-for="interestTickerInfo"
-                className="iconInfo"
-              >
-                <IconInfo />
-              </span>
+              <div className="item">
+                <span
+                  data-tip="interestTickerInfo"
+                  data-for="interestTickerInfo"
+                  className="iconInfo"
+                >
+                  <IconInfo />
+                </span>
+                <ReactTooltip id="interestTickerInfo">
+                  전략에 포함되는 종목들 입니다.
+                </ReactTooltip>
+              </div>
+              <div className="item">관심 종목 리스트 ({currentCorpLen}개)</div>
+              <div className="item">
+                <Button
+                  className="qsBtn"
+                  type="info"
+                  onClick={handleClickQuantSelect}
+                >
+                  퀀트발굴
+                </Button>
+              </div>
             </div>
-            <ReactTooltip id="interestTickerInfo">
-              전략에 포함되는 종목들 입니다.
-            </ReactTooltip>
+
             <WhiteSpace />
             <ShadowBox>
               <article className="interestTickers">
@@ -110,6 +132,12 @@ const SStrategyCreateModule = styled.section`
         fill: ${(props) => props.theme.ColorMainGray};
         width: 2rem;
       }
+    }
+    .item {
+      margin-right: 1rem;
+    }
+    .qsBtn {
+      font-weight: 500;
     }
   }
 
@@ -153,7 +181,7 @@ const SStrategyCreateModule = styled.section`
  */
 const StrategyCreateTemplate = () => {
   // State: 인스펙터 전체 상태
-  // const [, setInsepctorState] = useRecoilState(atomInspector);
+  const [insepctorState, setInsepctorState] = useRecoilState(atomInspector);
   // Selector: 현재 인스팩터 - React.FC 반환
   const CurrentInspector = useRecoilValue(selectorInspectorFC);
 
@@ -169,15 +197,26 @@ const StrategyCreateTemplate = () => {
 
   const currentCorpLen = useRecoilValue(selectorCurrentCorpLen);
 
+  const handleClickQuantSelect = () => {
+    setInsepctorState(
+      produce(insepctorState, (draft) => {
+        draft.inspectorType = 'universalSetting';
+        draft.inspectorState.universalSetting.tab = 1;
+        return draft;
+      }),
+    );
+  };
+
   return (
     <StrategyCreateModule
+      handleClickQuantSelect={handleClickQuantSelect}
       currentCorpLen={currentCorpLen}
       currentInspectorElement={<CurrentInspector />}
       // currentInspectorElement={CurrentInspector({})}
       dashBoardCol1={{
         baseSettingBtnElements: [
           <DashBoardButton
-            Icon={IconSettingNormal}
+            Icon={IconStep1Normal}
             text="기본설정"
             onClick={() => {
               handleChangeInspector('basicSetting');
@@ -185,7 +224,7 @@ const StrategyCreateTemplate = () => {
             isComplete={ST1_isComplete}
           />,
           <DashBoardButton
-            Icon={IconPlusNormal}
+            Icon={IconStep2Normal}
             text="종목관리"
             onClick={() => {
               handleChangeInspector('universalSetting');
@@ -193,7 +232,7 @@ const StrategyCreateTemplate = () => {
             isComplete={ST2_isComplete}
           />,
           <DashBoardButton
-            Icon={IconPlusNormal}
+            Icon={IconStep3Normal}
             text="백테스트"
             onClick={() => {
               handleChangeInspector('backTestingSetting');
