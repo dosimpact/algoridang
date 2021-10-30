@@ -6,7 +6,6 @@ import NavHeaderDetail from 'components/common/_molecules/NavHeaderDetail';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import StrategyCardInfo from 'components/common/_molecules/StrategyCardInfo';
-import Iframe from 'react-iframe';
 import Scrollable from 'components/common/_molecules/Scrollable';
 import QuantStatesReport from 'components/report/_organisms/QuantStatesReport';
 
@@ -34,7 +33,6 @@ const MockInvestBackTestReport: React.FC<IMockInvestBackTestReport> = ({
       </div>
     );
   }
-  const SERVER_URL = process.env.REACT_APP_SERVER_URI;
 
   return (
     <PStrategyBTDetail>

@@ -171,8 +171,7 @@ const TradingSettingTabQuantSearch = () => {
       <WhiteSpace />
       <WideLine style={{ margin: '0 0 1.3rem 0' }} />
       <Title
-        title={`"${currentUniversalSetting?.selectedCorporations.corp_name}"에 대한
-  매매전략 추천`}
+        title={`"${currentUniversalSetting?.selectedCorporations.corp_name}" 매매전략 추천`}
       ></Title>
       <WhiteSpace />
       <div className="container">

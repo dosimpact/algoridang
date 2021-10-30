@@ -1,6 +1,5 @@
 import WideLine from 'components/common/_atoms/WideLine';
 import WingBlank from 'components/common/_atoms/WingBlank';
-import InspectorHeaderDetail from 'components/inspector/_molecules/InspectorHeaderDetail';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useRecoilState, useRecoilValue } from 'recoil';

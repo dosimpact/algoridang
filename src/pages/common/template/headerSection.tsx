@@ -1,13 +1,12 @@
-import { IconNavPersonNormal } from 'assets/icons';
 import { useHistory } from 'react-router';
 import styled from 'styled-components';
 
 const HeaderSection = () => {
   const history = useHistory();
 
-  const handleUserProfileLink = () => {
-    history.push(process.env.PUBLIC_URL + '/takers/user-profile');
-  };
+  // const handleUserProfileLink = () => {
+  //   history.push(process.env.PUBLIC_URL + '/takers/user-profile');
+  // };
 
   return (
     <SHeaderSection>

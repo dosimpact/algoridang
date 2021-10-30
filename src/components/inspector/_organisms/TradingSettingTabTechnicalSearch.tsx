@@ -10,6 +10,7 @@ import { BaseTradingStrategy } from 'states/trading/interface/entities';
 import WideLine from 'components/common/_atoms/WideLine';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import { Button } from 'components/common/_atoms/Buttons';
+import { Title } from 'components/common/_atoms/Typos';
 
 interface ITechnicalStrategyList {
   onSelect?: (e: BaseTradingStrategy) => void;
@@ -80,10 +81,9 @@ const TradingSettingTabTechnicalSearch = () => {
     <STradingSettingTabTechnicalSearch>
       <WhiteSpace />
       <WideLine style={{ margin: '0 0 1.3rem 0' }} />
-      <div className="info">
-        "{currentUniversalSetting?.selectedCorporations.corp_name}" 매매전략을
-        선택해 주세요.
-      </div>
+      <Title
+        title={`"${currentUniversalSetting?.selectedCorporations.corp_name}" 매매전략을 선택해 주세요.`}
+      ></Title>
       <WhiteSpace />
       <div className="info">
         선택된 매매 전략 :{' '}
@@ -98,7 +98,7 @@ const TradingSettingTabTechnicalSearch = () => {
         }}
       /> */}
       <WhiteSpace />
-      <WideLine style={{ margin: '0 0 1.3rem 0' }} />
+      {/* <WideLine style={{ margin: '0 0 1.3rem 0' }} /> */}
       <TechnicalStrategyList onSelect={(e) => handleApplyTechinalToTicker(e)} />
     </STradingSettingTabTechnicalSearch>
   );

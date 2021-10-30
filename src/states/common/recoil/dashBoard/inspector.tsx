@@ -41,7 +41,7 @@ interface IAtomInspector {
       isComplete: boolean;
     };
     tradingSetting: {
-      tab: number;
+      // tab: number;
     };
     tradingPropertySetting: {};
     // (3) 백테스트
@@ -63,7 +63,9 @@ export const atomInspector = atom<IAtomInspector>({
         tab: 0,
         isComplete: false,
       },
-      tradingSetting: { tab: 0 },
+      tradingSetting: {
+        // tab: 0
+      },
       tradingPropertySetting: {},
       backTestingSetting: { tab: 0, isComplete: false },
     },

@@ -6,7 +6,6 @@ import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import styled from 'styled-components';
 import TitleSection from 'pages/common/template/titleSection';
 import HeaderSection from 'pages/common/template/headerSection';
-import TopNavigation from 'pages/takers/layout/template/TopNavigation';
 
 const LandingPage = () => {
   return (
@@ -24,7 +23,8 @@ const LandingPage = () => {
         <WhiteSpace />
         <WhiteSpace />
         <nav>
-          <ul>x 
+          <ul>
+            x
             <Button className="btn" type="info">
               <Link className="link" to="takers/ticker-search">
                 <li data-tut="reactour__search">전략 탐색 하기</li>
