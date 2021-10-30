@@ -122,5 +122,5 @@ def backtestTaskCall(self,strategyCode):
     
 def Test___backtestTestCode(strategyCode):
     bt = BacktestMultiPort(strategyCode)
-    res = bt.portBacktest()
+    res = bt.portBacktest_Test()
     return res

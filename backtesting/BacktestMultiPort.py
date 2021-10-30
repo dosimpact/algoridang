@@ -79,6 +79,34 @@ class BacktestMultiPort(Backtest):
             print("!!!!!!!!!!!!!!!Multiport Error")
             self._setStatusMemberStrategy( "Error","Error", self.strategyCode)
 
+
+    def portBacktest_Test(self):
+        """포트폴리오 백테스트 함수
+        @result
+            res - "error" : 에러코드
+            res - "Done" : 정상 동작 코드
+        """
+        
+        self._setStatusMemberStrategy( "Start","Start", self.strategyCode)
+        
+        periodInfo = self.getPeriodInfo()
+        if len(periodInfo) == 0:
+            print("DB dose'not have any data in this field...")
+            return "error"
+
+        case = self.getPortInfoFromDB()
+        # data 가 없는 경우
+        if len(case) == 0:
+            print("DB dose'not have any data in this field...")
+            return "error"
+        
+        
+        self.MultiPortBacktest(periodInfo['investPrice'], case, periodInfo['startTime'], periodInfo['endTime'])
+        self.makePortpolio()
+        self.makeDBDataSet(periodInfo['investPrice'],periodInfo['startTime'], periodInfo['endTime'])
+        self.saveDB()
+        return "Done"
+        
     def MultiPortBacktest(self, cash, case, startTime, endTime):
         """ 멀티 포트에 대하여 백테스팅을 수행함 
         
