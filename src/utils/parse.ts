@@ -6,7 +6,7 @@ export const hashListToString = (hashs: HashList[]) => {
     .join(' ');
 };
 export const toTagsString = (tags: string[]) =>
-  tags.map((e) => '#' + e).join(' ');
+  tags.map((e) => (e.length === 0 ? '' : '#' + e)).join(' ') || '';
 
 export const toAddComma = (str: string) =>
   str && str.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ',');

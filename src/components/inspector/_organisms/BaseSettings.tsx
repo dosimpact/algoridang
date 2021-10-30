@@ -183,7 +183,7 @@ const BaseSettings: React.FC<IBaseSettings> = ({ headerTitle }) => {
                   })}
                 ></input>
               </InputListItemH>
-              <InputListItemH
+              {/* <InputListItemH
                 error={!!errors.securities_corp_fee?.message}
                 errorMessage={errors.securities_corp_fee?.message}
               >
@@ -199,8 +199,9 @@ const BaseSettings: React.FC<IBaseSettings> = ({ headerTitle }) => {
                   })}
                   type="text"
                   placeholder="수수료"
+                  disabled={true}
                 ></input>
-              </InputListItemH>
+              </InputListItemH> */}
               <InputListItemH
                 error={!!errors.open_yes_no?.message}
                 errorMessage={errors.open_yes_no?.message}

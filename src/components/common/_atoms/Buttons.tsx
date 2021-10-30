@@ -51,8 +51,7 @@ const SButton = styled.div<{
   justify-content: center;
   align-items: center;
 
-  font-style: normal;
-  font-weight: 200;
+  font-weight: 500;
   line-height: 1.4rem;
   font-size: 1.4rem;
 `;

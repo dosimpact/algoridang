@@ -70,7 +70,7 @@ const StrategyCardInfo: React.FC<IStrategyCardInfo> = ({
         <article className="right">
           <div className="right_wrapper">
             <div className="title text_ellipsis">{title}</div>
-            {subTitle && <div className="subTitle">{subTitle}</div>}
+            <div className="subTitle">{subTitle}</div>
             <div className="CAGR">
               {strategy.status_code === 'Success' ? (
                 <BadgeCAGR val={CAGR} hasPercentage={true} />
@@ -162,6 +162,7 @@ const SStrategyCardInfo = styled.section`
       margin-top: 1rem;
       font-size: 1.1rem;
       font-weight: 400;
+      min-height: 1.1rem;
       color: ${(props) => props.theme.ColorMainGray};
     }
     .CAGR {

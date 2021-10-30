@@ -29,7 +29,7 @@ export const atomBasicSettingForm = atom<IAtomBasicSettingForm>({
     open_yes_no: true,
     invest_principal: '',
     invest_start_date: '',
-    securities_corp_fee: '',
+    securities_corp_fee: '0.3',
   },
 });
 

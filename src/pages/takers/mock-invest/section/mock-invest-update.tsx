@@ -59,7 +59,7 @@ const MockInvestUpdate = () => {
     useForm<IForkStrategyForm>({
       defaultValues: {
         strategy_code: String(strategyCode),
-        securities_corp_fee: '0.1',
+        securities_corp_fee: '0.3',
         invest_principal: '10000000',
       },
     });
@@ -128,11 +128,12 @@ const MockInvestUpdate = () => {
         <WhiteSpace />
         {strategyDetailQuery.isLoading && 'loading...'}
         {memberStrategy && <StrategyCardInfo strategy={memberStrategy} />}
+        <WhiteSpace />
         <Title title={'기본 설정'} />
         <WhiteSpace />
         <InputListItem>
           <label>전략 코드</label>
-          <input disabled value={getValues('strategy_code')} />
+          <input type="text" disabled value={getValues('strategy_code')} />
         </InputListItem>
         <InputListItem
           error={!!formState.errors.strategy_name?.message}
@@ -175,7 +176,7 @@ const MockInvestUpdate = () => {
             />
           </InputListItem>
 
-          <InputListItem
+          {/* <InputListItem
             error={!!formState.errors.securities_corp_fee?.message}
             errorMessage={formState.errors.securities_corp_fee?.message}
           >
@@ -192,7 +193,7 @@ const MockInvestUpdate = () => {
                 },
               })}
             />
-          </InputListItem>
+          </InputListItem> */}
         </>
         <WhiteSpace />
         <Button
