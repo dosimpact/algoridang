@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Raw, Repository } from 'typeorm';
+import { In, IsNull, Not, Raw, Repository } from 'typeorm';
 import {
   GetMyStrategyByIdInput,
   GetMyStrategyByIdOutput,
@@ -774,7 +774,6 @@ export class StrategyService {
     // 전략 soft delete
     // 투자 수익 soft delete
     // const result = await this.getMyStrategyById(email_id, { strategy_code });
-    console.log(email_id, strategy_code, typeof strategy_code);
 
     const strategy = await this.MemberStrategyRepo.findOneOrFail({
       where: { strategy_code, operator_id: email_id },
@@ -804,4 +803,13 @@ export class StrategyService {
   //   // 전략 알림 기능 on/off
   //   return { ok: false };
   // }
+
+  async __getStrategyUnsuccess() {
+    return this.MemberStrategyRepo.find({
+      where: [
+        { status_code: Not(In(['Error', 'Success'])) },
+        { status_code: IsNull() },
+      ],
+    });
+  }
 }
