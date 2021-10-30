@@ -12,6 +12,11 @@ import NavHeaderDetail from 'components/common/_molecules/NavHeaderDetail';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import { Button } from 'components/common/_atoms/Buttons';
+import StrategyCardInfoSkeleton from 'components/common/_molecules/StrategyCardInfoSkeleton';
+import {
+  SectionLgSkeleton,
+  SectionMdSkeleton,
+} from 'components/common/_molecules/MoleculesSkeletons';
 
 const StrategyDetails = () => {
   // 히스토리
@@ -43,10 +48,14 @@ const StrategyDetails = () => {
         linkTo={process.env.PUBLIC_URL + '/takers/strategy-search'}
         headerTitle="투자 전략 상세"
       />
+
       <WingBlank>
-        {strategyDetailQuery.isLoading && 'loading...'}
         <WhiteSpace />
-        {memberStrategy && <StrategyCardInfo strategy={memberStrategy} />}{' '}
+        {memberStrategy ? (
+          <StrategyCardInfo strategy={memberStrategy} />
+        ) : (
+          <StrategyCardInfoSkeleton />
+        )}
         <>
           <div className="flexRowSBt">
             <Title title="모의 투자" style={{ marginRight: '15px' }}></Title>
@@ -99,14 +108,15 @@ const StrategyDetails = () => {
           </div>
           <WhiteSpace />
           <WhiteSpace />
-
           {/* 0. 전략 메이커 설명 Description.tsx */}
-          {memberStrategy && (
+          {memberStrategy ? (
             <Description description={memberStrategy.strategy_explanation} />
+          ) : (
+            <SectionMdSkeleton />
           )}
         </>
         {/* 1. 투자 수익 현황 ReturnsStatus.tsx */}
-        {investProfitInfo && (
+        {investProfitInfo ? (
           <ReturnsStatus
             title="투자 수익 현황"
             profit_rate={investProfitInfo?.profit_rate}
@@ -114,18 +124,22 @@ const StrategyDetails = () => {
             invest_principal={investProfitInfo?.invest_principal}
             total_profit_price={investProfitInfo?.total_profit_price}
           />
+        ) : (
+          <SectionMdSkeleton />
         )}
         {/* 2. 매매 시점 TradingPoints.tsx */}
-        {firstUniversal && firstUniversal.universal_code && (
+        {firstUniversal && firstUniversal.universal_code ? (
           <TradingPoints
             strategyCode={String(strategyCode)}
             ticker={firstUniversal.ticker}
             title={`매매시점 - ${firstUniversal.ticker} | ${firstUniversal.trading_strategy_name}`}
           />
+        ) : (
+          <SectionLgSkeleton />
         )}
         <WhiteSpace />
         {/* 3. 트레이딩 히스토리 */}
-        {histories && (
+        {histories ? (
           <TradingHistory
             title="히스토리"
             header={['날짜', `종목\n(코드)`, '가격\n(원)', '수익/손실\n(%)']}
@@ -137,6 +151,8 @@ const StrategyDetails = () => {
             ]}
             body={histories as any as Record<string, string>[]}
           />
+        ) : (
+          <SectionLgSkeleton />
         )}
       </WingBlank>
     </PStrategyDetail>

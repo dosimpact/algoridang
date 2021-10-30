@@ -12,6 +12,11 @@ import NavHeaderDetail from 'components/common/_molecules/NavHeaderDetail';
 import { Button } from 'components/common/_atoms/Buttons';
 import { useMyStrategyDetail } from 'states/strategy/query/useMyStrategyDetail';
 import TradingPoints from 'components/report/_organisms/TradingPoints';
+import StrategyCardInfoSkeleton from 'components/common/_molecules/StrategyCardInfoSkeleton';
+import {
+  SectionLgSkeleton,
+  SectionMdSkeleton,
+} from 'components/common/_molecules/MoleculesSkeletons';
 
 const MockInvestDetail = () => {
   const history = useHistory();
@@ -47,9 +52,10 @@ const MockInvestDetail = () => {
       />
       <WingBlank>
         <WhiteSpace />
-        {myStrategyDetailQuery.isLoading && 'loading...'}
-        {memberStrategy && (
+        {memberStrategy ? (
           <StrategyCardInfo isDisplayMock={true} strategy={memberStrategy} />
+        ) : (
+          <StrategyCardInfoSkeleton />
         )}
         <div className="flexRowSBt">
           <Title title="모의 투자" style={{ marginRight: '15px' }}></Title>
@@ -105,7 +111,7 @@ const MockInvestDetail = () => {
           <Description description={memberStrategy.strategy_explanation} />
         )} */}
         {/* 1. 투자 수익 현황 ReturnsStatus.tsx */}
-        {investProfitInfo && (
+        {investProfitInfo ? (
           <ReturnsStatus
             title={`모의 투자 수익 현황 ${'(운용중)'}`}
             profit_rate={investProfitInfo?.profit_rate}
@@ -113,12 +119,14 @@ const MockInvestDetail = () => {
             invest_principal={investProfitInfo?.invest_principal}
             total_profit_price={investProfitInfo?.total_profit_price}
           />
+        ) : (
+          <SectionMdSkeleton />
         )}
         {/* <TradingPoints /> */}
         <WhiteSpace />
         <WhiteSpace />
         {/* 3. 트레이딩 히스토리 */}
-        {histories && todayHistories && (
+        {histories && todayHistories ? (
           <TradingHistory
             title={`오늘의 종목 (${todayHistories.length}개)`}
             header={['날짜', `종목\n(코드)`, '가격\n(원)', '수익/손실\n(%)']}
@@ -130,14 +138,18 @@ const MockInvestDetail = () => {
             ]}
             body={todayHistories as any as Record<string, string>[]}
           />
+        ) : (
+          <SectionMdSkeleton />
         )}
         {/* 2. 매매 시점 TradingPoints.tsx */}
-        {firstUniversal && firstUniversal.universal_code && (
+        {firstUniversal && firstUniversal.universal_code ? (
           <TradingPoints
             strategyCode={String(strategyCode)}
             ticker={firstUniversal.ticker}
             title={`매매시점 - ${firstUniversal.ticker} | ${firstUniversal.trading_strategy_name}`}
           />
+        ) : (
+          <SectionLgSkeleton />
         )}
       </WingBlank>
     </StrategyDetailP>
