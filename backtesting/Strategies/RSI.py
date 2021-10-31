@@ -5,7 +5,7 @@ class RSI(bt.Strategy):
     param = [ 30 , 70 ]
 
     def __init__(self):
-        self.rsi = bt.indicators.RSI_SMA(self.data.close, period=21)
+        self.rsi = bt.indicators.RSI_Safe(self.data.close, period=21)
 
     def next(self):
         if not self.position:
