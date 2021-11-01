@@ -60,6 +60,9 @@ class BacktestMini(Backtest):
 
         self.res['code'] = 'Success'
         self.res['res']['profit_rate'] = res / 100000000
-        self.res['res']['mdd'] = self.metrics.loc['Max Drawdown ']['Strategy']
+        if self.metrics.loc['Max Drawdown ']['Strategy'] == '':
+            self.res['res']['mdd'] = 0.0
+        else:
+            self.res['res']['mdd'] = self.metrics.loc['Max Drawdown ']['Strategy']
         self.res['res']['year_avg_profit_rate'] = self.metrics.loc['CAGR%']['Strategy']
         return self.res
