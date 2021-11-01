@@ -2,6 +2,7 @@ import {
   IsBoolean,
   IsDateString,
   IsEnum,
+  IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
@@ -86,9 +87,10 @@ export class MemberStrategy {
   @CreateDateColumn({ type: 'timestamptz' })
   create_date: Date;
 
+  @IsOptional()
   @IsDateString()
   @DeleteDateColumn({ type: 'timestamptz' })
-  deleteAt: Date;
+  deleteAt?: Date;
 
   @ValidateNested()
   @Type()

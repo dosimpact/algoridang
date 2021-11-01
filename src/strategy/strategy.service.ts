@@ -787,6 +787,23 @@ export class StrategyService {
       );
     }
   }
+
+  async softDeleteMyStrategyById(
+    email_id: string,
+    { strategy_code }: DeleteMyStrategyByIdInput,
+  ): Promise<DeleteMyStrategyByIdOutput> {
+    const strategy = await this.MemberStrategyRepo.findOneOrFail({
+      where: { strategy_code, operator_id: email_id },
+    });
+    const del_result = await this.MemberStrategyRepo.softRemove(strategy);
+    if (del_result) {
+      return { ok: true, memberStrategy: del_result };
+    } else {
+      throw new NotFoundException(
+        `${email_id} has no strategy_code : ${strategy_code} delete Fail`,
+      );
+    }
+  }
   // (POST) recoverStrategyById		(4) (관리자) 나의 전략 recover
   // async recoverStrategyById(
   //   recoverStrategyByIdInput: RecoverStrategyByIdInput,

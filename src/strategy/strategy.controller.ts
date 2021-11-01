@@ -190,7 +190,7 @@ export class StrategyMutationController {
     @AuthUser() m: MemberInfo,
     @Body() body: DeleteMyStrategyByIdInput,
   ) {
-    return this.strategyService.hardDeleteMyStrategyById(m.email_id, body);
+    return this.strategyService.softDeleteMyStrategyById(m.email_id, body);
   }
   // TODO 🚀 (POST) recoverStrategyById		(4) (관리자) 나의 전략 recover
   // async recoverStrategyById() {}
