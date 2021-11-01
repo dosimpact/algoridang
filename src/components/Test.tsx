@@ -7,7 +7,7 @@ import {
 } from 'states/common/recoil/dashBoard/QuantSelect';
 import useStrategyDetail from 'states/strategy/query/useStrategyDetail';
 import styled from 'styled-components';
-import StrategyDetailsVM from './strategy/_organisms/strategy-details-VM';
+import StrategyDetailsVM from './strategy/template/strategy-details-VM';
 // import TickerFuzzySearch from './common/_molecules/TickerFuzzySearch';
 // import Skeleton from 'react-loading-skeleton';
 // import StrategyCardInfoSkeleton from './common/_molecules/StrategyCardInfoSkeleton';

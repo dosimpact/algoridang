@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import useStrategyDetail from 'states/strategy/query/useStrategyDetail';
-import StrategyDetailsTemplate from './StrategyDetailsTemplate';
-import StrategyBackTestReport from './StrategyBackTestReport';
-import StrategyEarningReport from './StrategyEarningReport';
+import StrategyDetailsTemplate from '../_organisms/StrategyDetailsTemplate';
+import StrategyBackTestReport from '../_organisms/StrategyBackTestReport';
+import StrategyEarningReport from '../_organisms/StrategyEarningReport';
 import NavHeaderDetail from 'components/common/_molecules/NavHeaderDetail';
-import StrategyMockInvestCreate from './StrategyMockInvestCreate';
+import StrategyMockInvestCreate from '../_organisms/StrategyMockInvestCreate';
 
 //
 export type StrategyDetailsTypes =
@@ -44,7 +44,7 @@ const StrategyDetailsVM: React.FC<{
   return (
     <>
       <NavHeaderDetail
-        onClickBack={handleNav}
+        onClickBack={type === 'detail' ? undefined : handleNav}
         headerTitle={typeToTitle() || ''}
       />
       {type === 'detail' && (

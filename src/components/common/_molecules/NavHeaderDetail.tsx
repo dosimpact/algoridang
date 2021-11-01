@@ -56,6 +56,7 @@ const NavHeaderDetail: React.FC<INavHeaderDetail> = ({
   }
   return (
     <SNavHeaderDetail>
+      <div className="col1"></div>
       <div className="col2">{headerTitle}</div>
       <div className="col3">{/* <IconArrowLeft /> */}</div>
     </SNavHeaderDetail>

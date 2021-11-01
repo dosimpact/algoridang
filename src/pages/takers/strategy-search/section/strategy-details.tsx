@@ -28,13 +28,8 @@ const StrategyDetails = () => {
   // 현재 전략코드로 데이터 API 요청
   console.log('strategyCode', strategyCode);
 
-  const {
-    strategyDetailQuery,
-    firstUniversal,
-    histories,
-    investProfitInfo,
-    memberStrategy,
-  } = useStrategyDetail(strategyCode + '');
+  const { firstUniversal, histories, investProfitInfo, memberStrategy } =
+    useStrategyDetail(strategyCode + '');
 
   if (strategyCode === 0) {
     return (
