@@ -104,8 +104,10 @@ const SPortBacktestTabStart = styled.div`
 `;
 
 const PortBacktestTabDetail = () => {
-  const [currentStrategyCode] = useRecoilState(atomCurrentStrategyCode);
+  console.log('PortBacktestTabDetail');
   const history = useHistory();
+
+  const currentStrategyCode = useRecoilValue(atomCurrentStrategyCode);
   useEffect(() => {
     history.push(
       process.env.PUBLIC_URL +

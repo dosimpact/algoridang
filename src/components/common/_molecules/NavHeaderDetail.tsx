@@ -7,21 +7,41 @@ interface INavHeaderDetail {
   headerTitle: string;
   linkTo?: string;
   pushBack?: boolean;
+  onClickBack?: () => void;
 }
 
 const NavHeaderDetail: React.FC<INavHeaderDetail> = ({
   headerTitle,
   linkTo,
   pushBack,
+  onClickBack,
 }) => {
   const history = useHistory();
-  return (
-    <SNavHeaderDetail>
-      {pushBack ? (
+  if (onClickBack) {
+    return (
+      <SNavHeaderDetail>
+        <div className="col1" onClick={onClickBack}>
+          <IconArrowLeft />
+        </div>
+        <div className="col2">{headerTitle}</div>
+        <div className="col3">{/* <IconArrowLeft /> */}</div>
+      </SNavHeaderDetail>
+    );
+  }
+  if (pushBack) {
+    return (
+      <SNavHeaderDetail>
         <div className="col1" onClick={history.goBack}>
           <IconArrowLeft />
         </div>
-      ) : (
+        <div className="col2">{headerTitle}</div>
+        <div className="col3">{/* <IconArrowLeft /> */}</div>
+      </SNavHeaderDetail>
+    );
+  }
+  if (linkTo) {
+    return (
+      <SNavHeaderDetail>
         <Link to={linkTo || process.env.PUBLIC_URL + '/takers/strategy-search'}>
           {linkTo && (
             <div className="col1">
@@ -29,8 +49,13 @@ const NavHeaderDetail: React.FC<INavHeaderDetail> = ({
             </div>
           )}
         </Link>
-      )}
-
+        <div className="col2">{headerTitle}</div>
+        <div className="col3">{/* <IconArrowLeft /> */}</div>
+      </SNavHeaderDetail>
+    );
+  }
+  return (
+    <SNavHeaderDetail>
       <div className="col2">{headerTitle}</div>
       <div className="col3">{/* <IconArrowLeft /> */}</div>
     </SNavHeaderDetail>

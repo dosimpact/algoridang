@@ -1,12 +1,10 @@
 import React from 'react';
 import { Title, SubTitle } from 'components/common/_atoms/Typos';
-import { useHistory, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import TradingHistory from 'components/report/_organisms/TradingHistory';
 import TradingPoints from 'components/report/_organisms/TradingPoints';
 import ReturnsStatus from 'components/report/_organisms/ReturnsStatus';
 import Description from 'components/report/_molecules/Description';
-import useStrategyDetail from 'states/strategy/query/useStrategyDetail';
 import StrategyCardInfo from 'components/common/_molecules/StrategyCardInfo';
 import NavHeaderDetail from 'components/common/_molecules/NavHeaderDetail';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
@@ -17,26 +15,35 @@ import {
   SectionLgSkeleton,
   SectionMdSkeleton,
 } from 'components/common/_molecules/MoleculesSkeletons';
+import { UseQueryResult } from 'react-query';
+import { GetStrategyByIdOutput } from 'states/strategy/interface/dtos';
+import { AxiosError } from 'axios';
+import { InvestProfitInfo } from 'states/backtest/interface/entities';
+import { MemberStrategy } from 'states/strategy/interface/entities';
+import { Universal } from 'states/trading/interface/entities';
 
-const StrategyDetails = () => {
-  // 히스토리
-  const history = useHistory();
-  // 현재 전략 코드 알아오기
-  const params = useParams() as { id: string };
-
-  const strategyCode = params?.id || 0;
-  // 현재 전략코드로 데이터 API 요청
-  console.log('strategyCode', strategyCode);
-
-  const {
-    strategyDetailQuery,
-    firstUniversal,
-    histories,
-    investProfitInfo,
-    memberStrategy,
-  } = useStrategyDetail(strategyCode + '');
-
-  if (strategyCode === 0) {
+const StrategyDetailsTemplate: React.FC<{
+  strategyCode: string;
+  strategyDetailQuery: UseQueryResult<GetStrategyByIdOutput, AxiosError<any>>;
+  firstUniversal: false | Universal | undefined;
+  histories: History[] | undefined;
+  investProfitInfo: InvestProfitInfo | undefined;
+  memberStrategy: MemberStrategy | undefined;
+  onClickMockInvest?: () => void;
+  onClickInvestEarningReport?: () => void;
+  onClickQuantStatesReport?: () => void;
+}> = ({
+  strategyCode,
+  strategyDetailQuery,
+  firstUniversal,
+  histories,
+  investProfitInfo,
+  memberStrategy,
+  onClickMockInvest,
+  onClickInvestEarningReport,
+  onClickQuantStatesReport,
+}) => {
+  if (strategyDetailQuery.status === 'error') {
     return (
       <div>
         <WingBlank>전략이 없습니다.</WingBlank>
@@ -46,11 +53,6 @@ const StrategyDetails = () => {
 
   return (
     <PStrategyDetail>
-      <NavHeaderDetail
-        linkTo={process.env.PUBLIC_URL + '/takers/strategy-search'}
-        headerTitle="투자 전략 상세"
-      />
-
       <WingBlank>
         <WhiteSpace />
         {memberStrategy ? (
@@ -64,7 +66,7 @@ const StrategyDetails = () => {
             <Button
               className="midsize-btn"
               onClick={() => {
-                history.push(`/takers/mock-invest/create/${strategyCode}`);
+                if (onClickMockInvest) onClickMockInvest();
               }}
             >
               시작하기
@@ -80,11 +82,13 @@ const StrategyDetails = () => {
               type="blue"
               className="midsize-btn"
               onClick={() => {
-                console.log('deatil');
-                history.push(
-                  process.env.PUBLIC_URL +
-                    `/takers/strategy-search/report/${params.id}`,
-                );
+                if (onClickInvestEarningReport) onClickInvestEarningReport();
+                // console.log('deatil');
+                // TODO
+                // history.push(
+                //   process.env.PUBLIC_URL +
+                //     `/takers/strategy-search/report/${params.id}`,
+                // );
               }}
             >
               리포트 보기
@@ -99,10 +103,7 @@ const StrategyDetails = () => {
               type="blue"
               className="midsize-btn"
               onClick={() => {
-                history.push(
-                  process.env.PUBLIC_URL +
-                    `/takers/strategy-search/bt-report/${params.id}`,
-                );
+                if (onClickQuantStatesReport) onClickQuantStatesReport();
               }}
             >
               리포트 보기
@@ -161,7 +162,7 @@ const StrategyDetails = () => {
   );
 };
 
-export default StrategyDetails;
+export default StrategyDetailsTemplate;
 
 const PStrategyDetail = styled.section`
   .articleReturnsStatus {

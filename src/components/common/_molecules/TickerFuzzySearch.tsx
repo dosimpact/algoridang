@@ -118,7 +118,7 @@ const TickerFuzzySearch: React.FC<ITickerFuzzySearch> = ({
           <input
             className="tickerInput"
             type="text"
-            placeholder="코드,기업명을 입력해주세요"
+            placeholder="기업명을 입력해주세요"
             autoComplete="off"
             {...register('term', { required: true })}
             onChange={debouncing((e: React.ChangeEvent<HTMLInputElement>) => {

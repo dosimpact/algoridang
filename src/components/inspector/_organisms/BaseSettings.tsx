@@ -66,7 +66,7 @@ const BaseSettings: React.FC<IBaseSettings> = ({ headerTitle }) => {
 
   React.useEffect(() => {
     const checkValid = () => {
-      console.log('formState.isValid', formState.isValid, formState);
+      // console.log('formState.isValid', formState.isValid, formState);
       if (formState.isValid) {
         setInspector((prev) =>
           produce(prev, (draft) => {
