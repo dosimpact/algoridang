@@ -8,9 +8,12 @@ import {
 } from 'states/finance/interface/entities';
 // atom 정의 QS 의 헤더부 strategy,numberOfData
 // selector 정의 - strategy,numberOfData 각 getter/setter
-export const atomQSHeader = atom<
-  Pick<RequestQuantSelectInput, 'strategy' | 'numberOfData'>
->({
+
+export type IatomQSHeader = Pick<
+  RequestQuantSelectInput,
+  'strategy' | 'numberOfData'
+>;
+export const atomQSHeader = atom<IatomQSHeader>({
   key: 'atomQSHeader',
   default: {
     strategy: 2,
@@ -92,7 +95,7 @@ export type IatomQSBody = Omit<
   'strategy' | 'numberOfData'
 >;
 export const defaultQSBodyData: RequestFSData = {
-  market_cap: { operator: 'up', values: [10] },
+  market_cap: 0,
   revenue: 0,
   operating_income: 0,
   EPS: 0,

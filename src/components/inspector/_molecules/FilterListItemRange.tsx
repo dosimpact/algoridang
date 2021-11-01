@@ -55,10 +55,10 @@ const FilterListItemRange: React.FC<IFilterListItem> = ({
               validate: {
                 lessThanUpperBound: (v) =>
                   v < getValues('upperBound') ||
-                  '*하안값은 상한값보다 작아야 합니다.',
+                  '*하한값은 상한값보다 작아야 합니다.',
               },
             })}
-            placeholder="하안값"
+            placeholder="하한값"
             disabled={type === 'down'}
           />
           <span className="tail">~</span>
@@ -69,7 +69,7 @@ const FilterListItemRange: React.FC<IFilterListItem> = ({
               validate: {
                 moreThanUpperBound: (v) =>
                   v > getValues('lowerBound') ||
-                  '*상한값은 하안값보다 커야 합니다.',
+                  '*상한값은 하한값보다 커야 합니다.',
               },
             })}
             placeholder="상한값"

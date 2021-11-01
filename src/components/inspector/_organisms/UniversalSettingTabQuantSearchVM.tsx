@@ -11,6 +11,7 @@ import {
   atomQSBody,
   atomQSHeader,
   defaultQSBodyData,
+  IatomQSHeader,
   IatomQSBody,
   selectorQSBodyOnOff_IO,
   selectorQSBodyOnOff_Params,
@@ -48,6 +49,7 @@ const UniversalSettingTabQuantSearchVM = () => {
     setCurrentFSKey(key);
   };
   // 선택지 리스트 업
+  const [QSHeader, setQSHeader] = useRecoilState(atomQSHeader);
   const [QSBody, setQSBody] = useRecoilState(atomQSBody);
 
   // const _handleSetQSBodyValue: IhandleSetQSBodyValue = (key, data) => {
@@ -59,7 +61,11 @@ const UniversalSettingTabQuantSearchVM = () => {
   //   );
   // };
   const _handlePreset_0 = () => {
-    //   TODO Reset
+    setQSBody({
+      data: {
+        ...defaultQSBodyData,
+      },
+    });
   };
   const _handlePreset_1 = () => {
     setQSBody({
@@ -67,6 +73,10 @@ const UniversalSettingTabQuantSearchVM = () => {
         ...defaultQSBodyData,
         market_cap: { operator: 'up', values: [5000] },
       },
+    });
+    setQSHeader({
+      ...QSHeader,
+      strategy: 1,
     });
   };
   const _handlePreset_2 = () => {
@@ -77,6 +87,10 @@ const UniversalSettingTabQuantSearchVM = () => {
         return df;
       }),
     );
+    setQSHeader({
+      ...QSHeader,
+      strategy: 2,
+    });
   };
   const _handlePreset_3 = () => {
     setQSBody(
@@ -87,6 +101,10 @@ const UniversalSettingTabQuantSearchVM = () => {
         return df;
       }),
     );
+    setQSHeader({
+      ...QSHeader,
+      strategy: 3,
+    });
   };
   const _handlePreset_4 = () => {
     setQSBody(
@@ -97,6 +115,10 @@ const UniversalSettingTabQuantSearchVM = () => {
         return df;
       }),
     );
+    setQSHeader({
+      ...QSHeader,
+      strategy: 4,
+    });
   };
   const _handlePreset_5 = () => {
     setQSBody(
@@ -106,6 +128,10 @@ const UniversalSettingTabQuantSearchVM = () => {
         return df;
       }),
     );
+    setQSHeader({
+      ...QSHeader,
+      strategy: 5,
+    });
   };
   const _handlePreset_6 = () => {
     setQSBody(
@@ -116,11 +142,15 @@ const UniversalSettingTabQuantSearchVM = () => {
         return df;
       }),
     );
+    setQSHeader({
+      ...QSHeader,
+      strategy: 6,
+    });
   };
   const resetQSBody = useResetRecoilState(atomQSBody);
   const handlePreset = (preset: IQuantPreset) => {
     resetQSBody();
-    // if (preset === '0') _handlePreset_0();
+    if (preset === '0') _handlePreset_0();
     if (preset === '1') _handlePreset_1();
     if (preset === '2') _handlePreset_2();
     if (preset === '3') _handlePreset_3();
@@ -147,10 +177,11 @@ const UniversalSettingTabQuantSearchVM = () => {
     }
   };
 
-  const [QSHeader, setQSHeader] = useRecoilState(atomQSHeader);
+  // 퀀트 전략, 번호 1번
   const handleSetStrategyNum = (strategy: number) => {
     setQSHeader({ ...QSHeader, strategy });
   };
+  // 편입 종목 갯수 지정
   const handleSetNumOfRequestTicker = (numberOfData: number) => {
     setQSHeader({ ...QSHeader, numberOfData });
   };
@@ -158,7 +189,7 @@ const UniversalSettingTabQuantSearchVM = () => {
   // 퀀트 발굴하기
   const QSReqeustBody = useRecoilValue(selectorQSApiBody);
   const { QSMutation } = useQuantSelect();
-  const [universalSettingState, setUniversalSettingState] = useRecoilState(
+  const [, setUniversalSettingState] = useRecoilState(
     atomUniversalSettingState,
   );
 
@@ -202,6 +233,7 @@ const UniversalSettingTabQuantSearchVM = () => {
 
   return (
     <UniversalSettingTabQuantSearch
+      QSHeader={QSHeader}
       QSBody={QSBody}
       currentFSKey={currentFSKey}
       handleSetCurrentFSKey={handleSetCurrentFSKey}
@@ -217,6 +249,7 @@ const UniversalSettingTabQuantSearchVM = () => {
 export default UniversalSettingTabQuantSearchVM;
 
 export interface IUniversalSettingTabQuantSearch {
+  QSHeader: IatomQSHeader;
   QSBody: IatomQSBody;
   currentFSKey: RequestFSKeys;
   handleSetCurrentFSKey: (key: RequestFSKeys) => void;
@@ -229,6 +262,7 @@ export interface IUniversalSettingTabQuantSearch {
 
 const UniversalSettingTabQuantSearch: React.FC<IUniversalSettingTabQuantSearch> =
   ({
+    QSHeader,
     QSBody,
     currentFSKey,
     handleSetCurrentFSKey,
@@ -288,7 +322,8 @@ const UniversalSettingTabQuantSearch: React.FC<IUniversalSettingTabQuantSearch> 
         </div>
         <div className="filterButtonList">
           <Button
-            type="info"
+            className="btn"
+            type="normal"
             onClick={() => {
               setModalIsOpen(true);
             }}
@@ -296,7 +331,8 @@ const UniversalSettingTabQuantSearch: React.FC<IUniversalSettingTabQuantSearch> 
             필터 추가
           </Button>
           <Button
-            type="success"
+            className="btn"
+            type="blue"
             onClick={() => {
               handleRequestQuantSelect();
             }}
@@ -316,8 +352,8 @@ const UniversalSettingTabQuantSearch: React.FC<IUniversalSettingTabQuantSearch> 
                     type="between"
                     name={_key}
                     defaultFormValue={{
-                      lowerBound: 0,
-                      upperBound: 10,
+                      lowerBound: val.values[0] || 0,
+                      upperBound: val.values[1] || 10,
                     }}
                   />
                 );
@@ -327,7 +363,7 @@ const UniversalSettingTabQuantSearch: React.FC<IUniversalSettingTabQuantSearch> 
                     type="down"
                     name={_key}
                     defaultFormValue={{
-                      upperBound: 10,
+                      upperBound: val.values[0] || 10,
                     }}
                   />
                 );
@@ -337,7 +373,7 @@ const UniversalSettingTabQuantSearch: React.FC<IUniversalSettingTabQuantSearch> 
                     type="up"
                     name={_key}
                     defaultFormValue={{
-                      lowerBound: 0,
+                      lowerBound: val.values[0] || 0,
                     }}
                   />
                 );
@@ -359,6 +395,7 @@ const UniversalSettingTabQuantSearch: React.FC<IUniversalSettingTabQuantSearch> 
           onRequestClose={() => setModalIsOpen(false)}
         >
           <QuantFilterModal
+            QSHeader={QSHeader}
             QSBody={QSBody}
             onRequestClose={() => setModalIsOpen(false)}
             currentFSKey={currentFSKey}
@@ -377,6 +414,10 @@ const SUniversalSettingTabQuantSearch = styled.section`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 1rem;
+    .btn {
+      height: 4rem;
+      font-size: 1.6rem;
+    }
   }
 `;
 

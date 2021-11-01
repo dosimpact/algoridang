@@ -1,6 +1,9 @@
 import { Button } from 'components/common/_atoms/Buttons';
 import React from 'react';
-import { IatomQSBody } from 'states/common/recoil/dashBoard/QuantSelect';
+import {
+  IatomQSBody,
+  IatomQSHeader,
+} from 'states/common/recoil/dashBoard/QuantSelect';
 import {
   IQuantPreset,
   QuantPresetObject,
@@ -19,6 +22,7 @@ import {
 // category를 먹이는 필터
 
 interface IQuantFilterModal {
+  QSHeader: IatomQSHeader;
   QSBody: IatomQSBody;
   currentFSKey: RequestFSKeys;
   onRequestClose: () => void;
@@ -29,6 +33,7 @@ interface IQuantFilterModal {
 }
 const QuantFilterModal: React.FC<IQuantFilterModal> = ({
   onRequestClose,
+  QSHeader,
   QSBody,
   currentFSKey,
   onSetCurrentFSKey,
@@ -47,6 +52,7 @@ const QuantFilterModal: React.FC<IQuantFilterModal> = ({
           <div>
             {Object.keys(QuantPresetObject).map((key, idx) => {
               let _key = key as IQuantPreset;
+              const isSelected = QSHeader.strategy === idx;
               return (
                 <div className="row" key={_key}>
                   <input type="checkbox" id={_key} />
@@ -56,10 +62,10 @@ const QuantFilterModal: React.FC<IQuantFilterModal> = ({
                         if (handlePreset) handlePreset(_key);
                         if (handleSetStrategyNum) handleSetStrategyNum(idx);
                       }}
-                      type="normal"
+                      type={isSelected ? 'blue' : 'normal'}
                       className="quantPresetBtn"
                     >
-                      선택
+                      {isSelected ? '선택완료' : '선택'}
                     </Button>
                     <div
                       className="setLabel"
@@ -111,7 +117,7 @@ const QuantFilterModal: React.FC<IQuantFilterModal> = ({
         <article className="col3">
           <div className="modalTitle">필터 설명</div>
           <div
-            className="setLabel"
+            className="desciption"
             dangerouslySetInnerHTML={{
               __html: RequestFSKeysToKoDesciption[currentFSKey],
             }}
@@ -128,7 +134,7 @@ const QuantFilterModal: React.FC<IQuantFilterModal> = ({
         >
           적용
         </Button>
-        <Button
+        {/* <Button
           type="gray"
           className="buttonItem"
           onClick={() => {
@@ -136,7 +142,7 @@ const QuantFilterModal: React.FC<IQuantFilterModal> = ({
           }}
         >
           닫기
-        </Button>
+        </Button> */}
       </div>
     </SQuantFilterModal>
   );
@@ -169,26 +175,37 @@ const SQuantFilterModal = styled.section`
   .col1 {
     border-right: 0.3rem solid ${(props) => props.theme.ColorGrayL1};
     padding-left: 2rem;
+    .quantPresetBtn {
+      margin-right: 1rem;
+    }
   }
   .col2 {
     border-right: 0.3rem solid ${(props) => props.theme.ColorGrayL1};
     padding-left: 2rem;
+    .filterScroll {
+      max-height: 60vh;
+      overflow-y: scroll;
+      ::-webkit-scrollbar {
+        width: 0.5rem;
+      }
+    }
   }
   .col3 {
     padding-left: 2rem;
+    .desciption {
+      font-style: normal;
+      font-size: 1.4rem;
+      line-height: 2.9rem;
+      letter-spacing: 0.06rem;
+      white-space: pre-wrap;
+    }
   }
   .modalTitle {
     font-weight: 500;
     font-size: 3rem;
     margin-bottom: 3rem;
   }
-  .filterScroll {
-    max-height: 60vh;
-    overflow-y: scroll;
-    ::-webkit-scrollbar {
-      width: 0.5rem;
-    }
-  }
+
   .modalsubTitle {
     /* font-size: 2.5rem; */
   }
@@ -199,14 +216,14 @@ const SQuantFilterModal = styled.section`
     letter-spacing: 0.06rem;
     cursor: pointer;
   }
+  .setLabel:hover {
+    background-color: ${(props) => props.theme.ColorMainLightBlue};
+  }
   .warn {
     color: ${(props) => props.theme.ColorMainRed};
     margin-bottom: 2rem;
   }
   .row {
     margin-bottom: 1rem;
-  }
-  .quantPresetBtn {
-    margin-right: 1rem;
   }
 `;

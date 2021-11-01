@@ -16,6 +16,7 @@ import {
 import useLogin from 'hooks/useMockLogin';
 import { useHistory } from 'react-router-dom';
 import UserProfileC from 'pages/makers/user-profile/user-profileC';
+import authCheck from 'hooks/authCheck';
 
 // TODO LOGIN 처리 ( Email , Google )
 const NavigationContainer = () => {
@@ -150,7 +151,7 @@ const ContentContainer = () => {
         <Route path="/makers/ticker-search" component={TickerSearch} />
         <Route
           path="/makers/strategy-create"
-          component={StrategyCreateTemplate}
+          component={authCheck(StrategyCreateTemplate, true)}
         />
         <Route path="/makers/strategy-my" component={StrategyMyC} />
         <Route path="/makers/strategy-public" component={StrategyPublicC} />
