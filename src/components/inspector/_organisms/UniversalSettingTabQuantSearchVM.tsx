@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 import {
   IQuantPreset,
+  QuantPresetObject,
   RequestFSBody,
   RequestFSKeys,
   RequestFSKeysToKo,
+  RequestFSKeysToKoDesciption,
 } from 'states/finance/interface/entities';
 import styled from 'styled-components';
 import Modal from 'react-modal';
@@ -347,6 +349,9 @@ const UniversalSettingTabQuantSearch: React.FC<IUniversalSettingTabQuantSearch> 
       <SUniversalSettingTabQuantSearch>
         <WhiteSpace style={{ marginTop: '1rem' }} />
         <div>
+          퀀트 필터 프리셋 :{' '}
+          {QuantPresetObject[String(QSHeader.strategy) as IQuantPreset]}
+          <WhiteSpace marginV="1.5" />
           <InputListItemH
             error={!!formState.errors.numberOfData?.message}
             errorMessage={formState.errors.numberOfData?.message}
