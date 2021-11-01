@@ -19,7 +19,7 @@ const LoggedOut = () => {
   };
   return (
     <SLoggedOut>
-      <WhiteSpace marginV="4" />
+      <div style={{ paddingBottom: '8rem' }}></div>
       <div className="mainTitle">
         알고리당,
         <br />
@@ -34,7 +34,7 @@ const LoggedOut = () => {
           setIsShowLoginForm((prev) => !prev);
         }}
       >
-        {isShowLoginForm ? '이메일로 회원가입' : '로그인'}
+        {isShowLoginForm ? '이메일로 회원가입' : '로그인 페이지로 돌아가기'}
       </div>
       <WhiteSpace />
       <WideLine />
@@ -60,9 +60,20 @@ const SLoggedOut = styled.section`
     line-height: 3.8rem;
   }
   .switchLoginMode {
-    text-align: end;
-    color: ${(props) => props.theme.ColorGray};
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.8rem;
     cursor: pointer;
+    /* color: ${(props) => props.theme.ColorGray}; */
+  }
+  .notice {
+    text-align: center;
+    color: ${(props) => props.theme.ColorGray};
+    line-height: 2rem;
+    margin-top: 1rem;
+  }
+  .underLine {
+    text-decoration: underline;
   }
   .btn {
     height: 4.5rem;

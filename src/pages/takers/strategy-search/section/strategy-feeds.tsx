@@ -40,7 +40,9 @@ const StrategyFeeds = () => {
       />
       <WhiteSpace marginV="1" />
       {!strategyListNew ? (
-        [...new Array(3)].map(() => <StrategyCardInfoSkeleton />)
+        [...new Array(3)].map((e, idx) => (
+          <StrategyCardInfoSkeleton key={idx} />
+        ))
       ) : strategyListNew.length === 0 ? (
         <StrategyCardInfoEmpty />
       ) : (
@@ -66,7 +68,9 @@ const StrategyFeeds = () => {
       />
       <WhiteSpace />
       {!strategyListHighView ? (
-        [...new Array(3)].map(() => <StrategyCardInfoSkeleton />)
+        [...new Array(3)].map((e, idx) => (
+          <StrategyCardInfoSkeleton key={idx} />
+        ))
       ) : strategyListHighView.length === 0 ? (
         <StrategyCardInfoEmpty />
       ) : (
@@ -92,7 +96,9 @@ const StrategyFeeds = () => {
       <WhiteSpace />
       {}
       {!strategyListRiskTaking ? (
-        [...new Array(3)].map(() => <StrategyCardInfoSkeleton />)
+        [...new Array(3)].map((e, idx) => (
+          <StrategyCardInfoSkeleton key={idx} />
+        ))
       ) : strategyListRiskTaking.length === 0 ? (
         <StrategyCardInfoEmpty />
       ) : (
@@ -115,7 +121,9 @@ const StrategyFeeds = () => {
       />
       <WhiteSpace />
       {!strategyListNeutral ? (
-        [...new Array(3)].map(() => <StrategyCardInfoSkeleton />)
+        [...new Array(3)].map((e, idx) => (
+          <StrategyCardInfoSkeleton key={idx} />
+        ))
       ) : strategyListNeutral.length === 0 ? (
         <StrategyCardInfoEmpty />
       ) : (
@@ -140,7 +148,9 @@ const StrategyFeeds = () => {
       />
       <WhiteSpace />
       {!strategyListStableIncome ? (
-        [...new Array(3)].map(() => <StrategyCardInfoSkeleton />)
+        [...new Array(3)].map((e, idx) => (
+          <StrategyCardInfoSkeleton key={idx} />
+        ))
       ) : strategyListStableIncome.length === 0 ? (
         <StrategyCardInfoEmpty />
       ) : (

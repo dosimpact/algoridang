@@ -4,6 +4,7 @@ import useMember from 'states/member/query/useMember';
 import { useForm } from 'react-hook-form';
 import InputListItemH from 'components/common/_atoms/InputListItemH';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 interface ILoginSignForm {
   email: string;
@@ -118,6 +119,21 @@ const UserSignUpForm = () => {
         <Button onClick={handleSignUp} className="btn" type="normal">
           회원가입
         </Button>
+        <div className="notice">
+          *회원가입을 통해{' '}
+          <span className="underLine">
+            <Link to={process.env.PUBLIC_URL + '/privacy-policy'}>
+              개인정보처리방침
+            </Link>
+          </span>
+          ,<br />
+          <span className="underLine">
+            <Link to={process.env.PUBLIC_URL + '/service-policy'}>
+              서비스이용약관
+            </Link>
+          </span>
+          에 동의합니다.
+        </div>
       </form>
     </div>
   );

@@ -1,26 +1,36 @@
-import { IconArrowLeft } from 'assets/icons';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { IconArrowLeft } from 'assets/icons';
+import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 interface INavHeaderDetail {
   headerTitle: string;
   linkTo?: string;
+  pushBack?: boolean;
 }
 
 const NavHeaderDetail: React.FC<INavHeaderDetail> = ({
   headerTitle,
   linkTo,
+  pushBack,
 }) => {
+  const history = useHistory();
   return (
     <SNavHeaderDetail>
-      <Link to={linkTo || process.env.PUBLIC_URL + '/takers/strategy-search'}>
-        {linkTo && (
-          <div className="col1">
-            <IconArrowLeft />
-          </div>
-        )}
-      </Link>
+      {pushBack ? (
+        <div className="col1" onClick={history.goBack}>
+          <IconArrowLeft />
+        </div>
+      ) : (
+        <Link to={linkTo || process.env.PUBLIC_URL + '/takers/strategy-search'}>
+          {linkTo && (
+            <div className="col1">
+              <IconArrowLeft />
+            </div>
+          )}
+        </Link>
+      )}
+
       <div className="col2">{headerTitle}</div>
       <div className="col3">{/* <IconArrowLeft /> */}</div>
     </SNavHeaderDetail>

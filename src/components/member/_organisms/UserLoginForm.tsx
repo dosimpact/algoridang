@@ -36,8 +36,10 @@ const UserLoginForm = () => {
           error={!!formState.errors.email}
           errorMessage={formState.errors.email?.message}
         >
+          <label htmlFor="email">이메일</label>
           <input
             type="text"
+            id="email"
             placeholder="이메일"
             {...register('email', {
               required: '*이메일 입력 필수',

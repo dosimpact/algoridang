@@ -5,6 +5,8 @@ import LandingPage from '../pages/common/landing-page';
 import { TakersHome } from '../pages/takers/layout/TakerMain';
 import { MakersHome } from '../pages/makers/layout/MakerMain';
 import Page404 from './error-page/Page404';
+import PrivacyPolicy from 'pages/common/PrivacyPolicy';
+import ServicePolicy from 'pages/common/ServicePolicy';
 
 const Router = () => {
   return (
@@ -13,6 +15,8 @@ const Router = () => {
         <Route path="/" exact component={LandingPage} />
         <Route path="/takers" component={TakersHome} />
         <Route path="/makers" component={MakersHome} />
+        <Route path="/privacy-policy" exact component={PrivacyPolicy} />
+        <Route path="/service-policy" exact component={ServicePolicy} />
         <Route path="/test" component={Test} />
         <Route component={Page404} />
         {/* <Redirect from="*" to="/" /> */}
