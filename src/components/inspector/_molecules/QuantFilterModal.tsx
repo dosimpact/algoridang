@@ -47,7 +47,7 @@ const QuantFilterModal: React.FC<IQuantFilterModal> = ({
         <article className="col1">
           <div className="modalTitle">퀀트 필터 프리셋</div>
           <div className="modalsubTitle warn">
-            *주의 : 선택시 필터값이 덮어쓰기 됩니다.
+            *주의 : 선택 시 필터값이 덮어쓰기 됩니다.
           </div>
           <div>
             {Object.keys(QuantPresetObject).map((key, idx) => {
@@ -84,6 +84,9 @@ const QuantFilterModal: React.FC<IQuantFilterModal> = ({
         </article>
         <article className="col2">
           <div className="modalTitle">재무 필터</div>
+          <div className="modalsubTitle warn">
+            *주의 : 선택 시 사용자 제작공식으로 변경됩니다.
+          </div>
           <div className="filterScroll">
             {Object.keys(QSBody.data).map((key) => {
               const _key = key as RequestFSKeys;
@@ -168,7 +171,7 @@ const SQuantFilterModal = styled.section`
   .wrapper {
     padding: 5rem;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 0.8fr 1fr;
     grid-auto-rows: 70vh;
     grid-gap: 1rem;
   }

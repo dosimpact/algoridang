@@ -1,11 +1,20 @@
 import React, { useState } from 'react';
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
-import { IQuantPreset, RequestFSKeys } from 'states/finance/interface/entities';
+import {
+  IQuantPreset,
+  RequestFSBody,
+  RequestFSKeys,
+  RequestFSKeysToKo,
+} from 'states/finance/interface/entities';
 import styled from 'styled-components';
 import Modal from 'react-modal';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import { Button } from 'components/common/_atoms/Buttons';
-import FilterListItemRange from '../_molecules/FilterListItemRange';
+import {
+  FilterListItemRange,
+  FilterListItemDownOperator,
+  FilterListItemUpOperator,
+} from '../_molecules/FilterListItemRange';
 import QuantFilterModal from '../_molecules/QuantFilterModal';
 import {
   atomQSBody,
@@ -148,6 +157,8 @@ const UniversalSettingTabQuantSearchVM = () => {
     });
   };
   const resetQSBody = useResetRecoilState(atomQSBody);
+
+  // 모달창에서-  퀀트필터프리셋을 눌렀을때,
   const handlePreset = (preset: IQuantPreset) => {
     resetQSBody();
     if (preset === '0') _handlePreset_0();
@@ -159,7 +170,9 @@ const UniversalSettingTabQuantSearchVM = () => {
     if (preset === '6') _handlePreset_6();
   };
 
+  // 모달창에서- 재무필터를 눌렀을때,
   const handleToggleQSBodyValue: IhandleToggleQSBodyValue = (key) => {
+    setQSHeader({ ...QSHeader, strategy: 1 });
     if (typeof QSBody.data[key] === 'number') {
       setQSBody(
         produce(QSBody, (df) => {
@@ -176,7 +189,39 @@ const UniversalSettingTabQuantSearchVM = () => {
       );
     }
   };
-
+  // 사용자 제작공식에서, 필터 타입을 변경하고자 할떄
+  const handleToggleOperatorType: IhandleToggleQSBodyValue = (key) => {
+    if (typeof QSBody.data[key] === 'object' && QSBody.data[key]) {
+      const currentOperator = (
+        QSBody.data[key] as unknown as Record<string, 'between' | 'up' | 'down'>
+      )['operator'];
+      console.log('currentOperator', currentOperator);
+      if (currentOperator === 'between') {
+        setQSBody(
+          produce(QSBody, (df) => {
+            df.data[key] = { operator: 'down', values: [0] };
+            return df;
+          }),
+        );
+      }
+      if (currentOperator === 'down') {
+        setQSBody(
+          produce(QSBody, (df) => {
+            df.data[key] = { operator: 'up', values: [0] };
+            return df;
+          }),
+        );
+      }
+      if (currentOperator === 'up') {
+        setQSBody(
+          produce(QSBody, (df) => {
+            df.data[key] = { operator: 'between', values: [0, 20] };
+            return df;
+          }),
+        );
+      }
+    }
+  };
   // 퀀트 전략, 번호 1번
   const handleSetStrategyNum = (strategy: number) => {
     setQSHeader({ ...QSHeader, strategy });
@@ -240,6 +285,7 @@ const UniversalSettingTabQuantSearchVM = () => {
       handleSetStrategyNum={handleSetStrategyNum}
       handleSetNumOfRequestTicker={handleSetNumOfRequestTicker}
       handleToggleQSBodyValue={handleToggleQSBodyValue}
+      handleToggleOperatorType={handleToggleOperatorType}
       handlePreset={handlePreset}
       handleRequestQuantSelect={handleRequestQuantSelect}
     />
@@ -256,6 +302,7 @@ export interface IUniversalSettingTabQuantSearch {
   handleSetStrategyNum: (strategy: number) => void;
   handleSetNumOfRequestTicker: (numberOfData: number) => void;
   handleToggleQSBodyValue: IhandleToggleQSBodyValue;
+  handleToggleOperatorType: IhandleToggleQSBodyValue;
   handlePreset: IhandlePreset;
   handleRequestQuantSelect: () => void;
 }
@@ -269,6 +316,7 @@ const UniversalSettingTabQuantSearch: React.FC<IUniversalSettingTabQuantSearch> 
     handleSetNumOfRequestTicker,
     handleSetStrategyNum,
     handleToggleQSBodyValue,
+    handleToggleOperatorType,
     handlePreset,
     handleRequestQuantSelect,
   }) => {
@@ -278,7 +326,7 @@ const UniversalSettingTabQuantSearch: React.FC<IUniversalSettingTabQuantSearch> 
     const { register, formState, watch, trigger, handleSubmit } = useForm<{
       numberOfData: number;
     }>({
-      defaultValues: { numberOfData: 10 },
+      defaultValues: { numberOfData: 5 },
     });
 
     React.useEffect(() => {
@@ -345,12 +393,15 @@ const UniversalSettingTabQuantSearch: React.FC<IUniversalSettingTabQuantSearch> 
           {Object.keys(QSBody.data).map((key) => {
             const _key = key as RequestFSKeys;
             const val = QSBody.data[_key];
+            const labelName = RequestFSKeysToKo[_key];
             if (typeof val !== 'number') {
               if (val?.operator === 'between')
                 return (
                   <FilterListItemRange
-                    type="between"
-                    name={_key}
+                    name={labelName}
+                    requestFSKeys={_key}
+                    QSHeader={QSHeader}
+                    handleToggleOperatorType={handleToggleOperatorType}
                     defaultFormValue={{
                       lowerBound: val.values[0] || 0,
                       upperBound: val.values[1] || 10,
@@ -359,9 +410,11 @@ const UniversalSettingTabQuantSearch: React.FC<IUniversalSettingTabQuantSearch> 
                 );
               if (val?.operator === 'down')
                 return (
-                  <FilterListItemRange
-                    type="down"
-                    name={_key}
+                  <FilterListItemDownOperator
+                    name={labelName}
+                    requestFSKeys={_key}
+                    QSHeader={QSHeader}
+                    handleToggleOperatorType={handleToggleOperatorType}
                     defaultFormValue={{
                       upperBound: val.values[0] || 10,
                     }}
@@ -369,9 +422,11 @@ const UniversalSettingTabQuantSearch: React.FC<IUniversalSettingTabQuantSearch> 
                 );
               if (val?.operator === 'up')
                 return (
-                  <FilterListItemRange
-                    type="up"
-                    name={_key}
+                  <FilterListItemUpOperator
+                    name={labelName}
+                    requestFSKeys={_key}
+                    QSHeader={QSHeader}
+                    handleToggleOperatorType={handleToggleOperatorType}
                     defaultFormValue={{
                       lowerBound: val.values[0] || 0,
                     }}
@@ -379,16 +434,6 @@ const UniversalSettingTabQuantSearch: React.FC<IUniversalSettingTabQuantSearch> 
                 );
             }
           })}
-          {/* <FilterListItemRange
-            name="ROE (단위:)"
-            defaultFormValue={{
-              lowerBound: 0,
-              upperBound: 10,
-            }}
-            onChange={(e) => {
-              console.log(e);
-            }}
-          /> */}
         </FilterList>
         <Modal
           isOpen={modalIsOpen}

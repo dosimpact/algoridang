@@ -16,8 +16,8 @@ export type IatomQSHeader = Pick<
 export const atomQSHeader = atom<IatomQSHeader>({
   key: 'atomQSHeader',
   default: {
-    strategy: 2,
-    numberOfData: 10,
+    strategy: 0,
+    numberOfData: 5,
   },
 });
 

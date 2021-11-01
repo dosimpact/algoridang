@@ -7,9 +7,11 @@ export type BoxType =
   | 'normal'
   | 'gray'
   | 'success'
+  | 'warn'
   | 'danger'
   | 'info'
   | 'blue';
+
 export const Box: React.FC<{
   type?: BoxType;
   className?: string;
