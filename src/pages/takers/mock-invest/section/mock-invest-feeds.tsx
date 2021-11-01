@@ -13,7 +13,6 @@ import StrategyCardInfoEmpty from 'components/common/_molecules/StrategyCardInfo
 const MockInvestFeeds = () => {
   const history = useHistory();
   const { getMyStrategyListQuery } = useMyStrategy();
-  console.log('getMyStrategyListQuery', getMyStrategyListQuery);
 
   const strategyList = React.useMemo(
     () => getMyStrategyListQuery.data?.memberStrategyList,
@@ -31,7 +30,9 @@ const MockInvestFeeds = () => {
       <SectionTitle title="나의 모의 투자 전략" />
       <WhiteSpace />
       {!strategyList ? (
-        [...new Array(4)].map(() => <StrategyCardInfoSkeleton />)
+        [...new Array(4)].map((e, idx) => (
+          <StrategyCardInfoSkeleton key={idx} />
+        ))
       ) : strategyList.length === 0 ? (
         <StrategyCardInfoEmpty />
       ) : (

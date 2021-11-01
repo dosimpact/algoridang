@@ -1,3 +1,4 @@
+import authCheck from 'hooks/authCheck';
 import React from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import MockInvestBackTestReport from './section/mock-invest-bt-report';
@@ -15,7 +16,7 @@ const MockInvestC = () => {
         <Route
           exact
           path={process.env.PUBLIC_URL + '/takers/mock-invest'}
-          component={MockInvestFeed}
+          component={authCheck(MockInvestFeed, true)}
         />
         <Route
           exact
