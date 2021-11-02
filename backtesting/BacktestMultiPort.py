@@ -340,8 +340,6 @@ class BacktestMultiPort(Backtest):
     
     def saveDB(self):
         print("["+str(self.strategyCode)+"] Start data saving...")
-        self._updateInvestType()
-        self._updataHTML()
         # 데이터 저장하기
         print("["+str(self.strategyCode)+"] Start data saving...1")
         self._saveBacktestMonthlyProfitRateChartTable()
@@ -357,6 +355,10 @@ class BacktestMultiPort(Backtest):
         self._saveAccumulateProfitRateChartTable()
         print("["+str(self.strategyCode)+"] Start data saving...7")
         self._saveHistoryTable()
+        print("["+str(self.strategyCode)+"] Start data saving...8")
+        self._updateInvestType()
+        print("["+str(self.strategyCode)+"] Start data saving...9")
+        self._updataHTML()
 
 
         print("["+str(self.strategyCode)+"] Complete data saving!")
