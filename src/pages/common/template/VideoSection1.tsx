@@ -9,7 +9,7 @@ const VideoSection1 = () => {
   return (
     <SVideoSection1>
       <video
-        width="100%"
+        width="70%"
         height="auto"
         autoPlay={true}
         muted
@@ -44,6 +44,7 @@ const SVideoSection1 = styled.section`
   position: relative;
   display: flex;
   flex-flow: column nowrap;
+  align-items: flex-end;
 
   .titleOverlap {
     position: absolute;

@@ -7,7 +7,7 @@ const VideoSection2 = () => {
   return (
     <SVideoSection2>
       <video
-        width="100%"
+        width="70%"
         height="auto"
         autoPlay={true}
         muted
@@ -36,8 +36,9 @@ const SVideoSection2 = styled.section`
     width: 100vw;
     height: 100%;
     display: flex;
+    align-items: flex-end;
     flex-flow: column nowrap;
-    padding-left: 5vw;
+    padding-right: 5vw;
     padding-top: 5vw;
     ${up('md')} {
       font-weight: bold;

@@ -45,7 +45,7 @@ const LandingPage = () => {
         </WingBlank>
       </article>
 
-      <article className="section section_mockImg section_backtest">
+      <article className="section section_mockImg section_stSearch">
         <WingBlank>
           <div className="blackCover"></div>
           <Fade cascade>
@@ -141,15 +141,16 @@ const SLadingPage = styled.section`
     background-attachment: fixed;
     background-repeat: no-repeat;
     background-position: center;
+  }
+  .section_mock {
+    background-size: contain;
+    background-image: url('/img/mockup-maker01.jpg');
+  }
+  .section_stSearch {
     background-size: cover;
     ${up('md')} {
       background-size: unset;
     }
-  }
-  .section_mock {
-    background-image: url('/img/mockup-maker01.jpg');
-  }
-  .section_backtest {
     align-items: flex-start;
     background-image: url('/img/mockup-taker01.jpg');
   }
