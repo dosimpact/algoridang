@@ -1,12 +1,11 @@
+import { Button } from 'components/common/_atoms/Buttons';
 import { useHistory } from 'react-router';
+import { Link } from 'react-router-dom';
+import { up } from 'styled-breakpoints';
 import styled from 'styled-components';
 
 const HeaderSection = () => {
   const history = useHistory();
-
-  // const handleUserProfileLink = () => {
-  //   history.push(process.env.PUBLIC_URL + '/takers/user-profile');
-  // };
 
   return (
     <SHeaderSection>
@@ -23,10 +22,17 @@ const HeaderSection = () => {
         ></img>
         <div className="logoText">알고리당</div>
       </div>
-      <div className="authInfo">
-        {/* <span onClick={handleUserProfileLink}>
-          <IconNavPersonNormal />
-        </span> */}
+      <div className="navInfo">
+        <Link className="takersPCView" to="takers/ticker-search">
+          <Button className="btns" type="normal">
+            전략 탐색
+          </Button>
+        </Link>
+        <Link className="makersPCView" to="makers/ticker-search">
+          <Button className="btns" type="blue">
+            전략 생성
+          </Button>
+        </Link>
       </div>
     </SHeaderSection>
   );
@@ -35,13 +41,14 @@ const HeaderSection = () => {
 const SHeaderSection = styled.header`
   height: 7.4rem;
   width: 100%;
-  padding: 0px 2rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
   justify-content: center;
   align-content: center;
   /* background-color: ${(props) => props.theme.ColorMainDarkGray}; */
-
+  ${up('md')} {
+    padding: 0px 2rem;
+  }
   z-index: 1000;
   svg {
     fill: ${(props) => props.theme.ColorMainWhite};
@@ -52,20 +59,34 @@ const SHeaderSection = styled.header`
     align-items: center;
     .logoImage {
       width: 4rem;
+      ${up('md')} {
+        width: 6rem;
+      }
     }
     .logoText {
       font-weight: 700;
       font-size: 2rem;
+      ${up('md')} {
+        font-weight: 700;
+        font-size: 2.5rem;
+      }
     }
   }
-  .authInfo {
+  .navInfo {
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
     justify-content: flex-end;
     cursor: pointer;
-    .email {
-      margin-right: 1.5rem;
+    .btns {
+      margin-left: 1rem;
+      font-size: 1.6rem;
+      ${up('md')} {
+        width: 12rem;
+        height: 4rem;
+        font-weight: 700;
+        font-size: 2rem;
+      }
     }
   }
   svg {

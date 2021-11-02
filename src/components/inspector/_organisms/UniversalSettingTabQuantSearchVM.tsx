@@ -120,9 +120,7 @@ const UniversalSettingTabQuantSearchVM = () => {
   const _handlePreset_4 = () => {
     setQSBody(
       produce({ data: defaultQSBodyData }, (df) => {
-        df.data['PER'] = { operator: 'up', values: [5000] };
-        df.data['debt_ratio_Q'] = { operator: 'up', values: [0] };
-        df.data['EV_per_EBITDA'] = { operator: 'up', values: [0] };
+        df.data['PBR_Q'] = { operator: 'up', values: [0.2] };
         return df;
       }),
     );
