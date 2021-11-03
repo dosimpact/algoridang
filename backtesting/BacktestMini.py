@@ -41,7 +41,7 @@ class BacktestMini(Backtest):
 
         if salestrategy == 'BollingerBand':
             salestrategy = BollingerBand
-            minDate = miniBackData['setting'][0]
+            minDate = miniBackData['setting'][0]+1
 
         if salestrategy == 'MACD':
             salestrategy = MACD
