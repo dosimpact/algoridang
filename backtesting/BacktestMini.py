@@ -46,8 +46,8 @@ class BacktestMini(Backtest):
         if salestrategy == 'MACD':
             salestrategy = MACD
             minDate = miniBackData['setting'][1]
-            if minDate < 30:
-                minDate = 30
+            if minDate < 40:
+                minDate = 40
 
         for i in range(len(salestrategy.param)):
             salestrategy.param[i] = setting[i]         

@@ -166,8 +166,8 @@ class BacktestMultiPort(Backtest):
                     strategyList.append((row[1], BollingerBand, setting, 1, minDate)) 
                 if row[2] == 'MACD':
                     setting = [row[3]['MACD']['pfast'], row[3]['MACD']['pslow'], row[3]['MACD']['value']]
-                    if row[3]['MACD']['pslow'] < 30:
-                        minDate = 30
+                    if row[3]['MACD']['pslow'] < 40:
+                        minDate = 40
                     else:
                         minDate = row[3]['MACD']['pslow']
                     strategyList.append((row[1], MACD, setting, 1, minDate)) 
