@@ -128,4 +128,5 @@ https://velog.io/@ypd03008/series/%EC%95%8C%EA%B3%A0%EB%A6%AC%EB%8B%B9
 |cerebro_cheat_on_open | https://www.notion.so/cerebro_cheat_on_open-68462fe26ee746f8ba332a3bf2e8fa27 |[:link:](https://www.notion.so/cerebro_cheat_on_open-68462fe26ee746f8ba332a3bf2e8fa27)|
 |quantstats| https://www.notion.so/quantstats-688150a8cadb437daae941bd03e09a2b |[:link:](https://www.notion.so/quantstats-688150a8cadb437daae941bd03e09a2b)
 |Celery-ubuntu| https://www.notion.so/Celery-ubuntu-e2eb6df00bc54f88bcb01075643e01cf |[:link:](https://www.notion.so/Celery-ubuntu-e2eb6df00bc54f88bcb01075643e01cf)
+|UML| https://www.notion.so/UML-a22ddfc5e57a4b1b98b3ef746fde17bd |[:link:](https://www.notion.so/UML-a22ddfc5e57a4b1b98b3ef746fde17bd)
 
