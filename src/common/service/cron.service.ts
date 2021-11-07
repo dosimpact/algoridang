@@ -72,13 +72,13 @@ export class CronService {
   }
 
   // @Cron(CronExpression.EVERY_10_SECONDS)
-  @Cron(CronExpression.EVERY_30_MINUTES)
-  async handleCronBackTestRetry() {
-    console.time('BackTestRetry');
-    this.logger.verbose('🚀 BackTestRetry');
-    await this.retryUnsuccessfulBacktest();
-    console.timeEnd('BackTestRetry');
-  }
+  // @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
+  // async handleCronBackTestRetry() {
+  //   console.time('BackTestRetry');
+  //   this.logger.verbose('🚀 BackTestRetry');
+  //   await this.retryUnsuccessfulBacktest();
+  //   console.timeEnd('BackTestRetry');
+  // }
   private async retryUnsuccessfulBacktest() {
     const strategies = await this.strategyService.__getStrategyUnsuccess();
     this.logger.verbose(
