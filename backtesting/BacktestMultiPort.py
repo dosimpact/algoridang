@@ -21,7 +21,7 @@ class BacktestMultiPort(Backtest):
     @methods
         __init__ - 초기화 함수
         portBacktest - 포트폴리오 백테스트 함수
-        MultiPortBacktest - 
+        multiPortBacktest - 
         getPortInfoFromDB - 
         getPeriodInfo - 
         makePortpolio - 
@@ -70,7 +70,7 @@ class BacktestMultiPort(Backtest):
                 return "error"
             
             
-            self.MultiPortBacktest(periodInfo['investPrice'], case, periodInfo['startTime'], periodInfo['endTime'])
+            self.multiPortBacktest(periodInfo['investPrice'], case, periodInfo['startTime'], periodInfo['endTime'])
             self.makePortpolio()
             self.makeDBDataSet(periodInfo['investPrice'],periodInfo['startTime'], periodInfo['endTime'])
             self.saveDB()
@@ -101,13 +101,13 @@ class BacktestMultiPort(Backtest):
             return "error"
         
         
-        self.MultiPortBacktest(periodInfo['investPrice'], case, periodInfo['startTime'], periodInfo['endTime'])
+        self.multiPortBacktest(periodInfo['investPrice'], case, periodInfo['startTime'], periodInfo['endTime'])
         self.makePortpolio()
         self.makeDBDataSet(periodInfo['investPrice'],periodInfo['startTime'], periodInfo['endTime'])
         self.saveDB()
         return "Done"
         
-    def MultiPortBacktest(self, cash, case, startTime, endTime):
+    def multiPortBacktest(self, cash, case, startTime, endTime):
         """ 멀티 포트에 대하여 백테스팅을 수행함 
         
         DB데이터결과를 입력으로 받음

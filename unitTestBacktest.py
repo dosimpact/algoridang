@@ -118,9 +118,11 @@ class BacktestTestCase(unittest.TestCase):
 
 def suite():
     suite = unittest.TestSuite()
-    suite.addTest(BacktestTestCase('test_adjustAllModify'))
+    suite.addTest(BacktestTestCase('test_backtestTestCaseError1026'))
     return suite
+
+
 if __name__ == "__main__":
-    unittest.main()
-    #runner = unittest.TextTestRunner()
-    #runner.run(suite())
+    #unittest.main()
+    runner = unittest.TextTestRunner()
+    runner.run(suite())
