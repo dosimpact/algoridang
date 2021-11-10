@@ -39,12 +39,18 @@ class MiniBackTest(Resource):
     def post(self):
         """strategyCode 를 바탕으로 백테스트를 수행합니다. """
         if request.method == 'POST':
-            print(f'job : {time.strftime("%H:%M:%S")}')
-            inputdata = request.get_json(silent=True)
-            bt = BacktestMini()
             
-            res = bt.getMiniBacktest(inputdata)
-            print(f'job : {time.strftime("%H:%M:%S")}')
+            inputdata = request.get_json(silent=True)
+            
+            f = open("logger/TimeTest.txt", 'a')
+            f.write(f'job start : {time.strftime("%H:%M:%S")}\n')
+            f.write(f'job data : {str(inputdata)}\n')
+            
+            bt = BacktestMini()
+            res = bt.getMiniBacktest(inputdata)\
+
+            f.write(f'job done : {time.strftime("%H:%M:%S")}\n')
+            f.close()
            
         return res, 201
 
