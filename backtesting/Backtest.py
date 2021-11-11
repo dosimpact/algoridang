@@ -46,7 +46,7 @@ class Backtest(object):
         DBClass = databasepool()
         conn = DBClass.getConn()
         query = "select stock_date, open_price, high_price, low_price, close_price, volume from daily_stock"
-        query += " where \"ticker\" = \'"+ticker+"\' order by stock_date asc;"
+        query += " where \"ticker\" = \'"+ticker+"\' and  stock_date  >= \'" + start +"\' order by stock_date asc;"
         
         try:
             df = DBClass.selectDataframe(conn, query)
