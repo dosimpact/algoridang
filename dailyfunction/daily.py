@@ -36,7 +36,7 @@ def dailyStockData(tickers):
     idx = 0
     for ticker, name in tickers:
         idx += 1
-        df = pykrx.getKRStockDaily(ticker,'20110101')
+        df = pykrx.getKRStockDaily(ticker)
         res = pykrx.sendKRStockDaily(ticker, df)
 
         if res != "":

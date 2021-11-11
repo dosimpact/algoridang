@@ -122,6 +122,10 @@ class BacktestMultiPort(Backtest):
                 salestrategy.param[i] = setting[i]         
             
             invest , strat =self.backtest(ticker, cash/tickerlen * weight, salestrategy, startTime, endTime, minDate)
+
+            if strat == None:
+                continue
+            
             self.multiInvest += invest
 
             self.makebacktestResult(strat)
@@ -208,6 +212,8 @@ class BacktestMultiPort(Backtest):
 
     def makePortpolio(self):
         """ 단일종목 포트폴리오 """
+        if self.multiTotalreturn == None:
+            return 
         self.metrics = quantstats.reports.metrics(self.multiTotalreturn, mode='full', display=False)
         filename = "./quantStateResult/"+str(self.strategyCode)+".html"
         quantstats.reports.html(self.multiTotalreturn,output = filename)

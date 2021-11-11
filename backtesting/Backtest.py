@@ -1,9 +1,12 @@
 
+from datetime import datetime
 import backtrader as bt
 import quantstats
 import pandas as pd
 import sys
 import copy
+
+from datetime import date, timedelta
 from DB.connectionPool import databasepool
 
 from backtesting.BarAnalysis import BarAnalysis
@@ -42,11 +45,17 @@ class Backtest(object):
             res - 결과 데이터 프레임
             state - 정상 동작, pass 동작 구분
         """
+
+        startDay = date(int(start[0:4]),int(start[4:6]),int(start[6:]))
+        startDay = startDay - timedelta(mindatalen + 1)
+        startDay = str(startDay.strftime("%Y%m%d"))
+
+
         res = []
         DBClass = databasepool()
         conn = DBClass.getConn()
         query = "select stock_date, open_price, high_price, low_price, close_price, volume from daily_stock"
-        query += " where \"ticker\" = \'"+ticker+"\' and  stock_date  >= \'" + start +"\' order by stock_date asc;"
+        query += " where \"ticker\" = \'"+ticker+"\' and  stock_date  >= \'" + startDay +"\' order by stock_date asc;"
         
         try:
             df = DBClass.selectDataframe(conn, query)
@@ -65,19 +74,14 @@ class Backtest(object):
             
             
             alllen = len(df)
-            backtestlen = len(df[str(pd.to_datetime(start, format='%Y-%m-%d')):])
-            getDataPosStr = alllen - backtestlen - mindatalen - 1
+            getDataPosStr = alllen - mindatalen - 1
             if getDataPosStr > 0:
                 if end is None or end == '':
-                    res = df[getDataPosStr:]
+                    res = df[:]
                 else:
                     getDataPosEnd = len(df[:str(pd.to_datetime(end, format='%Y-%m-%d'))])
-                    res = df[getDataPosStr:getDataPosEnd]
-
-            else:
-                res = df
-
-            if len(res) < mindatalen:
+                    res = df[:getDataPosEnd]
+            else :
                 self.error = "DataCondition Error  function(_getDBData)" + str(ticker)
                 return res, "pass"    
 
@@ -128,11 +132,14 @@ class Backtest(object):
 
     def makePortpolio(self):
         """ 단일종목 포트폴리오 """
+        if self.totalreturn == None:
+            return 
         self.metrics = quantstats.reports.metrics(self.totalreturn, mode='full', display=False)
     
 #################################################################################################
     def makebacktestResult(self, strat):
-
+        if strat == None:
+            return 
 
         # 일간 데이터
         self.daily_profit(strat)
