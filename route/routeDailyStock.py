@@ -41,7 +41,7 @@ class DBinitDailyStockMulti(Resource):
                 'status' : "error :  data is missing!"
             }, 400
 
-        if startDate == None:
+        if startDate is None:
             startDate = '20110101'
 
         worker = int(worker)

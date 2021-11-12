@@ -132,13 +132,13 @@ class Backtest(object):
 
     def makePortpolio(self):
         """ 단일종목 포트폴리오 """
-        if self.totalreturn == None:
+        if self.totalreturn is None:
             return 
         self.metrics = quantstats.reports.metrics(self.totalreturn, mode='full', display=False)
     
 #################################################################################################
     def makebacktestResult(self, strat):
-        if strat == None:
+        if strat is None:
             return 
 
         # 일간 데이터
