@@ -53,9 +53,10 @@ class GrahamsLastGift(StrategyBase):
             from financial_statement fin, corporation cor \
             where fin.\"ticker\"=cor.\"ticker\" \
             and fin.\"PER\" <= '"+str(self.parm['data']['PER']['values'][0])+"' \
+            and fin.\"PER\" > 1 \
             and fin.\"debt_ratio_Q\" <= '"+str(self.parm['data']['debt_ratio_Q']['values'][0])+"' \
             ) a \
-        order by a.\"PER\" \
+        order by a.\"PER\" desc \
         limit "+str(self.parm['numberOfData'])
         
         print(self.query)
