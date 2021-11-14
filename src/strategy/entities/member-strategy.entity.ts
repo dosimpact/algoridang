@@ -33,6 +33,7 @@ import { HashList } from './hash-list.entity';
 import { Universal } from 'src/trading/entities/universal';
 import { UniversalProducer } from '../json/universal_producer.entity';
 import { Type } from 'class-transformer';
+import { AccumulateProfitRateChartJSON } from '../constant/JSONS';
 
 export enum InvestType {
   Unclassified = 'Unclassified', // 0 - 미분류
@@ -108,6 +109,11 @@ export class MemberStrategy {
   @IsString()
   @Column({ type: 'varchar', length: 15, nullable: true })
   status_code: string; // 최근 백테스트 결과 - 응답 메시지
+
+  @IsString()
+  @Column({ type: 'json', nullable: true })
+  accumulateProfitRateChartJSON?: AccumulateProfitRateChartJSON[];
+
   // TOOD : 상태 정의 문서
   // - null , Running, Error, Success
 

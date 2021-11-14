@@ -824,7 +824,7 @@ export class StrategyService {
   async __getStrategyUnsuccess() {
     return this.MemberStrategyRepo.find({
       where: [
-        { status_code: Not(In(['Error', 'Success'])) },
+        // { status_code: Not(In(['Error', 'Success'])) },
         { status_code: IsNull() },
       ],
     });

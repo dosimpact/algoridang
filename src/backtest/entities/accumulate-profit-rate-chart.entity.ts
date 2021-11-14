@@ -1,4 +1,4 @@
-import { IsDateString, IsNumber } from 'class-validator';
+import { IsDateString, IsNumber, IsString } from 'class-validator';
 import { MemberStrategy } from 'src/strategy/entities';
 import {
   Column,
@@ -20,13 +20,13 @@ export class AccumulateProfitRateChart {
 
   @IsDateString()
   @Column({ type: 'timestamptz' })
-  chart_date: Date;
+  chart_date: string;
 
   // 1:N 관계
   // (1) 차트에 대한 원본 전략 매핑
-  @IsNumber()
+  @IsString()
   @Column({ nullable: true })
-  strategy_code: number;
+  strategy_code: string;
 
   @ManyToOne(() => MemberStrategy, (ms) => ms.accumulateProfitRateChart, {
     onDelete: 'CASCADE',
