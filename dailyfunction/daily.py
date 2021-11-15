@@ -24,9 +24,9 @@ def callDaily():
     mock = MockInvestCtrl()
     print("dailyCorporation END : ", dailyCorporation())
     print("dailyStockData END : ", dailyStockData(tickers))
-    #print("dailyfinanceData END : ", fin.getFinancalDataNaver(tickers))
-    print("dailyfinanceData END : ", mock.searchMockInvest())
     print("miniBacktest End : ",  makeThread(tickers,rdb))
+    print("dailyfinanceData END : ", mock.searchMockInvest())
+    #print("dailyfinanceData END : ", fin.getFinancalDataNaver(tickers))
 
     print(f'job : {time.strftime("%H:%M:%S")}')
 
@@ -128,10 +128,11 @@ def callDailyFunction():
     # test
     sched.add_job(callDaily, 'cron', day_of_week='0-4', hour='00', minute='30')
 
+    callDaily()
+
     # apscheduler실행
     sched.start()
     
-    callDaily()
     
     while 1:
         pass

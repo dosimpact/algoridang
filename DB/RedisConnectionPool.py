@@ -28,8 +28,11 @@ class RedisConnectionPool(object):
                 
     def __initDB(self):
         try:
-            pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
+            print("redis connecting...")
+            pool = redis.ConnectionPool(host='3.34.103.188', port=6379, db=0)
             self.r = redis.Redis(connection_pool=pool)
+            print("redis address = 3.34.103.188")
+            print("redis connected!")
             return True
         except(Exception) as error:
             print("Error while connecting to PostgreSQL", error)
@@ -52,9 +55,8 @@ class RedisConnectionPool(object):
 if __name__ == "__main__":
     """connection Test Case"""
     rdb = RedisConnectionPool()
-    data = rdb.getRedisData('001440')
+    data = rdb.getRedisData('060310')
     if data is None:
         print(None) 
     else:
-        test_dict2 = dict(json.loads(data))
-        print(test_dict2)
+        print(data)

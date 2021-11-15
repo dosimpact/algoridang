@@ -29,7 +29,7 @@ class databasepool(dbQuery):
                     break
     def __initDB(self):
         try:
-            print("DB connecting...")
+            print("postgreSQL connecting...")
             
             self.__postgreSQLpool = psycopg2.pool.SimpleConnectionPool(1, 20, user=identification.ID.user[self.Mode],
                                                             password=identification.ID.password[self.Mode],
@@ -38,8 +38,8 @@ class databasepool(dbQuery):
                                                             database=identification.ID.database[self.Mode])
             # Create a cursor to perform database operations
     
-            print("address = ",identification.ID.host[self.Mode])
-            print("DB connected!")
+            print("postgreSQL address = ",identification.ID.host[self.Mode])
+            print("postgreSQL connected!")
             return True
         except (Exception, Error) as error:
             print("Error while connecting to PostgreSQL", error)

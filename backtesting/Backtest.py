@@ -118,7 +118,6 @@ class Backtest(object):
         results = cerebro.run()
 
         strat = results[0]
-        print(strat)
         value = cerebro.broker.getvalue()
 
         # 그래프 그리기
