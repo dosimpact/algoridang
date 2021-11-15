@@ -1,5 +1,6 @@
 FROM python:3.6.8
 RUN apt update
+RUN apt install redis-server
 RUN mkdir Workspace
 COPY . ./Workspace
 
