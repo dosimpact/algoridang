@@ -131,7 +131,6 @@ https://velog.io/@ypd03008/series/%EC%95%8C%EA%B3%A0%EB%A6%AC%EB%8B%B9
 | UML-상태다이어그램 | https://www.notion.so/UML-c9e92ac8581b4377b0b5dc0180f8c27c          | [:link:](https://www.notion.so/UML-c9e92ac8581b4377b0b5dc0180f8c27c)          |
 
 <div align="center">
-<div align="center">
 
 # Welcome 알고리당 👏
 
