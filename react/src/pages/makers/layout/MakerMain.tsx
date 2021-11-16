@@ -14,18 +14,30 @@ import {
   IconNavTickerSearchNormal,
 } from 'assets/icons';
 import useLogin from 'hooks/useMockLogin';
+import { useHistory } from 'react-router-dom';
+import UserProfileC from 'pages/makers/user-profile/user-profileC';
+import authCheck from 'hooks/authCheck';
 
 // TODO LOGIN 처리 ( Email , Google )
 const NavigationContainer = () => {
-  const { email, mockUpUserLogin } = useLogin();
+  const { email } = useLogin();
+  const history = useHistory();
+  const handleClickProfile = () => {
+    history.push(process.env.PUBLIC_URL + '/makers/user-profile');
+  };
   return (
     <SNavigationContainer>
       <header>
-        <Link to="/makers/ticker-search">
+        <Link to="/">
           <div className="hwrapper">
-            <div className="headerName">{`알고`}</div>
+            <img
+              className="headerLogo"
+              src={process.env.PUBLIC_URL + '/logo192.png'}
+              alt="mainLogo"
+            />
+            {/* <div className="headerName">{`알고`}</div>
             <div className="headerName">{`리당`}</div>
-            <div className="headerSubName">Makers</div>
+            <div className="headerSubName">Makers</div> */}
           </div>
         </Link>
       </header>
@@ -58,7 +70,7 @@ const NavigationContainer = () => {
         </article>
       </nav>
       <article className="bottomNav">
-        <div className="navItem" onClick={mockUpUserLogin}>
+        <div className="navItem" onClick={handleClickProfile}>
           <IconNavPersonNormal />
           <div className="navName email">
             {email ? email.split(/@/).join('\n@') : <span>Login</span>}
@@ -81,6 +93,11 @@ const SNavigationContainer = styled.section`
     margin-top: 5rem;
     .hwrapper {
       text-align: center;
+      .headerLogo {
+        width: 8rem;
+        height: auto;
+        object-fit: scale-down;
+      }
       .headerName {
         font-size: 1.4rem;
         font-weight: 700;
@@ -134,10 +151,11 @@ const ContentContainer = () => {
         <Route path="/makers/ticker-search" component={TickerSearch} />
         <Route
           path="/makers/strategy-create"
-          component={StrategyCreateTemplate}
+          component={authCheck(StrategyCreateTemplate, true)}
         />
         <Route path="/makers/strategy-my" component={StrategyMyC} />
         <Route path="/makers/strategy-public" component={StrategyPublicC} />
+        <Route path="/makers/user-profile" component={UserProfileC} />
         <Redirect from="*" to="/makers/strategy-create" />
       </Switch>
     </section>

@@ -9,6 +9,8 @@ import SectionTitle from 'components/common/_molecules/SectionTitle';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import StrategyCardInfo from 'components/common/_molecules/StrategyCardInfo';
 import StrategySearchInput from 'components/common/_organisms/StrategySearchInput';
+import StrategyCardInfoSkeleton from 'components/common/_molecules/StrategyCardInfoSkeleton';
+import StrategyCardInfoEmpty from 'components/common/_molecules/StrategyCardInfoEmpty';
 
 // todo:refactor CAGR 부분 DB Relation eager 처리 및 undefined 핸들링
 const StrategyFeeds = () => {
@@ -20,13 +22,13 @@ const StrategyFeeds = () => {
     strategyListRiskTaking,
     strategyListStableIncome,
   } = useStrategy();
-  console.log('strategyListRiskTaking', strategyListRiskTaking);
   return (
     <WingBlank>
       <PageGuide
         icon={<IconSearchStrategy />}
         title="전략 탐색"
-        subTitle="수익률을 확인하고 원하는 전략으로 모의투자를 시작해 보세요."
+        subTitle={`수익률을 확인하고 원하는 전략으로
+모의투자를 시작해 보세요.`}
       />
       <SectionTitle title="전략 검색" />
       <StrategySearchInput />
@@ -36,8 +38,14 @@ const StrategyFeeds = () => {
         title="신규 투자 전략"
         linkTo={process.env.PUBLIC_URL + '/takers/strategy-search/list/new'}
       />
-      <WhiteSpace />
-      {strategyListNew &&
+      <WhiteSpace marginV="1" />
+      {!strategyListNew ? (
+        [...new Array(3)].map((e, idx) => (
+          <StrategyCardInfoSkeleton key={idx} />
+        ))
+      ) : strategyListNew.length === 0 ? (
+        <StrategyCardInfoEmpty />
+      ) : (
         strategyListNew.slice(0, 3).map((data, key) => (
           <StrategyCardInfo
             key={key}
@@ -48,7 +56,8 @@ const StrategyFeeds = () => {
               );
             }}
           />
-        ))}
+        ))
+      )}
 
       <WhiteSpace />
       <SectionTitle
@@ -58,7 +67,13 @@ const StrategyFeeds = () => {
         }
       />
       <WhiteSpace />
-      {strategyListHighView &&
+      {!strategyListHighView ? (
+        [...new Array(3)].map((e, idx) => (
+          <StrategyCardInfoSkeleton key={idx} />
+        ))
+      ) : strategyListHighView.length === 0 ? (
+        <StrategyCardInfoEmpty />
+      ) : (
         strategyListHighView.slice(0, 3).map((data, key) => (
           <StrategyCardInfo
             key={key}
@@ -69,7 +84,8 @@ const StrategyFeeds = () => {
               );
             }}
           />
-        ))}
+        ))
+      )}
       <WhiteSpace />
       <SectionTitle
         title="위험 추구형 투자 전략"
@@ -78,7 +94,14 @@ const StrategyFeeds = () => {
         }
       />
       <WhiteSpace />
-      {strategyListRiskTaking &&
+      {}
+      {!strategyListRiskTaking ? (
+        [...new Array(3)].map((e, idx) => (
+          <StrategyCardInfoSkeleton key={idx} />
+        ))
+      ) : strategyListRiskTaking.length === 0 ? (
+        <StrategyCardInfoEmpty />
+      ) : (
         strategyListRiskTaking.slice(0, 3).map((data, key) => (
           <StrategyCardInfo
             key={key}
@@ -89,14 +112,21 @@ const StrategyFeeds = () => {
               );
             }}
           />
-        ))}
+        ))
+      )}
       <WhiteSpace />
       <SectionTitle
         title="중립형 투자 전략"
         linkTo={process.env.PUBLIC_URL + '/takers/strategy-search/list/neutral'}
       />
       <WhiteSpace />
-      {strategyListNeutral &&
+      {!strategyListNeutral ? (
+        [...new Array(3)].map((e, idx) => (
+          <StrategyCardInfoSkeleton key={idx} />
+        ))
+      ) : strategyListNeutral.length === 0 ? (
+        <StrategyCardInfoEmpty />
+      ) : (
         strategyListNeutral.slice(0, 3).map((data, key) => (
           <StrategyCardInfo
             key={key}
@@ -107,7 +137,8 @@ const StrategyFeeds = () => {
               );
             }}
           />
-        ))}
+        ))
+      )}
       <WhiteSpace />
       <SectionTitle
         title="수익 안정형 투자 전략"
@@ -116,7 +147,13 @@ const StrategyFeeds = () => {
         }
       />
       <WhiteSpace />
-      {strategyListStableIncome &&
+      {!strategyListStableIncome ? (
+        [...new Array(3)].map((e, idx) => (
+          <StrategyCardInfoSkeleton key={idx} />
+        ))
+      ) : strategyListStableIncome.length === 0 ? (
+        <StrategyCardInfoEmpty />
+      ) : (
         strategyListStableIncome.slice(0, 3).map((data, key) => (
           <StrategyCardInfo
             key={key}
@@ -127,7 +164,8 @@ const StrategyFeeds = () => {
               );
             }}
           />
-        ))}
+        ))
+      )}
     </WingBlank>
   );
 };

@@ -1,5 +1,11 @@
+import {
+  RequestQuantSelectDefaultOutput,
+  RequestQuantSelectInput,
+  RequestQuantSelectLookUpOutput,
+  RequestQuantSelectOutput,
+} from 'states/backtest/interface/dtos';
 import { CoreOutput, CorePaginationInput } from '../../common/interface/dtos';
-import { Corporation, DailyStock } from './entities';
+import { Corporation, DailyStock, FinancialStatement } from './entities';
 
 // (1)
 // 모든 Corporation list를 리턴
@@ -36,3 +42,17 @@ export interface GetDayilStocksInput extends CorePaginationInput {
 export interface GetDayilStocksOutput extends CoreOutput {
   dailyStocks?: DailyStock[];
 }
+
+export interface GetFinancialStatementInput {
+  ticker: string;
+}
+export interface GetFinancialStatementOutput extends CoreOutput {
+  financialStatements?: FinancialStatement[];
+}
+
+export interface QuantSelectionInput extends RequestQuantSelectInput {}
+export interface QuantSelectionOutput extends RequestQuantSelectOutput {}
+export interface QuantSelectionLookupListOutput
+  extends RequestQuantSelectLookUpOutput {}
+export interface QuantSelectionLookupTypeOutput
+  extends RequestQuantSelectDefaultOutput {}

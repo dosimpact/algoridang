@@ -22,7 +22,8 @@ const SPageGuide = styled.section`
   flex-flow: column nowrap;
   justify-content: center;
   align-items: center;
-  padding: 5.4rem 0rem;
+  padding-top: 4rem;
+  padding-bottom: 5rem;
   .icon {
     fill: ${(props) => props.theme.ColorMainYellow};
     svg {
@@ -31,15 +32,20 @@ const SPageGuide = styled.section`
     }
   }
   .title {
-    margin-top: 1.3rem;
-    font-size: 1.4rem;
+    margin-top: 1.5rem;
+    font-size: 1.8rem;
     line-height: 1.6rem;
     color: #000000;
-    font-weight: bold;
+    font-weight: 700;
   }
   .subTitle {
     margin-top: 1rem;
-    font-size: 1.15rem;
+    font-size: 1.3rem;
+    line-height: 2rem;
+    font-weight: 400;
     color: ${(props) => props.theme.ColorMainGray};
+    text-align: center;
+
+    white-space: pre-wrap;
   }
 `;

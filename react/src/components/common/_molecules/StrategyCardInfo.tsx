@@ -68,18 +68,23 @@ const StrategyCardInfo: React.FC<IStrategyCardInfo> = ({
             ))}
         </article>
         <article className="right">
-          <div className="title text_ellipsis">{title}</div>
-          {subTitle && <div className="subTitle">{subTitle}</div>}
-          <div className="CAGR">
-            {strategy.status_code === 'Success' ? (
-              <BadgeCAGR val={CAGR} hasPercentage={true} />
-            ) : strategy.status_code === 'Running' ? (
-              <RoundBadge type="Green">백테스트 진행중</RoundBadge>
-            ) : (
-              strategy.status_code === 'Error' && (
-                <RoundBadge type="Yellow">백테스트 오류</RoundBadge>
-              )
-            )}
+          <div className="right_wrapper">
+            <div className="title text_ellipsis">{title}</div>
+            <div className="subTitle">{subTitle}</div>
+            <div className="CAGR">
+              {strategy.status_code === 'Success' ? (
+                <BadgeCAGR val={CAGR} hasPercentage={true} />
+              ) : strategy.status_code === null ? (
+                <RoundBadge type="Yellow">백테스트 대기중</RoundBadge>
+              ) : strategy.status_code === 'Start' ||
+                strategy.status_code === 'Running' ? (
+                <RoundBadge type="Green">백테스트 진행중</RoundBadge>
+              ) : (
+                strategy.status_code === 'Error' && (
+                  <RoundBadge type="Yellow">백테스트 오류</RoundBadge>
+                )
+              )}
+            </div>
           </div>
         </article>
       </SStrategyCardInfo>
@@ -90,35 +95,30 @@ const StrategyCardInfo: React.FC<IStrategyCardInfo> = ({
 const SStrategyCardInfo = styled.section`
   background-color: white;
   transition: box-shadow 0.2s ease-in-out;
-  /* :hover {
-    box-shadow: 0px 0.5px 5px 0px rgba(0, 0, 0, 0.5);
-  } */
-  box-shadow: 0px 0.5px 1px rgba(0, 0, 0, 0.25);
+  ${(props) => props.theme.shadowLine1};
   border-radius: 7px;
 
   min-height: 10rem;
-  height: 10rem;
-  /* min-width: 300px; */
+  height: 12rem;
   width: 100%;
+  /* padding-left: 1rem; */
 
   display: grid;
-  grid-template-columns: 10rem 1fr;
+  grid-template-columns: 11rem 1fr;
   margin-bottom: 20px;
   cursor: pointer;
   .left {
     border-top-left-radius: 7px;
     border-bottom-left-radius: 7px;
-    width: 10rem;
-    height: 100%;
-    /* background-color: red; */
+    width: 11rem;
     display: flex;
     justify-content: center;
     align-items: center;
     .thumnail {
       border-top-left-radius: 7px;
       border-bottom-left-radius: 7px;
-      width: 100%;
-      height: 100%;
+      height: 10rem;
+      width: 10rem;
       object-fit: scale-down;
       padding: 1rem;
     }
@@ -142,26 +142,32 @@ const SStrategyCardInfo = styled.section`
       color: #ffffff;
     }
     .not_operation {
-      background: ${(props) => props.theme.ColorMainLightGray};
-      color: ${(props) => props.theme.ColorMainYellow};
+      background: ${(props) => props.theme.ColorMainYellow};
+      color: ${(props) => props.theme.ColorMainWhite};
     }
   }
   .right {
-    width: 100%;
-    padding-left: 1rem;
-    padding-top: 1.9rem;
+    width: 95%;
+    padding-left: 1.5rem;
+    display: flex;
+    align-items: center;
+    .right_wrapper {
+      width: 100%;
+    }
     .title {
-      font-size: 1.3rem;
-      font-weight: 500;
+      font-size: 1.4rem;
+      font-weight: 600;
       line-height: 1.5rem;
     }
     .subTitle {
-      margin-top: 0.7rem;
+      margin-top: 1rem;
       font-size: 1.1rem;
+      font-weight: 400;
+      min-height: 1.1rem;
       color: ${(props) => props.theme.ColorMainGray};
     }
     .CAGR {
-      margin-top: 0.7rem;
+      margin-top: 1rem;
     }
   }
 `;

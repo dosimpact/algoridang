@@ -4,6 +4,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import useBackTestReport from 'states/backtest/query/useBackTestReport';
 import styled from 'styled-components';
+import { SectionBodyLgSkeleton } from 'components/common/_molecules/MoleculesSkeletons';
 
 interface IWinRatio {
   props?: any;
@@ -19,12 +20,13 @@ const WinRatio: React.FC<IWinRatio> = ({ props }) => {
       <div className="flexRow" style={{ marginTop: '50px' }}>
         <SubTitle title="백테스팅 승률" style={{ margin: '20px 0px' }} />
       </div>
-      {winRatioQuery.isLoading && 'loading...'}
-      {winRatioQuery.data && winRatioQuery.data.backtestWinRatio && (
+      {winRatioQuery.data && winRatioQuery.data.backtestWinRatio ? (
         <ChartWinRatio
           a={winRatioQuery.data.backtestWinRatio.loss_count}
           b={winRatioQuery.data.backtestWinRatio.win_count}
         />
+      ) : (
+        <SectionBodyLgSkeleton />
       )}
     </SWinRatio>
   );

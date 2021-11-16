@@ -21,10 +21,10 @@ export default createGlobalStyle`
         box-sizing:border-box;
     }
     body{
-        font-family:-apple-system, Noto Sans KR, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        font-family:-apple-system, Roboto, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         font-size:1.6rem;
         background-color: #fff;
-        min-height:100vh;
+        min-height:98vh;
         /* background: linear-gradient(0deg, #fff2d2 0%, rgba(255, 255, 255, 0) 100%); */
 
     }
@@ -97,28 +97,42 @@ export default createGlobalStyle`
     ::-webkit-scrollbar-thumb:hover {
         background: #aaa;
     }
-    /* input[type=checkbox] */
-    /* input[type="checkbox"]{
+
+    /* input check-box */
+    input[type="checkbox"]{
         display:none;
-    } */
-    /* input[type="checkbox"] + label{
-        display:none;
-    } */
+    }
+    input[type="checkbox"] + label{
+        /* display:none; */
+        display:flex;
+        align-items: center;
+    }
+    input[type="checkbox"] + label span.checkbox {
+        content:" ";
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        border: 1px solid #C4C4C4;
+        border-radius: 3px;
+        margin-right:1rem;
+    }
+    input[type="checkbox"]:checked + label span.checkbox {
+        background-color:#F3BC2F;
+    }
     /* input css reset */
-    input[type="text"] {
+    input[type="text"],input[type="password"] {
         border:unset;
         border-radius: 0.9rem;
-        /* border: ${(props) => props.theme.Border}; */
         width: 100%;
         height: 4.6rem;
         font-size: 1.3rem;
-
         padding: 1.5rem 2.8rem;
-
         background: rgba(255, 255, 255, 0.53);
-        /* box-shadow: 0px 0.3px 2px rgba(0, 0, 0, 0.25); */
         border-radius: 9px;
     }
+    input[type="text"].gray{    background: "#ECECEC";}
+    input[type="text"].disable{    background: rgba(255, 255, 255, 0.53);}
     input::placeholder {
             color: rgba(122, 122, 122, 0.67);
     }
@@ -138,7 +152,7 @@ export default createGlobalStyle`
         cursor:pointer;
         border:unset;
         border-radius: 9px;
-        border: ${(props) => props.theme.Border};
+        /* border: ${(props) => props.theme.Border}; */
 
         width: 100%;
         height: 4.6rem;
@@ -182,4 +196,7 @@ export default createGlobalStyle`
     input[type="date"]:hover::-webkit-calendar-picker-indicator { opacity:0.05; }
     input[type="date"]:hover::-webkit-calendar-picker-indicator:hover { opacity:0.15; }
 
+    .shadow{
+        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    }
 `;

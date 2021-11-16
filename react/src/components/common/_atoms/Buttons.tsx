@@ -35,22 +35,25 @@ const SButton = styled.div<{
     (props.type === 'normal' && props.theme.ColorMainYellow) ||
     (props.type === 'gray' && props.theme.ColorMainLightGray) ||
     (props.type === 'success' && props.theme.ColorMainLightGreen) ||
+    (props.type === 'warn' && props.theme.ColorMainLightYellow) ||
     (props.type === 'info' && props.theme.ColorMainLightBlue) ||
+    (props.type === 'blue' && props.theme.ColorMainBlue) ||
     (props.type === 'danger' && props.theme.ColorMainLightRed)};
 
   color: ${(props) =>
     (props.type === 'normal' && props.theme.ColorMainWhite) ||
     (props.type === 'gray' && props.theme.ColorMainGray) ||
     (props.type === 'success' && props.theme.ColorMainGreen) ||
+    (props.type === 'warn' && props.theme.ColorMainYellow) ||
     (props.type === 'info' && props.theme.ColorMainBlue) ||
+    (props.type === 'blue' && props.theme.ColorWhite) ||
     (props.type === 'danger' && props.theme.ColorMainRed)};
 
   display: flex;
   justify-content: center;
   align-items: center;
 
-  font-style: normal;
-  font-weight: 200;
+  font-weight: 500;
   line-height: 1.4rem;
-  font-size: 1.3rem;
+  font-size: 1.4rem;
 `;

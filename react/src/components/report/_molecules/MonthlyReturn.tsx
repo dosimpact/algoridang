@@ -4,6 +4,7 @@ import React, { useMemo } from 'react';
 import useBackTestReport from 'states/backtest/query/useBackTestReport';
 import styled from 'styled-components';
 import { toPercentage } from 'utils/parse';
+import { SectionLgSkeleton } from 'components/common/_molecules/MoleculesSkeletons';
 
 interface IMonthlyReturn {
   strategyCode: string;
@@ -39,7 +40,11 @@ const MonthlyReturn: React.FC<IMonthlyReturn> = ({ strategyCode, props }) => {
           style={{ margin: '20px 0px' }}
         />
       </div>
-      <ChartMonthlyReturn data={data} labels={labels} />
+      {data.length !== 0 ? (
+        <ChartMonthlyReturn data={data} labels={labels} />
+      ) : (
+        <SectionLgSkeleton />
+      )}
     </SMonthlyReturn>
   );
 };

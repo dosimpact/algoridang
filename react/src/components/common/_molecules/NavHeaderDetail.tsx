@@ -1,24 +1,62 @@
-import { IconArrowLeft } from 'assets/icons';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { IconArrowLeft } from 'assets/icons';
+import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 interface INavHeaderDetail {
   headerTitle: string;
   linkTo?: string;
+  pushBack?: boolean;
+  onClickBack?: () => void;
 }
 
 const NavHeaderDetail: React.FC<INavHeaderDetail> = ({
   headerTitle,
   linkTo,
+  pushBack,
+  onClickBack,
 }) => {
-  return (
-    <SNavHeaderDetail>
-      <Link to={linkTo || process.env.PUBLIC_URL + '/takers/strategy-search'}>
-        <div className="col1">
+  const history = useHistory();
+  if (onClickBack) {
+    return (
+      <SNavHeaderDetail>
+        <div className="col1" onClick={onClickBack}>
           <IconArrowLeft />
         </div>
-      </Link>
+        <div className="col2">{headerTitle}</div>
+        <div className="col3">{/* <IconArrowLeft /> */}</div>
+      </SNavHeaderDetail>
+    );
+  }
+  if (pushBack) {
+    return (
+      <SNavHeaderDetail>
+        <div className="col1" onClick={history.goBack}>
+          <IconArrowLeft />
+        </div>
+        <div className="col2">{headerTitle}</div>
+        <div className="col3">{/* <IconArrowLeft /> */}</div>
+      </SNavHeaderDetail>
+    );
+  }
+  if (linkTo) {
+    return (
+      <SNavHeaderDetail>
+        <Link to={linkTo || process.env.PUBLIC_URL + '/takers/strategy-search'}>
+          {linkTo && (
+            <div className="col1">
+              <IconArrowLeft />
+            </div>
+          )}
+        </Link>
+        <div className="col2">{headerTitle}</div>
+        <div className="col3">{/* <IconArrowLeft /> */}</div>
+      </SNavHeaderDetail>
+    );
+  }
+  return (
+    <SNavHeaderDetail>
+      <div className="col1"></div>
       <div className="col2">{headerTitle}</div>
       <div className="col3">{/* <IconArrowLeft /> */}</div>
     </SNavHeaderDetail>

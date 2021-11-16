@@ -8,7 +8,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   atomUniversalSettingStateIdx,
   selectedUniversalSetting_R,
-} from 'states/strategy/recoil/strategy-create';
+} from 'states/common/recoil/dashBoard/dashBoard';
 import { SettingJSON } from 'states/trading/interface/entities';
 import { IInspectorSettings } from '.';
 
@@ -24,13 +24,15 @@ const TradingPropertySetting: React.FC<ITradingPropertySetting> = ({
   // 현재 변경 타겟의 seletedIdx
 
   const currentIdx = useRecoilValue(atomUniversalSettingStateIdx);
+  console.log('currentIdx>', currentIdx);
+
   const [currentUniversalSetting, setCurrentUniversalSetting] = useRecoilState(
     selectedUniversalSetting_R({ universalIdx: currentIdx }),
   );
   const setting_json = useMemo(() => {
     return currentUniversalSetting?.selectedTechnical?.setting_json;
   }, [currentUniversalSetting]);
-
+  console.log('setting_json>', setting_json);
   // 현재 변경할 unverisalSetting
   const handleSubmit = (e: unknown) => {
     const setting_json = e as SettingJSON;
@@ -50,6 +52,7 @@ const TradingPropertySetting: React.FC<ITradingPropertySetting> = ({
     <div>
       <InspectorHeaderDetail
         headerTitle={headerTitle || '매매 전략 상세설정'}
+        toolTip="매매 전략에 대한 세부 지표를 설정합니다."
       />
       <WideLine style={{ margin: '0 0 1.3rem 0' }} />
       <WingBlank>

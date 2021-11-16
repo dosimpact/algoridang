@@ -1,15 +1,21 @@
-import { IconArrowRight } from 'assets/icons';
+import { IconArrowRight, IconCheckCircle } from 'assets/icons';
+import BadgeCAGR from 'components/common/_atoms/BadgeCAGR';
+import DisplayPercentage from 'components/common/_atoms/DisplayPercentage';
+import RoundBadge from 'components/common/_atoms/RoundBadge';
 import produce from 'immer';
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import useMiniBacktest, {
   miniBacktestAdaptor,
 } from 'states/backtest/query/useMiniBacktest';
 import {
-  atomInspector,
   atomUniversalSettingStateIdx,
   selectedUniversalSetting_R,
-} from 'states/strategy/recoil/strategy-create';
+} from 'states/common/recoil/dashBoard/dashBoard';
+import {
+  atomInspector,
+  selectorInspectorType,
+} from 'states/common/recoil/dashBoard/inspector';
 import styled from 'styled-components';
 import { IBaseSettingButton } from './BaseSettingButton';
 interface IMonoTickerSettingButton extends IBaseSettingButton {}
@@ -21,10 +27,8 @@ const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
 }) => {
   const thisUnivIdx = selectedIndex;
 
-  const [inspector, setInspector] = useRecoilState(atomInspector);
-  const [currentUnivIdx, setCurrentUnivIdx] = useRecoilState(
-    atomUniversalSettingStateIdx,
-  );
+  const [, setInspector] = useRecoilState(atomInspector);
+  const [, setCurrentUnivIdx] = useRecoilState(atomUniversalSettingStateIdx);
   const thisUnivSetting = useRecoilValue(
     selectedUniversalSetting_R({ universalIdx: thisUnivIdx }),
   );
@@ -36,8 +40,8 @@ const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
       produce(prev, (draft) => {
         draft.inspectorType = 'tradingSetting';
         draft.inspectorState.tradingSetting = {
-          tab: prev.inspectorState.tradingSetting.tab,
-          // selectedIndex: -1,
+          ...draft.inspectorState.tradingSetting,
+          // tab: prev.inspectorState.tradingSetting.tab,
         };
         return draft;
       }),
@@ -50,13 +54,10 @@ const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
     setInspector((prev) =>
       produce(prev, (draft) => {
         draft.inspectorType = 'tradingPropertySetting';
-        // draft.inspectorState.tradingPropertySetting = {
-        //   selectedIndex,
-        // };
         return draft;
       }),
     );
-    setCurrentUnivIdx(selectedIndex);
+    setCurrentUnivIdx(thisUnivIdx);
   };
 
   const { reqMiniBTMutation } = useMiniBacktest();
@@ -92,17 +93,23 @@ const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
 
   const { isSuccess, isError, isLoading, isIdle } = reqMiniBTMutation;
   console.log('reqMiniBTMutation.data?.data', reqMiniBTMutation.data?.data);
+  const [, handleChangeInspector] = useRecoilState(selectorInspectorType);
 
   return (
     <SMonoTickerSettingButton>
-      <div className="settingListItem" onClick={handleClickTicker}>
+      <div
+        className="settingListItem item_title"
+        onClick={() => {
+          handleChangeInspector('universalSetting');
+        }}
+      >
         {title}
       </div>
       <div className="settingListItem">
         <IconArrowRight />
       </div>
 
-      <div className="settingListItem" onClick={handleClickTradingSetting}>
+      <div className="settingListItem" onClick={handleClickTicker}>
         {thisUnivSetting &&
         thisUnivSetting.selectedTechnical?.trading_strategy_name
           ? `${thisUnivSetting.selectedTechnical?.trading_strategy_name}`
@@ -111,29 +118,39 @@ const MonoTickerSettingButton: React.FC<IMonoTickerSettingButton> = ({
       <div className="settingListItem">
         <IconArrowRight />
       </div>
-      <div className="settingListItem" onClick={handleRequestMiniBT}>
-        {isLoading && 'loading...'}
+      <div
+        className="settingListItem item_btResult"
+        onClick={handleClickTradingSetting}
+      >
+        {isLoading && '전략분석중...'}
         {!isLoading && isError && 'Error'}
         {!isLoading &&
           isSuccess &&
           reqMiniBTMutation.data &&
           reqMiniBTMutation.data.data.res && (
-            <div>
-              <div>
-                연수익 :{' '}
-                {Number(
-                  reqMiniBTMutation.data.data.res.year_avg_profit_rate * 100,
-                ).toFixed(1)}
-                %
+            <div className="btResult_List">
+              <div className="btResult_item">
+                <span>연수익 </span>
+                <DisplayPercentage
+                  val={reqMiniBTMutation.data.data.res.year_avg_profit_rate}
+                />
               </div>
-              <div>
-                최대낙폭 :{' '}
-                {Number(reqMiniBTMutation.data.data.res.mdd * 100).toFixed(1)}%
+              <div className="btResult_item">
+                <span>최대낙폭 </span>
+                <DisplayPercentage val={reqMiniBTMutation.data.data.res.mdd} />
               </div>
             </div>
           )}
         {isIdle && '모의테스트'}
       </div>
+      {thisUnivSetting &&
+      thisUnivSetting.selectedTechnical?.trading_strategy_name ? (
+        <span className="settingCompleteIcon">
+          <IconCheckCircle />
+        </span>
+      ) : (
+        ''
+      )}
     </SMonoTickerSettingButton>
   );
 };
@@ -143,15 +160,24 @@ export default MonoTickerSettingButton;
 const SMonoTickerSettingButton = styled.section`
   display: grid;
   grid-template-columns: 1fr 3rem 1fr 3rem 1fr;
-  /* justify-content: center; */
-  /* align-content: center; */
-
+  border-radius: 0.4rem;
   border: 1px solid ${(props) => props.theme.ColorMainLightGray};
   cursor: pointer;
-  height: 8rem;
+  height: 10rem;
   margin-bottom: 0.5rem;
+
+  position: relative;
   :hover {
     border: 1px solid ${(props) => props.theme.ColorMainBlue};
+  }
+  .settingCompleteIcon {
+    position: absolute;
+    left: 0.5rem;
+    top: 0.5rem;
+    z-index: 10;
+    svg {
+      fill: ${(props) => props.theme.ColorMainGreen};
+    }
   }
   svg {
     fill: ${(props) => props.theme.ColorMainLightGray};
@@ -164,12 +190,21 @@ const SMonoTickerSettingButton = styled.section`
     text-align: center;
   }
   .settingListItem:nth-child(1):hover {
-    background-color: ${(props) => props.theme.ColorMainLightGreen};
+    background-color: ${(props) => props.theme.ColorMainLightBlue};
   }
   .settingListItem:nth-child(3):hover {
     background-color: ${(props) => props.theme.ColorMainLightBlue};
   }
   .settingListItem:nth-child(5):hover {
-    background-color: ${(props) => props.theme.ColorMainLightRed};
+    background-color: ${(props) => props.theme.ColorMainLightBlue};
+  }
+
+  .item_btResult {
+    line-height: 2rem;
+    text-align: start;
+    .btResult_List {
+      .btResult_item {
+      }
+    }
   }
 `;

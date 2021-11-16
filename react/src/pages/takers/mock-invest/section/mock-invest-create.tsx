@@ -41,7 +41,7 @@ const MockInvestCreate = () => {
     useForm<IForkStrategyForm>({
       defaultValues: {
         strategy_code: String(strategyCode),
-        securities_corp_fee: '0.1',
+        securities_corp_fee: '0.3',
         invest_principal: '10000000',
       },
     });
@@ -68,57 +68,57 @@ const MockInvestCreate = () => {
         headerTitle="전략 생성 하기"
       />
       <WingBlank>
+        <WhiteSpace />
         {strategyDetailQuery.isLoading && 'loading...'}
         {memberStrategy && <StrategyCardInfo strategy={memberStrategy} />}
-        <WingBlank>
-          <Title title={'기본 설정'} />
-          <WhiteSpace />
-          <InputListItem>
-            <label>전략 코드</label>
-            <input disabled value={getValues('strategy_code')} />
-          </InputListItem>
+        <WhiteSpace />
+        <Title title={'기본 설정'} />
+        <WhiteSpace />
+        <InputListItem>
+          <label>전략 코드</label>
+          <input type="text" disabled value={getValues('strategy_code')} />
+        </InputListItem>
+        <InputListItem
+          error={!!formState.errors.strategy_name?.message}
+          errorMessage={formState.errors.strategy_name?.message}
+        >
+          <label htmlFor="strategy_name">전략이름</label>
+          <input
+            type="text"
+            id="strategy_name"
+            placeholder="eg) 1번 전략"
+            {...register('strategy_name', {
+              required: '* 전략 이름 필수',
+              validate: {
+                lessThan: (v) => v.length <= 50 || '* 50자 이하',
+                MoreThan: (v) => v.length >= 2 || '* 2자 이상',
+              },
+            })}
+          />
+        </InputListItem>
+        <WhiteSpace />
+        <Title title={'사용자 설정'} />
+        <WhiteSpace />
+        <>
           <InputListItem
-            error={!!formState.errors.strategy_name?.message}
-            errorMessage={formState.errors.strategy_name?.message}
+            error={!!formState.errors.invest_principal?.message}
+            errorMessage={formState.errors.invest_principal?.message}
           >
-            <label htmlFor="strategy_name">전략이름</label>
+            <label htmlFor="invest_principal">원금</label>
             <input
               type="text"
-              id="strategy_name"
-              placeholder="eg) 1번 전략"
-              {...register('strategy_name', {
-                required: '* 전략 이름 필수',
+              id="invest_principal"
+              placeholder="투자 시작 금액을 입력해주세요"
+              {...register('invest_principal', {
+                required: '* 투자 시작금액 입력 예) 1000만원',
                 validate: {
-                  lessThan: (v) => v.length <= 50 || '* 50자 이하',
-                  MoreThan: (v) => v.length >= 2 || '* 2자 이상',
+                  moreThan: (v) =>
+                    Number(v) >= 1000000 || '* 100만원 보다 큰 금액',
                 },
               })}
             />
           </InputListItem>
-          <WhiteSpace />
-          <Title title={'사용자 설정'} />
-          <WhiteSpace />
-          <>
-            <InputListItem
-              error={!!formState.errors.invest_principal?.message}
-              errorMessage={formState.errors.invest_principal?.message}
-            >
-              <label htmlFor="invest_principal">원금</label>
-              <input
-                type="text"
-                id="invest_principal"
-                placeholder="투자 시작 금액을 입력해주세요"
-                {...register('invest_principal', {
-                  required: '* 투자 시작금액 입력 예) 1000만원',
-                  validate: {
-                    moreThan: (v) =>
-                      Number(v) >= 1000000 || '* 100만원 보다 큰 금액',
-                  },
-                })}
-              />
-            </InputListItem>
-
-            <InputListItem
+          {/* <InputListItem
               error={!!formState.errors.securities_corp_fee?.message}
               errorMessage={formState.errors.securities_corp_fee?.message}
             >
@@ -135,10 +135,9 @@ const MockInvestCreate = () => {
                   },
                 })}
               />
-            </InputListItem>
-          </>
-          <WhiteSpace />
-        </WingBlank>
+            </InputListItem> */}
+        </>
+        <WhiteSpace />
 
         <Button
           style={{

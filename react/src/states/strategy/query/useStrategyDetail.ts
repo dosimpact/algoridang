@@ -67,7 +67,7 @@ const useStrategyDetail = (strategy_code: string) => {
         history_date: String(history.history_date).substr(0, 10),
       })),
     [strategyDetailQuery?.data],
-  );
+  ) as History[] | undefined;
   // console.log("histories", histories);
   // console.log("investProfitInfo", investProfitInfo);
   // console.log("firstUniversal", firstUniversal);

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import useStrategy from 'states/strategy/query/useStrategy';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import PageGuide from 'components/common/_molecules/PageGuide';
 
@@ -10,13 +9,14 @@ import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import StrategyCardInfo from 'components/common/_molecules/StrategyCardInfo';
 import StrategySearchInput from 'components/common/_organisms/StrategySearchInput';
 import useSearchStrategy from 'states/strategy/query/useSearchStrategy';
+import StrategyCardInfoSkeleton from 'components/common/_molecules/StrategyCardInfoSkeleton';
+import StrategyCardInfoEmpty from 'components/common/_molecules/StrategyCardInfoEmpty';
 
 // todo:refactor CAGR 부분 DB Relation eager 처리 및 undefined 핸들링
 const StrategyTerm = () => {
   const urlParams = useParams<{ term: string }>();
   const history = useHistory();
   const term = urlParams['term'];
-  const { strategyListNew, strategyListRiskTaking } = useStrategy();
 
   const searchStrategyQueryTypeName = useSearchStrategy({
     term,
@@ -35,19 +35,21 @@ const StrategyTerm = () => {
       <PageGuide
         icon={<IconSearchStrategy />}
         title="전략 탐색"
-        subTitle="수익률을 확인하고 원하는 전략으로 모의투자를 시작해 보세요."
+        subTitle={`수익률을 확인하고 원하는 전략으로
+모의투자를 시작해 보세요.`}
       />
       <SectionTitle title="전략 검색" />
       <StrategySearchInput />
-
       <WhiteSpace />
       <SectionTitle title="종목 검색 결과" />
       <WhiteSpace />
-      {searchStrategyQueryTypeTicker.isLoading && 'loading...'}
-      {!searchStrategyQueryTypeTicker.isLoading &&
-        searchStrategyQueryTypeTicker?.data?.memberStrategyList?.length === 0 &&
-        '검색 결과 없음 😢'}
-      {!searchStrategyQueryTypeTicker.isLoading &&
+
+      {searchStrategyQueryTypeTicker.isLoading ? (
+        [...new Array(3)].map(() => <StrategyCardInfoSkeleton />)
+      ) : searchStrategyQueryTypeTicker?.data?.memberStrategyList?.length ===
+        0 ? (
+        <StrategyCardInfoEmpty message={'종목 이름 및 코드가 없습니다.'} />
+      ) : (
         searchStrategyQueryTypeTicker?.data?.memberStrategyList &&
         searchStrategyQueryTypeTicker?.data?.memberStrategyList.map(
           (data, key) => (
@@ -61,16 +63,17 @@ const StrategyTerm = () => {
               }}
             />
           ),
-        )}
-
+        )
+      )}
       <WhiteSpace />
       <SectionTitle title="이름 검색 결과" />
       <WhiteSpace />
-      {searchStrategyQueryTypeName.isLoading && 'loading...'}
-      {!searchStrategyQueryTypeName.isLoading &&
-        searchStrategyQueryTypeName?.data?.memberStrategyList?.length === 0 &&
-        '검색 결과 없음 😢'}
-      {!searchStrategyQueryTypeName.isLoading &&
+      {searchStrategyQueryTypeName.isLoading ? (
+        [...new Array(3)].map(() => <StrategyCardInfoSkeleton />)
+      ) : searchStrategyQueryTypeName?.data?.memberStrategyList?.length ===
+        0 ? (
+        <StrategyCardInfoEmpty message={'이름 검색 결과가 없습니다.'} />
+      ) : (
         searchStrategyQueryTypeName?.data?.memberStrategyList &&
         searchStrategyQueryTypeName?.data?.memberStrategyList.map(
           (data, key) => (
@@ -84,7 +87,8 @@ const StrategyTerm = () => {
               }}
             />
           ),
-        )}
+        )
+      )}
     </WingBlank>
   );
 };

@@ -1,19 +1,18 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import MockInvest from '../mock-invest/mock-investC';
 import StrategySearch from '../strategy-search/strategy-searchC';
 import TickerSearch from '../ticker-search/ticker-searchC';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import useMember from 'states/member/query/useMember';
 import styled from 'styled-components';
 import {
   IconMockInvest,
-  IconPerson,
   IconSearchStrategy,
   IconSearchTicker,
 } from 'assets/icons';
 import Helmet from 'react-helmet';
 import useMobileSetting from 'hooks/useMobileSetting';
 import { ErrorHandler } from 'states/common/recoil/error-state';
+import UserProfile from '../user-profile/user-profileC';
 
 export const URLList = {
   tickerSearch: {
@@ -25,80 +24,10 @@ export const URLList = {
   mockInvest: {
     url: '/takers/mock-invest',
   },
+  userProfile: {
+    url: '/takers/user-profile',
+  },
 } as const;
-
-const TopNavigation = () => {
-  const history = useHistory();
-  const { logIn, me } = useMember();
-  const email = useMemo(() => {
-    return me.data?.email_id;
-  }, [me]);
-
-  // TODO TEST
-  const mockUpUserLogin = () => {
-    logIn({
-      email_id: 'ypd03008@gmail.com',
-      password: 'ypd03008',
-    });
-  };
-
-  return (
-    <STopNavigation>
-      <div
-        className="logo"
-        onClick={() => {
-          history.push('/takers');
-        }}
-      >
-        {'알고\n리당'}
-      </div>
-      <div className="authInfo">
-        <span className="email">
-          {email ? email : <span onClick={mockUpUserLogin}>Login</span>}
-        </span>
-        <span onClick={mockUpUserLogin}>
-          <IconPerson />
-        </span>
-      </div>
-    </STopNavigation>
-  );
-};
-
-const STopNavigation = styled.header`
-  position: fixed;
-  top: 0;
-  left: 0;
-
-  height: 4.5rem;
-  width: 100%;
-  padding: 0px 2.8rem;
-
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  justify-content: center;
-  align-content: center;
-  background-color: ${(props) => props.theme.ColorMainDarkGray};
-  color: ${(props) => props.theme.ColorMainWhite};
-  z-index: 99999;
-
-  svg {
-    fill: ${(props) => props.theme.ColorMainWhite};
-  }
-  .logo {
-    white-space: pre-wrap;
-    cursor: pointer;
-  }
-  .authInfo {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    justify-content: flex-end;
-    cursor: pointer;
-    .email {
-      margin-right: 1.5rem;
-    }
-  }
-`;
 
 const BottomNavigation = () => {
   const location = useLocation();
@@ -163,39 +92,15 @@ const BottomNavigation = () => {
   );
 };
 
-const BottomGradient = () => {
-  return (
-    <SBottomGradient>
-      <div className="yellowGradient"></div>
-    </SBottomGradient>
-  );
-};
-
-const SBottomGradient = styled.div`
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-  left: 0;
-  z-index: -1;
-  .yellowGradient {
-    width: 100%;
-    height: 40vh;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    z-index: -100;
-    background: linear-gradient(0deg, #fff2d2 0%, rgba(255, 255, 255, 0) 100%);
-  }
-`;
-
 const SBottomNavigation = styled.section<{ isDown?: boolean }>`
   position: fixed;
   bottom: 0rem;
   width: 100%;
-  height: 5.6rem;
+  max-width: 75rem;
+  height: 6rem;
   background-color: ${(props) => props.theme.ColorMainDarkGray};
-  /* border-top-left-radius: 1.5rem; */
-  /* border-top-right-radius: 1.5rem; */
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
   z-index: 10;
   ${(props) => (props.isDown ? `transform: translate(0, 5.6rem);` : '')}
   .navList {
@@ -236,7 +141,7 @@ const SNavItem = styled.li<{ selected?: boolean }>`
 
 const TakerMainSection = () => {
   return (
-    <section style={{ marginBottom: '7.8rem' }}>
+    <STakerMainSection>
       <section>
         <TickerSearch />
       </section>
@@ -246,9 +151,19 @@ const TakerMainSection = () => {
       <section>
         <MockInvest />
       </section>
-    </section>
+      <section>
+        <UserProfile />
+      </section>
+    </STakerMainSection>
   );
 };
+
+const STakerMainSection = styled.section`
+  background-color: ${(props) => props.theme.ColorWhite};
+  min-height: 100vh;
+  padding-bottom: 8rem;
+`;
+
 const TakerConfig = () => {
   useMobileSetting();
   return (
@@ -265,22 +180,19 @@ const TakerConfig = () => {
 
 const TakerMainContainer = () => {
   return (
-    <section>
-      <TakerConfig />
-      <TopNavigation />
-      <div
-        style={{
-          paddingTop: '4.5rem',
-          paddingBottom: '8rem',
-        }}
-      >
-        <ErrorHandler>
-          <TakerMainSection />
-        </ErrorHandler>
-      </div>
-      <BottomNavigation />
-      <BottomGradient />
-    </section>
+    <div style={{ background: '#F6F6F6' }}>
+      <section style={{ maxWidth: '75rem', margin: '0 auto' }}>
+        <TakerConfig />
+        {/* <TopNavigation /> */}
+        <div>
+          <ErrorHandler>
+            <TakerMainSection />
+          </ErrorHandler>
+        </div>
+        <BottomNavigation />
+        {/* <BottomGradient /> */}
+      </section>
+    </div>
   );
 };
 

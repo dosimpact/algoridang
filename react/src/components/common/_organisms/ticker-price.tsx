@@ -1,5 +1,4 @@
 import React, { useMemo, useState, useCallback, useEffect } from 'react';
-import TickerSearch from 'components/common/_molecules/TickerSearch';
 import LineSeriesChart from 'components/light-weight/LineSeriesChart';
 import { useRecoilState } from 'recoil';
 import useDailyStock from 'states/finance/query/useDailyStock';
@@ -8,12 +7,19 @@ import styled from 'styled-components';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import BadgePriceDelta from 'components/common/_atoms/BadgePriceDelta';
 import WhiteSpace from '../_atoms/WhiteSpace';
+import TickerFuzzySearch from '../_molecules/TickerFuzzySearch';
+import Skeleton from 'react-loading-skeleton';
 
 // todo:refator onSuccess등 콜백함수에 usecallback안써도 되도록 하기
 const TickerPrice = () => {
   const [corporation, setCorporation] = useRecoilState(atomCorporationState);
   // const [corporation, setCorporation] = useState<{ticker:string}>("005930");
-  const { dayilStocks } = useDailyStock(corporation.ticker, 365, 0, 'ASC');
+  const { dayilStocks, dailyStockQuery } = useDailyStock(
+    corporation.ticker,
+    1095,
+    0,
+    'ASC',
+  );
   const [price, setPrice] = useState(0);
 
   const datas = useMemo(() => {
@@ -48,10 +54,9 @@ const TickerPrice = () => {
     <TickerPriceS>
       <WingBlank>
         <WhiteSpace style={{ marginTop: '1rem' }} />
-        <TickerSearch
+        <TickerFuzzySearch
           onSuccess={useCallback(
             (e) => {
-              // console.log("TickerSearch sucess", e.corp_name, e.ticker);
               if (e.corp_name && e.ticker) {
                 const { corp_name, ticker } = e;
                 setCorporation({ corp_name, ticker });
@@ -61,15 +66,19 @@ const TickerPrice = () => {
           )}
         />
       </WingBlank>
-
+      <WhiteSpace style={{ marginTop: '3.7rem' }} />
       <WingBlank>
         <article className="chartLegend">
           <div className="tickerName">{corporation.corp_name}</div>
-          <div className="tickerPrice">
-            <span className="priceText">{price}</span>
-            <span className="unitText">원</span>
-            <BadgePriceDelta today={diff.tday} yesterday={diff.yday} />
-          </div>
+          {dailyStockQuery.isLoading ? (
+            <Skeleton count={2} />
+          ) : (
+            <div className="tickerPrice">
+              <span className="priceText">{price}</span>
+              <span className="unitText">원</span>
+              {<BadgePriceDelta today={diff.tday} yesterday={diff.yday} />}
+            </div>
+          )}
         </article>
       </WingBlank>
       <article className="chartBox">
@@ -89,14 +98,30 @@ const TickerPrice = () => {
 
 export default TickerPrice;
 
+// const ChartLegendSkeleton = () => {
+//   return (
+//     <article className="chartLegend">
+//       <div className="tickerName">
+//         <Skeleton />
+//       </div>
+//       <Skeleton />
+//       <div className="tickerPrice">
+//         <Skeleton />
+//       </div>
+//     </article>
+//   );
+// };
+
 const TickerPriceS = styled.section`
   .chartLegend {
-    margin-top: 5.8rem;
     padding: 0rem 1.5rem;
     font-size: 2.3rem;
     font-weight: 400;
     .tickerName {
       margin-bottom: 1rem;
+      font-weight: 700;
+      font-size: 2.4rem;
+      line-height: 2.8rem;
     }
     .tickerPrice {
       display: flex;
@@ -111,10 +136,17 @@ const TickerPriceS = styled.section`
       }
       .unitText {
         margin-right: 1.5rem;
+        font-weight: 700;
+        font-size: 2.4rem;
+        line-height: 2.8rem;
       }
     }
   }
   .chartBox {
     margin-top: 4.8rem;
+    background-color: white;
+    border-radius: 1rem;
+    padding: 1.2rem 0rem;
+    ${(props) => props.theme.shadowLine1};
   }
 `;

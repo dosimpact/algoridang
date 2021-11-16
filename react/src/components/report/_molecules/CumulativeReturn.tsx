@@ -6,6 +6,7 @@ import React, { useMemo } from 'react';
 import useBackTestReport from 'states/backtest/query/useBackTestReport';
 import styled from 'styled-components';
 import { toPercentage } from 'utils/parse';
+import { SectionLgSkeleton } from 'components/common/_molecules/MoleculesSkeletons';
 
 interface ICumulativeReturn {
   strategyCode: string;
@@ -43,7 +44,11 @@ const CumulativeReturn: React.FC<ICumulativeReturn> = ({
           style={{ margin: '20px 0px' }}
         />
       </div>
-      <CumulativeReturnChart datas={lineDatas} />
+      {lineDatas !== undefined ? (
+        <CumulativeReturnChart datas={lineDatas} />
+      ) : (
+        <SectionLgSkeleton />
+      )}
       {/* <ChartCumulativeReturn /> */}
     </SCumulativeReturn>
   );

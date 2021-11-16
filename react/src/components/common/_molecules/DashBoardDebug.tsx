@@ -1,9 +1,11 @@
 import React from 'react';
 import { useRecoilState } from 'recoil';
 import {
-  atomInspector,
+  atomCurrentStrategyCode,
   atomUniversalSettingState,
-} from 'states/strategy/recoil/strategy-create';
+  atomUniversalSettingStateIdx,
+} from 'states/common/recoil/dashBoard/dashBoard';
+import { atomInspector } from 'states/common/recoil/dashBoard/inspector';
 import styled from 'styled-components';
 
 // DashBoardDebug
@@ -14,6 +16,8 @@ interface IDashBoardDebug {
 const DashBoardDebug: React.FC<IDashBoardDebug> = ({ onClick }) => {
   const inspector = useRecoilState(atomInspector);
   const universals = useRecoilState(atomUniversalSettingState);
+  const currentStrategyCode = useRecoilState(atomCurrentStrategyCode);
+  const universalSettingStateIdx = useRecoilState(atomUniversalSettingStateIdx);
 
   return (
     <SDashBoardDebug
@@ -23,9 +27,17 @@ const DashBoardDebug: React.FC<IDashBoardDebug> = ({ onClick }) => {
         }
         console.log('inspector', JSON.stringify(inspector, null, 2));
         console.log('universals', JSON.stringify(universals, null, 2));
+        console.log(
+          'currentStrategyCode',
+          JSON.stringify(currentStrategyCode, null, 2),
+        );
+        console.log(
+          'universalSettingStateIdx',
+          JSON.stringify(universalSettingStateIdx, null, 2),
+        );
       }}
     >
-      ATOM 디버그
+      {process.env.NODE_ENV === 'development' ? 'ATOM 디버그' : ''}
     </SDashBoardDebug>
   );
 };

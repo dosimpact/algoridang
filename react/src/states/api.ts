@@ -9,10 +9,16 @@ import {
   GetCorporationInput,
   GetCorporationsWithTermInput,
   GetDayilStocksInput,
+  GetFinancialStatementInput,
+  QuantSelectionInput,
 } from './finance/interface/dtos';
-import { LoginMemberInfoInput } from './member/interface/dtos';
+import {
+  CreateMemberInfoInput,
+  LoginMemberInfoInput,
+} from './member/interface/dtos';
 import {
   CreateMyStrategyInput,
+  DeleteMyStrategyByIdInput,
   ForkStrategyInput,
   UpdateMyStrategyByIdInput,
 } from './strategy/interface/dtos';
@@ -40,6 +46,8 @@ export const memberApi = {
   POST: {
     loginMemberInfo: (body: LoginMemberInfoInput) =>
       axios.post('member/loginMemberInfo', body),
+    createMemberInfo: (body: CreateMemberInfoInput) =>
+      axios.post('member/createMemberInfo', body),
   },
   PATCH: {},
   DELETE: {},
@@ -87,7 +95,16 @@ export const strategyApi = {
       return axios.patch(`strategies/my`, body);
     },
   },
-  DELETE: {},
+  DELETE: {
+    deleteMyStrategyById: (body: DeleteMyStrategyByIdInput) => {
+      // return axios({
+      // method:"DELETE",
+      // })
+      return axios.delete(`strategies/my`, {
+        data: body,
+      });
+    },
+  },
 };
 
 // (3) finance api
@@ -108,8 +125,21 @@ export const financeApi = {
         },
       });
     },
+    getFinancialStatements: ({ ticker }: GetFinancialStatementInput) => {
+      return axios.get(`finance/statements/${ticker}`);
+    },
+    quantSelectionLookupList: () => {
+      return axios.get(`finance/statements/lookup/list`);
+    },
+    quantSelectionLookupType: ({ index }: { index: number }) => {
+      return axios.get(`finance/statements/lookup/type/${index}`);
+    },
   },
-  POST: {},
+  POST: {
+    quantSelection: (body: QuantSelectionInput) => {
+      return axios.post(`finance/statements/select`, body);
+    },
+  },
   PATCH: {},
   DELETE: {},
 };
@@ -120,12 +150,8 @@ export const tradingApi = {
   GET: {
     getBaseTradingStrategy: () => axios.get(`trading/technicals/1`),
     getBaseTradingStrategyList: () => axios.get(`trading/technicals`),
-    // TODO (will deprecated) 필터 리스트 가져 오기
-    __mockGetFilterFactorList: () => axios.get(`trading/filters`),
   },
   POST: {
-    // TODO (will deprecated) 필터 적용 결과 , 기업 리스트 반환
-    __mockGetFilterReulstList: () => axios.post(`trading/filters`),
     // TODO (will deprecated) 빠른 백테스팅 기능
     __mockRequestMiniBacktesting: (
       ticker: string,

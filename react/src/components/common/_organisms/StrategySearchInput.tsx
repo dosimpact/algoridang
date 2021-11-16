@@ -30,4 +30,8 @@ const StrategySearchInput = () => {
 
 export default StrategySearchInput;
 
-const SStrategySearchInput = styled.article``;
+const SStrategySearchInput = styled.article`
+  input {
+    ${(props) => props.theme.shadowLine1};
+  }
+`;

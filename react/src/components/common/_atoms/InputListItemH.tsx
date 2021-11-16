@@ -25,19 +25,20 @@ const InputListItemH: React.FC<IInputListItemH> = ({
 export default InputListItemH;
 
 const SInputListItemH = styled.div<IInputListItemH>`
+  min-height: 7.8rem;
   .inputItem {
     display: grid;
     grid-template-columns: 1fr;
     align-items: center;
-
     ${(props) =>
       props.error
         ? `border-bottom: 1px solid ${props.theme.ColorMainRed}`
-        : ``};
+        : `border-bottom: 1px solid transparent`};
   }
   .errorMessage {
     color: ${(props) => props.theme.ColorMainRed};
     font-size: 1.3rem;
-    height: 1.5rem;
+    margin-top: 0.5rem;
+    height: 2rem;
   }
 `;

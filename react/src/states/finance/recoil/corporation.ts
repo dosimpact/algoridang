@@ -5,7 +5,7 @@ interface ICorporation {
   corp_name: string;
 }
 
-// 현재 고른 종목 (글로벌)
+// 현재 검색하여 고른 종목 (글로벌)
 export const atomCorporationState = atom<ICorporation>({
   key: 'CorporationStatus',
   default: {

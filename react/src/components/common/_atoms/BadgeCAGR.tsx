@@ -7,9 +7,10 @@ const BadgeCAGR: React.FC<{
   props?: any;
   hasPercentage?: boolean;
 }> = ({ val, hasPercentage = false, ...props }) => {
+  // 주의 , val === 0 이면 false 값인데, 수익률이 0인것은 if의 도메인과 다른 궤이다.
   return (
     <SBadgeCAGR num={val} {...props}>
-      {val ? (
+      {val !== undefined ? (
         <span>
           연수익 {Math.round(val * 100)}
           {hasPercentage ? '%' : ''}

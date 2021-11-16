@@ -1,12 +1,7 @@
 import React, { useMemo } from 'react';
 import { Title } from 'components/common/_atoms/Typos';
 import { useHistory, useParams } from 'react-router-dom';
-import {
-  toPercentage,
-  toRatio,
-  toTagsString,
-  toTickerImage,
-} from 'utils/parse';
+import { toPercentage, toRatio } from 'utils/parse';
 import styled from 'styled-components';
 import DetailSummary from 'components/report/_organisms/DetailSummary';
 import CumulativeReturn from 'components/report/_molecules/CumulativeReturn';
@@ -19,6 +14,7 @@ import WingBlank from 'components/common/_atoms/WingBlank';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import StrategyCardInfo from 'components/common/_molecules/StrategyCardInfo';
 import { Button } from 'components/common/_atoms/Buttons';
+import StrategyCardInfoSkeleton from 'components/common/_molecules/StrategyCardInfoSkeleton';
 
 interface IStrategyReport {
   showForkButton?: boolean;
@@ -178,7 +174,11 @@ const StrategyReport: React.FC<IStrategyReport> = ({ showForkButton }) => {
       />
       <WingBlank>
         <WhiteSpace />
-        {memberStrategy && <StrategyCardInfo strategy={memberStrategy} />}
+        {memberStrategy ? (
+          <StrategyCardInfo strategy={memberStrategy} />
+        ) : (
+          <StrategyCardInfoSkeleton />
+        )}
         <>
           {showForkButton && (
             <div className="flexRowSBt">

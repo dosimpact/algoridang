@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { SubTitle, Title } from 'components/common/_atoms/Typos';
 import { useHistory, useParams } from 'react-router-dom';
-import { getTodayDiff, toTagsString, toTickerImage } from 'utils/parse';
+import { getTodayDiff } from 'utils/parse';
 import styled from 'styled-components';
 import ReturnsStatus from 'components/report/_organisms/ReturnsStatus';
 import TradingHistory from 'components/report/_organisms/TradingHistory';
@@ -12,6 +12,11 @@ import NavHeaderDetail from 'components/common/_molecules/NavHeaderDetail';
 import { Button } from 'components/common/_atoms/Buttons';
 import { useMyStrategyDetail } from 'states/strategy/query/useMyStrategyDetail';
 import TradingPoints from 'components/report/_organisms/TradingPoints';
+import StrategyCardInfoSkeleton from 'components/common/_molecules/StrategyCardInfoSkeleton';
+import {
+  SectionLgSkeleton,
+  SectionMdSkeleton,
+} from 'components/common/_molecules/MoleculesSkeletons';
 
 const MockInvestDetail = () => {
   const history = useHistory();
@@ -20,8 +25,13 @@ const MockInvestDetail = () => {
     history.push(process.env.PUBLIC_URL + '/takers/mock-invest');
   }
   const strategyCode = params.id;
-  const { firstUniversal, histories, investProfitInfo, memberStrategy } =
-    useMyStrategyDetail(strategyCode + '');
+  const {
+    firstUniversal,
+    histories,
+    investProfitInfo,
+    memberStrategy,
+    myStrategyDetailQuery,
+  } = useMyStrategyDetail(strategyCode + '');
 
   const todayHistories = useMemo(() => {
     if (histories) {
@@ -42,13 +52,15 @@ const MockInvestDetail = () => {
       />
       <WingBlank>
         <WhiteSpace />
-        {memberStrategy && (
+        {memberStrategy ? (
           <StrategyCardInfo isDisplayMock={true} strategy={memberStrategy} />
+        ) : (
+          <StrategyCardInfoSkeleton />
         )}
         <div className="flexRowSBt">
           <Title title="모의 투자" style={{ marginRight: '15px' }}></Title>
           <Button
-            style={{ width: '8rem' }}
+            className="midsize-btn"
             onClick={() => {
               history.push(`/takers/mock-invest/update/${strategyCode}`);
             }}
@@ -58,12 +70,12 @@ const MockInvestDetail = () => {
         </div>
         <div className="flexRowSBt" style={{ marginTop: '15px' }}>
           <SubTitle
-            title="상세 전략 리포트"
+            title="투자 수익 리포트"
             style={{ marginRight: '20px' }}
           ></SubTitle>
           <Button
-            type="gray"
-            style={{ width: '8rem' }}
+            className="midsize-btn"
+            type="blue"
             onClick={() => {
               history.push(
                 process.env.PUBLIC_URL +
@@ -74,6 +86,24 @@ const MockInvestDetail = () => {
             리포트
           </Button>
         </div>
+        <div className="flexRowSBt" style={{ marginTop: '15px' }}>
+          <SubTitle
+            title="백테스트 리포트"
+            style={{ marginRight: '20px' }}
+          ></SubTitle>
+          <Button
+            type="blue"
+            className="midsize-btn"
+            onClick={() => {
+              history.push(
+                process.env.PUBLIC_URL +
+                  `/takers/mock-invest/bt-report/${params.id}`,
+              );
+            }}
+          >
+            리포트 보기
+          </Button>
+        </div>
         <WhiteSpace />
         <WhiteSpace />
         {/* 0. 전략 메이커 설명 Description.tsx */}
@@ -81,7 +111,7 @@ const MockInvestDetail = () => {
           <Description description={memberStrategy.strategy_explanation} />
         )} */}
         {/* 1. 투자 수익 현황 ReturnsStatus.tsx */}
-        {investProfitInfo && (
+        {investProfitInfo ? (
           <ReturnsStatus
             title={`모의 투자 수익 현황 ${'(운용중)'}`}
             profit_rate={investProfitInfo?.profit_rate}
@@ -89,12 +119,14 @@ const MockInvestDetail = () => {
             invest_principal={investProfitInfo?.invest_principal}
             total_profit_price={investProfitInfo?.total_profit_price}
           />
+        ) : (
+          <SectionMdSkeleton />
         )}
         {/* <TradingPoints /> */}
         <WhiteSpace />
         <WhiteSpace />
         {/* 3. 트레이딩 히스토리 */}
-        {histories && todayHistories && (
+        {histories && todayHistories ? (
           <TradingHistory
             title={`오늘의 종목 (${todayHistories.length}개)`}
             header={['날짜', `종목\n(코드)`, '가격\n(원)', '수익/손실\n(%)']}
@@ -106,14 +138,18 @@ const MockInvestDetail = () => {
             ]}
             body={todayHistories as any as Record<string, string>[]}
           />
+        ) : (
+          <SectionMdSkeleton />
         )}
         {/* 2. 매매 시점 TradingPoints.tsx */}
-        {firstUniversal && firstUniversal.universal_code && (
+        {firstUniversal && firstUniversal.universal_code ? (
           <TradingPoints
             strategyCode={String(strategyCode)}
             ticker={firstUniversal.ticker}
             title={`매매시점 - ${firstUniversal.ticker} | ${firstUniversal.trading_strategy_name}`}
           />
+        ) : (
+          <SectionLgSkeleton />
         )}
       </WingBlank>
     </StrategyDetailP>
@@ -124,5 +160,9 @@ export default MockInvestDetail;
 
 const StrategyDetailP = styled.section`
   .articleHistory {
+  }
+  .midsize-btn {
+    width: 9rem;
+    height: 3rem;
   }
 `;

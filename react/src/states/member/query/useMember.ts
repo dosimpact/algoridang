@@ -2,6 +2,8 @@ import { AxiosError, AxiosResponse } from 'axios';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { memberApi } from 'states/api';
 import {
+  CreateMemberInfoInput,
+  CreateMemberInfoOutput,
   LoginMemberInfoInput,
   LoginMemberInfoOutput,
   MeOutput,
@@ -13,12 +15,11 @@ import { setLocalMemberInfo } from 'states/local-state';
 
 // Mutation
 // (1) 로그인을 날리는
-//
-//
+
 const useMember = () => {
   const queryClient = useQueryClient();
-  const refresh = () => {
-    queryClient.invalidateQueries('me');
+  const refreshAll = () => {
+    queryClient.invalidateQueries();
   };
   const me = useQuery<AxiosResponse<MeOutput>, AxiosError, MeOutput>(
     'me',
@@ -35,8 +36,12 @@ const useMember = () => {
   //LoginMemberInfoOutput
   // AxiosError
   // LoginMemberInfoInput
-  const logInMutation = useMutation(
-    'login',
+  const logInMutation = useMutation<
+    AxiosResponse<LoginMemberInfoOutput>,
+    AxiosError,
+    LoginMemberInfoInput
+  >(
+    'logInMutation',
     (body: LoginMemberInfoInput) => {
       return memberApi.POST.loginMemberInfo(body);
     },
@@ -45,7 +50,7 @@ const useMember = () => {
         console.log('onSuccess', result);
         const data = result.data as LoginMemberInfoOutput;
         setLocalMemberInfo({ token: data.token });
-        refresh();
+        refreshAll();
       },
       onError: (error: any) => {
         if (error?.response) {
@@ -61,12 +66,34 @@ const useMember = () => {
 
   const logOut = () => {
     setLocalMemberInfo({ token: '' });
+    refreshAll();
   };
+
+  const createMemberMutation = useMutation<
+    AxiosResponse<CreateMemberInfoOutput>,
+    AxiosError,
+    CreateMemberInfoInput
+  >(
+    'createMemberMutation',
+    (body) => {
+      return memberApi.POST.createMemberInfo(body);
+    },
+    {
+      onSuccess: () => {
+        // refresh();
+      },
+      onError: (error) => {
+        console.log('error:createMember', error);
+      },
+    },
+  );
 
   return {
     me,
     logIn: logInMutation.mutate,
+    logInMutation,
     logOut,
+    createMemberMutation,
   };
 };
 

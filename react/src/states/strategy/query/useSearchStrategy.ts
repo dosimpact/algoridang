@@ -1,4 +1,3 @@
-import React from 'react';
 import { AxiosError, AxiosResponse } from 'axios';
 import { useQuery } from 'react-query';
 import { strategyApi } from 'states/api';

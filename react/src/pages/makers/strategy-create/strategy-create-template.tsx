@@ -1,49 +1,56 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import {
-  atomInspector,
-  IInspectorTypes,
-  selectedMonoTickerSettingButtonListJSX,
-  selectorInspectorFC,
-} from 'states/strategy/recoil/strategy-create';
 import DashBoardButton from 'components/common/_molecules/DashBoardButton';
-import { IconPlusNormal, IconSettingNormal, IconInfo } from 'assets/icons';
+import {
+  IconInfo,
+  IconStep1Normal,
+  IconStep2Normal,
+  IconStep3Normal,
+} from 'assets/icons';
 import DashBoardDebug from 'components/common/_molecules/DashBoardDebug';
 import TickerPrice from 'components/common/_organisms/ticker-price';
 import WingBlank from 'components/common/_atoms/WingBlank';
 import WhiteSpace from 'components/common/_atoms/WhiteSpace';
 import ReactTooltip from 'react-tooltip';
+import {
+  atomInspector,
+  selectorInspectorFC,
+  selectorInspectorType,
+  selector_ST1_isComplete,
+  selector_ST2_isComplete,
+  selector_ST3_isComplete,
+} from 'states/common/recoil/dashBoard/inspector';
+import {
+  selectedMonoTickerSettingButtonListJSX,
+  selectorCurrentCorpLen,
+} from 'states/common/recoil/dashBoard/dashBoard';
+import { ShadowBox } from 'components/common/_atoms/ShadowBox';
+import produce from 'immer';
+import { Button } from 'components/common/_atoms/Buttons';
 
 // 전략 생성 모듈
 // DashBoard - Inspector
 // TODO : JSX.Element  vs React.ReactElement
 // JSX.Element 의 제너릭 타입이 React.ReactElement 이다.
 interface IStrategyCreateModule {
+  currentCorpLen: number;
   // 현재 인스팩터 앨리먼트
   currentInspectorElement: React.ReactElement | null; //JSX.Element;
   dashBoardCol1: {
     // 전략 셋팅, 종목 셋팅, 백테스트 셋팅
     baseSettingBtnElements: JSX.Element[];
-    // 선택된 종목 리스트 표시 앨리먼트
-    // selectedTickerElementList: JSX.Element[];
   };
   // 단일 종목 설정 앨리먼트
   selectedMonoTickerSettingButtonList: JSX.Element[];
-  // 단일 종목 매매 결과 앨리먼트
-  // dashBoardCol3?: JSX.Element[];
-  // // 포트 백테스팅 결과 앨리먼트
-  // dashBoardCol4: {
-  //   // 포트 백테스트 버튼 앨리먼트
-  //   portBacktestBtnElement: JSX.Element;
-  // };
+  handleClickQuantSelect: () => void;
 }
 const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
+  currentCorpLen,
   currentInspectorElement,
   dashBoardCol1,
   selectedMonoTickerSettingButtonList,
-  // dashBoardCol3,
-  // dashBoardCol4,
+  handleClickQuantSelect,
 }) => {
   const { baseSettingBtnElements } = dashBoardCol1;
 
@@ -55,7 +62,7 @@ const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
             <WingBlank>
               <div className="baseSettingBtnSlot">
                 {baseSettingBtnElements}
-                {<DashBoardDebug />}
+                {process.env.NODE_ENV === 'development' && <DashBoardDebug />}
               </div>
             </WingBlank>
             <div className="charSlot">
@@ -65,22 +72,36 @@ const StrategyCreateModule: React.FC<IStrategyCreateModule> = ({
           <section className="dashBoardCol2">
             <WhiteSpace />
             <div className="interestTickersHeader">
-              관심 종목 리스트
-              <span
-                data-tip="interestTickerInfo"
-                data-for="interestTickerInfo"
-                className="iconInfo"
-              >
-                <IconInfo />
-              </span>
+              <div className="item">
+                <span
+                  data-tip="interestTickerInfo"
+                  data-for="interestTickerInfo"
+                  className="iconInfo"
+                >
+                  <IconInfo />
+                </span>
+                <ReactTooltip id="interestTickerInfo">
+                  전략에 포함되는 종목들 입니다.
+                </ReactTooltip>
+              </div>
+              <div className="item">관심 종목 리스트 ({currentCorpLen}개)</div>
+              <div className="item">
+                <Button
+                  className="qsBtn"
+                  type="info"
+                  onClick={handleClickQuantSelect}
+                >
+                  퀀트발굴
+                </Button>
+              </div>
             </div>
-            <ReactTooltip id="interestTickerInfo">
-              전략에 포함되는 종목들 입니다.
-            </ReactTooltip>
+
             <WhiteSpace />
-            <article className="interestTickers">
-              <ul className="slot">{selectedMonoTickerSettingButtonList}</ul>
-            </article>
+            <ShadowBox>
+              <article className="interestTickers">
+                <ul className="slot">{selectedMonoTickerSettingButtonList}</ul>
+              </article>
+            </ShadowBox>
           </section>
         </article>
         <section className="inspector">
@@ -103,6 +124,8 @@ const SStrategyCreateModule = styled.section`
     text-align: start;
     display: flex;
     align-items: center;
+    font-weight: 700;
+    font-size: 2rem;
     .iconInfo {
       margin-left: 1rem;
       svg {
@@ -110,12 +133,18 @@ const SStrategyCreateModule = styled.section`
         width: 2rem;
       }
     }
+    .item {
+      margin-right: 1rem;
+    }
+    .qsBtn {
+      font-weight: 500;
+    }
   }
 
   .columns {
     background-color: white;
-    min-height: 80vh;
-    padding: 2rem;
+    min-height: 76vh;
+    padding: 2rem 2rem 0rem 2rem;
     display: grid;
     grid-template-columns: 80rem minmax(35rem, 1fr);
     grid-gap: 2rem;
@@ -131,6 +160,9 @@ const SStrategyCreateModule = styled.section`
     /* border: 1px solid red; */
     height: 80vh;
     overflow-y: scroll;
+    ::-webkit-scrollbar {
+      width: 0.2rem;
+    }
   }
   .baseSettingBtnSlot {
     display: flex;
@@ -153,72 +185,63 @@ const StrategyCreateTemplate = () => {
   // Selector: 현재 인스팩터 - React.FC 반환
   const CurrentInspector = useRecoilValue(selectorInspectorFC);
 
-  // Selector: 현재 선택된 종목 - JSX.Element 리스트를 선택
-  // const selectedTickerElementList = useRecoilValue(
-  //   selectedTickerElementListJSX,
-  // );
-
   // Selector : 선택된 단일 종목 매매전략 셋팅 버튼 , JSX 리스트 리턴
   const selectedMonoTickerSettingButtonList = useRecoilValue(
     selectedMonoTickerSettingButtonListJSX,
   );
 
-  // Selector : 선택된 단일 종목 매매전략 셋팅 버튼 , JSX 리스트 리턴
-  // const selecteMiniBacktestResultList = useRecoilValue(
-  //   selecteMiniBacktestResultListJSX,
-  // );
+  const [, handleChangeInspector] = useRecoilState(selectorInspectorType);
+  const ST1_isComplete = useRecoilValue(selector_ST1_isComplete);
+  const ST2_isComplete = useRecoilValue(selector_ST2_isComplete);
+  const ST3_isComplete = useRecoilValue(selector_ST3_isComplete);
 
-  // Handler
-  const handleChangeInspector = (type: IInspectorTypes) => {
-    setInsepctorState((prev) => ({
-      ...prev,
-      inspectorType: type,
-    }));
+  const currentCorpLen = useRecoilValue(selectorCurrentCorpLen);
+
+  const handleClickQuantSelect = () => {
+    setInsepctorState(
+      produce(insepctorState, (draft) => {
+        draft.inspectorType = 'universalSetting';
+        draft.inspectorState.universalSetting.tab = 1;
+        return draft;
+      }),
+    );
   };
 
   return (
     <StrategyCreateModule
+      handleClickQuantSelect={handleClickQuantSelect}
+      currentCorpLen={currentCorpLen}
       currentInspectorElement={<CurrentInspector />}
       // currentInspectorElement={CurrentInspector({})}
       dashBoardCol1={{
         baseSettingBtnElements: [
           <DashBoardButton
-            Icon={IconSettingNormal}
+            Icon={IconStep1Normal}
             text="기본설정"
             onClick={() => {
               handleChangeInspector('basicSetting');
             }}
+            isComplete={ST1_isComplete}
           />,
           <DashBoardButton
-            Icon={IconPlusNormal}
+            Icon={IconStep2Normal}
             text="종목관리"
             onClick={() => {
               handleChangeInspector('universalSetting');
             }}
+            isComplete={ST2_isComplete}
           />,
           <DashBoardButton
-            Icon={IconPlusNormal}
+            Icon={IconStep3Normal}
             text="백테스트"
             onClick={() => {
               handleChangeInspector('backTestingSetting');
             }}
+            isComplete={ST3_isComplete}
           />,
         ],
-        // selectedTickerElementList: selectedTickerElementList,
       }}
       selectedMonoTickerSettingButtonList={selectedMonoTickerSettingButtonList}
-      // dashBoardCol3={selecteMiniBacktestResultList}
-      // dashBoardCol4={{
-      //   portBacktestBtnElement: (
-      //     <DashBoardButton
-      //       Icon={IconTesting}
-      //       text="포트 백테스트"
-      //       onClick={() => {
-      //         handleChangeInspector('backTestingSetting');
-      //       }}
-      //     />
-      //   ),
-      // }}
     />
   );
 };
