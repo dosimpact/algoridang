@@ -10,3 +10,6 @@ logo/
 testenv/
 _Test/opendartAPIkey.py
 __venvalgo/
+htmlcov_1026/
+quantStateResult/
+coverage/

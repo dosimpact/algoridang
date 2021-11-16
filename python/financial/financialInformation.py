@@ -2,7 +2,7 @@
 #from numpy.core.numeric import full
 #from _Test.opendartAPIkey import key
 
-from openAPI.DB.connectionPool import databasepool
+from DB.connectionPool import databasepool
 import requests
 import time
 from selenium import webdriver

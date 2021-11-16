@@ -11,13 +11,11 @@ from app import app
 
 from os.path import join, dirname
 
-
-
-from backtesting import backtesting
 from openAPI import pricePykrx
 
-from backtesting.MiniBacktest import MiniBacktest
-from backtesting.MakeMiniBackTest import MakeMiniBackTest
+
+
+from backtesting.BacktestMultiPort import BacktestMultiPort
 
 # celery -A pycelery.processor.process worker --loglevel=info
 # celery -A pycelery.processor.process worker --loglevel=info --autoscale=3,3
@@ -116,19 +114,13 @@ def initDB_DailyStock_queue(self,tickers,startDate):
 @process.task(bind=True, base=CoreTask)
 def backtestTaskCall(self,strategyCode):
     
-    bk = backtesting.CBackTtrader(self.request.id, strategyCode)
-    res = bk.requestBacktestOneStock()
+    bt = BacktestMultiPort(strategyCode)
+    res = bt.portBacktest()
     return res
 
 
-
-def callMiniBacktest(miniBackData):
-    adapter = MakeMiniBackTest()
-    return (adapter.minibacktest(miniBackData))
-
-
     
-def Test___backtestTestCode(id,strategyCode):
-    bk = backtesting.CBackTtrader(None,strategyCode)
-    res = bk.requestBacktestOneStock()
+def Test___backtestTestCode(strategyCode):
+    bt = BacktestMultiPort(strategyCode)
+    res = bt.portBacktest_Test()
     return res

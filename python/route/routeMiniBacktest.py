@@ -1,6 +1,8 @@
 from flask import request, jsonify
 from flask_restx import Resource, Api, Namespace, fields
+from backtesting.BacktestMini import BacktestMini
 
+import time
 
 from pycelery import processor
 
@@ -37,8 +39,18 @@ class MiniBackTest(Resource):
     def post(self):
         """strategyCode 를 바탕으로 백테스트를 수행합니다. """
         if request.method == 'POST':
+            
             inputdata = request.get_json(silent=True)
-            res = processor.callMiniBacktest(inputdata)
+            
+            f = open("logger/TimeTest.txt", 'a')
+            f.write(f'job start : {time.strftime("%H:%M:%S")}\n')
+            f.write(f'job data : {str(inputdata)}\n')
+            
+            bt = BacktestMini()
+            res = bt.getMiniBacktest(inputdata)\
+
+            f.write(f'job done : {time.strftime("%H:%M:%S")}\n')
+            f.close()
            
         return res, 201
 

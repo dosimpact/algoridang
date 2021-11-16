@@ -1,6 +1,7 @@
 from flask import request, jsonify
 from flask_restx import Resource, Api, Namespace, fields
 
+from DB.connectionPool import databasepool
 
 from pycelery import processor
 todos = {}
@@ -91,3 +92,51 @@ class BackTestPost(Resource):
 
 
 
+
+
+backTestAllFields = BackTest.model('BacktestAll', {  # Model 객체 생성
+
+})
+
+backTestAllFields = BackTest.model('BacktestAll', {  # Model 객체 생성
+    'BacktestId': fields.String(description='요청 정보', required=True, example="ALL"),
+    'data': fields.String(description='task ids', required=True, example="[list]"),
+    'status' : fields.String(description='status', required=False, example="done")
+})
+
+
+
+
+@BackTest.route('/backtest-all')
+@BackTest.doc(params={'strategyCode': 'Database strategyCode'})
+class BackTestPost(Resource):
+    @BackTest.expect(backTestAllFields)
+    @BackTest.response(201, 'Success', )
+    def get(self):
+        """strategyCode 를 바탕으로 백테스트를 수행합니다. """
+        if request.method == 'GET':
+            
+            DBClass = databasepool()
+            conn = DBClass.getConn()
+            query = "select ms.strategy_code  from member_strategy ms "
+            tickers = DBClass.selectData(conn, query)
+            DBClass.putConn(conn)
+            
+            tasks= []
+
+            for i in range(len(tickers)):
+                task = processor.backtestTaskCall.apply_async([int(tickers[i][0])])
+                tasks.append(task.id)
+                if not task.id:
+                    return {
+                        'status' : "error : Celery Server is down"
+                    }, 503
+
+            
+
+        
+            return {
+                'BacktestId': "ALL",
+                'data': str(tasks),
+                'status' : "done"
+            }, 201
