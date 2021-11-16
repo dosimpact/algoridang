@@ -1,4 +1,9 @@
-import { CacheModule, CacheStoreFactory, Module } from '@nestjs/common';
+import {
+  CacheModule,
+  CacheStoreFactory,
+  forwardRef,
+  Module,
+} from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FinanceController } from './finance.controller';
 import { FinanceService } from './finance.service';
@@ -12,6 +17,7 @@ import {
 import * as redisStore from 'cache-manager-redis-store';
 import { ConfigModule } from '@nestjs/config';
 import { FinancialStatement } from './entities/financial-statement.entity';
+import { BacktestModule } from 'src/backtest/backtest.module';
 
 @Module({
   imports: [
@@ -22,7 +28,7 @@ import { FinancialStatement } from './entities/financial-statement.entity';
     CacheModule.register({
       store: redisStore as CacheStoreFactory,
       url: process.env.REDIS_API_CACHE_URL,
-      ttl: +process.env.REDIS_API_CACHE_TTL, // 10초 캐슁
+      ttl: +process.env.REDIS_API_CACHE_TTL_FINANCIAL || 86400, // 10초 캐슁
       // max: 3, // 3개의 key값 유지
     }),
     TypeOrmModule.forFeature([
@@ -32,6 +38,7 @@ import { FinancialStatement } from './entities/financial-statement.entity';
       DailyStock,
       FinancialStatement,
     ]),
+    forwardRef(() => BacktestModule),
   ],
   controllers: [FinanceController],
   providers: [FinanceService],

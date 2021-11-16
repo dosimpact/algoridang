@@ -6,9 +6,9 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { StrategyService } from 'src/strategy/strategy.service';
-import { LeftHandSideExpressionedNode } from 'ts-morph';
+
 import {
   PushBackTestQInput,
   PushBackTestQOutput,
@@ -17,6 +17,10 @@ import {
 import {
   RequestMiniBacktestingInput,
   RequestMiniBacktestingOutput,
+  RequestQuantSelectDefaultOutput,
+  RequestQuantSelectInput,
+  RequestQuantSelectLookUpOutput,
+  RequestQuantSelectOutput,
 } from './dto/query.dtos';
 
 @Injectable()
@@ -60,19 +64,7 @@ export class FlaskService {
       return false;
     }
   }
-  // (1) ??
-  async setCorporationDBData() {
-    try {
-      // sido / sigungu 정보 써서 서버로 쏘면 됨
-      const { data } = await axios.get(
-        `${this.dataServerUrl}/DBinit/Corporation`,
-      );
-      return data;
-    } catch (e) {
-      console.error('[FAIL] GET test', e);
-      return e;
-    }
-  }
+
   // (2) backtest 실행, - strategyCode 입력
   async __requestBackTest(strategyCode: number): Promise<SetBackTestOutput> {
     try {
@@ -86,19 +78,21 @@ export class FlaskService {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
         },
-        timeout: 10000,
+        timeout: 15 * 1000,
       });
       if (status !== 201) {
         return { ok: false, ...data };
       }
       return { ok: true, ...data };
     } catch (e) {
-      console.error('[FAIL] GET test', e);
+      this.logger.error(
+        `❌️ DA Server connection AxiosError ${this.dataServerUrl}`,
+      );
       throw e;
     }
   }
   /**
-   * (2) backtest 큐 넣기
+   * (2) backtest 실행, - strategyCode 입력
    * - email_id가 가진 전략인지 확인 후 큐 요청
    * @param {string} email_id
    * @param {PushBackTestQInput} pushBackTestQInput
@@ -117,21 +111,9 @@ export class FlaskService {
       throw new UnauthorizedException('cannot access strategy');
     }
   }
-  // (3) 작업 상태 점검 - task_id 입력
-  async check(task_id: string) {
-    try {
-      const { data } = await axios.get(
-        `${this.dataServerUrl}/check/${task_id}`,
-      );
-      return data;
-    } catch (e) {
-      console.error('[FAIL] GET test', e);
-      return e;
-    }
-  }
 
   /**
-   * 미니 백테스팅
+   * (3)  미니 백테스팅
    * - email_id가 가진 전략인지 확인 후 큐 요청
    * @param {RequestMiniBacktestingInput} pushBackTestQInput
    * @returns {RequestMiniBacktestingOutput} RequestMiniBacktestingOutput
@@ -148,7 +130,7 @@ export class FlaskService {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
         },
-        timeout: 15000,
+        timeout: 60 * 1000,
       });
       if (status !== 201) {
         this.logger.verbose('❌ requestMiniBacktesting');
@@ -158,6 +140,88 @@ export class FlaskService {
       return { ok: true, ...data };
     } catch (e) {
       console.error('[FAIL] GET test', e);
+      throw e;
+    }
+  }
+  /**
+   * (4)  퀀트 발굴 - 적용된 파라미터로 종목을 발굴합니다.
+   * @param {RequestQuantSelectInput} RequestQuantSelectInput
+   * @returns {Promise<RequestQuantSelectOutput>} RequestQuantSelectOutput
+   */
+
+  async __requestQuantSelection(
+    body: RequestQuantSelectInput,
+  ): Promise<RequestQuantSelectOutput> {
+    const { data, status } = await axios({
+      method: 'post',
+      url: `${this.dataServerUrl}/quant`,
+      data: body,
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+      },
+      timeout: 15 * 1000,
+    });
+    if (status !== 201) {
+      return { ok: false, result: data };
+    }
+    return { ok: true, result: data };
+  }
+
+  /**
+   * (5)  퀀트 발굴 - 어떤 전략이 가능한지 리스트업 - 결과 리턴
+   * @param {}
+   * @returns {Promise<RequestQuantSelectLookUpOutput>} RequestQuantSelectLookUpOutput
+   */
+  async __requestQuantSelectLookUp(): Promise<RequestQuantSelectLookUpOutput> {
+    try {
+      const { data, status } = await axios({
+        method: 'get',
+        url: `${this.dataServerUrl}/quant/lookup`,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        timeout: 15 * 1000,
+      });
+      if (status !== 201) {
+        return { ok: false, ...data };
+      }
+      return { ok: true, ...data };
+    } catch (e) {
+      this.logger.error(
+        `❌️ DA Server connection AxiosError ${this.dataServerUrl}`,
+      );
+      throw e;
+    }
+  }
+  /**
+   * (6)  퀀트 발굴 - 공식별 파라미터를 보여줍니다.
+   * @param {number} index
+   * @returns {Promise<RequestQuantSelectLookUpOutput>} RequestQuantSelectLookUpOutput
+   */
+  async __requestQuantSelectDefault(
+    index: number,
+  ): Promise<RequestQuantSelectDefaultOutput> {
+    try {
+      const { data, status } = await axios({
+        method: 'get',
+        url: `${this.dataServerUrl}/quant/sample?index=${index}`,
+        data: {},
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+        timeout: 15 * 1000,
+      });
+      if (status !== 201) {
+        return { ok: false, ...data };
+      }
+      return { ok: true, ...data };
+    } catch (e) {
+      this.logger.error(
+        `❌️ DA Server connection AxiosError ${this.dataServerUrl}`,
+      );
       throw e;
     }
   }

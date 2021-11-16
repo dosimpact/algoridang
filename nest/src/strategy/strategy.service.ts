@@ -1,6 +1,11 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import {
+  forwardRef,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { In, Raw, Repository } from 'typeorm';
+import { In, IsNull, Not, Raw, Repository } from 'typeorm';
 import {
   GetMyStrategyByIdInput,
   GetMyStrategyByIdOutput,
@@ -22,18 +27,12 @@ import {
   SearchStrategyOutput,
 } from './dto/query.dtos';
 import {
-  CopyStrategyInput,
-  CopyStrategyOutput,
   CreateMyStrategyInput,
   CreateMyStrategyOutput,
   DeleteMyStrategyByIdInput,
   DeleteMyStrategyByIdOutput,
   ForkStrategyInput,
   ForkStrategyOutput,
-  NoticeMyStrategyByIdInput,
-  NoticeMyStrategyByIdOutput,
-  RecoverStrategyByIdInput,
-  RecoverStrategyByIdOutput,
   UpdateMyStrategyByIdInput,
   UpdateMyStrategyByIdOutput,
 } from './dto/mutation.dtos';
@@ -766,29 +765,68 @@ export class StrategyService {
 
     return { ok: true, memberStrategy: sourceStrategy };
   }
-  // (POST) deleteMyStrategyById	 	(3) 나의 전략 softdelete
-  async deleteMyStrategyById(
-    deleteMyStrategyByIdInput: DeleteMyStrategyByIdInput,
+
+  // (POST) deleteMyStrategyById	 	(3) 나의 전략 delete
+  async hardDeleteMyStrategyById(
+    email_id: string,
+    { strategy_code }: DeleteMyStrategyByIdInput,
   ): Promise<DeleteMyStrategyByIdOutput> {
     // 전략 soft delete
     // 투자 수익 soft delete
+    // const result = await this.getMyStrategyById(email_id, { strategy_code });
 
-    return { ok: false };
+    const strategy = await this.MemberStrategyRepo.findOneOrFail({
+      where: { strategy_code, operator_id: email_id },
+    });
+    const del_result = await this.MemberStrategyRepo.remove(strategy);
+    if (del_result) {
+      return { ok: true, memberStrategy: del_result };
+    } else {
+      throw new NotFoundException(
+        `${email_id} has no strategy_code : ${strategy_code} delete Fail`,
+      );
+    }
+  }
+
+  async softDeleteMyStrategyById(
+    email_id: string,
+    { strategy_code }: DeleteMyStrategyByIdInput,
+  ): Promise<DeleteMyStrategyByIdOutput> {
+    const strategy = await this.MemberStrategyRepo.findOneOrFail({
+      where: { strategy_code, operator_id: email_id },
+    });
+    const del_result = await this.MemberStrategyRepo.softRemove(strategy);
+    if (del_result) {
+      return { ok: true, memberStrategy: del_result };
+    } else {
+      throw new NotFoundException(
+        `${email_id} has no strategy_code : ${strategy_code} delete Fail`,
+      );
+    }
   }
   // (POST) recoverStrategyById		(4) (관리자) 나의 전략 recover
-  async recoverStrategyById(
-    recoverStrategyByIdInput: RecoverStrategyByIdInput,
-  ): Promise<RecoverStrategyByIdOutput> {
-    // 전략 검색 withDelete
-    // 전략 복구
+  // async recoverStrategyById(
+  //   recoverStrategyByIdInput: RecoverStrategyByIdInput,
+  // ): Promise<RecoverStrategyByIdOutput> {
+  //   // 전략 검색 withDelete
+  //   // 전략 복구
 
-    return { ok: false };
-  }
-  // (POST) noticeMyStrategyById		(5) 나의 전략 알림기능
-  async noticeMyStrategyById(
-    noticeMyStrategyByIdInput: NoticeMyStrategyByIdInput,
-  ): Promise<NoticeMyStrategyByIdOutput> {
-    // 전략 알림 기능 on/off
-    return { ok: false };
+  //   return { ok: false };
+  // }
+  // // (POST) noticeMyStrategyById		(5) 나의 전략 알림기능
+  // async noticeMyStrategyById(
+  //   noticeMyStrategyByIdInput: NoticeMyStrategyByIdInput,
+  // ): Promise<NoticeMyStrategyByIdOutput> {
+  //   // 전략 알림 기능 on/off
+  //   return { ok: false };
+  // }
+
+  async __getStrategyUnsuccess() {
+    return this.MemberStrategyRepo.find({
+      where: [
+        // { status_code: Not(In(['Error', 'Success'])) },
+        { status_code: IsNull() },
+      ],
+    });
   }
 }

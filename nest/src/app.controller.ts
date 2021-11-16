@@ -7,19 +7,15 @@ import {
   Post,
   Version,
 } from '@nestjs/common';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
-
-class PostHelloInput {
-  @IsNumber()
-  num: number;
-  @IsString()
-  @IsOptional()
-  str?: string;
-}
+import { ConfigService } from '@nestjs/config';
+import axios from 'axios';
 
 @Controller()
 export class AppController {
-  constructor() {}
+  private readonly dataServerUrl: string;
+  constructor(private readonly configService: ConfigService) {
+    this.dataServerUrl = this.configService.get('DATA_SERVER_URL');
+  }
 
   @Get()
   getHello(): string {
@@ -29,9 +25,25 @@ export class AppController {
   }
 
   @Version('1')
-  @Post('/api')
-  postHello(@Body() body: PostHelloInput) {
-    console.log(body);
-    return { ok: `ok! ${JSON.stringify(body)}`, num: 1 };
+  @Get('/api')
+  async healthCheck_NestJS() {
+    return '✔ NestJS Server is running';
+  }
+
+  @Version('1')
+  @Get('/api/flask')
+  async healthCheck_FlaskServer() {
+    const { status } = await axios({
+      method: 'get',
+      url: `${this.dataServerUrl}`,
+      timeout: 5000,
+    });
+
+    if (status === 200) return '✔ Flask Server is running';
+    else
+      throw new HttpException(
+        '❌ Flask Server is not connected',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
   }
 }

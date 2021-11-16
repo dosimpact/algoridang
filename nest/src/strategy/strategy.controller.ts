@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -11,9 +12,10 @@ import {
 } from '@nestjs/common';
 import { StrategyService } from './strategy.service';
 import { AuthUser, Roles } from 'src/auth/auth.decorator';
-import { HttpCacheInterceptor } from 'src/common/service/HttpCacheInterceptor';
+import { HttpCacheInterceptor } from 'src/common/interceptor/HttpCacheInterceptor';
 import {
   CreateMyStrategyInput,
+  DeleteMyStrategyByIdInput,
   ForkStrategyInput,
   UpdateMyStrategyByIdInput,
 } from './dto/mutation.dtos';
@@ -180,14 +182,22 @@ export class StrategyMutationController {
   ) {
     return this.strategyService.updateMyStrategyById(m.email_id, body);
   }
-  // TODO 🚀 (POST) deleteMyStrategyById	 	(3) 나의 전략 softdelete
-  async deleteMyStrategyById() {}
+  // (POST) deleteMyStrategyById	 	(3) 나의 전략 delete
+  @Roles(['Any'])
+  @Version('1')
+  @Delete('my')
+  async deleteMyStrategyById(
+    @AuthUser() m: MemberInfo,
+    @Body() body: DeleteMyStrategyByIdInput,
+  ) {
+    return this.strategyService.softDeleteMyStrategyById(m.email_id, body);
+  }
   // TODO 🚀 (POST) recoverStrategyById		(4) (관리자) 나의 전략 recover
-  async recoverStrategyById() {}
+  // async recoverStrategyById() {}
   // TODO 🚀 (POST) noticeMyStrategyById		(5) 나의 전략 알림기능
-  async noticeMyStrategyById() {}
+  // async noticeMyStrategyById() {}
   // TODO 🚀 (POST) copyStrategy	id		(6) 투자 전략 복사  ( API )
-  async copyStrategy() {}
+  // async copyStrategy() {}
   // TODO 🚀 (POST) addLookupStrategy	id		(7) 투자 전략 조회자 추가  ( API )
-  async addLookupStrategy() {}
+  // async addLookupStrategy() {}
 }

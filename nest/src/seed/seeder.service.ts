@@ -38,7 +38,7 @@ import {
 import { UploadedObject } from 'src/upload/entities/uploaded-object.entity';
 import { UserRole } from 'src/member/entities/member-info.entity';
 import { InvestType } from 'src/strategy/entities/member-strategy.entity';
-import { preSet__BaseTradingStrategy_List } from './pre-settings/data';
+// import { preSet__BaseTradingStrategy_List } from './pre-settings/data';
 /*
 CategoryList
 Category
@@ -131,24 +131,24 @@ export class SeederService {
     }
   }
   // (2) 기본 매매전략을 resetting
-  async seedBaseTradingStrategy() {
-    try {
-      const targets = await this.BaseTradingStrategy.find();
-      await Promise.all(
-        targets.map(async (t) =>
-          this.BaseTradingStrategy.delete(t.trading_strategy_code),
-        ),
-      );
-      await Promise.all(
-        preSet__BaseTradingStrategy_List.map(async (t) =>
-          this.BaseTradingStrategy.save(this.BaseTradingStrategy.create(t)),
-        ),
-      );
-      this.logger.verbose('✔ seedBaseTradingStrategy');
-    } catch (error) {
-      this.logger.error('❌ seedBaseTradingStrategy', error);
-    }
-  }
+  // async seedBaseTradingStrategy() {
+  //   try {
+  //     const targets = await this.BaseTradingStrategy.find();
+  //     await Promise.all(
+  //       targets.map(async (t) =>
+  //         this.BaseTradingStrategy.delete(t.trading_strategy_code),
+  //       ),
+  //     );
+  //     await Promise.all(
+  //       preSet__BaseTradingStrategy_List.map(async (t) =>
+  //         this.BaseTradingStrategy.save(this.BaseTradingStrategy.create(t)),
+  //       ),
+  //     );
+  //     this.logger.verbose('✔ seedBaseTradingStrategy');
+  //   } catch (error) {
+  //     this.logger.error('❌ seedBaseTradingStrategy', error);
+  //   }
+  // }
 
   // seed - relation mapping
   // (1) 시나리오

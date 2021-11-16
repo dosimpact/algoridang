@@ -1,23 +1,22 @@
 import {
+  Body,
   Controller,
   Get,
   Param,
+  Post,
   Query,
   UseInterceptors,
   Version,
 } from '@nestjs/common';
-import { ErrorHandlerInterceptor } from 'src/common/service/ErrorHandlerInterceptor';
-import { HttpCacheInterceptor } from 'src/common/service/HttpCacheInterceptor';
+import { RequestQuantSelectInput } from 'src/backtest/dto/query.dtos';
+import { HttpBodyCacheInterceptor } from 'src/common/interceptor/HttpCacheInterceptor';
+import { QuantSelectionInput } from './dtos/query.dtos';
 import { FinanceService } from './finance.service';
 
-// @UseInterceptors(ErrorHandlerInterceptor)
-// @Controller({ version: '1' })
-@UseInterceptors(HttpCacheInterceptor)
+@UseInterceptors(HttpBodyCacheInterceptor)
 @Controller('/api/finance/')
 export class FinanceController {
   constructor(private readonly financeService: FinanceService) {}
-
-  // stock --- api
 
   // (1) 기업 리스트 출력
   @Version('1')
@@ -51,5 +50,45 @@ export class FinanceController {
     @Query('sort') sort: string,
   ) {
     return this.financeService.getDailyStocks({ term, take, skip, sort });
+  }
+
+  /**
+   * (6-1) 퀀트 발굴에 대해서 제공하는 기능 출력
+   * type - list : 어떤 전략들이 있는지
+   * @param {lookupType} lookupType
+   * @returns {QuantSelectionLookupListOutput}
+   */
+  @Version('1')
+  @Get('statements/lookup/list')
+  async quantSelectionLookupList() {
+    return this.financeService.QuantSelectionLookupList();
+  }
+  /**
+   * (6-2) 퀀트 발굴에 대해서 제공하는 기능 출력
+   * type - default : 기본 셋팅 값
+   * @param {number} index
+   * @returns {QuantSelectionLookupTypeOutput}
+   */
+  @Version('1')
+  @Get('statements/lookup/type/:index')
+  async quantSelectionLookupType(@Param('index') index: number) {
+    return this.financeService.QuantSelectionLookupType(Number(index));
+  }
+  /**
+   * (7) 퀀트 발굴을 수행
+   * @param {QuantSelectionInput} body
+   * @returns {QuantSelectionOutput}
+   */
+  @Version('1')
+  @Post('statements/select/')
+  async quantSelection(@Body() body: QuantSelectionInput) {
+    return this.financeService.QuantSelection(body);
+  }
+
+  // (5) 특정 종목에 대한 재무 정보 리턴
+  @Version('1')
+  @Get('statements/:ticker')
+  async getFinancialStatements(@Param('ticker') ticker: string) {
+    return this.financeService.getFinancialStatements({ ticker });
   }
 }

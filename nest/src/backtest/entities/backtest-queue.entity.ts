@@ -37,8 +37,9 @@ export class BacktestQueue {
   createAt?: string;
 
   // (1) 백테스트 큐에 연동된 투자 전략
+  @IsString()
   @Column()
-  strategy_code: number;
+  strategy_code: string;
 
   @ManyToOne(() => MemberStrategy, (ms) => ms.queueList, {
     onDelete: 'CASCADE',

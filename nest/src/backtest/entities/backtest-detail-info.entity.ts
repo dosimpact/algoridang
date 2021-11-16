@@ -1,4 +1,4 @@
-import { IsNumber } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
 import { MemberStrategy } from 'src/strategy/entities';
 import {
   Column,
@@ -46,8 +46,13 @@ export class BacktestDetailInfo {
   @Column({ type: 'decimal', precision: 10, scale: 2, nullable: true })
   yearly_volatility?: number;
 
-  @IsNumber()
-  strategy_code: number;
+  @IsString()
+  @Column({ type: 'text', nullable: true, select: false })
+  quant_state_report?: string;
+
+  @IsString()
+  @Column()
+  strategy_code: string;
 
   @OneToOne(() => MemberStrategy, (ms) => ms.backtestDetailInfo, {
     onDelete: 'CASCADE',

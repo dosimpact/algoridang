@@ -1,36 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { getConnection, Repository } from 'typeorm';
-import {
-  GetMyStrategyByIdInput,
-  GetMyStrategyByIdOutput,
-  GetMyStrategyListInput,
-  GetMyStrategyListOutput,
-  GetStrategyByIdInput,
-  GetStrategyByIdOutput,
-  GetStrategyListHighViewInput,
-  GetStrategyListHighViewOutput,
-  GetStrategyListNewInput,
-  GetStrategyListNewOutput,
-  GetStrategyListTypeInput,
-  GetStrategyListTypeOutput,
-} from './dto/query.dtos';
-import {
-  CopyStrategyInput,
-  CopyStrategyOutput,
-  CreateMyStrategyInput,
-  CreateMyStrategyOutput,
-  DeleteMyStrategyByIdInput,
-  DeleteMyStrategyByIdOutput,
-  NoticeMyStrategyByIdInput,
-  NoticeMyStrategyByIdOutput,
-  RecoverStrategyByIdInput,
-  RecoverStrategyByIdOutput,
-  UpdateMyStrategyByIdInput,
-  UpdateMyStrategyByIdOutput,
-} from './dto/mutation.dtos';
+import { Repository } from 'typeorm';
 import { Hash, HashList, MemberStrategy } from './entities';
-import { InvestType } from './entities/member-strategy.entity';
 import { Logger } from '@nestjs/common';
 import { InvestProfitInfo } from 'src/backtest/entities';
 

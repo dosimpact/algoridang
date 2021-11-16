@@ -6,12 +6,14 @@ import {
   Post,
   Body,
   Version,
+  CacheTTL,
+  Header,
 } from '@nestjs/common';
 import { AuthUser, Roles } from 'src/auth/auth.decorator';
 import {
   HttpBodyCacheInterceptor,
   HttpCacheInterceptor,
-} from 'src/common/service/HttpCacheInterceptor';
+} from 'src/common/interceptor/HttpCacheInterceptor';
 import { MemberInfo } from 'src/member/entities';
 import { BacktestService } from './backtest.service';
 import {
@@ -67,6 +69,13 @@ export class BacktestQueryController {
   async getWinRatio(@Param() strategy_code: string) {
     return this.backtestService.getBacktestWinRatio({ strategy_code });
   }
+
+  @Version('1')
+  @Header('content-type', 'text/html')
+  @Get(':strategy_code/quantstates-report')
+  async getQuantstatesReport(@Param() strategy_code: string) {
+    return this.backtestService.getQuantstatesReport({ strategy_code });
+  }
 }
 
 @Controller('/api/backtests/')
@@ -113,6 +122,7 @@ export class BacktestMutationController {
   @Version('1')
   @Roles(['Any'])
   @Post('mini-backtest')
+  @CacheTTL(60 * 60 * 24)
   @UseInterceptors(HttpBodyCacheInterceptor)
   async requestMiniBackTest(@Body() body: RequestMiniBacktestingInput) {
     return this.flaskService.__requestMiniBacktesting(body);

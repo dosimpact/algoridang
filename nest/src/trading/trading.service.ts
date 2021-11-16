@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FinanceService } from 'src/finance/finance.service';
 import { StrategyService } from 'src/strategy/strategy.service';
 import { Raw, Repository } from 'typeorm';
+import { preSet__BaseTradingStrategy_List } from './constant/strategy-setting';
 import {
   AddUniversalInput,
   AddUniversalOutput,
@@ -38,6 +39,7 @@ export class TradingService {
     private readonly simpleBacktestRepo: Repository<SimpleBacktest>,
     @InjectRepository(Universal)
     private readonly universalRepo: Repository<Universal>,
+    @Inject(forwardRef(() => FinanceService))
     private readonly financeService: FinanceService,
 
     @Inject(forwardRef(() => StrategyService))
@@ -45,10 +47,10 @@ export class TradingService {
   ) {}
   //(1) 기본 매매전략
   async getBaseTradingStrategy({
-    trading_strategy_code,
+    trading_strategy_name,
   }: GetBaseTradingStrategyInput): Promise<GetBaseTradingStrategyOutput> {
     const baseTradingStrategy = await this.baseTradingStRepo.findOneOrFail({
-      where: { trading_strategy_code },
+      where: { trading_strategy_name },
     });
     return { ok: true, baseTradingStrategy };
   }
@@ -59,30 +61,6 @@ export class TradingService {
     const baseTradingStrategyList = await this.baseTradingStRepo.find({});
     return { ok: true, baseTradingStrategyList };
   }
-  //(3) 기본 매매전략 카피 (deprecated)
-  // - 유니버셜에 바로 추가
-  //🚀todo refactor
-  // async __copyBaseTradingStrategy({
-  //   setting_json,
-  //   trading_strategy_code,
-  // }: CopyBaseTradingStrategyInput): Promise<CopyBaseTradingStrategyOutput> {
-  //   try {
-  //     const tradingStrategy = await this.baseTradingStRepo.findOne({
-  //       where: { trading_strategy_code },
-  //     });
-  //     if (!tradingStrategy) return { ok: false };
-  //     const customTradingStrategy = await this.customTradingStRepo.save(
-  //       this.customTradingStRepo.create({
-  //         ...tradingStrategy,
-  //         setting_json,
-  //       }),
-  //     );
-  //     return { ok: true, customTradingStrategy };
-  //   } catch (error) {
-  //     this.logger.error(error);
-  //     return { ok: false };
-  //   }
-  // }
 
   //(4) 전략에 티커 추가하기
   async addUniversalOnly(
@@ -167,5 +145,27 @@ export class TradingService {
       },
       select: ['strategy_code'],
     });
+  }
+
+  //  기본 매매전략 시드
+  async __seedBaseTradingStrategy() {
+    try {
+      const targets = await this.baseTradingStRepo.find();
+      await Promise.all(
+        targets.map(async (t) => this.baseTradingStRepo.remove(t)),
+      );
+      await Promise.all(
+        preSet__BaseTradingStrategy_List.map(async (t) =>
+          this.baseTradingStRepo.save(this.baseTradingStRepo.create(t)),
+        ),
+      );
+      this.logger.verbose('✔ seedBaseTradingStrategy');
+    } catch (error) {
+      this.logger.error('❌ seedBaseTradingStrategy', error);
+    }
+  }
+
+  async requestMiniBacktesting() {
+    return;
   }
 }

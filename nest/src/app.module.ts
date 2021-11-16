@@ -48,9 +48,10 @@ import * as redisStore from 'cache-manager-redis-store';
 import { UploadedObject } from './upload/entities/uploaded-object.entity';
 import { AuthModule } from './auth/auth.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
-import { LoggingInterceptor } from './common/service/LogginInterceptor';
-import { ErrorHandlerInterceptor } from './common/service/ErrorHandlerInterceptor';
+import { ErrorHandlerInterceptor } from './common/interceptor/ErrorHandlerInterceptor';
 import { FinancialStatement } from './finance/entities/financial-statement.entity';
+import { ScheduleModule } from '@nestjs/schedule';
+import { CronModule } from './common/cron.module';
 
 @Module({
   imports: [
@@ -79,7 +80,7 @@ import { FinancialStatement } from './finance/entities/financial-statement.entit
           rejectUnauthorized: false,
         },
       }),
-      synchronize: true,
+      synchronize: process.env.NODE_ENV === 'production' ? false : true,
       logging: false,
       entities: [
         ...[
@@ -101,7 +102,6 @@ import { FinancialStatement } from './finance/entities/financial-statement.entit
           Hash,
           HashList,
           MemberStrategy,
-          // StockList,
         ],
         ...[
           // back test (8/8)
@@ -126,6 +126,8 @@ import { FinancialStatement } from './finance/entities/financial-statement.entit
         ],
       ],
     }),
+    ScheduleModule.forRoot(),
+    CronModule,
     JwtModule.forRoot({ privateKey: process.env.JWT_SECRET_KEY }),
     UploadModule,
     CacheModule.register({
@@ -136,7 +138,6 @@ import { FinancialStatement } from './finance/entities/financial-statement.entit
     }),
     AuthModule,
     FinanceModule,
-    // UserModule,
     StrategyModule,
     TradingModule,
     BacktestModule,
